@@ -9,6 +9,9 @@ namespace BusinessManagementSystem.Data
     {
         //Adding Domain Classes as DbSet Properties
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+
         public DbSet<Department> Departments { get; set; }
         public DbSet<MenuRole> MenuRoles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }

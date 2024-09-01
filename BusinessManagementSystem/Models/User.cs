@@ -25,7 +25,7 @@ namespace BusinessManagementSystem.Models
         [Required]
         public required string Gender { get; set; }
         [Required]
-        public string? Address { get; set; }
+        public string Address { get; set; }
         [StringLength(10, ErrorMessage = "Invalid PhoneNumber Number", MinimumLength = 10)]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
@@ -40,7 +40,7 @@ namespace BusinessManagementSystem.Models
         [NotMapped]
         public int RoleId { get; set; }
         [JsonIgnore]
-        public ICollection<UserRole>? UserRoles { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
 
     }
 

@@ -19,9 +19,9 @@ namespace BusinessManagementSystem.Controllers
             return View(users);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if(id == null)
+            if(id == 0)
             {
                 return NotFound();
             }
@@ -54,9 +54,9 @@ namespace BusinessManagementSystem.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> EditUser(int? id)
+        public async Task<IActionResult> EditUser(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -100,9 +100,9 @@ namespace BusinessManagementSystem.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -144,10 +144,12 @@ namespace BusinessManagementSystem.Controllers
 
 
         #region API CALLS
-        [HttpGet]
-        public IActionResult GetAllUsers()
-        {
+        //[HttpGet]
+        //public IActionResult GetAllUsers()
+        //{
             
-        }
+        //}
+
+        #endregion
     }
 }

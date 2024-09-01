@@ -14,7 +14,7 @@ namespace BusinessManagementSystem.Repositories
     {
         protected readonly DbSet<T> _dbSet;
         private string _errorMessage = string.Empty;
-        private bool _isDisposed;
+        private readonly bool _isDisposed;
         protected readonly ApplicationDBContext _dbContext;
         private ResponseDto<T> _responseDto;
 
@@ -25,7 +25,7 @@ namespace BusinessManagementSystem.Repositories
             _responseDto = new ResponseDto<T>();
         }
 
-        public async Task<ResponseDto<T>> GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
+        public async Task<ResponseDto<T>> GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null, bool tracked = true)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace BusinessManagementSystem.Repositories
             return _responseDto;
         }
 
-        public async Task<ResponseDto<T>> GetSingleOrDefault(string? includeProperties = null, bool tracked = true)
+        public async Task<ResponseDto<T>> GetSingleOrDefault(string includeProperties = null, bool tracked = true)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace BusinessManagementSystem.Repositories
             return _responseDto;
         }
 
-        public async Task<ResponseDto<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool tracked = true)
+        public async Task<ResponseDto<T>> GetAllAsync(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool tracked = true)
         {
             try
             {
@@ -234,7 +234,7 @@ namespace BusinessManagementSystem.Repositories
             return _responseDto;
         }
 
-        public async Task<ResponseDto<T>> GetByIdAsync(int? id)
+        public async Task<ResponseDto<T>> GetByIdAsync(int id)
         {
             try
             {

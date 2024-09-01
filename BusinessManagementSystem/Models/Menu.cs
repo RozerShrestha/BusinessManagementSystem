@@ -12,15 +12,15 @@ namespace BusinessManagementSystem.Models
         //public int MenuId { get; set; }
         public int Parent { get; set; }
         [Required]
-        public string? Name { get; set; }
+        public string Name { get; set; }
         [Required]
-        public string? Url { get; set; }
+        public string Url { get; set; }
         [Required]
         public int Sort { get; set; }
         [Required]
         public bool Status { get; set; }
         [Required]
-        public string? Icon { get; set; }
+        public string Icon { get; set; }
         [ValidateNever]
         public virtual ICollection<MenuRole> MenuRoles { get; set; }
     }

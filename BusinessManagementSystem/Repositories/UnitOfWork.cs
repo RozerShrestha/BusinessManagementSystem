@@ -10,45 +10,48 @@ namespace BusinessManagementSystem.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private bool _disposed;
+        private readonly bool _disposed;
         private string _errorMessage = string.Empty;
-        private readonly ApplicationDBContext? _dbContext = null;
-        private IDbContextTransaction? _objTran = null;
+        private readonly ApplicationDBContext _dbContext = null;
+        private IDbContextTransaction _objTran = null;
 
         public IUser Users { get; private set; }
+
+        public IBase Base { get; private set; }
 
         public UnitOfWork(ApplicationDBContext dBContext)
         {
             _dbContext = dBContext;
             Users=new UserRepository(_dbContext);
+            Base=new BaseRepository(_dbContext);
         }
 
         public void CreateTransaction()
         {
             //It will Begin the transaction on the underlying connection
-            _objTran = _dbContext?.Database.BeginTransaction();
+            _objTran = _dbContext.Database.BeginTransaction();
         }
 
         public void Commit()
         {
             //Commits the underlying store transaction
-            _objTran?.Commit();
+            _objTran.Commit();
         }
 
         public void Rollback()
         {
             //Rolls back the underlying store transaction
-            _objTran?.Rollback();
+            _objTran.Rollback();
             //The Dispose Method will clean up this transaction object and ensures Entity Framework
             //is no longer using that transaction.
-            _objTran?.Dispose();
+            _objTran.Dispose();
         }
 
         public async Task Save()
         {
             try
             {
-                await _dbContext?.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbEntityValidationException ex)
             {
@@ -87,7 +90,7 @@ namespace BusinessManagementSystem.Repositories
         }
         protected virtual void Dispose(bool disposing)
         {
-            _dbContext?.Dispose();
+            _dbContext.Dispose();
         }
     }
 }
