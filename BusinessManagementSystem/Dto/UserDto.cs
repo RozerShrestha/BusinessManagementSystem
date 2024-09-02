@@ -19,8 +19,6 @@ namespace BusinessManagementSystem.Dto
         public string Password { get; set; }
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
-        [Required]
-        public string INumber { get; set; }
         public string FullName { get; set; }
         public string Address { get; set; }
         [Display(Name = "Date Of Birth")]

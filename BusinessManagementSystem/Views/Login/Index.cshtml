@@ -1,0 +1,51 @@
+﻿@model BusinessManagementSystem.Dto.LoginRequestDto
+@{
+    var loginResponse = (BusinessManagementSystem.Dto.ResponseDto<BusinessManagementSystem.Dto.LoginResponseDto>)ViewData["LoginResponse"];
+    Layout = "_Login";
+}
+
+
+
+<div class="container">
+    <div class="frame-login">
+        <div class="nav">
+            <img class="header" src="~/images/cotiviti_logo_short.jpeg" />
+            <h4 class="text-center" style="color:white">Insurance Claim</h4>
+        </div>
+            <form class="form-signin" method="post" asp-controller="Login" asp-action="LoginUser">
+                <div class="form-group">
+                    <label asp-for="Username"></label>
+                    <input asp-for="Username" class="form-styling" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" type="password" class="form-styling" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="btn-animate">
+                    <button class="btn-signin">Login</button>
+                    <br />
+                    @if (loginResponse != null)
+                    {
+                        if (loginResponse.StatusCode != System.Net.HttpStatusCode.OK)
+                        {
+                                <br />
+                            <div class="text-danger">@loginResponse.Message</div>
+                        }
+                        else
+                        {
+                             <br />
+                            <div class="text-danger">@loginResponse.Message</div>
+                        }
+                    }
+                    @*<a class="btn-signin">Sign in</a>*@
+                </div>
+                <br />
+                <div class="pt-4 p-2 m-5">
+                <span class="text-white">Don't have account? </span><a asp-action="Register">Register</a>
+                </div>
+            </form> 
+    </div>
+</div>
+

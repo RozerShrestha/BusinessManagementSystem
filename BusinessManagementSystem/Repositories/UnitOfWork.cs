@@ -18,6 +18,7 @@ namespace BusinessManagementSystem.Repositories
         public IUser Users { get; private set; }
 
         public IBase Base { get; private set; }
+        public IDashboard Dashboard { get; private set; }
 
         public UnitOfWork(ApplicationDBContext dBContext)
         {

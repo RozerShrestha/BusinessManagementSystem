@@ -1,0 +1,38 @@
+﻿
+@{
+    var modalInfo = ViewBag.ModalInformation;
+}
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:1500px; margin-left:-380px;">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">@modalInfo.Title</h4>
+            </div>
+
+            <!-- Modal body -->
+            @if (@modalInfo.Type == "informationPanel")
+            {
+                <div class="modal-body">
+                    <video width="720" height="500" controls>
+                    <source src="@modalInfo.Message" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                </div>
+            }
+            else
+            {
+                <div class="modal-body">
+                   <p>@modalInfo.Message</p>
+                </div>
+            }
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

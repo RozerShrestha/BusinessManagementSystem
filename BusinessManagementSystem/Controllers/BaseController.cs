@@ -1,9 +1,13 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿ using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Net;
+using System.Numerics;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
@@ -24,25 +28,61 @@ namespace BusinessManagementSystem.Controllers
         protected UserDto userDto;
         JavaScriptEncoder _javaScriptEncoder;
 
-        public BaseController(IUnitOfWork unitOfWork, UserDto userDto, INotyfService notyf, ILogger<T> logger, JavaScriptEncoder javaScriptEncoder)
+        public BaseController(IUnitOfWork unitOfWork, INotyfService notyf, ILogger<T> logger, JavaScriptEncoder javaScriptEncoder)
         {
             _notyf = notyf;
             _unitOfWork = unitOfWork;
-            this.userDto = userDto;
+            this.userDto = new UserDto();
             _logger = logger;
             _javaScriptEncoder = javaScriptEncoder;
         }
 
         public override void OnActionExecuting(ActionExecutingContext ctx)
         {
-            //ViewData["UserDetail"] = UserDetail();
+            ViewData["UserDetail"] = UserDetail();
             //ViewData["Menu"] = MenuList();
-            //ViewData["Title"] = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data.ApplicationTitle;
+            ViewData["Title"] = "FreakStreet Empire";
 
         }
-        public IActionResult Index()
+
+        public UserDto UserDetail()
         {
-            return View();
+            try
+            {
+                var claims = User.Identities.First().Claims;
+                _logger.LogInformation(claims.ToList().ToString());
+                string claimString = "";
+                foreach (var claim in claims)
+                {
+                    claimString += $"TYPE: {claim.Type}, VALUE {claim.Value} ## ";
+                }
+                _logger.LogWarning($"Claims: {claimString}");
+                var loggedInEmail = claims.FirstOrDefault(x => x.Type.Contains("emailaddress", StringComparison.OrdinalIgnoreCase)).Value;
+                var loggedInUserName = loggedInEmail.Split("@")[0].Trim();
+                var fullName = claims.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)).Value;
+                var userInfo = _unitOfWork.Users.GetFirstOrDefault(p => p.Email == loggedInEmail, includeProperties: "UserRoles");
+
+
+                userDto = _unitOfWork.Base.UserDetail(loggedInUserName);
+                userId = userDto.UserId;
+                username = userDto.UserName;
+                email = userDto.Email;
+                mobileNumber = userDto.MobileNumber;
+                roleId = userDto.RoleId;
+                roleName = userDto.RoleName;
+                this.fullName = userDto.FullName;
+
+                User.Identities.First().AddClaim(new Claim(ClaimTypes.Name, username));
+                User.Identities.First().AddClaim(new Claim(ClaimTypes.Role, roleName));
+                _logger.LogInformation($"LoggedIn User Information: {username}, {email}, {mobileNumber}, {roleName}");
+                
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return userDto;
         }
+      
     }
 }

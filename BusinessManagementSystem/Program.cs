@@ -165,7 +165,7 @@ app.UseNotyf();
 //app.MapRazorPages();
 app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Users}/{action=Index}/{id?}");
+                pattern: "{controller=Dashboard}/{action=index}/{id?}");
 
 app.Run();
 

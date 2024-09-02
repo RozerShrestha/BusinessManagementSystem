@@ -7,6 +7,7 @@ namespace BusinessManagementSystem.Services
     {
         IUser Users { get; }
         IBase Base { get; }
+        IDashboard Dashboard { get; }
         void CreateTransaction();
         void Commit();
         void Rollback();
