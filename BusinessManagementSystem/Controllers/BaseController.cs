@@ -36,7 +36,6 @@ namespace BusinessManagementSystem.Controllers
             _logger = logger;
             _javaScriptEncoder = javaScriptEncoder;
         }
-
         public override void OnActionExecuting(ActionExecutingContext ctx)
         {
             ViewData["UserDetail"] = UserDetail();
@@ -44,7 +43,6 @@ namespace BusinessManagementSystem.Controllers
             ViewData["Title"] = "FreakStreet Empire";
 
         }
-
         public UserDto UserDetail()
         {
             try
@@ -59,11 +57,9 @@ namespace BusinessManagementSystem.Controllers
                 _logger.LogWarning($"Claims: {claimString}");
                 var loggedInEmail = claims.FirstOrDefault(x => x.Type.Contains("emailaddress", StringComparison.OrdinalIgnoreCase)).Value;
                 var loggedInUserName = loggedInEmail.Split("@")[0].Trim();
-                var fullName = claims.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)).Value;
-                var userInfo = _unitOfWork.Users.GetFirstOrDefault(p => p.Email == loggedInEmail, includeProperties: "UserRoles");
 
 
-                userDto = _unitOfWork.Base.UserDetail(loggedInUserName);
+                userDto =_unitOfWork.Base.UserDetail(loggedInUserName);
                 userId = userDto.UserId;
                 username = userDto.UserName;
                 email = userDto.Email;
@@ -71,9 +67,6 @@ namespace BusinessManagementSystem.Controllers
                 roleId = userDto.RoleId;
                 roleName = userDto.RoleName;
                 this.fullName = userDto.FullName;
-
-                User.Identities.First().AddClaim(new Claim(ClaimTypes.Name, username));
-                User.Identities.First().AddClaim(new Claim(ClaimTypes.Role, roleName));
                 _logger.LogInformation($"LoggedIn User Information: {username}, {email}, {mobileNumber}, {roleName}");
                 
             }

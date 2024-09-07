@@ -12,6 +12,7 @@ using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
+    [Authorize]
     public class DashboardController : BaseController<DashboardController>
     {
         private readonly IWebHostEnvironment _env;

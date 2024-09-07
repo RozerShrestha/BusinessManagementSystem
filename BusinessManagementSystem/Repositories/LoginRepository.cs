@@ -42,7 +42,7 @@ namespace BusinessManagementSystem.Repositories
                     var validUserInfo = (from m in _db.Users
                                          join mr in _db.UserRoles on m.Id equals mr.UserId
                                          join r in _db.Roles on mr.RoleId equals r.Id
-                                         where (m.UserName == l.Username || m.Email==l.Username) && m.HashPassword == hashPassword
+                                         where (m.UserName == l.Username || m.Email==l.Username || m.PhoneNumber==l.Username) && m.HashPassword == hashPassword
                                          select new
                                          {
                                              m.UserName,
@@ -63,13 +63,16 @@ namespace BusinessManagementSystem.Repositories
                     {
                         roleId += userInfo.Id + "#";
                         roleName += userInfo.RoleName + "#";
+                        
                     }
                     roleId = roleId.Remove(roleId.Length - 1, 1);
                     roleName = roleName.Remove(roleName.Length - 1, 1);
+                    
 
                     _loginResponse.UserName = validUserInfo[0].UserName;
                     _loginResponse.Role = roleId;
                     _loginResponse.RoleDescription = roleName;
+                    _loginResponse.Email= validUserInfo[0].Email;
 
                     generatedToken = _tokenRpository.BuildToken(_config["Jwt:Key"].ToString(), _config["Jwt:Issuer"].ToString(), _loginResponse);
                     if (generatedToken != null)
@@ -136,7 +139,7 @@ namespace BusinessManagementSystem.Repositories
         }
         public User GetUser(LoginRequestDto l)
         {
-            var item = _db.Users.Where(p => p.UserName == l.Username || p.Email==l.Username).FirstOrDefault();
+            var item = _db.Users.Where(p => p.UserName == l.Username || p.Email==l.Username || p.PhoneNumber==l.Username).FirstOrDefault();
             return item;
         }
         public  bool IsEmailAvailable(string Email)

@@ -40,28 +40,28 @@ builder.Services.AddScoped<ILogin<LoginResponseDto>, LoginRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-//builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 builder.Services.AddSingleton<JavaScriptEncoder>(JavaScriptEncoder.Default);
 builder.Services.AddRazorPages();
 
 
 #region JWT Token
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-//        ValidAudience = builder.Configuration["Jwt:Issuer"],
-//        IssuerSigningKey = new
-//         SymmetricSecurityKey
-//         (Encoding.UTF8.GetBytes
-//         (builder.Configuration["Jwt:Key"]))
-//    };
-//});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new
+         SymmetricSecurityKey
+         (Encoding.UTF8.GetBytes
+         (builder.Configuration["Jwt:Key"]))
+    };
+});
 
 #endregion
 

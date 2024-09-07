@@ -14,12 +14,12 @@ namespace BusinessManagementSystem.Controllers
     public class LoginController : Controller
     {
         ILogin<LoginResponseDto> _iLogin;
-        ResponseDto<LoginResponseDto> _ResponseDto;
+        ResponseDto<LoginResponseDto> _responseDto;
         protected readonly INotyfService _notyf;
         public LoginController(ILogin<LoginResponseDto> iLogin, INotyfService notyf) 
         { 
             _iLogin = iLogin;
-            _ResponseDto= new ResponseDto<LoginResponseDto>();
+            _responseDto= new ResponseDto<LoginResponseDto>();
             _notyf = notyf;
         }
         public IActionResult Index()
@@ -27,42 +27,43 @@ namespace BusinessManagementSystem.Controllers
             return View();
         }
 
+        [HttpGet("Login")]
+        public IActionResult Login([FromQuery] string returnUrl)
+        {
+            var redirectUri = returnUrl is null ? Url.Content("~/") : "/" + returnUrl;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                return LocalRedirect(redirectUri);
+            }
+
+            return Challenge();
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult LoginUser(LoginRequestDto loginRequest)
         {
             if (ModelState.IsValid)
             {
-                _ResponseDto = _iLogin.Login(loginRequest);
-                if (_ResponseDto.StatusCode == HttpStatusCode.OK)
+                _responseDto = _iLogin.Login(loginRequest);
+                if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
-                    HttpContext.Session.SetString("Token", _ResponseDto.Data.Token);
-                    ViewBag.Message = _ResponseDto.Message;
-                    _notyf.Success(_ResponseDto.Message);
+                    HttpContext.Session.SetString("Token", _responseDto.Data.Token);
+                    ViewBag.Message = _responseDto.Message;
+                    _notyf.Success(_responseDto.Message);
                     return RedirectToAction("Index", "Dashboard");
                 }
                 else
                 {
-                    ModelState.AddModelError("", _ResponseDto.Message);
+                    ModelState.AddModelError("", _responseDto.Message);
                 }
-                ViewBag.LoginResponse = _ResponseDto;
+                ViewBag.LoginResponse = _responseDto;
             }
             
             return View("Index",loginRequest); ;
         }
 
-        [HttpGet("Login")]
-		public IActionResult Login([FromQuery] string returnUrl)
-		{
-			var redirectUri = returnUrl is null ? Url.Content("~/") : "/" + returnUrl;
-
-			if (User.Identity.IsAuthenticated)
-			{
-				return LocalRedirect(redirectUri);
-			}
-
-			return Challenge();
-		}
+        
 
         public IActionResult Register()
         {
@@ -76,16 +77,16 @@ namespace BusinessManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 bool passwordMatch = userDto.Password == userDto.ConfirmPassword ? true : false;
-               _ResponseDto = _iLogin.Register_User(userDto);
-                if(_ResponseDto.StatusCode!= HttpStatusCode.OK) 
+               _responseDto = _iLogin.Register_User(userDto);
+                if(_responseDto.StatusCode!= HttpStatusCode.OK) 
                 {
-                    _notyf.Error(_ResponseDto.Message);
-                    ViewBag.RegisterResponse = _ResponseDto;
+                    _notyf.Error(_responseDto.Message);
+                    ViewBag.RegisterResponse = _responseDto;
                 }
                 else
                 {
-                    _notyf.Success(_ResponseDto.Message);
-                    ViewBag.LoginResponse = _ResponseDto;
+                    _notyf.Success(_responseDto.Message);
+                    ViewBag.LoginResponse = _responseDto;
                     return View("Index");
                 }
                 
@@ -95,19 +96,8 @@ namespace BusinessManagementSystem.Controllers
 
         public IActionResult Logout([FromQuery] string returnUrl)
         {
-            //HttpContext.Session.Remove("Token");
-            //return RedirectToAction("Index");
-            var redirectUri = returnUrl is null ? Url.Content("~/") : "/" + returnUrl;
-           
-            if (!User.Identity.IsAuthenticated)
-            {
-                return LocalRedirect(redirectUri);
-            }
-
-            HttpContext.SignOutAsync();
-
-            //return LocalRedirect(redirectUri);
-            return View();
+            HttpContext.Session.Remove("Token");
+            return RedirectToAction("Index");
         }
     }
 }

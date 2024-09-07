@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -19,8 +19,7 @@ namespace BusinessManagementSystem.Models
         [EmailAddress]
         public required string Email { get; set; }
         [Required]
-        public required string FullName { get; set; }
-        [Required]
+        public required string FullName { get; set; } 
         public DateOnly DateOfBirth { get; set; }
         [Required]
         public required string Gender { get; set; }

@@ -18,6 +18,7 @@ namespace BusinessManagementSystem.Repositories
         {
             var claims = new[] {
             new Claim(ClaimTypes.Name, response.UserName),
+            new Claim(ClaimTypes.Email,response.Email),
             new Claim(ClaimTypes.Role, response.RoleDescription),
             new Claim(ClaimTypes.NameIdentifier, response.Role)
         };
