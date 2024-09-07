@@ -29,6 +29,7 @@ namespace BusinessManagementSystem.Dto
         public string Gender { get; set; }
         public string Occupation { get; set; }
         public int  RoleId { get; set; }
+        [ValidateNever]
         public string RoleName { get; set; }
 
     }

@@ -20,6 +20,12 @@ namespace BusinessManagementSystem.Repositories
         public IBase Base { get; private set; }
         public IDashboard Dashboard { get; private set; }
 
+        public IRole Role { get; private set; }
+
+        public IMenu Menu { get; private set; }
+
+        public IBasicConfiguration BasicConfiguration => throw new NotImplementedException();
+
         public UnitOfWork(ApplicationDBContext dBContext)
         {
             _dbContext = dBContext;

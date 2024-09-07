@@ -1,6 +1,7 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using BusinessManagementSystem.Data;
+using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Helper;
 using BusinessManagementSystem.Repositories;
 using BusinessManagementSystem.Services;
@@ -35,10 +36,11 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ILogin<LoginResponseDto>, LoginRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+//builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 builder.Services.AddSingleton<JavaScriptEncoder>(JavaScriptEncoder.Default);
 builder.Services.AddRazorPages();
 
@@ -165,7 +167,7 @@ app.UseNotyf();
 //app.MapRazorPages();
 app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Dashboard}/{action=index}/{id?}");
+                pattern: "{controller=Login}/{action=index}/{id?}");
 
 app.Run();
 

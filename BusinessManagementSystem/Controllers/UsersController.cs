@@ -1,17 +1,30 @@
-﻿using BusinessManagementSystem.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
-    public class UsersController : Controller
+    public class UsersController : BaseController<UsersController>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public UsersController(IUnitOfWork unitOfWork)
+        public ResponseDto<User> _responseDto;
+        ILogin<LoginResponseDto> _iLogin;
+        private dynamic insurancePlans;
+        private readonly dynamic roleList;
+        private readonly IEmailSender _emailSender;
+        private readonly ModalView _modalView;
+        public UsersController(ILogin<LoginResponseDto> iLogin, IUnitOfWork unitOfWork, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(unitOfWork, notyf, logger, javaScriptEncoder)
         {
-            _unitOfWork = unitOfWork;
+            _iLogin = iLogin;
+            _responseDto = new ResponseDto<User>();
+            roleList = _unitOfWork.Role.GetRoles();
+            _emailSender = emailSender;
+            _modalView = new ModalView();
         }
         public async Task<IActionResult> Index()
         {

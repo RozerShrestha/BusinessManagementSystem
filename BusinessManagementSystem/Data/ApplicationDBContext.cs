@@ -11,7 +11,7 @@ namespace BusinessManagementSystem.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Menu> Menus { get; set; }
-
+        public DbSet<BasicConfiguration> BasicConfigurations { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<MenuRole> MenuRoles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
@@ -35,6 +35,8 @@ namespace BusinessManagementSystem.Data
             modelBuilder.ApplyConfiguration(new MenuEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new MenuRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BasicConfigurationEntityConfiguration());
+
 
         }
         private IConfigurationRoot GetConfiguration()
