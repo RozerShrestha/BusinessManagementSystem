@@ -11,5 +11,7 @@ namespace BusinessManagementSystem.Services
         ResponseDto<T> Register_User(UserDto userDto);
         bool IsEmailAvailable(string Email);
         bool IsMobileNumberAvailable(string MobileNumber);
+
+        ResponseDto<T> ForgotPassword(LoginRequestDto l);
     }
 }
