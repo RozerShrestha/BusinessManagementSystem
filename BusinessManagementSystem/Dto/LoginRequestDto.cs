@@ -14,5 +14,9 @@ namespace BusinessManagementSystem.Dto
         [DataType(DataType.Password)]
         [JsonIgnore]
         public string Password { get; set; }
+        [Required(ErrorMessage = "Confirm Password is required")]
+        [DataType(DataType.Password)]
+        [JsonIgnore]
+        public string ConfirmPassword { get; set; }
     }
 }

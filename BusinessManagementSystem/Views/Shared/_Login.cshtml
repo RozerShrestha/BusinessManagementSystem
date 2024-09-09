@@ -10,7 +10,7 @@
     <link href="~/lib/fontawesome-free/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/fontawesome-free/css/fontawesome.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/login.css" />
-
+    @RenderSection("Styles", required: false)
 </head>
 <body class="login-img-super">
     <div id="browserError"></div>
@@ -27,6 +27,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/js/login_new.js"></script>
     <script src="~/js/custom.js"></script>
+    @await Component.InvokeAsync("Notyf")
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
 

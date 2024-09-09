@@ -27,22 +27,23 @@ namespace BusinessManagementSystem.Controllers
             return View();
         }
 
-        [HttpGet("Login")]
-        public IActionResult Login([FromQuery] string returnUrl)
-        {
-            var redirectUri = returnUrl is null ? Url.Content("~/") : "/" + returnUrl;
+        //[HttpGet("Login")]
+        //public IActionResult Login([FromQuery] string returnUrl)
+        //{
+        //    var redirectUri = returnUrl is null ? Url.Content("~/") : "/" + returnUrl;
 
-            if (User.Identity.IsAuthenticated)
-            {
-                return LocalRedirect(redirectUri);
-            }
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        return LocalRedirect(redirectUri);
+        //    }
 
-            return Challenge();
-        }
+        //    return Challenge();
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult LoginUser(LoginRequestDto loginRequest)
         {
+            ModelState.Remove(nameof(loginRequest.ConfirmPassword)); //just to ignore ConfirmPassword to validate
             if (ModelState.IsValid)
             {
                 _responseDto = _iLogin.Login(loginRequest);
@@ -62,9 +63,6 @@ namespace BusinessManagementSystem.Controllers
             
             return View("Index",loginRequest); ;
         }
-
-        
-
         public IActionResult Register()
         {
             return View();
@@ -94,6 +92,20 @@ namespace BusinessManagementSystem.Controllers
             return View("Register");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgotPassword(LoginRequestDto loginRequestDto)
+        {
+            if (ModelState.IsValid)
+            {
+                bool passwordMatch =string.Equals(loginRequestDto.Password,loginRequestDto.ConfirmPassword);
+                if (passwordMatch)
+                {
+                    _iLogin
+                }
+            }
+                return View("Index",loginRequestDto);
+        }
         public IActionResult Logout([FromQuery] string returnUrl)
         {
             HttpContext.Session.Remove("Token");
