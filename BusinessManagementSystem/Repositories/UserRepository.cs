@@ -2,7 +2,7 @@
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessManagementSystem.Repositories
 {

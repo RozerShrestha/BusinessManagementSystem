@@ -113,7 +113,8 @@ namespace BusinessManagementSystem.Repositories
                         Gender=userDto.Gender,
                         CreatedBy = userDto.FullName,
                         UpdatedBy = userDto.FullName,
-                        Status=true
+                        Status=true,
+                        Occupation=userDto.Occupation
                     };
                     ur.User = u;
                     ur.RoleId = 2; //3 is role id for employee normal user
@@ -149,6 +150,11 @@ namespace BusinessManagementSystem.Repositories
         public bool IsMobileNumberAvailable(string MobileNumber)
         {
             return _db.Users.Where(p=>p.PhoneNumber== MobileNumber).Any();
+        }
+
+        public ResponseDto<LoginResponseDto> ForgotPassword(LoginRequestDto l)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -2,8 +2,9 @@
 using BusinessManagementSystem.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity.Validation;
 using BusinessManagementSystem.Dto;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.ComponentModel.DataAnnotations;
 //using System.Data.Entity;
 
 namespace BusinessManagementSystem.Repositories
@@ -60,17 +61,18 @@ namespace BusinessManagementSystem.Repositories
             {
                 await _dbContext.SaveChangesAsync();
             }
-            catch (DbEntityValidationException ex)
+            catch (DbUpdateException ex)
             {
+                throw new Exception(ex.Message, ex);
+                //foreach (var validationErrors in ex.EntityValidationErrors)
+                //{
+                //    foreach (var validationError in validationErrors.ValidationErrors)
+                //    {
+                //        _errorMessage = _errorMessage + $"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage} {Environment.NewLine}";
+                //    }
+                //}
+                //throw new Exception(_errorMessage, ex);
 
-                foreach (var validationErrors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        _errorMessage = _errorMessage + $"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage} {Environment.NewLine}";
-                    }
-                }
-                throw new Exception(_errorMessage, ex);
             }
         }
 

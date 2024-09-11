@@ -31,6 +31,8 @@ namespace BusinessManagementSystem.Models
         [Required]
         public required string PhoneNumber { get; set; }
         [Required]
+        public required string Occupation { get; set; }
+        [Required]
         public string HashPassword { get; set; }
         [Required]
         public bool Status { get; set; }

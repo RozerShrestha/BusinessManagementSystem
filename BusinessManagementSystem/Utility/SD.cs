@@ -2,9 +2,16 @@
 {
     public static class SD
     {
-        public const string Role_HR = "hradmin";
-        public const string Role_Admin = "admin";
-        public const string Role_Normal = "employee";
+        public const string Role_Superadmin = "superadmin";
+
+        public const string Role_TattooAdmin = "admin_tattoo";
+        public const string Role_KaffeAdmin = "admin_kaffe";
+        public const string Role_ApartmentAdmin = "admin_apartment";
+
+        public const string Role_TattooEmployee = "employee_tattoo";
+        public const string Role_KaffeEmployee = "employee_kaffe";
+        public const string Role_ApartmentEmployee = "employee_apartment";
+
         public const string Gender_Male = "Male";
         public const string Gender_Female = "Female";
         public const string Status_Draft = "Draft";
@@ -17,6 +24,8 @@
         public const string Status_Approved = "Approved";
         public const string Status_Rejected = "Rejected";
         public const string Status_Reimbursed = "Reimbursed";
+
+
     }
 
     public static class DocumentType

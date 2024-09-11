@@ -1,7 +1,7 @@
 ﻿using BusinessManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace BusinessManagementSystem.Data
 {
@@ -19,6 +19,10 @@ namespace BusinessManagementSystem.Data
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
             
+        }
+        public ApplicationDBContext(DbContextOptionsBuilder<ApplicationDBContext> options)
+        {
+
         }
         //OnConfiguring() method is used to select and configure the data source
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
