@@ -64,12 +64,10 @@ namespace BusinessManagementSystem.Data.DbInitializer
                     Gender = "Male",
                     Occupation = "Technical Manager",
                     CreatedBy = "System Generated",
-                    UpdatedBy = "System Generated",
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    UpdatedBy = "System Generated"
                 };
                 ur.User = u;
-                ur.RoleId = 1;
+                ur.RoleId = 0;
                 _db.Add(ur);
                 _db.SaveChanges();
             }
@@ -113,24 +111,6 @@ namespace BusinessManagementSystem.Data.DbInitializer
                 new Menu {  Parent = 1,     Name = "Role",                    Url = "/Role",                                    Sort = 3, Status = false,       Icon = "bi bi-menu-app" },
                 new Menu {  Parent = 1,     Name = "MenuRole",                Url = "/MenuRole",                                Sort = 4, Status = false,       Icon = "bi bi-menu-app" },
                 new Menu {  Parent = 0,     Name = "EmployeeDetail",          Url = "#",                                        Sort = 2, Status = true,       Icon = "fas fa-users" },
-                new Menu {  Parent = 6,     Name = "All Profile",             Url= "/Users",                                    Sort = 1, Status = true,       Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 6,     Name = "My Profile",              Url = "/Users/MyProfile",                         Sort = 2, Status = true,       Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 6,     Name = "My Family",               Url = "/family",                                  Sort = 4, Status = true,       Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 6,     Name = "My Bank Detail",          Url = "/bankdetail",                              Sort = 6, Status = true,       Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 0,     Name = "ClaimDetail",             Url = "#",                                        Sort = 3, Status = true,       Icon = "fas fa-file-alt" },
-                new Menu {  Parent = 11,    Name = "New Claim",               Url = "/MedicalInsuranceForms/create",            Sort = 3, Status = true,        Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 11,    Name = "My Claims",               Url= "/MedicalInsuranceForms/",                   Sort = 2, Status = true,        Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 11,    Name = "All Claims",              Url = "/MedicalInsuranceForms/AllClaims",         Sort = 1, Status = true,        Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 0,     Name = "Uploads",                 Url = "#",                                        Sort = 4, Status = true,       Icon = "fas fa-upload" },
-                new Menu {  Parent = 15,    Name = "Insurance Excel Upload",  Url= "/InsuranceExcelUpload",                     Sort = 1, Status = true,        Icon = "bi" },
-                new Menu {  Parent = 15,    Name = "User Detail Upload",      Url= "/InsuranceExcelUpload/UserDetailUpload",    Sort = 2, Status = true,        Icon = "bi" },
-                new Menu {  Parent = 0,     Name = "Reports",                 Url = "#",                                        Sort = 4, Status = true,      Icon = "fas fa-file-invoice" },
-                new Menu {  Parent = 18,     Name = "Insurance Sent Report",  Url = "/Reports/InsuranceSentReport",             Sort = 4, Status = true,      Icon = "fas fa-file-invoice" },
-                new Menu {  Parent = 0,     Name = "Log",                     Url= "#",                                         Sort = 5, Status = true,       Icon = "fas fa-list-ul" },
-                new Menu {  Parent = 20,    Name = "Log View",                Url= "/logview",                                  Sort = 1, Status = true,        Icon = "bi" },
-                new Menu {  Parent = 1,    Name = "Insurance Plan",           Url= "/insurancePlans",                           Sort = 3, Status = true,        Icon = "bi" },
-                new Menu {  Parent = 6,    Name = "All Family",               Url= "/family/AllFamily",                         Sort = 3, Status = true,        Icon = "bi" },
-                new Menu {  Parent = 6,    Name = "All Bank Details",         Url= "/bankdetail/AllBankDetails\t",              Sort = 5, Status = true,        Icon = "bi" }
             };
 
                 var roles = _unitOfWork.Role.GetAllAsync();
