@@ -9,14 +9,14 @@ namespace BusinessManagementSystem.Services
         IUser Users { get; }
         IRole Role { get; }
         IMenu Menu { get; }
-        IBasicConfiguration BasicConfiguration { get; }
-        
+        IMenuRole MenuRole { get; }
+        IBasicConfiguration BasicConfiguration { get; }      
         IDashboard Dashboard { get; }
         IBase Base { get; }
-        void CreateTransaction();
-        void Commit();
-        void Rollback();
+        void BeginTransactionAsync();
+        void CommitAsync();
+        void RollbackAsync();
 
-        Task Save();
+        Task SaveChangesAsync();
     }
 }

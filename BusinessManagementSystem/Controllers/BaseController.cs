@@ -16,7 +16,6 @@ namespace BusinessManagementSystem.Controllers
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly ILogger<T> _logger;
-        protected readonly ApplicationDBContext _dbContext;
         protected readonly INotyfService _notyf;
         protected int roleId;
         protected int userId;

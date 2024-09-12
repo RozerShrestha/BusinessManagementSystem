@@ -54,16 +54,16 @@ namespace BusinessManagementSystem.Controllers
             {
                 try
                 {
-                    _unitOfWork.CreateTransaction();
+                    _unitOfWork.BeginTransactionAsync();
                     await _unitOfWork.Users.InsertAsync(user);
-                    await _unitOfWork.Save();
-                    _unitOfWork.Commit();
+                    await _unitOfWork.SaveChangesAsync();
+                    _unitOfWork.CommitAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception)
                 {
 
-                    _unitOfWork.Rollback();
+                    _unitOfWork.RollbackAsync();
                 }
             }
             return View(user);
@@ -96,20 +96,15 @@ namespace BusinessManagementSystem.Controllers
             {
                 try
                 {
-                    //Begin The Tranaction
-                    _unitOfWork.CreateTransaction();
-                    //Use Generic Reposiory to Insert a new employee
+                    _unitOfWork.BeginTransactionAsync();
                     await _unitOfWork.Users.UpdateAsync(user);
-                    //Save Changes to database
-                    await _unitOfWork.Save();
-                    //Commit the Changes to database
-                    _unitOfWork.Commit();
+                    await _unitOfWork.SaveChangesAsync();
+                    _unitOfWork.CommitAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    //Rollback Transaction
-                    _unitOfWork.Rollback();
+                    _unitOfWork.RollbackAsync();
                 }
             }
             return View(user);
@@ -121,7 +116,6 @@ namespace BusinessManagementSystem.Controllers
             {
                 return NotFound();
             }
-            //Use Employee Repository to Fetch Employees along with the Department Data by Employee Id
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)
             {
@@ -134,23 +128,20 @@ namespace BusinessManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //Begin The Tranaction
-            _unitOfWork.CreateTransaction();
+            
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user.Data != null)
             {
                 try
                 {
+                    _unitOfWork.BeginTransactionAsync();
                     await _unitOfWork.Users.DeleteAsync(user.Data);
-                    //Save Changes to database
-                    await _unitOfWork.Save();
-                    //Commit the Changes to database
-                    _unitOfWork.Commit();
+                    await _unitOfWork.SaveChangesAsync();
+                    _unitOfWork.CommitAsync();
                 }
                 catch (Exception)
                 {
-                    //Rollback Transaction
-                    _unitOfWork.Rollback();
+                    _unitOfWork.RollbackAsync();
                 }
             }
             return RedirectToAction(nameof(Index));

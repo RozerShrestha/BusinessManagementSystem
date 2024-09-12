@@ -1,6 +1,8 @@
-﻿namespace BusinessManagementSystem.Services
+﻿using BusinessManagementSystem.Models;
+
+namespace BusinessManagementSystem.Services
 {
-    public interface IMenuRole
+    public interface IMenuRole : IGeneric<MenuRole>
     {
     }
 }

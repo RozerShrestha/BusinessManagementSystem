@@ -38,7 +38,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ILogin<LoginResponseDto>, LoginRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-//builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 builder.Services.AddSingleton<JavaScriptEncoder>(JavaScriptEncoder.Default);
@@ -138,7 +138,7 @@ app.Use((context, next) =>
     }
     return next();
 });
-//SeedDatabase();
+SeedDatabase();
 app.UseAuthentication();
 app.UseStatusCodePages(context =>
 {

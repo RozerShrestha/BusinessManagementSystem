@@ -16,46 +16,47 @@ namespace BusinessManagementSystem.Repositories
         private readonly ApplicationDBContext _dbContext = null;
         private IDbContextTransaction _objTran = null;
 
+        public UnitOfWork(ApplicationDBContext dBContext)
+        {
+            _dbContext = dBContext;
+            Users = new UserRepository(_dbContext);
+            Base = new BaseRepository(_dbContext);
+            //Dashboard = new DashboardRepository(_db);
+            Role =new RoleRepository(_dbContext);
+            //Menu = new MenuRoleRepository(_dbContext);
+            MenuRole=new MenuRoleRepository(_dbContext);
+            BasicConfiguration = new BasicConfigurationRepository(_dbContext);
+        }
+
         public IUser Users { get; private set; }
 
         public IBase Base { get; private set; }
         public IDashboard Dashboard { get; private set; }
-
         public IRole Role { get; private set; }
-
         public IMenu Menu { get; private set; }
-
-        public IBasicConfiguration BasicConfiguration => throw new NotImplementedException();
-
-        public UnitOfWork(ApplicationDBContext dBContext)
-        {
-            _dbContext = dBContext;
-            Users=new UserRepository(_dbContext);
-            Base=new BaseRepository(_dbContext);
-        }
-
-        public void CreateTransaction()
+        public IMenuRole MenuRole { get; private set; }
+        public IBasicConfiguration BasicConfiguration { get; private set; }
+        
+        public async void BeginTransactionAsync()
         {
             //It will Begin the transaction on the underlying connection
-            _objTran = _dbContext.Database.BeginTransaction();
+            _objTran =await _dbContext.Database.BeginTransactionAsync();
         }
-
-        public void Commit()
+        public async void CommitAsync()
         {
             //Commits the underlying store transaction
-            _objTran.Commit();
+            await _objTran.CommitAsync();
+            await _objTran.DisposeAsync();
         }
-
-        public void Rollback()
+        public async void RollbackAsync()
         {
             //Rolls back the underlying store transaction
-            _objTran.Rollback();
+            await _objTran.RollbackAsync();
             //The Dispose Method will clean up this transaction object and ensures Entity Framework
             //is no longer using that transaction.
-            _objTran.Dispose();
+            await _objTran.DisposeAsync();
         }
-
-        public async Task Save()
+        public async Task SaveChangesAsync()
         {
             try
             {
@@ -75,22 +76,6 @@ namespace BusinessManagementSystem.Repositories
 
             }
         }
-
-        //public async Task Save()
-        //{
-        //    try
-        //    {
-        //        //Calling DbContext Class SaveChanges method 
-        //        await Context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateException ex)
-        //    {
-        //        // Handle the exception, possibly logging the details
-        //        // The InnerException often contains more specific details
-        //        throw new Exception(ex.Message, ex);
-        //    }
-        //}
-
         public void Dispose()
         {
             Dispose(true);

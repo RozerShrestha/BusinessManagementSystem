@@ -1,10 +1,12 @@
-﻿using BusinessManagementSystem.Dto;
+﻿using BusinessManagementSystem.Data;
+using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessManagementSystem.Data.DbInitializer
+namespace BusinessManagementSystem.Repositories
 {
     public class DbInitializer : IDbInitializer
     {
@@ -15,7 +17,7 @@ namespace BusinessManagementSystem.Data.DbInitializer
             _db = db;
             _unitOfWork = unitOfWork;
         }
-        public void Initialize()
+        public async void Initialize()
         {
             try
             {
@@ -29,19 +31,18 @@ namespace BusinessManagementSystem.Data.DbInitializer
                 throw;
             }
             
-
             //create role if not created
             var isRoleExist=_db.Roles.Any();
             if(!isRoleExist)
             {
-                _db.Roles.Add(new Role { Id = 0, Name = SD.Role_Superadmin });
-                _db.Roles.Add(new Role { Id = 10, Name = SD.Role_TattooAdmin });
-                _db.Roles.Add(new Role { Id = 20, Name = SD.Role_KaffeAdmin });
-                _db.Roles.Add(new Role { Id = 30, Name = SD.Role_ApartmentAdmin });
+                _db.Roles.Add(new Role { Id = 0, CreatedBy="System", UpdatedBy="System", Name = SD.Role_Superadmin });
+                _db.Roles.Add(new Role { Id = 10, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_TattooAdmin });
+                _db.Roles.Add(new Role { Id = 20, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeAdmin });
+                _db.Roles.Add(new Role { Id = 30, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentAdmin });
 
-                _db.Roles.Add(new Role { Id = 11, Name = SD.Role_TattooEmployee });
-                _db.Roles.Add(new Role { Id = 21, Name = SD.Role_KaffeEmployee });
-                _db.Roles.Add(new Role { Id = 31, Name = SD.Role_ApartmentEmployee });
+                _db.Roles.Add(new Role { Id = 11, CreatedBy="System",UpdatedBy="System", Name = SD.Role_TattooEmployee });
+                _db.Roles.Add(new Role { Id = 21, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeEmployee });
+                _db.Roles.Add(new Role { Id = 31, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentEmployee });
                 _db.SaveChanges();
             }
            
@@ -63,9 +64,10 @@ namespace BusinessManagementSystem.Data.DbInitializer
                     PhoneNumber = "9818136462",
                     Gender = "Male",
                     Occupation = "Technical Manager",
-                    CreatedBy = "System Generated",
-                    UpdatedBy = "System Generated"
+                    CreatedBy="System",
+                    UpdatedBy = "System"
                 };
+                
                 ur.User = u;
                 ur.RoleId = 0;
                 _db.Add(ur);
@@ -84,17 +86,12 @@ namespace BusinessManagementSystem.Data.DbInitializer
                     HostName= "unauth-ndc.smtp.cotiviti.com",
                     Port=25,
                     ApplicationTitle = "Insurance Claim",
-                    InsuranceCompanyName = "Himalayan Everest Insurance Co. Ltd",
-                    GroupPolicyNumber = "DRB/HIP/11/22/23100043",
+                    EmployerName="Freak Street Empire",
                     EmployerEmailAddress = "HR_Nepal@cotiviti.com",
                     EmployerAddress = "HATTISAR KTM 01-44356625",
-                    ShowProductWalkThrough= true,
-                    EmailTemplateCreate = "<p>Dear, <b>{{fullName}}</b></p>\r\n<p>You just submitted your Claim. Please contact admin staff to submit the original bill and signature in the claim form so that your claim will be ready to proceed.</p>\r\n<p><b>Patient Name:</b> {{patientName}}</p>\r\n<div>Thank you.</div>\r\n<div>Regards,</div>\r\n<div>Cotiviti Nepal</div>",
-                    EmailTemplateUpdate = "<p>Dear <b>{{fullName}}</b></p>\r\n<p>Your Claim Request has been updated. Please contact Admin or HR staff for any kind of inconvenience.</p>\r\n<div><b>Claim Id: </b>{{id}}</div>\r\n<div><b>Patient Name: </b>{{patientName}}</div>\r\n<div><b>Status: </b>{{status}}</div>\r\n<div><b>Remark: </b>{{remark}}</div></br>\r\n<div>Thank you.</div>\r\n<div>Regards,</div>\r\n<div>Cotiviti Nepal</div>",
-                    EmailTemplateInsurancePlanChanged= "<p>Dear, <b>Concern,</b></p>\r\n<p>{{fullName}}({{inumber}}) has changed the insurance plan from <b>{{oldplan}}</b> to <b>{{newplan}}</b>. The updated family details need to be verified and approved by someone from HR.</p>\r\n<p><a href=\"https://localhost:44360/Users/edit?id={{id}}\">Click Here</a></p>\r\n<div>Thank you.</div>\r\n<div>Regards,</div>\r\n<div>Cotiviti Nepal</div>",
-                    EmailTemplateFamilyUpdated= "<p>Dear, <b>Concern,</b></p>\r\n<p>{{fullName}}({{inumber}}) has updated the family information. The updated family details need to be verified and approved by someone from HR.</p>\r\n<p><a href=\"https://localhost:44360/Users/edit?id={{id}}\">Click Here</a></p>\r\n<div>Thank you.</div>\r\n<div>Regards,</div>\r\n<div>Cotiviti Nepal</div>",
-                    HrApproveTemplate= "<p>Dear, <b>{{fullName}}</b></p>\r\n<p>Family member you added has been approved by HR.</p>\r\n<div>Thank you.</div>\r\n<div>Regards,</div>\r\n<div>Cotiviti Nepal</div>"
-
+                    CreatedBy="System",
+                    UpdatedBy="System"
+                    
                 };
                 _db.Add(basicConfiguration);
                 _db.SaveChanges();
@@ -104,45 +101,33 @@ namespace BusinessManagementSystem.Data.DbInitializer
             var isMenuCreated = _db.Menus.Any();
             if (!isMenuCreated)
             {
-                List<Menu> menus = new List<Menu> {
-                new Menu {  Parent = 0,     Name = "Configurations",          Url = "#",                                        Sort = 1, Status = true,        Icon = "fas fa-cogs" },
-                new Menu {  Parent = 1,     Name = "Basic Configuration",     Url = "/BasicConfiguration",                      Sort = 1, Status = true,        Icon = "bi bi-gear" },
-                new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menus",                                   Sort = 2, Status = true,        Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 1,     Name = "Role",                    Url = "/Role",                                    Sort = 3, Status = false,       Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 1,     Name = "MenuRole",                Url = "/MenuRole",                                Sort = 4, Status = false,       Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 0,     Name = "EmployeeDetail",          Url = "#",                                        Sort = 2, Status = true,       Icon = "fas fa-users" },
-            };
+                List<Menu> menus =
+                [
+                new Menu {  Parent = 0,     Name = "Configurations",          Url = "#",                    Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-cogs" },
+                new Menu {  Parent = 1,     Name = "Basic Configuration",     Url = "/BasicConfiguration",  Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-gear" },
+                new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menus",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
+                new Menu {  Parent = 1,     Name = "Role",                    Url = "/Role",                Sort = 3, Status = false,  CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
+                new Menu {  Parent = 1,     Name = "MenuRole",                Url = "/MenuRole",            Sort = 4, Status = false,  CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
+                new Menu {  Parent = 0,     Name = "EmployeeDetail",          Url = "#",                    Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-users" },
+                new Menu {  Parent = 6,     Name = "All Profile",             Url= "/Users",                Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
+                ];
 
-                var roles = _unitOfWork.Role.GetAllAsync();
-                //foreach(var menu in menus)
-                //{
-                //    if (menu.VisibleToAll==true)
-                //    {
-                //        foreach (var role in roles.Result.Datas)
-                //        {
-                //            MenuRole mr = new MenuRole();
-                //            mr.Role = role;
-                //            mr.Menu = menu;
-                //            _db.MenuRoles.Add(mr);
-                //        }
-                //    }
-                //    // only to admin which is role 1
-                //    else
-                //    {
-                //        MenuRole mr = new(){
-                //            RoleId = 1,
-                //            Menu = menu
-                //        };
-                //        _db.MenuRoles.Add(mr);
+                var roles =await _db.Roles.ToListAsync();
+                var _roles = _unitOfWork.Role.GetAllAsync();
 
-                //        MenuRole mr1 = new(){
-                //            RoleId = 3,
-                //            Menu = menu
-                //        };
-                //        _db.MenuRoles.Add(mr1);
-                //    }
-                //    _db.SaveChanges();
-                //}
+                foreach(var role in roles)
+                {
+                    foreach(var menu in menus)
+                    {
+                        MenuRole mr = new()
+                        {
+                            Role = role,
+                            Menu = menu
+                        };
+                       await _db.MenuRoles.AddAsync(mr);
+                       await _db.SaveChangesAsync();
+                    }
+                }
             }
         }
     }
