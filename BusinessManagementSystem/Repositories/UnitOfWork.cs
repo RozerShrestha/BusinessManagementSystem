@@ -37,30 +37,30 @@ namespace BusinessManagementSystem.Repositories
         public IMenuRole MenuRole { get; private set; }
         public IBasicConfiguration BasicConfiguration { get; private set; }
         
-        public async void BeginTransactionAsync()
+        public void BeginTransaction()
         {
             //It will Begin the transaction on the underlying connection
-            _objTran =await _dbContext.Database.BeginTransactionAsync();
+            _objTran =_dbContext.Database.BeginTransaction();
         }
-        public async void CommitAsync()
+        public void Commit()
         {
             //Commits the underlying store transaction
-            await _objTran.CommitAsync();
-            await _objTran.DisposeAsync();
+            _objTran.Commit();
+            _objTran.Dispose();
         }
-        public async void RollbackAsync()
+        public void Rollback()
         {
             //Rolls back the underlying store transaction
-            await _objTran.RollbackAsync();
+            _objTran.Rollback();
             //The Dispose Method will clean up this transaction object and ensures Entity Framework
             //is no longer using that transaction.
-            await _objTran.DisposeAsync();
+            _objTran.Dispose();
         }
-        public async Task SaveChangesAsync()
+        public void SaveChanges()
         {
             try
             {
-                await _dbContext.SaveChangesAsync();
+                _dbContext.SaveChanges();
             }
             catch (DbUpdateException ex)
             {

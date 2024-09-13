@@ -14,13 +14,13 @@ namespace BusinessManagementSystem.Repositories
         ResponseDto<LoginResponseDto> _responseDto;
         LoginResponseDto _loginResponse;
         readonly IConfiguration _config;
-        readonly TokenRepository _tokenRpository;
+        readonly TokenRepository _tokenRepository;
         string generatedToken = null;
         public LoginRepository(ApplicationDBContext db, IConfiguration config)
         {
             _db = db;
             _config = config;
-            _tokenRpository = new TokenRepository();
+            _tokenRepository = new TokenRepository();
             _responseDto = new ResponseDto<LoginResponseDto>();
             _loginResponse = new LoginResponseDto();
         }
@@ -74,7 +74,7 @@ namespace BusinessManagementSystem.Repositories
                     _loginResponse.RoleDescription = roleName;
                     _loginResponse.Email= validUserInfo[0].Email;
 
-                    generatedToken = _tokenRpository.BuildToken(_config["Jwt:Key"].ToString(), _config["Jwt:Issuer"].ToString(), _loginResponse);
+                    generatedToken = _tokenRepository.BuildToken(_config["Jwt:Key"].ToString(), _config["Jwt:Issuer"].ToString(), _loginResponse);
                     if (generatedToken != null)
                     {
                         _loginResponse.Token = generatedToken;
@@ -151,10 +151,34 @@ namespace BusinessManagementSystem.Repositories
         {
             return _db.Users.Where(p=>p.PhoneNumber== MobileNumber).Any();
         }
-
         public ResponseDto<LoginResponseDto> ForgotPassword(LoginRequestDto l)
         {
-            throw new NotImplementedException();
+            bool passwordMatch = string.Equals(l.Password, l.ConfirmPassword);
+            if(passwordMatch)
+            {
+                if (IsEmailAvailable(l.Username) || IsMobileNumberAvailable(l.Username))
+                {
+                    var hashInfo = Helper.Helpers.GetHashPassword(l.Password);
+                    var user = _db.Users.Where(p => p.Email == l.Username || p.PhoneNumber == l.Username).FirstOrDefault();
+                    user.HashPassword = hashInfo.Hash;
+                    user.Salt = hashInfo.Salt;
+                    var result = _db.Users.Update(user);
+                    _db.SaveChanges();
+                    _responseDto.Message = "Password Update Successfully";
+                }
+                else
+                {
+                    _responseDto.StatusCode = HttpStatusCode.NotFound;
+                    _responseDto.Message = "Email or Mobile Number did not match, Please try again";
+                }
+            }
+            else
+            {
+                _responseDto.StatusCode = HttpStatusCode.BadRequest;
+                _responseDto.Message = "Password and Confirm Password didn't match, Please try again";
+            }
+            
+            return _responseDto;
         }
     }
 }

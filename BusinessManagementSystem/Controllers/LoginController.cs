@@ -98,13 +98,19 @@ namespace BusinessManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool passwordMatch =string.Equals(loginRequestDto.Password,loginRequestDto.ConfirmPassword);
-                if (passwordMatch)
+                _responseDto = _iLogin.ForgotPassword(loginRequestDto);
+                if (_responseDto.StatusCode != HttpStatusCode.OK)
                 {
-                   
+                    _notyf.Error(_responseDto.Message);
+                    ViewBag.RegisterResponse = _responseDto;
+                }
+                else
+                {
+                    _notyf.Success(_responseDto.Message);
+                    ViewBag.LoginResponse = _responseDto;
                 }
             }
-                return View("Index",loginRequestDto);
+                return View("Index");
         }
         public IActionResult Logout([FromQuery] string returnUrl)
         {

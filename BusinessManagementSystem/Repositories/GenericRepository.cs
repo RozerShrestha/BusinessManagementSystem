@@ -24,8 +24,7 @@ namespace BusinessManagementSystem.Repositories
             _dbSet = context.Set<T>();
             _responseDto = new ResponseDto<T>();
         }
-
-        public async Task<ResponseDto<T>> GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null, bool tracked = true)
+        public ResponseDto<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null, bool tracked = true)
         {
             try
             {
@@ -49,7 +48,7 @@ namespace BusinessManagementSystem.Repositories
                 if (query.Count() > 0)
                 {
                     _responseDto.StatusCode = HttpStatusCode.OK;
-                    _responseDto.Data = await query.FirstOrDefaultAsync();
+                    _responseDto.Data = query.FirstOrDefault();
                 }
                 else
                 {
@@ -67,8 +66,7 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-
-        public async Task<ResponseDto<T>> GetSingleOrDefault(string includeProperties = null, bool tracked = true)
+        public  ResponseDto<T> GetSingleOrDefault(string includeProperties = null, bool tracked = true)
         {
             try
             {
@@ -87,7 +85,7 @@ namespace BusinessManagementSystem.Repositories
                 if (query.Count() > 0)
                 {
                     _responseDto.StatusCode = HttpStatusCode.OK;
-                    _responseDto.Data = await query.SingleOrDefaultAsync();
+                    _responseDto.Data =  query.SingleOrDefault();
                 }
                 else
                 {
@@ -104,8 +102,7 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-
-        public async Task<ResponseDto<T>> GetAllAsync(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool tracked = true)
+        public  ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool tracked = true)
         {
             try
             {
@@ -140,7 +137,7 @@ namespace BusinessManagementSystem.Repositories
                 if (query.Count() > 0)
                 {
                     _responseDto.StatusCode = HttpStatusCode.OK;
-                    _responseDto.Datas =await query.ToListAsync();
+                    _responseDto.Datas = query.ToList();
                 }
 
                 else
@@ -158,13 +155,12 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-
-        public async Task<ResponseDto<T>> InsertAsync(T entity)
+        public  ResponseDto<T> Insert(T entity)
         {
             try
             {
                 _dbSet.Add(entity);
-                await _dbContext.SaveChangesAsync();
+                 _dbContext.SaveChanges();
                 _responseDto.Data = entity;
                 _responseDto.StatusCode = HttpStatusCode.OK;
             }
@@ -176,13 +172,12 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
-
-        public async Task<ResponseDto<T>> UpdateAsync(T entity)
+        public  ResponseDto<T> Update(T entity)
         {
             try
             {
                 _dbSet.Update(entity);
-                await _dbContext.SaveChangesAsync();
+                 _dbContext.SaveChanges();
                 _responseDto.StatusCode = HttpStatusCode.OK;
                 _responseDto.Data = entity;
             }
@@ -194,13 +189,12 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
-
-        public async Task<ResponseDto<T>> DeleteAsync(T entity)
+        public  ResponseDto<T> Delete(T entity)
         {
             try
             {
                 _dbSet.Remove(entity);
-                await _dbContext.SaveChangesAsync();
+                 _dbContext.SaveChanges();
                 _responseDto.StatusCode = HttpStatusCode.OK;
                 _responseDto.Data = entity;
 
@@ -214,13 +208,12 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
-
-        public async Task<ResponseDto<T>> DeleteRange(IEnumerable<T> entities)
+        public  ResponseDto<T> DeleteRange(IEnumerable<T> entities)
         {
             try
             {
                 _dbSet.RemoveRange(entities);
-                await _dbContext.SaveChangesAsync();
+                 _dbContext.SaveChanges();
                 _responseDto.StatusCode = HttpStatusCode.OK;
                 _responseDto.Datas = entities.ToList();
 
@@ -233,12 +226,11 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
-
-        public async Task<ResponseDto<T>> GetByIdAsync(int id)
+        public  ResponseDto<T> GetById(int id)
         {
             try
             {
-                var item = await _dbSet.FindAsync(id);
+                var item =  _dbSet.Find(id);
                 if (item != null)
                 {
                     _responseDto.StatusCode = HttpStatusCode.OK;

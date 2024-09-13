@@ -33,16 +33,27 @@ namespace BusinessManagementSystem.Repositories
             
             //create role if not created
             var isRoleExist=_db.Roles.Any();
-            if(!isRoleExist)
+            if (!isRoleExist)
             {
-                _db.Roles.Add(new Role { Id = 0, CreatedBy="System", UpdatedBy="System", Name = SD.Role_Superadmin });
-                _db.Roles.Add(new Role { Id = 10, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_TattooAdmin });
-                _db.Roles.Add(new Role { Id = 20, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeAdmin });
-                _db.Roles.Add(new Role { Id = 30, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentAdmin });
+                List<Role> roles =
+                [
+                    new Role { Id = 0, CreatedBy="System", UpdatedBy="System", Name = SD.Role_Superadmin },
+                    new Role { Id = 10, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_TattooAdmin },
+                    new Role { Id = 20, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeAdmin },
+                    new Role { Id = 30, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentAdmin },
+                    new Role { Id = 11, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_TattooEmployee },
+                    new Role { Id = 21, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_KaffeEmployee },
+                    new Role { Id = 31, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_ApartmentEmployee }
+                ];
+                //_db.Roles.Add(new Role { Id = 0, CreatedBy="System", UpdatedBy="System", Name = SD.Role_Superadmin });
+                //_db.Roles.Add(new Role { Id = 10, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_TattooAdmin });
+                //_db.Roles.Add(new Role { Id = 20, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeAdmin });
+                //_db.Roles.Add(new Role { Id = 30, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentAdmin });
 
-                _db.Roles.Add(new Role { Id = 11, CreatedBy="System",UpdatedBy="System", Name = SD.Role_TattooEmployee });
-                _db.Roles.Add(new Role { Id = 21, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeEmployee });
-                _db.Roles.Add(new Role { Id = 31, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentEmployee });
+                //_db.Roles.Add(new Role { Id = 11, CreatedBy="System",UpdatedBy="System", Name = SD.Role_TattooEmployee });
+                //_db.Roles.Add(new Role { Id = 21, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeEmployee });
+                //_db.Roles.Add(new Role { Id = 31, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentEmployee });
+                _db.AddRange(roles);
                 _db.SaveChanges();
             }
            
@@ -112,9 +123,9 @@ namespace BusinessManagementSystem.Repositories
                 new Menu {  Parent = 6,     Name = "All Profile",             Url= "/Users",                Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
                 ];
 
-                var roles =await _db.Roles.ToListAsync();
-                var _roles = _unitOfWork.Role.GetAllAsync();
+                var roles =_db.Roles.ToList();
 
+                _db.Database.BeginTransaction();
                 foreach(var role in roles)
                 {
                     foreach(var menu in menus)
@@ -124,10 +135,11 @@ namespace BusinessManagementSystem.Repositories
                             Role = role,
                             Menu = menu
                         };
-                       await _db.MenuRoles.AddAsync(mr);
-                       await _db.SaveChangesAsync();
+                       _db.MenuRoles.Add(mr);
                     }
                 }
+                _db.SaveChanges();
+                _db.Database.CommitTransaction();
             }
         }
     }

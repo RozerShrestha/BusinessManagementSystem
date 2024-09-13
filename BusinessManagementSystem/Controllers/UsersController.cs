@@ -28,19 +28,19 @@ namespace BusinessManagementSystem.Controllers
             _emailSender = emailSender;
             _modalView = new ModalView();
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var users=await _unitOfWork.Users.GetAllAsync();
+            var users= _unitOfWork.Users.GetAll();
             return View(users);
         }
 
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
             if(id == 0)
             {
                 return NotFound();
             }
-            var user=await _unitOfWork.Users.GetByIdAsync(Convert.ToInt32(id));
+            var user= _unitOfWork.Users.GetById(Convert.ToInt32(id));
             if (user == null) 
             {
                 return NotFound();
@@ -48,35 +48,35 @@ namespace BusinessManagementSystem.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Create([Bind("Id,Guid,UserName,Email,FullName,DateOfBirth,Gender,Address,PhoneNumber,RoleId")] User user)
+        public IActionResult Create([Bind("Id,Guid,UserName,Email,FullName,DateOfBirth,Gender,Address,PhoneNumber,RoleId")] User user)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _unitOfWork.BeginTransactionAsync();
-                    await _unitOfWork.Users.InsertAsync(user);
-                    await _unitOfWork.SaveChangesAsync();
-                    _unitOfWork.CommitAsync();
+                    _unitOfWork.BeginTransaction();
+                     _unitOfWork.Users.Insert(user);
+                     _unitOfWork.SaveChanges();
+                    _unitOfWork.Commit();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception)
                 {
 
-                    _unitOfWork.RollbackAsync();
+                    _unitOfWork.Rollback();
                 }
             }
             return View(user);
         }
 
-        public async Task<IActionResult> EditUser(int id)
+        public IActionResult EditUser(int id)
         {
             if (id == 0)
             {
                 return NotFound();
             }
 
-            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            var user =  _unitOfWork.Users.GetById(id);
             if (user == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(int id, [Bind("Id,Guid,UserName,Email,FullName,DateOfBirth,Gender,Address,PhoneNumber,RoleId")] User user)
+        public IActionResult EditUser(int id, [Bind("Id,Guid,UserName,Email,FullName,DateOfBirth,Gender,Address,PhoneNumber,RoleId")] User user)
         {
             if (id != user.Id)
             {
@@ -96,27 +96,27 @@ namespace BusinessManagementSystem.Controllers
             {
                 try
                 {
-                    _unitOfWork.BeginTransactionAsync();
-                    await _unitOfWork.Users.UpdateAsync(user);
-                    await _unitOfWork.SaveChangesAsync();
-                    _unitOfWork.CommitAsync();
+                    _unitOfWork.BeginTransaction();
+                     _unitOfWork.Users.Update(user);
+                     _unitOfWork.SaveChanges();
+                    _unitOfWork.Commit();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    _unitOfWork.RollbackAsync();
+                    _unitOfWork.Rollback();
                 }
             }
             return View(user);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             if (id == 0)
             {
                 return NotFound();
             }
-            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            var user =  _unitOfWork.Users.GetById(id);
             if (user == null)
             {
                 return NotFound();
@@ -126,22 +126,22 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             
-            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            var user =  _unitOfWork.Users.GetById(id);
             if (user.Data != null)
             {
                 try
                 {
-                    _unitOfWork.BeginTransactionAsync();
-                    await _unitOfWork.Users.DeleteAsync(user.Data);
-                    await _unitOfWork.SaveChangesAsync();
-                    _unitOfWork.CommitAsync();
+                    _unitOfWork.BeginTransaction();
+                     _unitOfWork.Users.Delete(user.Data);
+                     _unitOfWork.SaveChanges();
+                    _unitOfWork.Commit();
                 }
                 catch (Exception)
                 {
-                    _unitOfWork.RollbackAsync();
+                    _unitOfWork.Rollback();
                 }
             }
             return RedirectToAction(nameof(Index));

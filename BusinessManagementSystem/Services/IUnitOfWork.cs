@@ -13,10 +13,10 @@ namespace BusinessManagementSystem.Services
         IBasicConfiguration BasicConfiguration { get; }      
         IDashboard Dashboard { get; }
         IBase Base { get; }
-        void BeginTransactionAsync();
-        void CommitAsync();
-        void RollbackAsync();
+        void BeginTransaction();
+        void Commit();
+        void Rollback();
 
-        Task SaveChangesAsync();
+        void SaveChanges();
     }
 }

@@ -10,15 +10,15 @@ namespace BusinessManagementSystem.Repositories
     {
         public UserRepository(ApplicationDBContext dbContext) : base(dbContext) { }
 
-        public async Task<List<User>> GetAllActiveUsers()
+        public List<User> GetAllActiveUsers()
         {
-            List<User> activeUsers = await _dbContext.Users.Where(p => p.Status == true).ToListAsync();
+            List<User> activeUsers = _dbContext.Users.Where(p => p.Status == true).ToList();
             return activeUsers;
         }
 
-        public async Task<List<User>> GetAllInactiveUsers()
+        public List<User> GetAllInactiveUsers()
         {
-            List<User> activeUsers = await _dbContext.Users.Where(p => p.Status == false).ToListAsync();
+            List<User> activeUsers = _dbContext.Users.Where(p => p.Status == false).ToList();
             return activeUsers;
         }
     }

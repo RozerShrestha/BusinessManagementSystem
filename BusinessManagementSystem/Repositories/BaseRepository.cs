@@ -53,7 +53,7 @@ namespace BusinessManagementSystem.Repositories
                 var userDetail = (from u in _db.Users
                                   join ur in _db.UserRoles on u.Id equals ur.UserId
                                   join r in _db.Roles on ur.RoleId equals r.Id
-                                  where u.UserName == userName
+                                  where u.Email == userName
                                   select new
                                   {
                                       userId = u.Id,

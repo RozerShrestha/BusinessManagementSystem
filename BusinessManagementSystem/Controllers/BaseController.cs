@@ -58,7 +58,7 @@ namespace BusinessManagementSystem.Controllers
                 var loggedInUserName = loggedInEmail.Split("@")[0].Trim();
 
 
-                userDto =_unitOfWork.Base.UserDetail(loggedInUserName);
+                userDto =_unitOfWork.Base.UserDetail(loggedInEmail);
                 userId = userDto.UserId;
                 username = userDto.UserName;
                 email = userDto.Email;
