@@ -45,14 +45,6 @@ namespace BusinessManagementSystem.Repositories
                     new Role { Id = 21, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_KaffeEmployee },
                     new Role { Id = 31, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_ApartmentEmployee }
                 ];
-                //_db.Roles.Add(new Role { Id = 0, CreatedBy="System", UpdatedBy="System", Name = SD.Role_Superadmin });
-                //_db.Roles.Add(new Role { Id = 10, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_TattooAdmin });
-                //_db.Roles.Add(new Role { Id = 20, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeAdmin });
-                //_db.Roles.Add(new Role { Id = 30, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentAdmin });
-
-                //_db.Roles.Add(new Role { Id = 11, CreatedBy="System",UpdatedBy="System", Name = SD.Role_TattooEmployee });
-                //_db.Roles.Add(new Role { Id = 21, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeEmployee });
-                //_db.Roles.Add(new Role { Id = 31, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentEmployee });
                 _db.AddRange(roles);
                 _db.SaveChanges();
             }

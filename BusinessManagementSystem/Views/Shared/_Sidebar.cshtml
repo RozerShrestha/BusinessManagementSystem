@@ -1,6 +1,5 @@
 ﻿@{
     var menuList = ViewBag.Menu;
-    //var basicInfo = ViewBag.BasicDetail;
 }
 <aside style="background-color:#31006F !important;color:white !important" class="main-sidebar sidebar-dark-primary elevation-4">
     <a class="brand-link" asp-area="" asp-controller="Dashboard" asp-action="Index">
@@ -10,7 +9,7 @@
     <div class="sidebar">
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @* @foreach (var item in menuList)
+                @foreach (var item in menuList)
                 {
                     <li class="nav-item">
                         <a href="@item.Url" class="nav-link">
@@ -38,7 +37,7 @@
                             }
                         }
                     </li>
-                } *@
+                }
             </ul>
         </nav>
     </div>

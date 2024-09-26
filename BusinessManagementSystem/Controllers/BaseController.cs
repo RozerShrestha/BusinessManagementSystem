@@ -38,11 +38,11 @@ namespace BusinessManagementSystem.Controllers
         public override void OnActionExecuting(ActionExecutingContext ctx)
         {
             ViewData["UserDetail"] = UserDetail();
-            //ViewData["Menu"] = MenuList();
+            ViewData["Menu"] = MenuList();
             ViewData["Title"] = "FreakStreet Empire";
 
         }
-        public UserDto UserDetail()
+        private UserDto UserDetail()
         {
             try
             {
@@ -75,6 +75,21 @@ namespace BusinessManagementSystem.Controllers
             }
             return userDto;
         }
-      
+        private List<MenuDto> MenuList()
+        {
+            var menuFilter = _unitOfWork.Base.MenuList(roleName);
+            return menuFilter;
+        }
+        protected bool isAuthorized(int _userId)
+        {
+            if ((roleName == "admin" || roleName == "hradmin") || userId == _userId)
+                return true;
+            else
+                return false;
+        }
+        protected string EncodedString(string text)
+        {
+            return _javaScriptEncoder.Encode(text);
+        }
     }
 }
