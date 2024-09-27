@@ -1,5 +1,7 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using BusinessManagementSystem.BusinessLayer.Implementations;
+using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Helper;
@@ -38,6 +40,9 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ILogin<LoginResponseDto>, LoginRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//builder.Services.AddScoped<IBaseService, BaseImpl>();
+builder.Services.AddScoped<IBusinessLayer, BusinessLayerImpl>();
+
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();

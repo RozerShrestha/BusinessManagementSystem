@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Services
+﻿namespace BusinessManagementSystem.Data
 {
     public interface IDbInitializer
     {

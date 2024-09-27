@@ -1,5 +1,6 @@
 ﻿using AspNetCore;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
@@ -18,7 +19,7 @@ namespace BusinessManagementSystem.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly ModalView _modalView;
         private ResponseDto<DashboardVM> _responseDto;
-        public DashboardController(IWebHostEnvironment env, IUnitOfWork unitOfWork, INotyfService notyf, ILogger<DashboardController> logger, JavaScriptEncoder javaScriptEncoder) : base(unitOfWork, notyf, logger, javaScriptEncoder)
+        public DashboardController(IWebHostEnvironment env, IUnitOfWork unitOfWork, IBusinessLayer businessLayer, INotyfService notyf, ILogger<DashboardController> logger, JavaScriptEncoder javaScriptEncoder) : base(unitOfWork, businessLayer, notyf, logger, javaScriptEncoder)
         {
             _env = env;
             _modalView = new ModalView();

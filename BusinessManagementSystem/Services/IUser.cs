@@ -6,5 +6,6 @@ namespace BusinessManagementSystem.Services
     {
         List<User> GetAllActiveUsers();
         List<User> GetAllInactiveUsers();
+
     }
 }

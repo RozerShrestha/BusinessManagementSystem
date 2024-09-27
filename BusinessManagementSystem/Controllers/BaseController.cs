@@ -1,4 +1,5 @@
 ﻿ using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
@@ -15,6 +16,8 @@ namespace BusinessManagementSystem.Controllers
     public class BaseController<T> : Controller where T : BaseController<T>
     {
         protected readonly IUnitOfWork _unitOfWork;
+        //protected readonly IBaseService _baseService;
+        protected readonly IBusinessLayer _businessLayer;
         protected readonly ILogger<T> _logger;
         protected readonly INotyfService _notyf;
         protected int roleId;
@@ -27,10 +30,12 @@ namespace BusinessManagementSystem.Controllers
         protected UserDto userDto;
         JavaScriptEncoder _javaScriptEncoder;
 
-        public BaseController(IUnitOfWork unitOfWork, INotyfService notyf, ILogger<T> logger, JavaScriptEncoder javaScriptEncoder)
+        public BaseController(IUnitOfWork unitOfWork, IBusinessLayer businessLayer, INotyfService notyf, ILogger<T> logger, JavaScriptEncoder javaScriptEncoder)
         {
             _notyf = notyf;
             _unitOfWork = unitOfWork;
+            //_baseService = baseService;
+            _businessLayer = businessLayer;
             this.userDto = new UserDto();
             _logger = logger;
             _javaScriptEncoder = javaScriptEncoder;
@@ -48,17 +53,13 @@ namespace BusinessManagementSystem.Controllers
             {
                 var claims = User.Identities.First().Claims;
                 _logger.LogInformation(claims.ToList().ToString());
-                string claimString = "";
-                foreach (var claim in claims)
-                {
-                    claimString += $"TYPE: {claim.Type}, VALUE {claim.Value} ## ";
-                }
-                _logger.LogWarning($"Claims: {claimString}");
                 var loggedInEmail = claims.FirstOrDefault(x => x.Type.Contains("emailaddress", StringComparison.OrdinalIgnoreCase)).Value;
                 var loggedInUserName = loggedInEmail.Split("@")[0].Trim();
 
 
-                userDto =_unitOfWork.Base.UserDetail(loggedInEmail);
+                //userDto =_unitOfWork.Base.UserDetail(loggedInEmail);
+                //userDto=_baseService.UserDetail(loggedInEmail);
+                userDto = _businessLayer.BaseService.UserDetail(loggedInEmail);
                 userId = userDto.UserId;
                 username = userDto.UserName;
                 email = userDto.Email;
@@ -77,7 +78,8 @@ namespace BusinessManagementSystem.Controllers
         }
         private List<MenuDto> MenuList()
         {
-            var menuFilter = _unitOfWork.Base.MenuList(roleName);
+            //var menuFilter = _unitOfWork.Base.MenuList(roleName);
+            var menuFilter = _businessLayer.BaseService.MenuList(roleName);
             return menuFilter;
         }
         protected bool isAuthorized(int _userId)

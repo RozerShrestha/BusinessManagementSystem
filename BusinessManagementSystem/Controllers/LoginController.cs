@@ -117,5 +117,33 @@ namespace BusinessManagementSystem.Controllers
             HttpContext.Session.Remove("Token");
             return RedirectToAction("Index");
         }
+
+
+        #region API
+        [HttpPost]
+        public IActionResult LoginUserAPI(LoginRequestDto loginRequest)
+        {
+            ModelState.Remove(nameof(loginRequest.ConfirmPassword)); //just to ignore ConfirmPassword to validate
+            if (ModelState.IsValid)
+            {
+                _responseDto = _iLogin.Login(loginRequest);
+                if (_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    HttpContext.Session.SetString("Token", _responseDto.Data.Token);
+                    ViewBag.Message = _responseDto.Message;
+                    _notyf.Success(_responseDto.Message);
+                    return RedirectToAction("Index", "Dashboard");
+                }
+                else
+                {
+                    ModelState.AddModelError("", _responseDto.Message);
+                }
+                ViewBag.LoginResponse = _responseDto;
+            }
+
+            return View("Index", loginRequest); ;
+        }
+
+        #endregion
     }
 }

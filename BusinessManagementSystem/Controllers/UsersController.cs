@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
@@ -15,58 +16,45 @@ namespace BusinessManagementSystem.Controllers
     public class UsersController : BaseController<UsersController>
     {
         public ResponseDto<User> _responseDto;
-        ILogin<LoginResponseDto> _iLogin;
-        private dynamic insurancePlans;
-        private readonly dynamic roleList;
         private readonly IEmailSender _emailSender;
         private readonly ModalView _modalView;
-        public UsersController(ILogin<LoginResponseDto> iLogin, IUnitOfWork unitOfWork, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(unitOfWork, notyf, logger, javaScriptEncoder)
+        public UsersController(ILogin<LoginResponseDto> iLogin, IUnitOfWork unitOfWork, IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(unitOfWork, businessLayer, notyf, logger, javaScriptEncoder)
         {
-            _iLogin = iLogin;
             _responseDto = new ResponseDto<User>();
-            roleList = _unitOfWork.Role.GetRoles();
             _emailSender = emailSender;
             _modalView = new ModalView();
         }
+        [HttpGet]
         public IActionResult Index()
         {
-            var users= _unitOfWork.Users.GetAll();
-            return View(users);
+            _responseDto = _businessLayer.UserService.GetAllUser();
+
+            return View(_responseDto);
         }
 
+        [HttpGet]
         public IActionResult Details(int id)
         {
             if(id == 0)
             {
                 return NotFound();
             }
-            var user= _unitOfWork.Users.GetById(Convert.ToInt32(id));
-            if (user == null) 
+            var _responseDto = _businessLayer.UserService.GetUserById(id);
+            if (_responseDto == null) 
             {
                 return NotFound();
             }
-            return View(user);
+            return View(_responseDto);
         }
-
-        public IActionResult Create([Bind("Id,Guid,UserName,Email,FullName,DateOfBirth,Gender,Address,PhoneNumber,RoleId")] User user)
+        [HttpPost]
+        public IActionResult Create(UserDto user)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _unitOfWork.BeginTransaction();
-                     _unitOfWork.Users.Insert(user);
-                     _unitOfWork.SaveChanges();
-                    _unitOfWork.Commit();
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception)
-                {
-
-                    _unitOfWork.Rollback();
-                }
+                _responseDto = _businessLayer.UserService.Create(user);
+                return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(_responseDto);
         }
 
         public IActionResult EditUser(int id)
@@ -76,12 +64,12 @@ namespace BusinessManagementSystem.Controllers
                 return NotFound();
             }
 
-            var user =  _unitOfWork.Users.GetById(id);
-            if (user == null)
+            var _responseDto = _businessLayer.UserService.GetUserById(id);
+            if (_responseDto == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(_responseDto);
         }
 
         [HttpPost]
@@ -96,18 +84,15 @@ namespace BusinessManagementSystem.Controllers
             {
                 try
                 {
-                    _unitOfWork.BeginTransaction();
-                     _unitOfWork.Users.Update(user);
-                     _unitOfWork.SaveChanges();
-                    _unitOfWork.Commit();
+                    _responseDto=_businessLayer.UserService.Update(user);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    _unitOfWork.Rollback();
+                    //_unitOfWork.Rollback();
                 }
             }
-            return View(user);
+            return View(_responseDto);
         }
 
         public IActionResult Delete(int id)
@@ -116,12 +101,12 @@ namespace BusinessManagementSystem.Controllers
             {
                 return NotFound();
             }
-            var user =  _unitOfWork.Users.GetById(id);
-            if (user == null)
+            _responseDto = _businessLayer.UserService.GetUserById(id);
+            if (_responseDto == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(_responseDto);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -129,15 +114,12 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             
-            var user =  _unitOfWork.Users.GetById(id);
-            if (user.Data != null)
+            var _responseDto =  _unitOfWork.Users.GetById(id);
+            if (_responseDto.Data != null)
             {
                 try
                 {
-                    _unitOfWork.BeginTransaction();
-                     _unitOfWork.Users.Delete(user.Data);
-                     _unitOfWork.SaveChanges();
-                    _unitOfWork.Commit();
+                    _responseDto=_businessLayer.UserService.Delete(id);
                 }
                 catch (Exception)
                 {

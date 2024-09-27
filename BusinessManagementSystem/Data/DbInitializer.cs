@@ -1,12 +1,11 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
+﻿using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessManagementSystem.Repositories
+namespace BusinessManagementSystem.Data
 {
     public class DbInitializer : IDbInitializer
     {
@@ -30,9 +29,9 @@ namespace BusinessManagementSystem.Repositories
             {
                 throw;
             }
-            
+
             //create role if not created
-            var isRoleExist=_db.Roles.Any();
+            var isRoleExist = _db.Roles.Any();
             if (!isRoleExist)
             {
                 List<Role> roles =
@@ -48,7 +47,7 @@ namespace BusinessManagementSystem.Repositories
                 _db.AddRange(roles);
                 _db.SaveChanges();
             }
-           
+
             //create user if not created
             var isUserCreated = _db.Users.Any();
             if (!isUserCreated)
@@ -67,10 +66,10 @@ namespace BusinessManagementSystem.Repositories
                     PhoneNumber = "9818136462",
                     Gender = "Male",
                     Occupation = "Technical Manager",
-                    CreatedBy="System",
+                    CreatedBy = "System",
                     UpdatedBy = "System"
                 };
-                
+
                 ur.User = u;
                 ur.RoleId = 0;
                 _db.Add(ur);
@@ -78,23 +77,23 @@ namespace BusinessManagementSystem.Repositories
             }
 
             //create BasicConfiguration
-            var isBasicConfiguration=_db.BasicConfigurations.Any();
-            if(!isBasicConfiguration)
+            var isBasicConfiguration = _db.BasicConfigurations.Any();
+            if (!isBasicConfiguration)
             {
                 BasicConfiguration basicConfiguration = new BasicConfiguration
                 {
-                    EmailAlias= "Cotiviti_Noreply",
+                    EmailAlias = "Cotiviti_Noreply",
                     Email = "NoReply@Cotiviti.com",
                     Password = "Not Required",
-                    HostName= "unauth-ndc.smtp.cotiviti.com",
-                    Port=25,
+                    HostName = "unauth-ndc.smtp.cotiviti.com",
+                    Port = 25,
                     ApplicationTitle = "Insurance Claim",
-                    EmployerName="Freak Street Empire",
+                    EmployerName = "Freak Street Empire",
                     EmployerEmailAddress = "HR_Nepal@cotiviti.com",
                     EmployerAddress = "HATTISAR KTM 01-44356625",
-                    CreatedBy="System",
-                    UpdatedBy="System"
-                    
+                    CreatedBy = "System",
+                    UpdatedBy = "System"
+
                 };
                 _db.Add(basicConfiguration);
                 _db.SaveChanges();
@@ -115,19 +114,19 @@ namespace BusinessManagementSystem.Repositories
                 new Menu {  Parent = 6,     Name = "All Profile",             Url= "/Users",                Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
                 ];
 
-                var roles =_db.Roles.ToList();
+                var roles = _db.Roles.ToList();
 
                 _db.Database.BeginTransaction();
-                foreach(var role in roles)
+                foreach (var role in roles)
                 {
-                    foreach(var menu in menus)
+                    foreach (var menu in menus)
                     {
                         MenuRole mr = new()
                         {
                             Role = role,
                             Menu = menu
                         };
-                       _db.MenuRoles.Add(mr);
+                        _db.MenuRoles.Add(mr);
                     }
                 }
                 _db.SaveChanges();

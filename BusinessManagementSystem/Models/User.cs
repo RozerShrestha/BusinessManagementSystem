@@ -14,24 +14,24 @@ namespace BusinessManagementSystem.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Guid { get; set; }
         [Required]
-        public required string UserName { get; set; }
+        public string UserName { get; set; }
         [Required]
         [EmailAddress]
-        public required string Email { get; set; }
+        public string Email { get; set; }
         [Required]
-        public required string FullName { get; set; } 
+        public string FullName { get; set; } 
         public DateOnly DateOfBirth { get; set; }
         [Required]
-        public required string Gender { get; set; }
+        public string Gender { get; set; }
         [Required]
         public string Address { get; set; }
         [StringLength(10, ErrorMessage = "Invalid PhoneNumber Number", MinimumLength = 10)]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         [Required]
-        public required string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         [Required]
-        public required string Occupation { get; set; }
+        public string Occupation { get; set; }
         [Required]
         public string HashPassword { get; set; }
         [Required]
