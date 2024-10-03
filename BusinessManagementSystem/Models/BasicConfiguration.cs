@@ -9,13 +9,14 @@ namespace BusinessManagementSystem.Models
     public class BasicConfiguration:BaseEntity
     {
         public int Id { get; set; }
+
         [DisplayName("Email Alias")]
         [Required]
         public required string EmailAlias { get; set; }
         [DisplayName("Sender Email Address")]
         [Required]
         public required string Email { get; set; }
-        public string Password { get; set; }
+        public required string Password { get; set; }
         [DisplayName("Host Name")]
         [Required]
         public required string HostName { get; set; }
@@ -24,8 +25,7 @@ namespace BusinessManagementSystem.Models
         public required int Port { get; set; }
         [DisplayName("Application Title")]
         [Required]
-        public string ApplicationTitle { get; set; }
-
+        public required string ApplicationTitle { get; set; }
 
         [DisplayName("Employer Name")]
         [Required]
@@ -51,7 +51,6 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.HostName).HasColumnType("varchar(100)");
             builder.Property(x => x.EmployerEmailAddress).HasColumnType("varchar(100)");
             builder.Property(x => x.EmployerAddress).HasColumnType("varchar(100)");
-
             builder.Property(x => x.Password).HasColumnType("varchar(250)");
             builder.Property(x => x.ApplicationTitle).HasColumnType("varchar(250)");
 

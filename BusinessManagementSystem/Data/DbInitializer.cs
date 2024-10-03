@@ -87,7 +87,7 @@ namespace BusinessManagementSystem.Data
                     Password = "Not Required",
                     HostName = "unauth-ndc.smtp.cotiviti.com",
                     Port = 25,
-                    ApplicationTitle = "Insurance Claim",
+                    ApplicationTitle = "Freak Street Empire",
                     EmployerName = "Freak Street Empire",
                     EmployerEmailAddress = "HR_Nepal@cotiviti.com",
                     EmployerAddress = "HATTISAR KTM 01-44356625",

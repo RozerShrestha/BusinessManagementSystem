@@ -17,9 +17,7 @@
         public const string Status_Draft = "Draft";
         public const string Status_Submitted = "Submitted";
         public const string Status_Claim_Acknowledge = "Claim Acknowledged";
-        public const string Status_InsuranceSent = "Request sent to Insurance";
         public const string Status_Returned = "Returned";
-        public const string Status_InsuranceReturned = "Returned By Insurance";
         public const string Status_Resubmitted = "ReSubmitted";
         public const string Status_Approved = "Approved";
         public const string Status_Rejected = "Rejected";

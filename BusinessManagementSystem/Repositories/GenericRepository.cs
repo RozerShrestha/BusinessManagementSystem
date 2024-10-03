@@ -2,6 +2,7 @@
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 using System.Net;
 using System.Reflection;
@@ -16,6 +17,7 @@ namespace BusinessManagementSystem.Repositories
         private string _errorMessage = string.Empty;
         private readonly bool _isDisposed;
         protected readonly ApplicationDBContext _dbContext;
+        private IDbContextTransaction _objTran;
         private ResponseDto<T> _responseDto;
 
         public GenericRepository(ApplicationDBContext context)
@@ -159,13 +161,16 @@ namespace BusinessManagementSystem.Repositories
         {
             try
             {
+                _dbContext.Database.BeginTransaction();
                 _dbSet.Add(entity);
                  _dbContext.SaveChanges();
+                _dbContext.Database.CommitTransaction();
                 _responseDto.Data = entity;
                 _responseDto.StatusCode = HttpStatusCode.OK;
             }
             catch (Exception ex)
             {
+                _dbContext.Database.RollbackTransaction();
                 _responseDto.Message = "Failed due to: " + ex;
                 _responseDto.StatusCode = HttpStatusCode.InternalServerError;
                 _responseDto.Data = entity;
@@ -176,13 +181,16 @@ namespace BusinessManagementSystem.Repositories
         {
             try
             {
+                _dbContext.Database.BeginTransaction();
                 _dbSet.Update(entity);
                  _dbContext.SaveChanges();
+                _dbContext.Database.CommitTransaction();
                 _responseDto.StatusCode = HttpStatusCode.OK;
                 _responseDto.Data = entity;
             }
             catch (Exception ex)
             {
+                _dbContext.Database.RollbackTransaction();
                 _responseDto.Message = "Failed due to: " + ex.Message;
                 _responseDto.StatusCode = HttpStatusCode.InternalServerError;
                 _responseDto.Data = entity;
@@ -193,8 +201,10 @@ namespace BusinessManagementSystem.Repositories
         {
             try
             {
+                _dbContext.Database.BeginTransaction();
                 _dbSet.Remove(entity);
                  _dbContext.SaveChanges();
+                _dbContext.Database.CommitTransaction();
                 _responseDto.StatusCode = HttpStatusCode.OK;
                 _responseDto.Data = entity;
 
@@ -212,8 +222,10 @@ namespace BusinessManagementSystem.Repositories
         {
             try
             {
+                _dbContext.Database.BeginTransaction();
                 _dbSet.RemoveRange(entities);
                  _dbContext.SaveChanges();
+                _dbContext.Database.CommitTransaction();
                 _responseDto.StatusCode = HttpStatusCode.OK;
                 _responseDto.Datas = entities.ToList();
 

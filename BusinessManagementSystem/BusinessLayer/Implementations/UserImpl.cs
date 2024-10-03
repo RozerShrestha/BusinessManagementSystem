@@ -1,5 +1,6 @@
 ﻿using AspNetCore;
 using BusinessManagementSystem.BusinessLayer.Services;
+using BusinessManagementSystem.Controllers;
 using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
@@ -21,82 +22,62 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _unitOfWork = unitOfWork;
             _responseDto = new ResponseDto<User>();
         }
-
+        public ResponseDto<User> GetAllUser()
+        {
+            var response = _unitOfWork.Users.GetAll();
+            return response;
+        }
+        public ResponseDto<User> GetUserById(int id)
+        {
+            var response = _unitOfWork.Users.GetFirstOrDefault(p =>p.Id==id);
+            return response;
+        }
+        public ResponseDto<User> GetAllActiveUsers()
+        {
+            var response = _unitOfWork.Users.GetAll(p => p.Status == true);
+            return response;
+        }
+        public ResponseDto<User> GetAllInactiveUsers()
+        {
+            var response = _unitOfWork.Users.GetAll(p => p.Status == false);
+            return response;
+        }
         public ResponseDto<User> Create(UserDto userDto)
         {
-            try
-            {
-                var hashInfo = Helper.Helpers.GetHashPassword(userDto.Password);
-                List<UserRole> urList = new List<UserRole>();
-                urList.Add(new UserRole {RoleId = userDto.RoleId });
-                User u = new User();
-                u.Guid = Helper.Helpers.GenerateGUID();
-                u.UserName = userDto.UserName;
-                u.Email = userDto.Email;
-                u.FullName = userDto.FullName;
-                u.DateOfBirth = DateOnly.Parse(userDto.DateOfBirth);
-                u.Gender=userDto.Gender;
-                u.Address=userDto.Address;
-                u.PhoneNumber = userDto.MobileNumber;
-                u.Occupation=userDto.Occupation;
-                u.HashPassword = hashInfo.Hash;
-                u.Status = true;
-                u.Salt=hashInfo.Salt;
-                u.UserRoles = urList;
-                u.CreatedBy = "system";
-                u.UpdatedBy = "system";
-                _unitOfWork.BeginTransaction();
-                _responseDto = _unitOfWork.Users.Insert(u);
-                _unitOfWork.SaveChanges();
-                _unitOfWork.Commit();
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                _unitOfWork.Rollback();
-                _responseDto.StatusCode = HttpStatusCode.BadRequest;
-                _responseDto.Message = ex.Message;
-            }
-
+            var hashInfo = Helper.Helpers.GetHashPassword(userDto.Password);
+            List<UserRole> urList = new List<UserRole>();
+            urList.Add(new UserRole {RoleId = userDto.RoleId });
+            User u = new User();
+            u.Guid = Helper.Helpers.GenerateGUID();
+            u.UserName = userDto.UserName;
+            u.Email = userDto.Email;
+            u.FullName = userDto.FullName;
+            u.DateOfBirth = DateOnly.Parse(userDto.DateOfBirth);
+            u.Gender=userDto.Gender;
+            u.Address=userDto.Address;
+            u.PhoneNumber = userDto.MobileNumber;
+            u.Occupation=userDto.Occupation;
+            u.HashPassword = hashInfo.Hash;
+            u.Status = true;
+            u.Salt=hashInfo.Salt;
+            u.UserRoles = urList;
+            u.CreatedBy = BaseController.username; //accessing static variables from BaseController
+            u.UpdatedBy = BaseController.username;
+            _responseDto = _unitOfWork.Users.Insert(u);
             return _responseDto;
         }
-
         public ResponseDto<User> Update(User u)
         {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-               _responseDto= _unitOfWork.Users.Update(u);
-                _unitOfWork.SaveChanges();
-                _unitOfWork.Commit();
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                _unitOfWork.Rollback();
-                _responseDto.StatusCode = HttpStatusCode.BadRequest;
-                _responseDto.Message=ex.Message;
-            }
-
-            return _responseDto;
+             u.UpdatedBy = BaseController.username;
+             _responseDto= _unitOfWork.Users.Update(u);
+             return _responseDto;
         }
-
         public ResponseDto<User> Delete(int id)
         {
-            var user = _unitOfWork.Users.GetById(id);
-            if (user.Data != null)
+            var result = _unitOfWork.Users.GetById(id);
+            if (result.StatusCode==HttpStatusCode.OK)
             {
-                try
-                {
-                    _unitOfWork.BeginTransaction();
-                    _responseDto = _unitOfWork.Users.Delete(user.Data);
-                    _unitOfWork.SaveChanges();
-                    _unitOfWork.Commit();
-                }
-                catch (Exception ex)
-                {
-                    _unitOfWork.Rollback();
-                    _responseDto.StatusCode = HttpStatusCode.BadRequest;
-                    _responseDto.Message = ex.Message;
-                }
+                _responseDto = _unitOfWork.Users.Delete(result.Data);
             }
             else
             {
@@ -105,41 +86,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             }
             return _responseDto;
         }
-
-        public ResponseDto<User> GetAllActiveUsers()
-        {
-            _unitOfWork.BeginTransaction();
-            var response =_unitOfWork.Users.GetAll(p => p.Status == true);
-            _unitOfWork.Commit();
-            return response;
-        }
-
-        public ResponseDto<User> GetAllInactiveUsers()
-        {
-            _unitOfWork.BeginTransaction();
-            var response = _unitOfWork.Users.GetAll(p => p.Status == false);
-            _unitOfWork.Commit();
-            return response;
-        }
-
-        public ResponseDto<User> GetAllUser()
-        {
-            _unitOfWork.BeginTransaction();
-            var response = _unitOfWork.Users.GetAll();
-            _unitOfWork.Commit();
-            return response;
-        }
-
-        public ResponseDto<User> GetUserById(int id)
-        {
-            _unitOfWork.BeginTransaction();
-            var response = _unitOfWork.Users.GetFirstOrDefault(p => p.Status == false);
-            _unitOfWork.Commit();
-            return response;
-        }
-
-        
-
-       
     }
 }
+

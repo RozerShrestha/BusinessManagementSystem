@@ -1,4 +1,5 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using AspNetCore;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
@@ -13,22 +14,22 @@ using System.Text.Encodings.Web;
 namespace BusinessManagementSystem.Controllers
 {
     [Authorize]
-    public class UsersController : BaseController<UsersController>
+    public class UsersController : BaseController
     {
         public ResponseDto<User> _responseDto;
-        private readonly IEmailSender _emailSender;
+        private ILogger<UsersController> _logger;
         private readonly ModalView _modalView;
-        public UsersController(ILogin<LoginResponseDto> iLogin, IUnitOfWork unitOfWork, IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(unitOfWork, businessLayer, notyf, logger, javaScriptEncoder)
+        public UsersController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responseDto = new ResponseDto<User>();
-            _emailSender = emailSender;
+            _logger = logger;
             _modalView = new ModalView();
         }
         [HttpGet]
         public IActionResult Index()
         {
             _responseDto = _businessLayer.UserService.GetAllUser();
-
+            
             return View(_responseDto);
         }
 
@@ -114,7 +115,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             
-            var _responseDto =  _unitOfWork.Users.GetById(id);
+            var _responseDto = _businessLayer.UserService.GetUserById(id);
             if (_responseDto.Data != null)
             {
                 try
@@ -123,7 +124,8 @@ namespace BusinessManagementSystem.Controllers
                 }
                 catch (Exception)
                 {
-                    _unitOfWork.Rollback();
+                    //_unitOfWork.Rollback();
+                    
                 }
             }
             return RedirectToAction(nameof(Index));

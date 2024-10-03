@@ -4,5 +4,7 @@
     {
         IBaseService BaseService { get; }
         IUserService UserService { get; }
+        IBasicConfigurationService BasicConfigurationService { get; }
+        IMenuService MenuService { get; }
     }
 }
