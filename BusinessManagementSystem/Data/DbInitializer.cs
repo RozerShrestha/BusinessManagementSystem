@@ -107,7 +107,7 @@ namespace BusinessManagementSystem.Data
                 [
                 new Menu {  Parent = 0,     Name = "Configurations",          Url = "#",                    Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-cogs" },
                 new Menu {  Parent = 1,     Name = "Basic Configuration",     Url = "/BasicConfiguration",  Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-gear" },
-                new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menus",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
+                new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menu",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
                 new Menu {  Parent = 1,     Name = "Role",                    Url = "/Role",                Sort = 3, Status = false,  CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
                 new Menu {  Parent = 1,     Name = "MenuRole",                Url = "/MenuRole",            Sort = 4, Status = false,  CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
                 new Menu {  Parent = 0,     Name = "EmployeeDetail",          Url = "#",                    Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-users" },

@@ -21,7 +21,7 @@ body {
 }
 .table-header {
     color: #d9d2d2;
-    background-color: #31006f;
+    background-color: #343a40;
 }
 .disabledDiv{
    pointer-events:none;

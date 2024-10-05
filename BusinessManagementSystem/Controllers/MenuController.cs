@@ -1,4 +1,5 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using AspNetCore;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net;
 using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
@@ -49,16 +51,18 @@ namespace BusinessManagementSystem.Controllers
         // POST: MenuController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Menu menu)
         {
-            try
+            _responseDto = _businessLayer.MenuService.Create(menu);
+            if (_responseDto.StatusCode == HttpStatusCode.OK)
             {
-                return RedirectToAction(nameof(Index));
+                _notyf.Success(_responseDto.Message);
             }
-            catch
+            else
             {
-                return View();
+                _notyf.Error(_responseDto.Message);
             }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: MenuController/Edit/5
@@ -93,14 +97,16 @@ namespace BusinessManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
+            _responseDto = _businessLayer.MenuService.Delete(id);
+            if (_responseDto.StatusCode == HttpStatusCode.OK)
             {
-                return RedirectToAction(nameof(Index));
+                _notyf.Success(_responseDto.Message);
             }
-            catch
+            else
             {
-                return View();
+                _notyf.Error(_responseDto.Message);
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

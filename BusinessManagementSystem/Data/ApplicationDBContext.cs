@@ -29,7 +29,7 @@ namespace BusinessManagementSystem.Data
         {
             //test
             var configuation = GetConfiguration();
-            var con = new SqlConnection(configuation.GetSection("ConnectionStrings").GetSection("DbConnection").Value);
+            var con = new SqlConnection(configuation.GetSection("ConnectionStrings").GetSection("BMSConnection").Value);
             optionsBuilder.UseSqlServer(con.ConnectionString);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

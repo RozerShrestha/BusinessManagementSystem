@@ -3,6 +3,7 @@ using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using System.Net;
 
 namespace BusinessManagementSystem.BusinessLayer.Implementations
 {
@@ -42,14 +43,14 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
         public ResponseDto<Menu> GetMenuById(int id)
         {
-            var response = _unitOfWork.Menu.GetFirstOrDefault(p => p.Id == id);
-            return response;
+            _responseDto = _unitOfWork.Menu.GetFirstOrDefault(p => p.Id == id);
+            return _responseDto;
         }
 
         public ResponseDto<Menu> Create(Menu menu)
         {
-            var response = _unitOfWork.Menu.CreateMenu(menu);
-            return response;
+            _responseDto = _unitOfWork.Menu.CreateMenu(menu);
+            return _responseDto;
         }
 
         public ResponseDto<Menu> Update(Menu u)
@@ -59,7 +60,18 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
         public ResponseDto<Menu> Delete(int id)
         {
-            throw new NotImplementedException();
+            Menu menu=_unitOfWork.Menu.GetById(id).Data;
+            if(menu != null)
+            {
+                _responseDto = _unitOfWork.Menu.Delete(menu);
+            }
+            else
+            {
+                _responseDto.StatusCode = HttpStatusCode.NotFound;
+                _responseDto.Message = "Menu not found";
+            }
+            return _responseDto;
+
         }
     }
 }
