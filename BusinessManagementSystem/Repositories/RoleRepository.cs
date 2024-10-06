@@ -17,7 +17,7 @@ namespace BusinessManagementSystem.Repositories
         public dynamic GetRoles()
         {
             var roleList = _db.Roles.Select(p => new { p.Id, p.Name }).ToList();
-            roleList.Add(new { Id = 0, Name = "--Select--" });
+            roleList.Add(new { Id = 0, Name = "All" });
             roleList.Sort((a, b) => a.Id.CompareTo(b.Id));
             return roleList;
         }

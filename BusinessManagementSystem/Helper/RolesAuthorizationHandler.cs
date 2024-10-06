@@ -31,7 +31,7 @@ namespace BusinessManagementSystem.Helper
             var userInfo = _unitOfWork.Users.GetFirstOrDefault(p => p.Email == loggedInEmail, includeProperties: "UserRoles");
 
 
-            userDto = _unitOfWork.Base.UserDetail(loggedInUserName);
+            userDto = _unitOfWork.Base.UserDetail(loggedInEmail);
 
             //if (requirement.AllowedRoles == null || requirement.AllowedRoles.Any() == false)
             //{

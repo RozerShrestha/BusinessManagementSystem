@@ -4,6 +4,7 @@ using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -12,6 +13,7 @@ using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
+    [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
     public class BasicConfigurationController : BaseController
     {
         private IWebHostEnvironment _env;

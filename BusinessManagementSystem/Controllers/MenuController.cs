@@ -8,24 +8,27 @@ using BusinessManagementSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
-    
+    [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
     public class MenuController : BaseController
     {
         private ResponseDto<Menu> _responseDto;
         private readonly dynamic parentList;
+        private readonly dynamic roleList;
         private ILogger<MenuController> _logger;
         public MenuController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<MenuController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responseDto = new ResponseDto<Menu>();
             _logger = logger;
             parentList = _businessLayer.MenuService.ParentList();
-            ViewData["ParentList"] = new SelectList(parentList, "Parent", "Name");
+            roleList = _businessLayer.MenuService.RoleList();
+            
 
         }
         // GET: MenuController
@@ -45,6 +48,7 @@ namespace BusinessManagementSystem.Controllers
         public ActionResult Create()
         {
             ViewData["ParentList"] = new SelectList(parentList, "Parent", "Name");
+            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             return View();
         }
 
@@ -53,15 +57,27 @@ namespace BusinessManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Menu menu)
         {
-            _responseDto = _businessLayer.MenuService.Create(menu);
-            if (_responseDto.StatusCode == HttpStatusCode.OK)
+            if (ModelState.IsValid)
             {
-                _notyf.Success(_responseDto.Message);
+                _responseDto = _businessLayer.MenuService.Create(menu);
+                if (_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    _notyf.Success(_responseDto.Message);
+                }
+                else
+                {
+                    _notyf.Error(_responseDto.Message);
+                }
             }
             else
             {
-                _notyf.Error(_responseDto.Message);
+                IEnumerable<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+                foreach (var error in errors)
+                {
+                    _notyf.Error(error.ErrorMessage);
+                }
             }
+
             return RedirectToAction(nameof(Index));
         }
 

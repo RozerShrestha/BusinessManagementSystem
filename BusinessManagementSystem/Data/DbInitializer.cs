@@ -36,7 +36,7 @@ namespace BusinessManagementSystem.Data
             {
                 List<Role> roles =
                 [
-                    new Role { Id = 0, CreatedBy="System", UpdatedBy="System", Name = SD.Role_Superadmin },
+                    new Role { Id = 1, CreatedBy="System", UpdatedBy="System", Name = SD.Role_Superadmin },
                     new Role { Id = 10, CreatedBy = "System", UpdatedBy = "System", Name = SD.Role_TattooAdmin },
                     new Role { Id = 20, CreatedBy="System",UpdatedBy="System", Name = SD.Role_KaffeAdmin },
                     new Role { Id = 30, CreatedBy="System",UpdatedBy="System", Name = SD.Role_ApartmentAdmin },
@@ -58,8 +58,8 @@ namespace BusinessManagementSystem.Data
                     Guid = Helper.Helpers.GenerateGUID(),
                     UserName = "rozer.shrestha",
                     Email = "rozer.shrestha611@gmail.com",
-                    HashPassword = "r3HosmeZh/NLjq53Zt64n8NO/LLIVFyg3Pn3ped+xb4=", //P@ssworD
-                    Salt = "t03jRt/EuumF6epoZbgY+A==",
+                    HashPassword = "chNH6XpEVlTynf1KMRycO6kPWQHIDG6ZmmPJCMu1RLg=", //12345678
+                    Salt = "7jjWcePoQ8V11akR6n0e0A==",
                     FullName = "Rozer Shrestha",
                     Address = "Bhimsensthan",
                     DateOfBirth = DateOnly.Parse("1991/03/01"),
@@ -71,7 +71,7 @@ namespace BusinessManagementSystem.Data
                 };
 
                 ur.User = u;
-                ur.RoleId = 0;
+                ur.RoleId = 1;
                 _db.Add(ur);
                 _db.SaveChanges();
             }
@@ -107,11 +107,7 @@ namespace BusinessManagementSystem.Data
                 [
                 new Menu {  Parent = 0,     Name = "Configurations",          Url = "#",                    Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-cogs" },
                 new Menu {  Parent = 1,     Name = "Basic Configuration",     Url = "/BasicConfiguration",  Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-gear" },
-                new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menu",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 1,     Name = "Role",                    Url = "/Role",                Sort = 3, Status = false,  CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 1,     Name = "MenuRole",                Url = "/MenuRole",            Sort = 4, Status = false,  CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
-                new Menu {  Parent = 0,     Name = "EmployeeDetail",          Url = "#",                    Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-users" },
-                new Menu {  Parent = 6,     Name = "All Profile",             Url= "/Users",                Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" },
+                new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menu",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" }
                 ];
 
                 var roles = _db.Roles.ToList();

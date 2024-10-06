@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessManagementSystem.Models
 {
@@ -21,6 +22,10 @@ namespace BusinessManagementSystem.Models
         public bool Status { get; set; }
         [Required]
         public string Icon { get; set; }
+
+        [ValidateNever]
+        [NotMapped]
+        public List<string> SelectedRoles { get; set; }
         [ValidateNever]
         public virtual ICollection<MenuRole> MenuRoles { get; set; }
     }

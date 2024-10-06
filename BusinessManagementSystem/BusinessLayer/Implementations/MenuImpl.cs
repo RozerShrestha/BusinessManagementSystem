@@ -23,6 +23,12 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var parentList=_unitOfWork.Menu.ParentList();
             return parentList;
         }
+
+        public dynamic RoleList()
+        {
+            var roleList = _unitOfWork.Role.GetRoles();
+            return roleList;
+        }
         public ResponseDto<Menu> GetAllActiveMenus()
         {
             _responseDto = _unitOfWork.Menu.GetAll(p => p.Status == true);

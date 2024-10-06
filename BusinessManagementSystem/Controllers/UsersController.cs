@@ -26,6 +26,7 @@ namespace BusinessManagementSystem.Controllers
             _modalView = new ModalView();
         }
         [HttpGet]
+        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
         public IActionResult Index()
         {
             _responseDto = _businessLayer.UserService.GetAllUser();

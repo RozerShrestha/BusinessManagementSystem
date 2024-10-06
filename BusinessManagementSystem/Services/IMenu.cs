@@ -6,6 +6,7 @@ namespace BusinessManagementSystem.Services
     public interface IMenu : IGeneric<Menu>
     {
         dynamic ParentList();
+        dynamic RoleList();
         ResponseDto<Menu> CreateMenu(Menu menu);
         ResponseDto<Menu> UpdateMenu(Menu menu);
     }

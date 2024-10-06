@@ -6,6 +6,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
     public interface IMenuService
     {
         dynamic ParentList();
+        dynamic RoleList();
         ResponseDto<Menu> GetAllMenu();
         ResponseDto<Menu> GetMenuById(int id);
         ResponseDto<Menu> GetAllActiveMenus();
