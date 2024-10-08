@@ -84,6 +84,29 @@ namespace BusinessManagementSystem.Controllers
         // GET: MenuController/Edit/5
         public ActionResult Edit(int id)
         {
+            if (id == null) return NotFound();
+            else
+            {
+                _responseDto = _businessLayer.MenuService.GetMenuById(id);
+                if (_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    ViewData["ParentList"] = new SelectList(parentList, "Parent", "Name");
+                    ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+                    _responseDto.Data.SelectedRoles=_businessLayer.MenuService.get
+
+                    return View(_responseDto.Data);
+                }
+                else
+                {
+                    //ViewData["ErrorMessage"] = _responseDto.Message;
+                    _notyf.Error(_responseDto.Message);
+                    _logger.LogError($"## {this.GetType().Name} Edit: Not Found {_responseDto.Message}");
+                    return View();
+                }
+            }
+
+
+            
             return View();
         }
 

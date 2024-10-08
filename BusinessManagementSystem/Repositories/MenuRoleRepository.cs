@@ -14,5 +14,15 @@ namespace BusinessManagementSystem.Repositories
             _responseDto = new ResponseDto<MenuRole>();
             _db = db;
         }
+
+        public dynamic GetRolesAssignedToMenu(int id)
+        {
+            var roles = (from m in _db.Menus
+                         join mr in _db.MenuRoles on m.Id equals mr.MenuId
+                         join r in _db.Roles on mr.RoleId equals r.Id
+                         where m.Id == id
+                         select new { Id = r.Id, Name = r.Name }).ToList();
+            return roles;
+        }
     }
 }

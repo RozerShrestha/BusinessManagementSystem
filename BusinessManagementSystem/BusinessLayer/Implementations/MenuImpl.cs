@@ -79,5 +79,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             return _responseDto;
 
         }
+
+        public dynamic GetMenuRoles(int id)
+        {
+            var menuAssignedRoles = _unitOfWork.MenuRole.GetRolesAssignedToMenu(id);
+            return menuAssignedRoles;
+        }
     }
 }
