@@ -4,6 +4,8 @@ using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq;
 using System.Net;
 
 namespace BusinessManagementSystem.Repositories
@@ -36,15 +38,10 @@ namespace BusinessManagementSystem.Repositories
             try
             {
                 List<Role> selectedRoles = null;
-                if (menu.SelectedRoles.Contains("0")) //means selected All
-                {
-                    selectedRoles = _db.Roles.ToList();
-                }
-                else
-                {
-                    selectedRoles = _db.Roles.Where(p => menu.SelectedRoles.Contains(p.Id.ToString())).ToList();
 
-                }
+                var selectedRoles1 = menu.Multiselect.SelectedItems.ToList();
+                selectedRoles = _db.Roles.Where(p => selectedRoles1.Contains(p.Id)).ToList();
+
                 _db.Database.BeginTransaction();
                 foreach (var role in selectedRoles)
                 {
@@ -63,14 +60,51 @@ namespace BusinessManagementSystem.Repositories
             {
                 _responseDto.StatusCode = HttpStatusCode.InternalServerError;
                 _responseDto.Message = ex.ToString();
+                _db.Database.RollbackTransaction();
                 
             }
+            return _responseDto;
+        }
+
+        public ResponseDto<Menu> GetMenuById(int id)
+        {
             return _responseDto;
         }
 
 
         public ResponseDto<Menu> UpdateMenu(Menu menu)
         {
+            try
+            {
+                _db.Database.BeginTransaction();
+                //_db.MenuRoles.RemoveRange(menu.MenuRoles);
+
+                var previousMenuRoles = _db.Menus.Include(m => m.MenuRoles).Where(p => p.Id == menu.Id).SingleOrDefault();
+
+                List<Role> selectedRoles = null;
+                var selectedRoles1 = menu.Multiselect.SelectedItems.ToList();
+                selectedRoles = _db.Roles.Where(p => selectedRoles1.Contains(p.Id)).ToList();
+
+                _db.MenuRoles.RemoveRange(previousMenuRoles.MenuRoles);
+
+                foreach (var role in selectedRoles)
+                {
+                    MenuRole menuRole = new()
+                    {
+                        RoleId = role.Id,
+                        MenuId = menu.Id
+                    };
+                    _db.MenuRoles.AddRange(menuRole);
+                    _db.SaveChanges();
+                }
+                _db.Database.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                _responseDto.StatusCode = HttpStatusCode.InternalServerError;
+                _responseDto.Message = ex.ToString();
+                _db.Database.RollbackTransaction();
+            }
             
             return _responseDto;
         }

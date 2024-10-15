@@ -20,7 +20,7 @@ namespace BusinessManagementSystem.Controllers
     {
         private ResponseDto<Menu> _responseDto;
         private readonly dynamic parentList;
-        private readonly dynamic roleList;
+        private readonly Multiselect roleList;
         private ILogger<MenuController> _logger;
         public MenuController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<MenuController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
@@ -48,8 +48,10 @@ namespace BusinessManagementSystem.Controllers
         public ActionResult Create()
         {
             ViewData["ParentList"] = new SelectList(parentList, "Parent", "Name");
-            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
-            return View();
+            //ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            _responseDto.Data = new Menu();
+            _responseDto.Data.Multiselect = roleList;
+            return View(_responseDto.Data);
         }
 
         // POST: MenuController/Create
@@ -59,7 +61,7 @@ namespace BusinessManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                _responseDto = _businessLayer.MenuService.Create(menu);
+                _responseDto = _businessLayer.MenuService.CreateMenu(menu);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);
@@ -84,15 +86,14 @@ namespace BusinessManagementSystem.Controllers
         // GET: MenuController/Edit/5
         public ActionResult Edit(int id)
         {
-            if (id == null) return NotFound();
+            if (id == 0) return NotFound();
             else
             {
                 _responseDto = _businessLayer.MenuService.GetMenuById(id);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     ViewData["ParentList"] = new SelectList(parentList, "Parent", "Name");
-                    ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
-                    _responseDto.Data.SelectedRoles=_businessLayer.MenuService.get
+                    //ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
 
                     return View(_responseDto.Data);
                 }
@@ -104,25 +105,34 @@ namespace BusinessManagementSystem.Controllers
                     return View();
                 }
             }
-
-
-            
-            return View();
         }
 
         // POST: MenuController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Menu menu)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _responseDto = _businessLayer.MenuService.UpdateMenu(menu);
+                if (_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    _notyf.Success(_responseDto.Message);
+                }
+                else
+                {
+                    _notyf.Error(_responseDto.Message);
+                }
             }
-            catch
+            else
             {
-                return View();
+                IEnumerable<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+                foreach (var error in errors)
+                {
+                    _notyf.Error(error.ErrorMessage);
+                }
             }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: MenuController/Delete/5
@@ -136,7 +146,7 @@ namespace BusinessManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            _responseDto = _businessLayer.MenuService.Delete(id);
+            _responseDto = _businessLayer.MenuService.DeleteMenu(id);
             if (_responseDto.StatusCode == HttpStatusCode.OK)
             {
                 _notyf.Success(_responseDto.Message);

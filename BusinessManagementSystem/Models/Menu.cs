@@ -25,7 +25,7 @@ namespace BusinessManagementSystem.Models
 
         [ValidateNever]
         [NotMapped]
-        public List<string> SelectedRoles { get; set; }
+        public Multiselect Multiselect { get; set; }
         [ValidateNever]
         public virtual ICollection<MenuRole> MenuRoles { get; set; }
     }

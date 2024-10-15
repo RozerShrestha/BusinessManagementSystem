@@ -26,7 +26,7 @@ namespace BusinessManagementSystem.Repositories
             _dbSet = context.Set<T>();
             _responseDto = new ResponseDto<T>();
         }
-        public ResponseDto<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null, bool tracked = true)
+        public ResponseDto<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null, bool tracked = false)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-        public  ResponseDto<T> GetSingleOrDefault(string includeProperties = null, bool tracked = true)
+        public  ResponseDto<T> GetSingleOrDefault(string includeProperties = null, bool tracked = false)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-        public  ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool tracked = true)
+        public  ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool tracked = false)
         {
             try
             {

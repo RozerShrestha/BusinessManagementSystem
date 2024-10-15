@@ -7,6 +7,7 @@ namespace BusinessManagementSystem.Services
     {
         dynamic ParentList();
         dynamic RoleList();
+        ResponseDto<Menu> GetMenuById(int id);
         ResponseDto<Menu> CreateMenu(Menu menu);
         ResponseDto<Menu> UpdateMenu(Menu menu);
     }

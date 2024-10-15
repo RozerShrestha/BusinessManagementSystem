@@ -2,6 +2,7 @@
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 
 namespace BusinessManagementSystem.Repositories
@@ -16,10 +17,8 @@ namespace BusinessManagementSystem.Repositories
 
         public dynamic GetRoles()
         {
-            var roleList = _db.Roles.Select(p => new { p.Id, p.Name }).ToList();
-            roleList.Add(new { Id = 0, Name = "All" });
-            roleList.Sort((a, b) => a.Id.CompareTo(b.Id));
-            return roleList;
+            var roles = _db.Roles.Select(p => new { p.Id, p.Name }).ToList();
+            return roles;
         }
         
     }
