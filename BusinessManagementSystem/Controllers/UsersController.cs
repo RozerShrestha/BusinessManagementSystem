@@ -19,11 +19,13 @@ namespace BusinessManagementSystem.Controllers
     public class UsersController : BaseController
     {
         public ResponseDto<User> _responseDto;
+        public ResponseDto<UserRoleDto> _responseDto1;
         private ILogger<UsersController> _logger;
         private readonly ModalView _modalView;
         public UsersController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responseDto = new ResponseDto<User>();
+            _responseDto1 = new ResponseDto<UserRoleDto>();
             _logger = logger;
             _modalView = new ModalView();
         }
@@ -142,18 +144,19 @@ namespace BusinessManagementSystem.Controllers
         {
             string who = roleName;
             if(who==SD.Role_Superadmin)
-                _responseDto = _businessLayer.UserService.GetAllUser(SD.Role_Superadmin);
+                _responseDto1 = _businessLayer.UserService.GetAllUser(SD.Role_Superadmin);
             else
             {
-                _responseDto = _businessLayer.UserService.GetAllUser(SD.Role_ApartmentAdmin);
+                _responseDto1 = _businessLayer.UserService.GetAllUser(SD.Role_ApartmentAdmin);
             }
-            if (_responseDto.StatusCode == HttpStatusCode.OK)
+
+            if (_responseDto1.StatusCode == HttpStatusCode.OK)
             {
-                return Ok(_responseDto);
+                return Ok(_responseDto1);
             }
             else
             {
-                return BadRequest(_responseDto);
+                return BadRequest(_responseDto1);
             }
             
         }

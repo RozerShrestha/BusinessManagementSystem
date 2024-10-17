@@ -7,7 +7,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
 {
     public interface IUserService
     {
-        ResponseDto<User> GetAllUser(string roleName);
+        ResponseDto<UserRoleDto> GetAllUser(string roleName);
         ResponseDto<User> GetUserById(int id);
         ResponseDto<User> GetAllActiveUsers();
         ResponseDto<User> GetAllInactiveUsers();

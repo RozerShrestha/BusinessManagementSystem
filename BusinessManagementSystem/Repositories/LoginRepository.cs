@@ -4,6 +4,7 @@ using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.ViewModels;
 using Microsoft.Identity.Client;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 
 namespace BusinessManagementSystem.Repositories
@@ -15,7 +16,7 @@ namespace BusinessManagementSystem.Repositories
         LoginResponseDto _loginResponse;
         readonly IConfiguration _config;
         readonly TokenRepository _tokenRepository;
-        string generatedToken = null;
+        JwtSecurityToken generatedToken = null;
         public LoginRepository(ApplicationDBContext db, IConfiguration config)
         {
             _db = db;
@@ -77,7 +78,8 @@ namespace BusinessManagementSystem.Repositories
                     generatedToken = _tokenRepository.BuildToken(_config["Jwt:Key"].ToString(), _config["Jwt:Issuer"].ToString(), _loginResponse);
                     if (generatedToken != null)
                     {
-                        _loginResponse.Token = generatedToken;
+                        _loginResponse.Token = new JwtSecurityTokenHandler().WriteToken(generatedToken);
+                        _loginResponse.TokenExpiry = generatedToken.ValidTo;
                     }
                     _responseDto.Message = "Login Successful";
                 }

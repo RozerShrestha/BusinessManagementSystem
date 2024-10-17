@@ -24,7 +24,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = new ResponseDto<User>();
             _responseDto2= new ResponseDto<UserRoleDto>();
         }
-        public List<UserRoleDto> GetAllUser(string roleName)
+        public ResponseDto<UserRoleDto> GetAllUser(string roleName)
         {
            _responseDto2 = _unitOfWork.Users.GetAllUser(roleName);
             return _responseDto2;

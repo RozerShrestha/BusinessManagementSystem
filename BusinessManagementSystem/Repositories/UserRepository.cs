@@ -2,6 +2,7 @@
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessManagementSystem.Repositories
@@ -12,7 +13,8 @@ namespace BusinessManagementSystem.Repositories
         public ResponseDto<UserRoleDto> _responseDto1;
         public UserRepository(ApplicationDBContext dbContext) : base(dbContext) 
         {
-
+            _responseDto = new ResponseDto<User>();
+            _responseDto1 = new ResponseDto<UserRoleDto>();
         }
 
         public List<User> GetAllActiveUsers()
@@ -29,16 +31,18 @@ namespace BusinessManagementSystem.Repositories
 
         public ResponseDto<UserRoleDto> GetAllUser(string filter)
         {
-            var allUser = (from u in _dbContext.Users
-                           join ur in _dbContext.UserRoles on u.Id equals ur.UserId
-                           join r in _dbContext.Roles on ur.RoleId equals r.Id
-                           where r.Name == filter
-                           select new UserRoleDto
-                           {
-                               User = u,
-                               RoleName = r.Name
-                           }).ToList();
-            return allUser;
+
+           _responseDto1.Datas = (from u in _dbContext.Users
+                                join ur in _dbContext.UserRoles on u.Id equals ur.UserId
+                                join r in _dbContext.Roles on ur.RoleId equals r.Id
+                                where r.Name == filter
+                                select new UserRoleDto
+                                {
+                                    User = u,
+                                    RoleName = r.Name
+                                }).ToList();
+            
+            return _responseDto1;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace BusinessManagementSystem.Repositories
     public class TokenRepository : ITokenService
     {
         private const double EXPIRY_DURATION_DAY = 1;
-        public string BuildToken(string key, string issuer, LoginResponseDto response)
+        public JwtSecurityToken BuildToken(string key, string issuer, LoginResponseDto response)
         {
             var claims = new[] {
             new Claim(ClaimTypes.Name, response.UserName),
@@ -26,7 +26,8 @@ namespace BusinessManagementSystem.Repositories
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var tokenDescriptor = new JwtSecurityToken(issuer, issuer, claims,
                 expires: DateTime.Now.AddDays(EXPIRY_DURATION_DAY), signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+            return tokenDescriptor;
         }
         public bool ValidateToken(string key, string issuer, string token)
         {
