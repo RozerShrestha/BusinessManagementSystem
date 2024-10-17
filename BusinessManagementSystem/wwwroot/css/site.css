@@ -35,3 +35,8 @@ body {
     background-color: #31006F !important;
     color: white !important;
 }
+.my-button {
+    padding: 10px 20px; /* Adjust padding values as needed */ /* You can add other styles like background color, border, etc. */   
+    margin-top:10px;
+}
+ 

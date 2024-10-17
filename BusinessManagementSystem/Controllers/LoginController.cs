@@ -130,18 +130,20 @@ namespace BusinessManagementSystem.Controllers
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     HttpContext.Session.SetString("Token", _responseDto.Data.Token);
-                    ViewBag.Message = _responseDto.Message;
                     _notyf.Success(_responseDto.Message);
-                    return RedirectToAction("Index", "Dashboard");
+                    return Ok(_responseDto);
                 }
                 else
                 {
                     ModelState.AddModelError("", _responseDto.Message);
+                    return BadRequest(_responseDto);
                 }
-                ViewBag.LoginResponse = _responseDto;
+            }
+            else
+            {
+                return BadRequest(_responseDto);
             }
 
-            return View("Index", loginRequest); ;
         }
 
         #endregion

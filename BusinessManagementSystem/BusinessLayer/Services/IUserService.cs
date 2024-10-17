@@ -7,13 +7,13 @@ namespace BusinessManagementSystem.BusinessLayer.Services
 {
     public interface IUserService
     {
-        ResponseDto<User> GetAllUser();
+        ResponseDto<User> GetAllUser(string roleName);
         ResponseDto<User> GetUserById(int id);
         ResponseDto<User> GetAllActiveUsers();
         ResponseDto<User> GetAllInactiveUsers();
-        ResponseDto<User> Create(UserDto userDto);
-        ResponseDto<User> Update(User u);
-        ResponseDto<User> Delete(int id);
+        ResponseDto<User> CreateUser(UserDto userDto);
+        ResponseDto<User> UpdateUser(User u);
+        ResponseDto<User> DeleteUser(int id);
 
     }
 }

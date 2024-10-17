@@ -1,4 +1,5 @@
-﻿using BusinessManagementSystem.Models;
+﻿using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Models;
 
 namespace BusinessManagementSystem.Services
 {
@@ -6,6 +7,7 @@ namespace BusinessManagementSystem.Services
     {
         List<User> GetAllActiveUsers();
         List<User> GetAllInactiveUsers();
+        ResponseDto<UserRoleDto> GetAllUser(string filter);
 
     }
 }

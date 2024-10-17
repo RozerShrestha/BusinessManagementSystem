@@ -16,16 +16,18 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
     {
         private readonly IUnitOfWork _unitOfWork;
         ResponseDto<User> _responseDto;
+        ResponseDto<UserRoleDto> _responseDto2;
 
         public UserImpl(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _responseDto = new ResponseDto<User>();
+            _responseDto2= new ResponseDto<UserRoleDto>();
         }
-        public ResponseDto<User> GetAllUser()
+        public List<UserRoleDto> GetAllUser(string roleName)
         {
-            var response = _unitOfWork.Users.GetAll();
-            return response;
+           _responseDto2 = _unitOfWork.Users.GetAllUser(roleName);
+            return _responseDto2;
         }
         public ResponseDto<User> GetUserById(int id)
         {
@@ -42,7 +44,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var response = _unitOfWork.Users.GetAll(p => p.Status == false);
             return response;
         }
-        public ResponseDto<User> Create(UserDto userDto)
+        public ResponseDto<User> CreateUser(UserDto userDto)
         {
             var hashInfo = Helper.Helpers.GetHashPassword(userDto.Password);
             List<UserRole> urList = new List<UserRole>();
@@ -66,13 +68,13 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = _unitOfWork.Users.Insert(u);
             return _responseDto;
         }
-        public ResponseDto<User> Update(User u)
+        public ResponseDto<User> UpdateUser(User u)
         {
              u.UpdatedBy = BaseController.username;
              _responseDto= _unitOfWork.Users.Update(u);
              return _responseDto;
         }
-        public ResponseDto<User> Delete(int id)
+        public ResponseDto<User> DeleteUser(int id)
         {
             var result = _unitOfWork.Users.GetById(id);
             if (result.StatusCode==HttpStatusCode.OK)

@@ -138,7 +138,17 @@ namespace BusinessManagementSystem.Controllers
         // GET: MenuController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            _responseDto = _businessLayer.MenuService.GetMenuById(id);
+            if(_responseDto.StatusCode == HttpStatusCode.OK)
+            {
+                return View(_responseDto.Data);
+            }
+            else
+            {
+                _notyf.Error("Menu Not Found");
+                return RedirectToAction(nameof(Index));
+            }
+            
         }
 
         // POST: MenuController/Delete/5

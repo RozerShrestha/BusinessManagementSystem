@@ -95,8 +95,13 @@ namespace BusinessManagementSystem.Repositories
                         MenuId = menu.Id
                     };
                     _db.MenuRoles.AddRange(menuRole);
-                    _db.SaveChanges();
+                    //_db.SaveChanges();
                 }
+
+                var menuToUpdate = _db.Menus.Where(m => m.Id == menu.Id).SingleOrDefault();
+                _db.Entry(menuToUpdate).CurrentValues.SetValues(menu);
+                _db.Entry(menuToUpdate).State = EntityState.Modified;
+                _db.SaveChanges();
                 _db.Database.CommitTransaction();
             }
             catch (Exception ex)

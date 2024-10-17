@@ -4,11 +4,13 @@ using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Net;
 using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
@@ -29,8 +31,6 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
         public IActionResult Index()
         {
-            _responseDto = _businessLayer.UserService.GetAllUser();
-            
             return View(_responseDto);
         }
 
@@ -53,7 +53,7 @@ namespace BusinessManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                _responseDto = _businessLayer.UserService.Create(user);
+                _responseDto = _businessLayer.UserService.CreateUser(user);
                 return RedirectToAction(nameof(Index));
             }
             return View(_responseDto);
@@ -86,7 +86,7 @@ namespace BusinessManagementSystem.Controllers
             {
                 try
                 {
-                    _responseDto=_businessLayer.UserService.Update(user);
+                    _responseDto=_businessLayer.UserService.UpdateUser(user);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -121,7 +121,7 @@ namespace BusinessManagementSystem.Controllers
             {
                 try
                 {
-                    _responseDto=_businessLayer.UserService.Delete(id);
+                    _responseDto=_businessLayer.UserService.DeleteUser(id);
                 }
                 catch (Exception)
                 {
@@ -135,11 +135,28 @@ namespace BusinessManagementSystem.Controllers
 
 
         #region API CALLS
-        //[HttpGet]
-        //public IActionResult GetAllUsers()
-        //{
+
+        [HttpGet]
+        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
+        public IActionResult GetAllUser()
+        {
+            string who = roleName;
+            if(who==SD.Role_Superadmin)
+                _responseDto = _businessLayer.UserService.GetAllUser(SD.Role_Superadmin);
+            else
+            {
+                _responseDto = _businessLayer.UserService.GetAllUser(SD.Role_ApartmentAdmin);
+            }
+            if (_responseDto.StatusCode == HttpStatusCode.OK)
+            {
+                return Ok(_responseDto);
+            }
+            else
+            {
+                return BadRequest(_responseDto);
+            }
             
-        //}
+        }
 
         #endregion
     }
