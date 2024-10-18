@@ -36,6 +36,7 @@ namespace BusinessManagementSystem.Models
         public string HashPassword { get; set; }
         [Required]
         public bool Status { get; set; }
+        public bool FirstPasswordReset { get; set; }
         [Required]
         public string Salt { get; set; }
         [NotMapped]

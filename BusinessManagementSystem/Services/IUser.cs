@@ -8,6 +8,7 @@ namespace BusinessManagementSystem.Services
         List<User> GetAllActiveUsers();
         List<User> GetAllInactiveUsers();
         ResponseDto<UserRoleDto> GetAllUser(string filter);
+        dynamic RoleList();
 
     }
 }

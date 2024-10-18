@@ -44,5 +44,11 @@ namespace BusinessManagementSystem.Repositories
             
             return _responseDto1;
         }
+
+        public dynamic RoleList()
+        {
+            var roleLIst = _dbContext.Roles.Select(p => new { Id = p.Id, Name = p.Name }).ToList();
+            return roleLIst;
+        }
     }
 }

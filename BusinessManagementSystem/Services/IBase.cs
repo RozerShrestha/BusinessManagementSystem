@@ -6,5 +6,8 @@ namespace BusinessManagementSystem.Services
     {
         UserDto UserDetail(string userName);
         List<MenuDto> MenuList(string roleName);
+
+        dynamic RoleList();
+        
     }
 }

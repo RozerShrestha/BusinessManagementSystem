@@ -123,7 +123,6 @@ namespace BusinessManagementSystem.Helper
             }
             return returnString;
         }
-       
         public static bool ValidateDocumentUpload(IFormFile file)
         {
             if (file == null)
@@ -135,7 +134,6 @@ namespace BusinessManagementSystem.Helper
                 return validExcel.Contains(extension);
             }
         }
-
         public static MemoryStream DownloadExcelIntoDifferentSheet(List<string[]> batchForPrint, List<string[]> batchAll)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -164,7 +162,6 @@ namespace BusinessManagementSystem.Helper
                 return stream;
             }
         }
-
         private static void LoadDataIntoSheet(ExcelWorksheet sheet, List<string[]> data)
         {
             for (int i = 0; i < data.Count; i++)

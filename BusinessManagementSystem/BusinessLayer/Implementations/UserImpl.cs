@@ -88,6 +88,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             }
             return _responseDto;
         }
+        public dynamic RoleList()
+        {
+            var roleLIst = _unitOfWork.Users.RoleList();
+            return roleLIst;
+        }
     }
 }
 

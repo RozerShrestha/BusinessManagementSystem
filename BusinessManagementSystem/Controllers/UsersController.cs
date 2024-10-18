@@ -22,11 +22,13 @@ namespace BusinessManagementSystem.Controllers
         public ResponseDto<UserRoleDto> _responseDto1;
         private ILogger<UsersController> _logger;
         private readonly ModalView _modalView;
+        private readonly dynamic roleList;
         public UsersController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responseDto = new ResponseDto<User>();
             _responseDto1 = new ResponseDto<UserRoleDto>();
             _logger = logger;
+            roleList = _businessLayer.UserService.RoleList();
             _modalView = new ModalView();
         }
         [HttpGet]
@@ -54,6 +56,7 @@ namespace BusinessManagementSystem.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             return View();
         }
 

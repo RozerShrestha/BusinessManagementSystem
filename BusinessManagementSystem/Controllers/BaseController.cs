@@ -49,7 +49,6 @@ namespace BusinessManagementSystem.Controllers
         {
             return StatusCode(500, new {message= ex.Message });
         }
-        
         private UserDto UserDetail()
         {
             try

@@ -12,7 +12,7 @@ namespace BusinessManagementSystem.Dto
     {
         [ValidateNever]
         public int UserId { get; set; }
-        [ValidateNever]
+        
         public string UserName { get; set; }
         [EmailAddress]
         public string Email { get; set; }
@@ -28,6 +28,7 @@ namespace BusinessManagementSystem.Dto
         public string MobileNumber { get; set; }
         public string Gender { get; set; }
         public string Occupation { get; set; }
+        public bool Status { get; set; }
         public int  RoleId { get; set; }
         [ValidateNever]
         public string RoleName { get; set; }

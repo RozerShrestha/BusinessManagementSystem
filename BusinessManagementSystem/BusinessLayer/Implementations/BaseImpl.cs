@@ -22,5 +22,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var userDto= _unitOfWork.Base.UserDetail(userName);
             return userDto;
         }
+
+        public dynamic RoleList()
+        {
+            var roleLIst = _unitOfWork.Base.RoleList();
+            return roleLIst;
+        }
     }
 }

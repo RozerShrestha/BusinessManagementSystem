@@ -15,7 +15,6 @@
             <div class="col-md-4">
                 <label asp-for="Parent" class="control-label"></label>
                 @Html.DropDownList("Parent", ViewData["ParentList"] as SelectList, new { @class = "form-control" })
-
                 <span asp-validation-for="Parent" class="text-danger"></span>
             </div>
             <div class="col-md-4">

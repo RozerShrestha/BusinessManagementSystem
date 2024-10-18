@@ -33,11 +33,13 @@
                                 <th>ID</th>
                                 <th>Full Name</th>
                                 <th>Email</th>
-                                <th>INumber</th>
-                                <th>Address</th>
                                 <th>Date Of Birth</th>
+                                <th>Address</th>
+                                <th>Gender</th>
                                 <th>Mobile Number</th>
+                                <th>Occupation</th>
                                 <Th>Status</Th>
+                                <th>Role</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -70,8 +72,12 @@
                 "ajax": {
                     "url": `/Users/GetAllUser`,
                     "dataSrc": function (data) {
-                        console.log(data);
-                        return data.datas;
+                        // console.log(data);
+                        // return data.datas;
+                        return data.datas.map(function (item) {
+                            item.user.roleName=item.roleName
+                            return item.user;
+                        });
                     }
                 },
                 "columns": [
@@ -86,19 +92,25 @@
                         "data": "email",
                     },
                     {
-                        "data": "iNumber",
+                        "data": "dateOfBirth",
                     },
                     {
                         "data": "address",
                     },
                     {
-                        "data": "dateOfBrith",
+                        "data": "gender",
                     },
                     {
-                        "data": "mobileNumber",
+                        "data": "phoneNumber",
+                    },
+                    {
+                        "data": "occupation",
                     },
                     {
                         "data": "status",
+                    },
+                    {
+                        "data": "roleName",
                     },
                     {
                         "data": "id",
