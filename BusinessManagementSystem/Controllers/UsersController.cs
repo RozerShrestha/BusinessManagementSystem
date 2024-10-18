@@ -50,6 +50,13 @@ namespace BusinessManagementSystem.Controllers
             }
             return View(_responseDto);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Create(UserDto user)
         {
