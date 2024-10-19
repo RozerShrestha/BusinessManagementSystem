@@ -1,4 +1,5 @@
-﻿using BusinessManagementSystem.BusinessLayer.Services;
+﻿using AutoMapper;
+using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Services;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -8,11 +9,13 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
     public class BusinessLayerImpl : IBusinessLayer
     {
         protected readonly IUnitOfWork _unitOfWork=null;
-        public BusinessLayerImpl(IUnitOfWork unitOfWork, ApplicationDBContext dBContext) 
+        protected readonly IMapper _mapper = null;
+        public BusinessLayerImpl(IUnitOfWork unitOfWork, IMapper mapper, ApplicationDBContext dBContext) 
         { 
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
             BaseService = new BaseImpl(_unitOfWork);
-            UserService = new UserImpl(_unitOfWork);
+            UserService = new UserImpl(_unitOfWork, mapper);
             BasicConfigurationService = new BasicConfigurationImpl(_unitOfWork);
             MenuService = new MenuImpl(_unitOfWork);
         }

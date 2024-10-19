@@ -25,9 +25,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.VisibleToAll)
-            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Icon)
             </th>
@@ -56,15 +53,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
-                @* <td>
-                    @Html.DisplayFor(modelItem => item.VisibleToAll)
-                </td> *@
+
                 <td>
                     @Html.DisplayFor(modelItem => item.Icon)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
-                    @*<a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-eye"></i></a> |*@
                     <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>

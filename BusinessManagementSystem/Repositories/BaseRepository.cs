@@ -68,7 +68,7 @@ namespace BusinessManagementSystem.Repositories
                 userDto.UserId = userDetail.userId;
                 userDto.UserName = userDetail.UserName;
                 userDto.Email = userDetail.Email;
-                userDto.MobileNumber = userDetail.PhoneNumber;
+                userDto.PhoneNumber = userDetail.PhoneNumber;
                 userDto.RoleId = userDetail.Id;
                 userDto.RoleName = userDetail.RoleName;
                 userDto.FullName = userDetail.FullName;

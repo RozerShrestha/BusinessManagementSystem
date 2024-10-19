@@ -9,6 +9,8 @@ namespace BusinessManagementSystem.BusinessLayer.Services
     {
         ResponseDto<UserRoleDto> GetAllUser(string roleName);
         ResponseDto<User> GetUserById(int id);
+        ResponseDto<UserDto> GetUserByGuid(Guid guid);
+
         ResponseDto<User> GetAllActiveUsers();
         ResponseDto<User> GetAllInactiveUsers();
         ResponseDto<User> CreateUser(UserDto userDto);

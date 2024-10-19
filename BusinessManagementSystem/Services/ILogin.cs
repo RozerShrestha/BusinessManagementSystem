@@ -10,7 +10,7 @@ namespace BusinessManagementSystem.Services
         User GetUser(LoginRequestDto l);
         ResponseDto<T> Register_User(UserDto userDto);
         bool IsEmailAvailable(string Email);
-        bool IsMobileNumberAvailable(string MobileNumber);
+        bool IsPhoneNumberAvailable(string PhoneNumber);
 
         ResponseDto<T> ForgotPassword(LoginRequestDto l);
     }

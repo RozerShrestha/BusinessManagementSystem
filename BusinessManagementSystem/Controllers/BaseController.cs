@@ -26,7 +26,7 @@ namespace BusinessManagementSystem.Controllers
         public static string username = string.Empty;
         public static string email = string.Empty;
         public static string fullName = string.Empty;
-        public static string mobileNumber = string.Empty;
+        public static string PhoneNumber = string.Empty;
         protected UserDto userDto;
         JavaScriptEncoder _javaScriptEncoder;
 
@@ -61,7 +61,7 @@ namespace BusinessManagementSystem.Controllers
                 userId = userDto.UserId;
                 username = userDto.UserName;
                 email = userDto.Email;
-                mobileNumber = userDto.MobileNumber;
+                PhoneNumber = userDto.PhoneNumber;
                 roleId = userDto.RoleId;
                 roleName = userDto.RoleName;
                 fullName = userDto.FullName;

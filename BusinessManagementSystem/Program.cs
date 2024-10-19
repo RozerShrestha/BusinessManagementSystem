@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 using NLog;
 using NLog.Web;
 using System.Net;
@@ -30,6 +31,12 @@ static IHostBuilder CreateHostBuilder(string[] args) =>
         {
             webBuilder.UseStartup<Program>();
         });
+
+var mapperConfiguration = new MapperConfiguration(configuration =>
+{
+    configuration.AddProfile(new MappingProfile());
+});
+var mapper = mapperConfiguration.CreateMapper();
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDBContext>(options => 
@@ -38,6 +45,11 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddSingleton(mapper);
+
+
 builder.Services.AddScoped<ILogin<LoginResponseDto>, LoginRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped<IBaseService, BaseImpl>();

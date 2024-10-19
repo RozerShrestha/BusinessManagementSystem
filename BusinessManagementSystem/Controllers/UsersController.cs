@@ -61,34 +61,34 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(UserDto user)
+        public IActionResult Create(UserDto userDto)
         {
             if (ModelState.IsValid)
             {
-                _responseDto = _businessLayer.UserService.CreateUser(user);
+                _responseDto = _businessLayer.UserService.CreateUser(userDto);
                 return RedirectToAction(nameof(Index));
             }
             return View(_responseDto);
         }
 
-        public IActionResult EditUser(int id)
+        public IActionResult Edit(Guid guid)
         {
-            if (id == 0)
+            if (guid==Guid.Empty)
             {
                 return NotFound();
             }
-
-            var _responseDto = _businessLayer.UserService.GetUserById(id);
+            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            var _responseDto = _businessLayer.UserService.GetUserByGuid(guid);
             if (_responseDto == null)
-            {
+             {
                 return NotFound();
             }
-            return View(_responseDto);
+            return View(_responseDto.Data);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditUser(int id, [Bind("Id,Guid,UserName,Email,FullName,DateOfBirth,Gender,Address,PhoneNumber,RoleId")] User user)
+        public IActionResult Edit(int id, [Bind("Id,Guid,UserName,Email,FullName,DateOfBirth,Gender,Address,PhoneNumber,RoleId")] User user)
         {
             if (id != user.Id)
             {

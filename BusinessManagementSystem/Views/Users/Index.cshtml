@@ -83,7 +83,6 @@
                 "columns": [
                     {
                         "data": "id",
-                        "width": "10%"
                     },
                     {
                         "data": "fullName",
@@ -113,12 +112,12 @@
                         "data": "roleName",
                     },
                     {
-                        "data": "id",
+                        "data": "guid",
                         "render": function (data) {
                             return `
                                         <div>
-                                            <a href="/Users/edit?id=${data}"><i class="fas fa-edit"></i></i></a> |
-                                            <a href="/Users/details?id=${data}"><i class="fas fa-eye"></i></i></a>
+                                            <a href="/Users/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
+                                            <a href="/Users/details?guid=${data}"><i class="fas fa-eye"></i></i></a>
 
                                         </div>
                                     `

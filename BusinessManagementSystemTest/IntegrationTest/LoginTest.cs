@@ -45,7 +45,7 @@ namespace BusinessManagementSystemTest.IntegrationTest
                 FullName = "Rozer Shrestha",
                 Address = "Bhimsensthan",
                 DateOfBirth = "1991/03/01",
-                MobileNumber = "9818136562",
+                PhoneNumber = "9818136562",
                 Gender = "Male",
                 Occupation = "IT",
                 RoleId = 0,

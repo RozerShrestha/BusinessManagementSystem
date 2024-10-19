@@ -1,4 +1,5 @@
 ﻿using AspNetCore;
+using AutoMapper;
 using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Controllers;
 using BusinessManagementSystem.Data;
@@ -15,24 +16,49 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
     public class UserImpl :IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
         ResponseDto<User> _responseDto;
-        ResponseDto<UserRoleDto> _responseDto2;
+        ResponseDto<UserRoleDto> _responseUserRole;
+        ResponseDto<UserDto> _responseUserDto;
 
-        public UserImpl(IUnitOfWork unitOfWork)
+
+        public UserImpl(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _responseDto = new ResponseDto<User>();
-            _responseDto2= new ResponseDto<UserRoleDto>();
+            _responseUserRole = new ResponseDto<UserRoleDto>();
+            _responseUserDto = new ResponseDto<UserDto>();
+            _mapper = mapper;
         }
         public ResponseDto<UserRoleDto> GetAllUser(string roleName)
         {
-           _responseDto2 = _unitOfWork.Users.GetAllUser(roleName);
-            return _responseDto2;
+           _responseUserRole = _unitOfWork.Users.GetAllUser(roleName);
+            return _responseUserRole;
         }
         public ResponseDto<User> GetUserById(int id)
         {
             var response = _unitOfWork.Users.GetFirstOrDefault(p =>p.Id==id);
             return response;
+        }
+        public ResponseDto<UserDto> GetUserByGuid(Guid guid)
+        {
+            try
+            {
+                UserDto userDto = new UserDto();
+                _responseDto = _unitOfWork.Users.GetFirstOrDefault(p => p.Guid == guid, includeProperties: "UserRoles.Role");
+                userDto = _mapper.Map<UserDto>(_responseDto.Data);
+                _responseUserDto.Data = userDto;
+                
+            }
+            catch (Exception ex)
+            {
+                _responseUserDto.StatusCode = HttpStatusCode.InternalServerError;
+                _responseUserDto.Message=_responseDto.Message +"Exception:"+ ex.Message;
+                
+            }
+            
+            
+            return _responseUserDto;
         }
         public ResponseDto<User> GetAllActiveUsers()
         {
@@ -50,15 +76,16 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             List<UserRole> urList = new List<UserRole>();
             urList.Add(new UserRole {RoleId = userDto.RoleId });
             User u = new User();
-            u.Guid = Helper.Helpers.GenerateGUID();
-            u.UserName = userDto.UserName;
-            u.Email = userDto.Email;
-            u.FullName = userDto.FullName;
-            u.DateOfBirth = DateOnly.Parse(userDto.DateOfBirth);
-            u.Gender=userDto.Gender;
-            u.Address=userDto.Address;
-            u.PhoneNumber = userDto.MobileNumber;
-            u.Occupation=userDto.Occupation;
+            u = _mapper.Map<User>(userDto);
+            //u.Guid = Helper.Helpers.GenerateGUID();
+            //u.UserName = userDto.UserName;
+            //u.Email = userDto.Email;
+            //u.FullName = userDto.FullName;
+            //u.DateOfBirth = DateOnly.Parse(userDto.DateOfBirth.ToString());
+            //u.Gender=userDto.Gender;
+            //u.Address=userDto.Address;
+            //u.PhoneNumber = userDto.PhoneNumber;
+            //u.Occupation=userDto.Occupation;
             u.HashPassword = hashInfo.Hash;
             u.Status = true;
             u.Salt=hashInfo.Salt;

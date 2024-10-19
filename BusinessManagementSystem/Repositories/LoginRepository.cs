@@ -95,7 +95,7 @@ namespace BusinessManagementSystem.Repositories
         }
         public ResponseDto<LoginResponseDto> Register_User(UserDto userDto)
         {
-            if(!IsEmailAvailable(userDto.Email) && !IsMobileNumberAvailable(userDto.MobileNumber))
+            if(!IsEmailAvailable(userDto.Email) && !IsPhoneNumberAvailable(userDto.PhoneNumber))
             {
                 try
                 {
@@ -110,8 +110,8 @@ namespace BusinessManagementSystem.Repositories
                         Salt = hashInfo.Salt,
                         FullName = userDto.FullName,
                         Address = userDto.Address,
-                        DateOfBirth =DateOnly.Parse(userDto.DateOfBirth),
-                        PhoneNumber = userDto.MobileNumber,
+                        DateOfBirth =DateOnly.Parse(userDto.DateOfBirth.ToString()),
+                        PhoneNumber = userDto.PhoneNumber,
                         Gender=userDto.Gender,
                         CreatedBy = userDto.FullName,
                         UpdatedBy = userDto.FullName,
@@ -149,16 +149,16 @@ namespace BusinessManagementSystem.Repositories
         {
            return _db.Users.Where(p=>p.Email== Email).Any();  
         }
-        public bool IsMobileNumberAvailable(string MobileNumber)
+        public bool IsPhoneNumberAvailable(string PhoneNumber)
         {
-            return _db.Users.Where(p=>p.PhoneNumber== MobileNumber).Any();
+            return _db.Users.Where(p=>p.PhoneNumber== PhoneNumber).Any();
         }
         public ResponseDto<LoginResponseDto> ForgotPassword(LoginRequestDto l)
         {
             bool passwordMatch = string.Equals(l.Password, l.ConfirmPassword);
             if(passwordMatch)
             {
-                if (IsEmailAvailable(l.Username) || IsMobileNumberAvailable(l.Username))
+                if (IsEmailAvailable(l.Username) || IsPhoneNumberAvailable(l.Username))
                 {
                     var hashInfo = Helper.Helpers.GetHashPassword(l.Password);
                     var user = _db.Users.Where(p => p.Email == l.Username || p.PhoneNumber == l.Username).FirstOrDefault();
