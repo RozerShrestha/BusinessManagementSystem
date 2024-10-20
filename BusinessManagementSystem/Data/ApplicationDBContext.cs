@@ -7,6 +7,7 @@ namespace BusinessManagementSystem.Data
 {
     public class ApplicationDBContext : DbContext
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         //Adding Domain Classes as DbSet Properties
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -16,9 +17,9 @@ namespace BusinessManagementSystem.Data
         public DbSet<MenuRole> MenuRoles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         //Constructor calling the Base DbContext Class Constructor
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
-            
+            _httpContextAccessor = httpContextAccessor;
         }
         public ApplicationDBContext(DbContextOptionsBuilder<ApplicationDBContext> options)
         {
@@ -54,12 +55,13 @@ namespace BusinessManagementSystem.Data
             try
             {
                 AddTimestamps();
+                return base.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                throw ex;
             }
-            return base.SaveChanges();
+
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -69,17 +71,45 @@ namespace BusinessManagementSystem.Data
 
         private void AddTimestamps()
         {
+            var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System";
             var entities = ChangeTracker.Entries();
             //.Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
             foreach (var entity in entities)
             {
-                var now = DateTime.Now; // current datetime
-
-                if (entity.State == EntityState.Added)
+                //some entity doesn't have created and updated at
+                try
                 {
-                    ((BaseEntity)entity.Entity).CreatedAt = now;
+                    if (entity.Entity is BaseEntity baseEntity)
+                    {
+
+
+                        var now = DateTime.Now; // current datetime
+
+                        if (entity.State == EntityState.Added)
+                        {
+                            baseEntity.CreatedAt = now;
+                            baseEntity.CreatedBy = userName;
+                        }
+                        else if (entity.State == EntityState.Added || entity.State == EntityState.Modified)
+                        {
+                            baseEntity.UpdatedAt = now;
+                            baseEntity.UpdatedBy = userName;
+
+                            var originalCreatedAt = entity.OriginalValues[nameof(BaseEntity.CreatedAt)]==null?now: entity.OriginalValues[nameof(BaseEntity.CreatedAt)];
+                            baseEntity.CreatedAt = (DateTime)originalCreatedAt;
+                            var originalCreatedBy = entity.OriginalValues[nameof(BaseEntity.CreatedBy)]==null?userName: entity.OriginalValues[nameof(BaseEntity.CreatedBy)];
+                            baseEntity.CreatedBy = (string)originalCreatedBy;
+
+                            
+                        }
+                    }
+                    
                 }
-                ((BaseEntity)entity.Entity).UpdatedAt = now;
+                catch (Exception ex)
+                {
+                    
+                }
+                
             }
         }
 

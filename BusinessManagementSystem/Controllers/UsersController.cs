@@ -19,14 +19,18 @@ namespace BusinessManagementSystem.Controllers
     public class UsersController : BaseController
     {
         public ResponseDto<User> _responseDto;
-        public ResponseDto<UserRoleDto> _responseDto1;
+        public ResponseDto<UserDto> _responseUserDto;
+
+        public ResponseDto<UserRoleDto> _responseUserRoleDto;
         private ILogger<UsersController> _logger;
         private readonly ModalView _modalView;
         private readonly dynamic roleList;
         public UsersController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responseDto = new ResponseDto<User>();
-            _responseDto1 = new ResponseDto<UserRoleDto>();
+            _responseUserDto = new ResponseDto<UserDto>();
+
+            _responseUserRoleDto = new ResponseDto<UserRoleDto>();
             _logger = logger;
             roleList = _businessLayer.UserService.RoleList();
             _modalView = new ModalView();
@@ -88,7 +92,7 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Guid,UserName,Email,FullName,DateOfBirth,Gender,Address,PhoneNumber,RoleId")] User user)
+        public IActionResult Edit(int id, User user)
         {
             if (id != user.Id)
             {
@@ -154,19 +158,19 @@ namespace BusinessManagementSystem.Controllers
         {
             string who = roleName;
             if(who==SD.Role_Superadmin)
-                _responseDto1 = _businessLayer.UserService.GetAllUser(SD.Role_Superadmin);
+                _responseUserRoleDto = _businessLayer.UserService.GetAllUser(SD.Role_Superadmin);
             else
             {
-                _responseDto1 = _businessLayer.UserService.GetAllUser(SD.Role_ApartmentAdmin);
+                _responseUserRoleDto = _businessLayer.UserService.GetAllUser(SD.Role_ApartmentAdmin);
             }
 
-            if (_responseDto1.StatusCode == HttpStatusCode.OK)
+            if (_responseUserRoleDto.StatusCode == HttpStatusCode.OK)
             {
-                return Ok(_responseDto1);
+                return Ok(_responseUserRoleDto);
             }
             else
             {
-                return BadRequest(_responseDto1);
+                return BadRequest(_responseUserRoleDto);
             }
             
         }

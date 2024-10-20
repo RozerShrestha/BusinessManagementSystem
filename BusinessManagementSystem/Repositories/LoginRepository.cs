@@ -1,6 +1,8 @@
-﻿using BusinessManagementSystem.Data;
+﻿using AutoMapper;
+using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
+using BusinessManagementSystem.Pages;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.ViewModels;
 using Microsoft.Identity.Client;
@@ -13,17 +15,20 @@ namespace BusinessManagementSystem.Repositories
     {
         ApplicationDBContext _db;
         ResponseDto<LoginResponseDto> _responseDto;
+        private readonly IMapper _mapper;
         LoginResponseDto _loginResponse;
         readonly IConfiguration _config;
         readonly TokenRepository _tokenRepository;
         JwtSecurityToken generatedToken = null;
-        public LoginRepository(ApplicationDBContext db, IConfiguration config)
+        public LoginRepository(ApplicationDBContext db, IConfiguration config, IMapper mapper)
         {
             _db = db;
             _config = config;
+            mapper = mapper;
             _tokenRepository = new TokenRepository();
             _responseDto = new ResponseDto<LoginResponseDto>();
             _loginResponse = new LoginResponseDto();
+
         }
         public ResponseDto<LoginResponseDto> Login(LoginRequestDto l)
         {

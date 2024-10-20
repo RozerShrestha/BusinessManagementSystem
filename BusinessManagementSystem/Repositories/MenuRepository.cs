@@ -41,7 +41,6 @@ namespace BusinessManagementSystem.Repositories
 
                 var selectedRoles1 = menu.Multiselect.SelectedItems.ToList();
                 selectedRoles = _db.Roles.Where(p => selectedRoles1.Contains(p.Id)).ToList();
-
                 _db.Database.BeginTransaction();
                 foreach (var role in selectedRoles)
                 {

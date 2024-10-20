@@ -38,18 +38,14 @@ var mapperConfiguration = new MapperConfiguration(configuration =>
 });
 var mapper = mapperConfiguration.CreateMapper();
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<ApplicationDBContext>(options => 
 { 
     options.UseSqlServer(builder.Configuration.GetConnectionString("BMSConnection")); 
 });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-
 builder.Services.AddSingleton(mapper);
-
-
 builder.Services.AddScoped<ILogin<LoginResponseDto>, LoginRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped<IBaseService, BaseImpl>();

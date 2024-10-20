@@ -37,8 +37,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         public ResponseDto<User> GetUserById(int id)
         {
-            var response = _unitOfWork.Users.GetFirstOrDefault(p =>p.Id==id);
-            return response;
+            _responseDto = _unitOfWork.Users.GetFirstOrDefault(p =>p.Id==id, includeProperties: "UserRoles.Role");
+            return _responseDto;
         }
         public ResponseDto<UserDto> GetUserByGuid(Guid guid)
         {
@@ -62,13 +62,13 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         public ResponseDto<User> GetAllActiveUsers()
         {
-            var response = _unitOfWork.Users.GetAll(p => p.Status == true);
-            return response;
+            _responseDto = _unitOfWork.Users.GetAll(p => p.Status == true);
+            return _responseDto;
         }
         public ResponseDto<User> GetAllInactiveUsers()
         {
-            var response = _unitOfWork.Users.GetAll(p => p.Status == false);
-            return response;
+            _responseDto = _unitOfWork.Users.GetAll(p => p.Status == false);
+            return _responseDto;
         }
         public ResponseDto<User> CreateUser(UserDto userDto)
         {
@@ -77,15 +77,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             urList.Add(new UserRole {RoleId = userDto.RoleId });
             User u = new User();
             u = _mapper.Map<User>(userDto);
-            //u.Guid = Helper.Helpers.GenerateGUID();
-            //u.UserName = userDto.UserName;
-            //u.Email = userDto.Email;
-            //u.FullName = userDto.FullName;
-            //u.DateOfBirth = DateOnly.Parse(userDto.DateOfBirth.ToString());
-            //u.Gender=userDto.Gender;
-            //u.Address=userDto.Address;
-            //u.PhoneNumber = userDto.PhoneNumber;
-            //u.Occupation=userDto.Occupation;
             u.HashPassword = hashInfo.Hash;
             u.Status = true;
             u.Salt=hashInfo.Salt;
