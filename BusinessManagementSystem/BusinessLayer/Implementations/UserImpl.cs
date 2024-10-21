@@ -87,8 +87,20 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         public ResponseDto<User> UpdateUser(UserDto userDto)
         {
-            var item=_unitOfWork.Users.GetFirstOrDefault(p=>p.)
-            _responseDto = _unitOfWork.Users.Update(u);
+            var item = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == userDto.UserId, includeProperties: "UserRoles");
+            
+            item.Data.UserName=userDto.UserName;
+            item.Data.Email = userDto.Email;
+            item.Data.FullName= userDto.FullName;
+            item.Data.DateOfBirth=userDto.DateOfBirth;
+            item.Data.Address=userDto.Address;
+            item.Data.PhoneNumber=userDto.PhoneNumber;
+            item.Data.Gender=userDto.Gender;
+            item.Data.Occupation=userDto.Occupation;
+            item.Data.Status=userDto.Status;
+            item.Data.RoleId= userDto.RoleId;
+            item.Data.UserRoles.Where(p=>p.UserId==userDto.UserId).SingleOrDefault().RoleId= userDto.RoleId;
+            _responseDto = _unitOfWork.Users.Update(item.Data);
              return _responseDto;
         }
         public ResponseDto<User> DeleteUser(int id)

@@ -7,6 +7,7 @@ using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
@@ -82,6 +83,11 @@ namespace BusinessManagementSystem.Controllers
             }
             else
             {
+                IEnumerable<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+                foreach (var error in errors)
+                {
+                    _notyf.Error(error.ErrorMessage);
+                }
                 return View(userDto);
             }
         }
@@ -103,21 +109,33 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, UserDto userDto)
-        {
+        public IActionResult Edit(UserDto userDto)
+      {
+            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             if (ModelState.IsValid)
             {
-                try
+                _responseDto=_businessLayer.UserService.UpdateUser(userDto);
+                if(_responseDto.StatusCode == HttpStatusCode.OK)
                 {
-                    _responseDto=_businessLayer.UserService.UpdateUser(userDto);
-                    return RedirectToAction(nameof(Index));
+                    _notyf.Success(_responseDto.Message);
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    //_unitOfWork.Rollback();
+                    _notyf.Error(_responseDto.Message);
+                    return View(userDto);
                 }
+                return RedirectToAction(nameof(Index));
             }
-            return View(_responseDto);
+            else
+            {
+                IEnumerable<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+                foreach (var error in errors)
+                {
+                    _notyf.Error(error.ErrorMessage);
+                }
+                return View(_responseDto.Data);
+            }
+           
         }
 
         public IActionResult Delete(int id)
