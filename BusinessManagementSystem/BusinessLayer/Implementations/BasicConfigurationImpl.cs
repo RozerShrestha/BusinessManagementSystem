@@ -24,7 +24,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         
         public ResponseDto<BasicConfiguration> Update(BasicConfiguration basicConfiguration)
         {
-            basicConfiguration.UpdatedBy = BaseController.username;
             var response=_unitOfWork.BasicConfiguration.Update(basicConfiguration);
             return response;
         }

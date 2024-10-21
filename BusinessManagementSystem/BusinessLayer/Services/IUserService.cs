@@ -14,7 +14,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<User> GetAllActiveUsers();
         ResponseDto<User> GetAllInactiveUsers();
         ResponseDto<User> CreateUser(UserDto userDto);
-        ResponseDto<User> UpdateUser(User u);
+        ResponseDto<User> UpdateUser(UserDto userDto);
         ResponseDto<User> DeleteUser(int id);
         dynamic RoleList();
 

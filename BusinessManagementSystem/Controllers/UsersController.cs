@@ -20,7 +20,6 @@ namespace BusinessManagementSystem.Controllers
     {
         public ResponseDto<User> _responseDto;
         public ResponseDto<UserDto> _responseUserDto;
-
         public ResponseDto<UserRoleDto> _responseUserRoleDto;
         private ILogger<UsersController> _logger;
         private readonly ModalView _modalView;
@@ -43,18 +42,18 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public IActionResult Details(Guid guid)
         {
-            if(id == 0)
+            if(guid == Guid.Empty)
             {
                 return NotFound();
             }
-            var _responseDto = _businessLayer.UserService.GetUserById(id);
-            if (_responseDto == null) 
+            _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
+            if (_responseUserDto == null) 
             {
                 return NotFound();
             }
-            return View(_responseDto);
+            return View(_responseUserDto.Data);
         }
 
         [HttpGet]
@@ -67,12 +66,24 @@ namespace BusinessManagementSystem.Controllers
         [HttpPost]
         public IActionResult Create(UserDto userDto)
         {
+            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             if (ModelState.IsValid)
             {
                 _responseDto = _businessLayer.UserService.CreateUser(userDto);
-                return RedirectToAction(nameof(Index));
+                if (_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    return RedirectToAction(nameof(Index));
+                } 
+                else
+                {
+                    _notyf.Error(_responseDto.Message);
+                    return View(userDto);
+                }
             }
-            return View(_responseDto);
+            else
+            {
+                return View(userDto);
+            }
         }
 
         public IActionResult Edit(Guid guid)
@@ -92,17 +103,13 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, User user)
+        public IActionResult Edit(int id, UserDto userDto)
         {
-            if (id != user.Id)
-            {
-                return NotFound();
-            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _responseDto=_businessLayer.UserService.UpdateUser(user);
+                    _responseDto=_businessLayer.UserService.UpdateUser(userDto);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)

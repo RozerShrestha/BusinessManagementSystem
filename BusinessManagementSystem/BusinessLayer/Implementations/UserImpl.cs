@@ -44,7 +44,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             try
             {
-                UserDto userDto = new UserDto();
+                UserDto userDto = new();
                 _responseDto = _unitOfWork.Users.GetFirstOrDefault(p => p.Guid == guid, includeProperties: "UserRoles.Role");
                 userDto = _mapper.Map<UserDto>(_responseDto.Data);
                 _responseUserDto.Data = userDto;
@@ -80,16 +80,15 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             u.HashPassword = hashInfo.Hash;
             u.Status = true;
             u.Salt=hashInfo.Salt;
+            u.FirstPasswordReset = false;
             u.UserRoles = urList;
-            u.CreatedBy = BaseController.username; //accessing static variables from BaseController
-            u.UpdatedBy = BaseController.username;
             _responseDto = _unitOfWork.Users.Insert(u);
             return _responseDto;
         }
-        public ResponseDto<User> UpdateUser(User u)
+        public ResponseDto<User> UpdateUser(UserDto userDto)
         {
-             u.UpdatedBy = BaseController.username;
-             _responseDto= _unitOfWork.Users.Update(u);
+            var item=_unitOfWork.Users.GetFirstOrDefault(p=>p.)
+            _responseDto = _unitOfWork.Users.Update(u);
              return _responseDto;
         }
         public ResponseDto<User> DeleteUser(int id)
