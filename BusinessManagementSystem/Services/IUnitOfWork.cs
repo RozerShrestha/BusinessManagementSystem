@@ -10,6 +10,7 @@ namespace BusinessManagementSystem.Services
         IRole Role { get; }
         IMenu Menu { get; }
         IMenuRole MenuRole { get; }
+        IUserRole UserRole { get; }
         IBasicConfiguration BasicConfiguration { get; }      
         IDashboard Dashboard { get; }
         IBase Base { get; }

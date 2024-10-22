@@ -43,7 +43,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(Guid guid)
+        public IActionResult Detail(Guid guid)
         {
             if(guid == Guid.Empty)
             {
@@ -54,7 +54,8 @@ namespace BusinessManagementSystem.Controllers
             {
                 return NotFound();
             }
-            return View(_responseUserDto.Data);
+            //return View(_responseUserDto.Data);
+            return View();
         }
 
         [HttpGet]

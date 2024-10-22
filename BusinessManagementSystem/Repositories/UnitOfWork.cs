@@ -25,6 +25,7 @@ namespace BusinessManagementSystem.Repositories
             Role =new RoleRepository(_dbContext);
             Menu = new MenuRepository(_dbContext);
             MenuRole=new MenuRoleRepository(_dbContext);
+            UserRole=new UserRoleRepository(_dbContext);
             BasicConfiguration = new BasicConfigurationRepository(_dbContext);
         }
 
@@ -35,6 +36,8 @@ namespace BusinessManagementSystem.Repositories
         public IRole Role { get; private set; }
         public IMenu Menu { get; private set; }
         public IMenuRole MenuRole { get; private set; }
+        public IUserRole UserRole { get; private set; }
+
         public IBasicConfiguration BasicConfiguration { get; private set; }
         
         public void BeginTransaction()

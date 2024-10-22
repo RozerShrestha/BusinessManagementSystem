@@ -73,8 +73,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public ResponseDto<User> CreateUser(UserDto userDto)
         {
             var hashInfo = Helper.Helpers.GetHashPassword(userDto.Password);
-            List<UserRole> urList = new List<UserRole>();
-            urList.Add(new UserRole {RoleId = userDto.RoleId });
+            List<UserRole> urList = [new UserRole {RoleId = userDto.RoleId }];
             User u = new User();
             u = _mapper.Map<User>(userDto);
             u.HashPassword = hashInfo.Hash;
@@ -87,7 +86,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         public ResponseDto<User> UpdateUser(UserDto userDto)
         {
-            var item = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == userDto.UserId, includeProperties: "UserRoles");
+            var item = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == userDto.UserId, includeProperties: "UserRoles", tracked:true);
             
             item.Data.UserName=userDto.UserName;
             item.Data.Email = userDto.Email;
@@ -99,7 +98,17 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             item.Data.Occupation=userDto.Occupation;
             item.Data.Status=userDto.Status;
             item.Data.RoleId= userDto.RoleId;
-            item.Data.UserRoles.Where(p=>p.UserId==userDto.UserId).SingleOrDefault().RoleId= userDto.RoleId;
+            var userRole = item.Data.UserRoles.Where(p => p.UserId == userDto.UserId).SingleOrDefault();
+            if(userRole!=null)
+            {
+               var response=_unitOfWork.UserRole.Delete(userRole);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    List<UserRole> urList = [new UserRole { RoleId = userDto.RoleId }];
+                    item.Data.UserRoles = urList;
+                }
+            }
+            
             _responseDto = _unitOfWork.Users.Update(item.Data);
              return _responseDto;
         }
