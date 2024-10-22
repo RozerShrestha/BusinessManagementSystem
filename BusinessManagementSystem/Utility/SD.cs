@@ -1,4 +1,6 @@
-﻿namespace BusinessManagementSystem.Utility
+﻿using BusinessManagementSystem.Enums;
+
+namespace BusinessManagementSystem.Utility
 {
     public static class SD
     {
@@ -22,6 +24,17 @@
         public const string Status_Approved = "Approved";
         public const string Status_Rejected = "Rejected";
         public const string Status_Reimbursed = "Reimbursed";
+
+        public static readonly Dictionary<string, string> Occupations = new Dictionary<string, string>
+        {
+            { Occupation.TattooArtist.ToString(), "Tattoo Artist" },
+            { Occupation.Barista.ToString(), "Barista" },
+            { Occupation.Manager.ToString(), "Manager" },
+            { Occupation.ChiefExecutiveOfficer.ToString(), "Chief Executive Officer" },
+            { Occupation.Cleaner.ToString(), "Cleaner" },
+            { Occupation.ChiefOperatingOfficer.ToString(), "Chief Operating Officer" },
+            { Occupation.ChiefFinanceOfficer.ToString(), "Chief Finance Officer" }
+        };
 
 
     }

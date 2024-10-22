@@ -27,13 +27,16 @@ namespace BusinessManagementSystem.Controllers
         private readonly dynamic roleList;
         public UsersController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
+            roleList = _businessLayer.UserService.RoleList();
+            
+            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Key", "Value");
             _responseDto = new ResponseDto<User>();
             _responseUserDto = new ResponseDto<UserDto>();
-
             _responseUserRoleDto = new ResponseDto<UserRoleDto>();
-            _logger = logger;
-            roleList = _businessLayer.UserService.RoleList();
             _modalView = new ModalView();
+            _logger = logger;
+            
         }
         [HttpGet]
         [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
@@ -99,7 +102,7 @@ namespace BusinessManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            //ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             var _responseDto = _businessLayer.UserService.GetUserByGuid(guid);
             if (_responseDto == null)
              {
