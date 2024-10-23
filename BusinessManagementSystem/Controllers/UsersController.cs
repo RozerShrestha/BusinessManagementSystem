@@ -29,8 +29,6 @@ namespace BusinessManagementSystem.Controllers
         {
             roleList = _businessLayer.UserService.RoleList();
             
-            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
-            ViewBag.OccupationList = new SelectList(SD.Occupations, "Key", "Value");
             _responseDto = new ResponseDto<User>();
             _responseUserDto = new ResponseDto<UserDto>();
             _responseUserRoleDto = new ResponseDto<UserRoleDto>();
@@ -65,6 +63,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Create()
         {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
             return View();
         }
 
@@ -72,6 +71,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Create(UserDto userDto)
         {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
             if (ModelState.IsValid)
             {
                 _responseDto = _businessLayer.UserService.CreateUser(userDto);
@@ -102,7 +102,8 @@ namespace BusinessManagementSystem.Controllers
             {
                 return NotFound();
             }
-            //ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
             var _responseDto = _businessLayer.UserService.GetUserByGuid(guid);
             if (_responseDto == null)
              {
@@ -116,6 +117,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Edit(UserDto userDto)
       {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
             if (ModelState.IsValid)
             {
                 _responseDto=_businessLayer.UserService.UpdateUser(userDto);

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace BusinessManagementSystem.Dto
         //[ValidateNever]
         public int UserId { get; set; }
         [Required]
+        [DisplayName("User Name")]
         public string UserName { get; set; }
         [EmailAddress]
         [Required]
@@ -24,6 +26,7 @@ namespace BusinessManagementSystem.Dto
 
 
         [Required]
+        [DisplayName("Full Name")]
         public string FullName { get; set; }
         [Required]
         public string Address { get; set; }
@@ -43,7 +46,17 @@ namespace BusinessManagementSystem.Dto
         [Required]
         public int  RoleId { get; set; }
         [ValidateNever]
+        [DisplayName("Role Name")]
         public string RoleName { get; set; }
+
+        [DisplayName("Facebook Link")]
+        public string? FacebookLink { get; set; }
+        [DisplayName("Instagram Link")]
+        public string? InstagramLink { get; set; }
+        [DisplayName("Tiktok Link")]
+        public string? TiktokLink { get; set; }
+        [DisplayName("Profile Picture Link")]
+        public string? ProfilePictureLink { get; set; }
 
     }
 }

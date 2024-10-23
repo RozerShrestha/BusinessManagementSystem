@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
+using BusinessManagementSystem.Utility;
 
 namespace BusinessManagementSystem.Helper
 {
@@ -20,7 +22,9 @@ namespace BusinessManagementSystem.Helper
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src =>src.UserId))
                 .ForMember(dest => dest.Guid, opt => opt.MapFrom(src => Helper.Helpers.GenerateGUID()));
 
-
+            //string occupationValue = "";
+            //CreateMap<User, User>()
+            //    .ForMember(dest => dest.Occupation, opt => opt.MapFrom(src => SD.Occupations.TryGetValue(src.Occupation, out occupationValue)));
 
         }
     }

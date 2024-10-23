@@ -98,20 +98,15 @@ namespace BusinessManagementSystem.Data
                             var originalCreatedAt = entity.OriginalValues[nameof(BaseEntity.CreatedAt)]==null?now: entity.OriginalValues[nameof(BaseEntity.CreatedAt)];
                             baseEntity.CreatedAt = (DateTime)originalCreatedAt;
                             var originalCreatedBy = entity.OriginalValues[nameof(BaseEntity.CreatedBy)]==null?userName: entity.OriginalValues[nameof(BaseEntity.CreatedBy)];
-                            baseEntity.CreatedBy = (string)originalCreatedBy;
-
-                            
+                            baseEntity.CreatedBy = (string)originalCreatedBy; 
                         }
-                    }
-                    
+                    }  
                 }
                 catch (Exception ex)
                 {
                     
-                }
-                
+                } 
             }
         }
-
     }
 }

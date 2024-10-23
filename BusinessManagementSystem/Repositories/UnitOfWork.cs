@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using BusinessManagementSystem.Dto;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 //using System.Data.Entity;
 
 namespace BusinessManagementSystem.Repositories

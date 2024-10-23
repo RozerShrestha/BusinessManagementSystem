@@ -47,7 +47,7 @@
             </div>
             <div class="col-md-4">
                 <label asp-for="Occupation" class="control-label"></label>
-                <input asp-for="Occupation" class="form-control" />
+                @Html.DropDownListFor(model => model.Occupation, (SelectList)ViewBag.OccupationList, "Select an Occupation", new { @class = "form-control" })
                 <span asp-validation-for="Occupation" class="text-danger"></span>
             </div>
             <div class="col-md-4">

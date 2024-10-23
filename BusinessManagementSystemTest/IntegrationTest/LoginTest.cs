@@ -22,7 +22,7 @@ namespace BusinessManagementSystemTest.IntegrationTest
             var connectionString = "Data Source=ICS-LT-7PVSFY3;Initial Catalog=BusinessManagement;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rd";
             var options = new DbContextOptionsBuilder<ApplicationDBContext>().UseSqlServer(connectionString);
             _dbContext = new ApplicationDBContext(options);
-            _iLogin = new LoginRepository(_dbContext, _config);
+            //_iLogin = new LoginRepository(_dbContext, _config);
         }
 
         [TearDown]
@@ -44,7 +44,7 @@ namespace BusinessManagementSystemTest.IntegrationTest
                 Password = "P@ssw0rd",
                 FullName = "Rozer Shrestha",
                 Address = "Bhimsensthan",
-                DateOfBirth = "1991/03/01",
+                DateOfBirth = DateOnly.Parse("1991/03/01") ,
                 PhoneNumber = "9818136562",
                 Gender = "Male",
                 Occupation = "IT",

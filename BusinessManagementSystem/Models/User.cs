@@ -41,6 +41,12 @@ namespace BusinessManagementSystem.Models
         public string Salt { get; set; }
         [NotMapped]
         public int RoleId { get; set; }
+
+        public string? FacebookLink { get; set; }
+        public string? InstagramLink { get; set; }
+        public string? TiktokLink { get; set; }
+        public string? ProfilePictureLink { get; set; }
+
         [JsonIgnore]
         public ICollection<UserRole> UserRoles { get; set; }
 
@@ -63,6 +69,10 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.Email).HasColumnType("varchar(150)");
             builder.Property(x => x.HashPassword).HasColumnType("varchar(255)");
             builder.Property(x => x.Salt).HasColumnType("varchar(255)");
+            builder.Property(x => x.FacebookLink).HasColumnType("varchar(255)");
+            builder.Property(x => x.InstagramLink).HasColumnType("varchar(255)");
+            builder.Property(x => x.TiktokLink).HasColumnType("varchar(255)");
+            builder.Property(x => x.ProfilePictureLink).HasColumnType("varchar(255)");
         }
     }
 }
