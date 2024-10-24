@@ -8,7 +8,7 @@
 <h4>Create</h4>
 <hr />
 
-<form asp-action="Create" method="post" asp-controller="Users">
+<form asp-action="Create" method="post" enctype="multipart/form-data" asp-controller="Users">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-md-12">
             <div class="card card-outline card-dark">
@@ -17,6 +17,11 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="ProfilePictureLink" class="control-label"></label>
+                        <input asp-for="ProfilePictureLink" class="form-control" type="file" />
+                        @*<span asp-validation-for="InsuranceForm.bills" class="text-danger"></span>*@
+                    </div>
                         <div class="col-md-4">
                             <label asp-for="UserName" class="control-label"></label>
                             <input asp-for="UserName" class="form-control" />

@@ -2,15 +2,18 @@
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Helper;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using NuGet.Protocol.Plugins;
 using System.Net;
 using System.Text.Encodings.Web;
 
@@ -48,18 +51,34 @@ namespace BusinessManagementSystem.Controllers
         {
             if(guid == Guid.Empty)
             {
+                _responseDto = _businessLayer.UserService.GetUserById(userId);
+                if (_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    guid = _responseDto.Data.Guid;
+                    _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
+                    if(_responseUserDto.StatusCode == HttpStatusCode.OK)
+                    {
+                        return View(_responseUserDto.Data);
+                    }
+                }
                 return NotFound();
             }
-            _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
-            if (_responseUserDto == null) 
+            else
             {
-                return NotFound();
+                _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
+                if (_responseUserDto.StatusCode == HttpStatusCode.OK)
+                {
+                    return View(_responseUserDto.Data);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            //return View(_responseUserDto.Data);
-            return View();
         }
 
         [HttpGet]
+        [Authorize(Roles = "superadmin")]
         public IActionResult Create()
         {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
@@ -68,15 +87,26 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(UserDto userDto)
+        [Authorize(Roles = "superadmin")]
+        public IActionResult Create(UserDto userDto, IFormFile? ProfilePictureLink)
         {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
+
+            if (!Helpers.ValidateDocumentUpload(ProfilePictureLink))
+            {
+                _notyf.Warning("Profile Picture Upload Error: Valid files are of extension pdf or jpg or jpeg");
+                return BadRequest("Error saving Profile Picture. Please check valid extensions(pdf,jpeg,jpg,png)");
+            }
+
+
             if (ModelState.IsValid)
             {
+                userDto.ProfilePictureLink =ProfilePictureLink==null?string.Empty: Helpers.DocUpload(ProfilePictureLink, "ProfilePicture", username);
                 _responseDto = _businessLayer.UserService.CreateUser(userDto);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
+                    _notyf.Success(_responseDto.Message);
                     return RedirectToAction(nameof(Index));
                 } 
                 else
@@ -114,13 +144,16 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(UserDto userDto)
+        public IActionResult Edit(UserDto userDto, IFormFile? ProfilePictureLink)
       {
+            ModelState.Remove(nameof(userDto.Password)); //just to ignore ConfirmPassword to validate
+            ModelState.Remove(nameof(userDto.ConfirmPassword)); //just to ignore ConfirmPassword to validate
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
             if (ModelState.IsValid)
             {
-                _responseDto=_businessLayer.UserService.UpdateUser(userDto);
+                userDto.ProfilePictureLink = ProfilePictureLink == null ? string.Empty : Helpers.DocUpload(ProfilePictureLink, "ProfilePicture", username);
+                _responseDto =_businessLayer.UserService.UpdateUser(userDto);
                 if(_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);
@@ -143,32 +176,33 @@ namespace BusinessManagementSystem.Controllers
             }
            
         }
-
-        public IActionResult Delete(int id)
+        [Authorize(Roles = "superadmin")]
+        public IActionResult Delete(Guid guid)
         {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-            _responseDto = _businessLayer.UserService.GetUserById(id);
-            if (_responseDto == null)
-            {
-                return NotFound();
-            }
-            return View(_responseDto);
+            //if (guid == Guid.Empty)
+            //{
+            //    return NotFound();
+            //}
+            //_responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
+            //if (_responseDto == null)
+            //{
+            //    return NotFound();
+            //}
+            //return View(_responseUserDto);
+            return View();
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        [Authorize(Roles = "superadmin")]
+        public IActionResult DeleteConfirmed(Guid guid)
         {
-            
-            var _responseDto = _businessLayer.UserService.GetUserById(id);
+            _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
             if (_responseDto.Data != null)
             {
                 try
                 {
-                    _responseDto=_businessLayer.UserService.DeleteUser(id);
+                    _responseDto=_businessLayer.UserService.DeleteUser(_responseUserDto.Data.UserId);
                 }
                 catch (Exception)
                 {

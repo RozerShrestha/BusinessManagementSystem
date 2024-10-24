@@ -80,21 +80,21 @@ namespace BusinessManagementSystem.Helper
             string returnString="";
             var extension = Path.GetExtension(file.FileName);
 
-            if (documentType == "InsuranceDoc")
+            if (documentType == "ProfilePicture")
             {
                 fileName =file.FileName;
-                documentRootPath = Path.GetFullPath(Path.Combine(new string[]{Environment.CurrentDirectory, "wwwroot","Uploads", "InsuranceRelatedDoc"}));
+                documentRootPath = Path.GetFullPath(Path.Combine(new string[]{Environment.CurrentDirectory, "wwwroot","image", "ProfilePicture"}));
             }
             else if (documentType==DocumentType.InsuranceExcelUpload)
             {
                 fileName = nameOfFile+extension;
                 fileName = fileName.Replace("/", "-");
-                documentRootPath = Path.GetFullPath(Path.Combine(new string[] {Environment.CurrentDirectory, "wwwroot", "Uploads", "BusinessManagementSystemExcel" })); 
+                documentRootPath = Path.GetFullPath(Path.Combine(new string[] {Environment.CurrentDirectory, "wwwroot", "image", "BusinessManagementSystemExcel" })); 
             }
             else
             {
                 fileName = Helpers.GenerateGUID() + extension;
-                documentRootPath = Path.GetFullPath(Path.Combine(new string[] {Environment.CurrentDirectory, "wwwroot", "Uploads", "EmployeeRelatedDoc", username, documentType }));
+                documentRootPath = Path.GetFullPath(Path.Combine(new string[] {Environment.CurrentDirectory, "wwwroot", "image", "EmployeeRelatedDoc", username, documentType }));
                 //documentRootPath = Path.Combine(webRootPath, @$"Uploads\EmployeeRelatedDoc\{username}\{documentType}");
             }
 

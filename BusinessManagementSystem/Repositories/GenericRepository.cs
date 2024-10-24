@@ -171,7 +171,7 @@ namespace BusinessManagementSystem.Repositories
             catch (Exception ex)
             {
                 _dbContext.Database.RollbackTransaction();
-                _responseDto.Message = "Failed due to: " + ex;
+                _responseDto.Message = "Failed due to: " + ex.Message+ "Inner Exception:"+ ex.InnerException;
                 _responseDto.StatusCode = HttpStatusCode.InternalServerError;
                 _responseDto.Data = entity;
             }

@@ -88,6 +88,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             var item = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == userDto.UserId, includeProperties: "UserRoles", tracked:true);
             
+            item.Data.ProfilePictureLink=userDto.ProfilePictureLink;
             item.Data.UserName=userDto.UserName;
             item.Data.Email = userDto.Email;
             item.Data.FullName= userDto.FullName;
