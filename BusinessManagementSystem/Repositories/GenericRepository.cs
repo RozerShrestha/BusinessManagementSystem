@@ -151,7 +151,7 @@ namespace BusinessManagementSystem.Repositories
             }
             catch (Exception ex)
             {
-                _responseDto.Message = "Failed due to: " + ex.Message;
+                _responseDto.Message = "Failed due to: " + ex.Message + ex.InnerException;
                 _responseDto.StatusCode = HttpStatusCode.InternalServerError;
             }
 

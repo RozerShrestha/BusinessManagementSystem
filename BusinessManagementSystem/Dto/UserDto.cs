@@ -59,6 +59,8 @@ namespace BusinessManagementSystem.Dto
         public string? TiktokLink { get; set; }
         [DisplayName("Profile Picture Link")]
         public string? ProfilePictureLink { get; set; }
+        public string? Skills { get; set; }
+        public string? Notes { get; set; }
 
     }
 }

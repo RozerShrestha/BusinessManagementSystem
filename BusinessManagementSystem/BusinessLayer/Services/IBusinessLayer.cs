@@ -6,5 +6,6 @@
         IUserService UserService { get; }
         IBasicConfigurationService BasicConfigurationService { get; }
         IMenuService MenuService { get; }
+        IRoleService RoleService { get; }
     }
 }

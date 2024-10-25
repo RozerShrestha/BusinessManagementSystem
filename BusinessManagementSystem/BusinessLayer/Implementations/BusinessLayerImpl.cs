@@ -18,6 +18,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             UserService = new UserImpl(_unitOfWork, mapper);
             BasicConfigurationService = new BasicConfigurationImpl(_unitOfWork);
             MenuService = new MenuImpl(_unitOfWork);
+            RoleService=new RoleImpl(_unitOfWork);
+            
         }
         public IBaseService BaseService { get; private set; }
 
@@ -26,6 +28,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public IBasicConfigurationService BasicConfigurationService { get; private set; }
 
         public IMenuService MenuService { get; private set; }
+        public IRoleService RoleService { get; set; }
 
     }
 }

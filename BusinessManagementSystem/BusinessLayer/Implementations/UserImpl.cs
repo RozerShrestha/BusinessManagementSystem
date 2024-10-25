@@ -87,8 +87,10 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public ResponseDto<User> UpdateUser(UserDto userDto)
         {
             var item = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == userDto.UserId, includeProperties: "UserRoles", tracked:true);
-            
-            item.Data.ProfilePictureLink=userDto.ProfilePictureLink;
+            if (!string.IsNullOrEmpty(userDto.ProfilePictureLink))
+            {
+                item.Data.ProfilePictureLink = userDto.ProfilePictureLink;
+            }
             item.Data.UserName=userDto.UserName;
             item.Data.Email = userDto.Email;
             item.Data.FullName= userDto.FullName;
@@ -99,6 +101,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             item.Data.Occupation=userDto.Occupation;
             item.Data.Status=userDto.Status;
             item.Data.RoleId= userDto.RoleId;
+            item.Data.FacebookLink=userDto.FacebookLink;
+            item.Data.InstagramLink = userDto.InstagramLink;
+            item.Data.TiktokLink = userDto.TiktokLink;
+            item.Data.Skills = userDto.Skills;
+            item.Data.Notes= userDto.Notes;
             var userRole = item.Data.UserRoles.Where(p => p.UserId == userDto.UserId).SingleOrDefault();
             if(userRole!=null)
             {

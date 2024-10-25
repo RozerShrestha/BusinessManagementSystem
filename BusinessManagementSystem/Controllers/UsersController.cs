@@ -93,6 +93,7 @@ namespace BusinessManagementSystem.Controllers
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
 
+            //validating document upload
             if (!Helpers.ValidateDocumentUpload(ProfilePictureLink))
             {
                 _notyf.Warning("Profile Picture Upload Error: Valid files are of extension pdf or jpg or jpeg");
@@ -150,67 +151,82 @@ namespace BusinessManagementSystem.Controllers
             ModelState.Remove(nameof(userDto.ConfirmPassword)); //just to ignore ConfirmPassword to validate
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
-            if (ModelState.IsValid)
+            if(roleName==SD.Role_Superadmin || userId== userDto.UserId)
             {
-                userDto.ProfilePictureLink = ProfilePictureLink == null ? string.Empty : Helpers.DocUpload(ProfilePictureLink, "ProfilePicture", username);
-                _responseDto =_businessLayer.UserService.UpdateUser(userDto);
-                if(_responseDto.StatusCode == HttpStatusCode.OK)
+                if (ModelState.IsValid)
                 {
-                    _notyf.Success(_responseDto.Message);
+                    userDto.ProfilePictureLink = ProfilePictureLink == null ? string.Empty : Helpers.DocUpload(ProfilePictureLink, "ProfilePicture", username);
+                    _responseDto = _businessLayer.UserService.UpdateUser(userDto);
+                    if (_responseDto.StatusCode == HttpStatusCode.OK)
+                    {
+                        _notyf.Success(_responseDto.Message);
+                    }
+                    else
+                    {
+                        _notyf.Error(_responseDto.Message);
+                        return View(userDto);
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    _notyf.Error(_responseDto.Message);
-                    return View(userDto);
+                    IEnumerable<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+                    foreach (var error in errors)
+                    {
+                        _notyf.Error(error.ErrorMessage);
+                    }
+                    return View(_responseDto.Data);
                 }
-                return RedirectToAction(nameof(Index));
             }
             else
             {
-                IEnumerable<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
-                foreach (var error in errors)
-                {
-                    _notyf.Error(error.ErrorMessage);
-                }
-                return View(_responseDto.Data);
+                _notyf.Warning($"{fullName} is not authroized to perform this task");
+                return RedirectToAction(nameof(Index));
             }
+            
            
         }
         [Authorize(Roles = "superadmin")]
         public IActionResult Delete(Guid guid)
         {
-            //if (guid == Guid.Empty)
-            //{
-            //    return NotFound();
-            //}
-            //_responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
-            //if (_responseDto == null)
-            //{
-            //    return NotFound();
-            //}
-            //return View(_responseUserDto);
+            if (guid == Guid.Empty)
+            {
+                return NotFound();
+            }
+            _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
+            if (_responseDto == null)
+            {
+                return NotFound();
+            }
+            return View(_responseUserDto.Data);
             return View();
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "superadmin")]
-        public IActionResult DeleteConfirmed(Guid guid)
+        public IActionResult DeleteConfirmed(int UserId)
         {
-            _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
+            _responseDto = _businessLayer.UserService.GetUserById(UserId);
             if (_responseDto.Data != null)
             {
                 try
                 {
-                    _responseDto=_businessLayer.UserService.DeleteUser(_responseUserDto.Data.UserId);
+                    _responseDto=_businessLayer.UserService.DeleteUser(UserId);
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //_unitOfWork.Rollback();
-                    
+                  _notyf.Error($"Error deleting User due to : {ex.Message}");
+                    return View(_responseDto.Data.Guid);
                 }
             }
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                _notyf.Error("Error: User not Found");
+                return NotFound();
+            }
+            
         }
 
 

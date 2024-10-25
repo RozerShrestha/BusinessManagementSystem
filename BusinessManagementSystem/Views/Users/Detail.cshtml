@@ -36,15 +36,16 @@
                     <div class="card-body box-profile">
                         <div class="text-center">
                             @* <img class="profile-user-img img-fluid img-circle" src="~/images/ProfilePic/profile1.jpg" alt="User profile picture"> *@
-                            <img class="profile-user-img img-fluid img-circle" src=@Model.ProfilePictureLink alt="User profile picture">
+                            <img class="profile-user-img img-fluid img-circle" src=~/@Model.ProfilePictureLink alt="User profile picture">
                         </div>
-                        <h3 class="profile-username text-center">Nina Mcintire</h3>
-                        <p class="text-muted text-center">Software Engineer</p>
+                        <h3 class="profile-username text-center">@Model.FullName</h3>
+                        <p class="text-muted text-center">@Model.Occupation</p>
+                        <p class="text-muted text-center"><strong><i class="fa fa-mobile-phone mr-1"></i></strong>@Model.PhoneNumber</p>
                         <div class="margin-20px-top team-single-icons">
                             <ul class="no-margin social-icons">
-                                <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
+                                <li><a href=@Model.FacebookLink><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href=@Model.InstagramLink><i class="fab fa-twitter"></i></a></li>
+                                <li><a href=@Model.TiktokLink><i class="fab fa-instagram"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -58,25 +59,21 @@
                     </div>
 
                     <div class="card-body">
-                        <strong><i class="fas fa-book mr-1"></i> Education</strong>
+                        <strong><i class="fas fa-book mr-1"></i> Email</strong>
                         <p class="text-muted">
-                            B.S. in Computer Science from the University of Tennessee at Knoxville
+                            @Model.Email
                         </p>
                         <hr>
                         <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
-                        <p class="text-muted">Malibu, California</p>
+                        <p class="text-muted">@Model.Address</p>
                         <hr>
                         <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
                         <p class="text-muted">
-                            <span class="tag tag-danger">UI Design</span>
-                            <span class="tag tag-success">Coding</span>
-                            <span class="tag tag-info">Javascript</span>
-                            <span class="tag tag-warning">PHP</span>
-                            <span class="tag tag-dark">Node.js</span>
+                            @Model.Skills
                         </p>
                         <hr>
                         <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                        <p class="text-muted">@Model.Notes</p>
                     </div>
 
                 </div>

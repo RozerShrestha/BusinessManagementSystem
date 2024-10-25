@@ -46,6 +46,8 @@ namespace BusinessManagementSystem.Models
         public string? InstagramLink { get; set; }
         public string? TiktokLink { get; set; }
         public string? ProfilePictureLink { get; set; }
+        public string? Skills { get; set; }
+        public string? Notes { get; set; }
 
         [JsonIgnore]
         public ICollection<UserRole> UserRoles { get; set; }
@@ -73,6 +75,8 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.InstagramLink).HasColumnType("varchar(255)");
             builder.Property(x => x.TiktokLink).HasColumnType("varchar(255)");
             builder.Property(x => x.ProfilePictureLink).HasColumnType("varchar(255)");
+            builder.Property(x => x.Skills).HasColumnType("varchar(255)");
+            builder.Property(x => x.Notes).HasColumnType("varchar(255)");
         }
     }
 }

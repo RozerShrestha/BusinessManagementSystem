@@ -58,14 +58,14 @@ namespace BusinessManagementSystem.Data
                     Guid = Helper.Helpers.GenerateGUID(),
                     UserName = "rozer.shrestha",
                     Email = "rozer.shrestha611@gmail.com",
-                    HashPassword = "chNH6XpEVlTynf1KMRycO6kPWQHIDG6ZmmPJCMu1RLg=", //12345678
-                    Salt = "7jjWcePoQ8V11akR6n0e0A==",
+                    HashPassword = "vNWsg9wG82FOVlKYm4fJNkTSysuUuGoeuCNL/oYbwn4=", //12345678
+                    Salt = "x9MC6J+9dMJ06q0OP/T4/w==",
                     FullName = "Rozer Shrestha",
                     Address = "Bhimsensthan",
                     DateOfBirth = DateOnly.Parse("1991/03/01"),
                     PhoneNumber = "9818136462",
                     Gender = "Male",
-                    Occupation = "Technical Manager",
+                    Occupation = "Chief Operating Officer",
                     CreatedBy = "System",
                     UpdatedBy = "System"
                 };
@@ -103,12 +103,23 @@ namespace BusinessManagementSystem.Data
             var isMenuCreated = _db.Menus.Any();
             if (!isMenuCreated)
             {
-                List<Menu> menus =
-                [
-                new Menu {  Parent = 0,     Name = "Configurations",          Url = "#",                    Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-cogs" },
-                new Menu {  Parent = 1,     Name = "Basic Configuration",     Url = "/BasicConfiguration",  Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-gear" },
-                new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menu",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" }
+                //List<Menu> menus =
+                //[
+                //new Menu {  Parent = 0,     Name = "Configurations",          Url = "#",                    Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-cogs" },
+                //new Menu {  Parent = 1,     Name = "Basic Configuration",     Url = "/BasicConfiguration",  Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-gear" },
+                //new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menu",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" }
+                //];
+
+                List<Menu> menus = [
+                    new Menu { Parent = 0,     Name ="Configurations",          Url ="#",                    Sort = 1, Status = true,   CreatedBy="NULL", UpdatedBy="NULL",     Icon ="fas fa-cogs"},
+                    new Menu { Parent = 1,     Name ="Basic Configuration",     Url ="/BasicConfiguration",  Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon ="bi bi-gear"},
+                    new Menu { Parent = 1,     Name ="Menu",                    Url ="/Menu",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon ="bi bi-menu-app"},
+                    new Menu { Parent = 0,     Name ="Users",                   Url ="#",                    Sort = 2, Status = true,   CreatedBy="NULL", UpdatedBy="NULL",     Icon ="fa"},
+                    new Menu { Parent = 1002,  Name ="Create User",             Url ="/Users/Create", Sort = 1, Status = true, CreatedBy="rozer.shrestha", UpdatedBy="rozer.shrestha", Icon ="fa"},
+                    new Menu { Parent = 1002, Name ="All Users", Url ="/Users/Index", Sort = 2, Status = true, CreatedBy="rozer.shrestha", UpdatedBy="rozer.shrestha", Icon ="fa"},
+                    new Menu { Parent = 1002, Name ="My Profile", Url ="/Users/Detail", Sort = 3, Status = true, CreatedBy="rozer.shrestha", UpdatedBy="rozer.shrestha", Icon ="fa"}
                 ];
+
 
                 var roles = _db.Roles.ToList();
 
