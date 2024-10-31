@@ -19,6 +19,24 @@
 <!-- DataTables Buttons JavaScript -->
 
 
+<script>
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            var id = this.getAttribute('data-id');
+            var type = this.getAttribute('data-type');
+            if (type == "role") {
+                document.getElementById('confirmDelete').setAttribute('href', '@Url.Action("Delete", "Role")' + '/' + id);
+            }
+            if(type=="menu"){
+                document.getElementById('confirmDelete').setAttribute('href', '@Url.Action("Delete", "Menu")' + '/' + id);
+            }
+            if(type=="user"){
+                document.getElementById('confirmDelete').setAttribute('href', '@Url.Action("Test", "Users")' + '/' + id);
+            }           
+        });
+    });
+</script>
+
 
 
 

@@ -36,13 +36,10 @@ namespace BusinessManagementSystem.Controllers
             _responseDto = _businessLayer.RoleService.GetAllRoles();
             return View(_responseDto.Datas);
         }
-
-
         public ActionResult Create()
         {
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Role role)
@@ -71,7 +68,6 @@ namespace BusinessManagementSystem.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
         public ActionResult Edit(int id)
         {
             if (id == 0)
@@ -95,7 +91,6 @@ namespace BusinessManagementSystem.Controllers
             }
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Role role)
@@ -112,7 +107,6 @@ namespace BusinessManagementSystem.Controllers
                 return View(role);
             }
         }
-
         public ActionResult Delete(int id)
         {
             if (roleName != SD.Role_Superadmin)
@@ -125,6 +119,7 @@ namespace BusinessManagementSystem.Controllers
 
             if (_responseDto.StatusCode == HttpStatusCode.OK)
             {
+                _notyf.Success(_responseDto.Message);
                 return RedirectToAction(nameof(Index));
             }
             else

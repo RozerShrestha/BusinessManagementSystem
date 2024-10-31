@@ -59,9 +59,10 @@
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
+                    <a asp-action="Delete" data-toggle="modal" data-id="@item.Id" data-type="menu" data-target="#confirmationModalDel" class="delete-btn"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<partial name="_ModalView" />

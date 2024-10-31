@@ -1,7 +1,6 @@
 ﻿
 <div class="row">
     <div class="col-xl-12">
-
         <div class="card">
             <div class="card-header">
                 <h2>All Employees Information</h2>
@@ -32,12 +31,39 @@
         </div>
     </div>
 </div>
+<partial name="_ModalView" />
 
 @section Scripts {
     <script>
         var datatable = null;
         $(document).ready(function () {
             loadDataTable('Active');
+            $('#tblEmployeeList').on('click', '.delete-item', function (e) {
+                e.preventDefault();
+                const userId = $(this).data('id');
+                $('#confirmationModalDel').modal('show'); // Show the Bootstrap modal
+                $('#confirmationModalDel').data('user-id', userId); // Store claim ID in the modal data
+            });
+
+            $('#confirmDelete').on('click', function () {
+
+                const userId = $('#confirmationModalDel').data('user-id');
+                $('#confirmationModalDel').modal('hide');
+                const table = $('#tblEmployeeList').DataTable();
+                const $row = $(this).closest('tr');
+                $.ajax({
+                    type: 'GET',
+                    url: `/Users/Delete?guid=${userId}`,
+                    contentType: 'application/json',
+                    success: function (response) {
+                        table.ajax.reload();
+                        toastr.success('Successfully Deleted');
+                    },
+                    error: function (error) {
+                        toastr.error("Error Deleting");
+                    }
+                });
+            });
         });
         function loadDataTable(status) {
             if (datatable) {
@@ -96,21 +122,23 @@
                         "data": "guid",
                         "render": function (data) {
                             return `
-                                        <div>
-                                            <a href="/Users/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
-                                            <a href="/Users/detail?guid=${data}"><i class="fas fa-eye"></i></i></a>
-                                                    <a href="/Users/Delete?guid=${data}"><i class="fas fa-trash-alt"></i></i></a>
-
+                                    <div>
+                                        <a href="/Users/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
+                                        <a href="/Users/detail?guid=${data}"><i class="fas fa-eye"></i></i></a>
+                                        <a href="#" data-toggle="modal" data-id="${data}" data-type="user" data-target="#confirmationModalDel" class="delete-btn"> <i class="fas fa-trash-alt"> </i></a>
+                                        <a href="#" class="delete-item" data-id="${data}"> <i class= "fas fa-trash-alt" > </i></a > |
                                         </div>
                                     `
                         }
                     }
                 ]
             });
+
         }
         function employeeStatusChange(status) {
             loadDataTable(status);
-            //alert(status)
+            //alert(status
         }
+
     </script>
 }

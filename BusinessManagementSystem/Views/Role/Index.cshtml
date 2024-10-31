@@ -52,39 +52,12 @@
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
-                    <a asp-action="Delete" data-toggle="modal" data-id="@item.Id" data-target="#confirmationModalDel" class="delete-btn"><i class="fas fa-trash-alt"></i></a>
+                    <a asp-action="Delete" data-toggle="modal" data-id="@item.Id" data-type="role" data-target="#confirmationModalDel" class="delete-btn"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 <partial name="_ModalView" />
-@* <div class="modal fade" id="confirmationModalDel" tabindex="-1" aria-labelledby="confirmationModalDelLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalDelLabel">Confirm Delete Claim</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to Delete this claim?
-            </div>
-            <div class="modal-footer">
-                <a id="confirmDelete" class="btn btn-primary">Yes</a>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Bootstrap Modal Del -->
-*@
-@section Scripts{
-    <script>
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                var id = this.getAttribute('data-id');
-                document.getElementById('confirmDelete').setAttribute('href', '@Url.Action("Delete", "Role")' + '/' + id);
-            });
-        });
-    </script>
-} 
+
+

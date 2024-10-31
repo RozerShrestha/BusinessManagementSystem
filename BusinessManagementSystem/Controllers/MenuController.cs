@@ -5,6 +5,7 @@ using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Repositories;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,18 +23,20 @@ namespace BusinessManagementSystem.Controllers
         private readonly dynamic parentList;
         private readonly Multiselect roleList;
         private ILogger<MenuController> _logger;
+        public ModalView _modalView;
         public MenuController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<MenuController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responseDto = new ResponseDto<Menu>();
             _logger = logger;
             parentList = _businessLayer.MenuService.ParentList();
             roleList = _businessLayer.MenuService.RoleList();
-            
+            _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Menu?", "");
 
         }
         // GET: MenuController
         public ActionResult Index()
         {
+            ViewBag.ModalInformation = _modalView;
             _responseDto = _businessLayer.MenuService.GetAllMenu();
             return View(_responseDto.Datas);
         }
@@ -138,10 +141,17 @@ namespace BusinessManagementSystem.Controllers
         // GET: MenuController/Delete/5
         public ActionResult Delete(int id)
         {
-            _responseDto = _businessLayer.MenuService.GetMenuById(id);
-            if(_responseDto.StatusCode == HttpStatusCode.OK)
+            if (roleName != SD.Role_Superadmin)
             {
-                return View(_responseDto.Data);
+                _notyf.Warning("Only Super Admin can delete");
+                return RedirectToAction(nameof(Index));
+            }
+            var item = _businessLayer.MenuService.GetMenuById(id);
+            _responseDto = _businessLayer.MenuService.DeleteMenu(id);
+            if (_responseDto.StatusCode == HttpStatusCode.OK)
+            {
+                _notyf.Success(_responseDto.Message);
+                return RedirectToAction(nameof(Index));
             }
             else
             {
@@ -156,7 +166,7 @@ namespace BusinessManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            _responseDto = _businessLayer.MenuService.DeleteMenu(id);
+            
             if (_responseDto.StatusCode == HttpStatusCode.OK)
             {
                 _notyf.Success(_responseDto.Message);

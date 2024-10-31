@@ -26,7 +26,7 @@ namespace BusinessManagementSystem.Controllers
         public ResponseDto<UserDto> _responseUserDto;
         public ResponseDto<UserRoleDto> _responseUserRoleDto;
         private ILogger<UsersController> _logger;
-        //private readonly ModalView _modalView;
+        private readonly ModalView _modalView;
         private readonly dynamic roleList;
         public UsersController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
@@ -35,7 +35,7 @@ namespace BusinessManagementSystem.Controllers
             _responseDto = new ResponseDto<User>();
             _responseUserDto = new ResponseDto<UserDto>();
             _responseUserRoleDto = new ResponseDto<UserRoleDto>();
-            //_modalView = new ModalView();
+            _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected User?", "");
             _logger = logger;
             
         }
@@ -43,6 +43,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
         public IActionResult Index()
         {
+            ViewBag.ModalInformation = _modalView;
             return View(_responseDto);
         }
 
@@ -186,19 +187,39 @@ namespace BusinessManagementSystem.Controllers
             
            
         }
+        
         [Authorize(Roles = "superadmin")]
+        [HttpGet]
         public IActionResult Delete(Guid guid)
         {
             if (guid == Guid.Empty)
             {
                 return NotFound();
             }
-            _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
-            if (_responseDto == null)
+            var item = _businessLayer.UserService.GetUserByGuid(guid);
+            if (item.StatusCode == HttpStatusCode.OK)
             {
-                return NotFound();
+                _responseDto = _businessLayer.UserService.DeleteUser(item.Data.UserId);
+                if (_responseDto.StatusCode == HttpStatusCode.OK) 
+                {
+                    _notyf.Success(_responseDto.Message);
+                }
+                else
+                {
+                    _notyf.Error(_responseDto.Message);
+                }
             }
-            return View(_responseUserDto.Data);
+            else
+            {
+                _notyf.Error(_responseDto.Message);
+            }
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpGet]
+        public IActionResult Test(Guid id)
+        {
             return View();
         }
 
