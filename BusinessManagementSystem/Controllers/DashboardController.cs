@@ -19,13 +19,13 @@ namespace BusinessManagementSystem.Controllers
     {
         private readonly IWebHostEnvironment _env;
         private readonly ILogger<DashboardController> _logger;
-        private readonly ModalView _modalView;
+        //private readonly ModalView _modalView;
         private ResponseDto<DashboardVM> _responseDto;
         public DashboardController(IWebHostEnvironment env, IBusinessLayer businessLayer, ILogger<DashboardController> logger, INotyfService notyf, IEmailSender emailSender, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _env = env;
             _logger = logger;
-            _modalView = new ModalView();
+            //_modalView = new ModalView();
         }
 
         public IActionResult Index()

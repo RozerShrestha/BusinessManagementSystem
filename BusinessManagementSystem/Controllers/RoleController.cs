@@ -3,6 +3,7 @@ using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -19,15 +20,19 @@ namespace BusinessManagementSystem.Controllers
         private IWebHostEnvironment _env;
         private ResponseDto<Role> _responseDto;
         private ILogger<RoleController> _logger;
+        public  ModalView _modalView;
 
         public RoleController(IWebHostEnvironment env, IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<RoleController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _env = env;
             _responseDto = new ResponseDto<Role>();
             _logger = logger;
+            _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Role?", "");
+            
         }
         public IActionResult Index()
         {
+            ViewBag.ModalInformation = _modalView;
             _responseDto = _businessLayer.RoleService.GetAllRoles();
             return View(_responseDto.Datas);
         }
@@ -110,10 +115,17 @@ namespace BusinessManagementSystem.Controllers
 
         public ActionResult Delete(int id)
         {
-            _responseDto = _businessLayer.RoleService.GetRoleById(id);
+            if (roleName != SD.Role_Superadmin)
+            {
+                _notyf.Warning("Only Super Admin can delete");
+                return RedirectToAction(nameof(Index));
+            }
+            var item = _businessLayer.RoleService.GetRoleById(id);
+            _responseDto = _businessLayer.RoleService.DeleteRole(item.Data);
+
             if (_responseDto.StatusCode == HttpStatusCode.OK)
             {
-                return View(_responseDto.Data);
+                return RedirectToAction(nameof(Index));
             }
             else
             {
@@ -121,23 +133,5 @@ namespace BusinessManagementSystem.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(Role role)
-        {
-            _responseDto = _businessLayer.RoleService.DeleteRole(role);
-            if (_responseDto.StatusCode == HttpStatusCode.OK)
-            {
-                _notyf.Success(_responseDto.Message);
-            }
-            else
-            {
-                _notyf.Error(_responseDto.Message);
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
-
     }
 }

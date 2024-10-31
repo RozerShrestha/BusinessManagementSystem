@@ -57,7 +57,7 @@ namespace BusinessManagementSystem.Data
                 {
                     Guid = Helper.Helpers.GenerateGUID(),
                     UserName = "rozer.shrestha",
-                    Email = "rozer.shrestha611@gmail.com",
+                    Email = "rozer.shresthatest@gmail.com",
                     HashPassword = "vNWsg9wG82FOVlKYm4fJNkTSysuUuGoeuCNL/oYbwn4=", //12345678
                     Salt = "x9MC6J+9dMJ06q0OP/T4/w==",
                     FullName = "Rozer Shrestha",
@@ -82,15 +82,15 @@ namespace BusinessManagementSystem.Data
             {
                 BasicConfiguration basicConfiguration = new BasicConfiguration
                 {
-                    EmailAlias = "Cotiviti_Noreply",
-                    Email = "NoReply@Cotiviti.com",
+                    EmailAlias = "Email alias",
+                    Email = "employer@gmail.com",
                     Password = "Not Required",
-                    HostName = "unauth-ndc.smtp.cotiviti.com",
+                    HostName = "hostname",
                     Port = 25,
-                    ApplicationTitle = "Freak Street Empire",
-                    EmployerName = "Freak Street Empire",
-                    EmployerEmailAddress = "HR_Nepal@cotiviti.com",
-                    EmployerAddress = "HATTISAR KTM 01-44356625",
+                    ApplicationTitle = "Sample Application Title",
+                    EmployerName = "Employer Name",
+                    EmployerEmailAddress = "EmployerEmail@gmail.com",
+                    EmployerAddress = "EMployer Address",
                     CreatedBy = "System",
                     UpdatedBy = "System"
 

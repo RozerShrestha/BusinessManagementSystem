@@ -26,7 +26,7 @@ namespace BusinessManagementSystem.Controllers
         public ResponseDto<UserDto> _responseUserDto;
         public ResponseDto<UserRoleDto> _responseUserRoleDto;
         private ILogger<UsersController> _logger;
-        private readonly ModalView _modalView;
+        //private readonly ModalView _modalView;
         private readonly dynamic roleList;
         public UsersController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
@@ -35,7 +35,7 @@ namespace BusinessManagementSystem.Controllers
             _responseDto = new ResponseDto<User>();
             _responseUserDto = new ResponseDto<UserDto>();
             _responseUserRoleDto = new ResponseDto<UserRoleDto>();
-            _modalView = new ModalView();
+            //_modalView = new ModalView();
             _logger = logger;
             
         }

@@ -19,13 +19,13 @@ namespace BusinessManagementSystem.Controllers
         private IWebHostEnvironment _env;
         private ResponseDto<BasicConfiguration> _responseDto;
         private ILogger<BasicConfigurationController> _logger;
-        private ModalView _modalView;
+        //private ModalView _modalView;
         public BasicConfigurationController(IWebHostEnvironment env, IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<BasicConfigurationController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _env = env;
             _responseDto = new ResponseDto<BasicConfiguration>();
             _logger = logger;
-            _modalView = new ModalView();
+            //_modalView = new ModalView();
         }
         public IActionResult Index()
         {
