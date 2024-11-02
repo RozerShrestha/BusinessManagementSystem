@@ -40,7 +40,6 @@ namespace BusinessManagementSystem.Utility
                 using (var emailClient = new SmtpClient())
                 {
                     emailClient.Connect(hostName, port, MailKit.Security.SecureSocketOptions.None);
-                    //emailClient.Authenticate("NoReply@Cotiviti.com", "");
                     emailClient.Send(emailToSend);
                     emailClient.Disconnect(true);
                 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Repositories;
@@ -14,15 +15,15 @@ namespace BusinessManagementSystemTest.IntegrationTest
         ILogin<LoginResponseDto> _iLogin;
         private ApplicationDBContext _dbContext;
         public readonly IConfiguration _config;
+        private readonly IMapper _mapper;
 
-        
         [SetUp]
         public void Setup()
         {
-            var connectionString = "Data Source=ICS-LT-7PVSFY3;Initial Catalog=BusinessManagement;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rd";
+            var connectionString = "Data Source=ROZERSHRESTHA;Initial Catalog=BusinessManagement;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rd";
             var options = new DbContextOptionsBuilder<ApplicationDBContext>().UseSqlServer(connectionString);
             _dbContext = new ApplicationDBContext(options);
-            //_iLogin = new LoginRepository(_dbContext, _config);
+            _iLogin = new LoginRepository(_dbContext, _config, _mapper);
         }
 
         [TearDown]
@@ -38,17 +39,17 @@ namespace BusinessManagementSystemTest.IntegrationTest
         {
             UserDto userDto = new UserDto()
             {
-                UserId = 1,
-                UserName = "rozer.shrestha",
-                Email = "rozer.shrestha611@gmail.com",
+                UserId = 111,
+                UserName = "test",
+                Email = "test@gmail.com",
                 Password = "P@ssw0rd",
-                FullName = "Rozer Shrestha",
+                FullName = "Test Shrestha",
                 Address = "Bhimsensthan",
                 DateOfBirth = DateOnly.Parse("1991/03/01") ,
                 PhoneNumber = "9818136562",
                 Gender = "Male",
                 Occupation = "IT",
-                RoleId = 0,
+                RoleId = 1,
                 RoleName = SD.Role_Superadmin
             };
 

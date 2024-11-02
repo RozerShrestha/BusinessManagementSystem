@@ -38,22 +38,23 @@
         var datatable = null;
         $(document).ready(function () {
             loadDataTable('Active');
+
             $('#tblEmployeeList').on('click', '.delete-item', function (e) {
                 e.preventDefault();
-                const userId = $(this).data('id');
+                const itemId = $(this).data('id');
                 $('#confirmationModalDel').modal('show'); // Show the Bootstrap modal
-                $('#confirmationModalDel').data('user-id', userId); // Store claim ID in the modal data
+                $('#confirmationModalDel').data('item-id', itemId); // Store claim ID in the modal data
             });
 
             $('#confirmDelete').on('click', function () {
 
-                const userId = $('#confirmationModalDel').data('user-id');
+                const itemId = $('#confirmationModalDel').data('item-id');
                 $('#confirmationModalDel').modal('hide');
-                const table = $('#tblEmployeeList').DataTable();
+                const table = $('#tblMyClaims').DataTable();
                 const $row = $(this).closest('tr');
                 $.ajax({
                     type: 'GET',
-                    url: `/Users/Delete?guid=${userId}`,
+                    url: `/Users/Delete?guid=${itemId}`,
                     contentType: 'application/json',
                     success: function (response) {
                         table.ajax.reload();
@@ -124,9 +125,8 @@
                             return `
                                     <div>
                                         <a href="/Users/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
-                                        <a href="/Users/detail?guid=${data}"><i class="fas fa-eye"></i></i></a>
-                                        <a href="#" data-toggle="modal" data-id="${data}" data-type="user" data-target="#confirmationModalDel" class="delete-btn"> <i class="fas fa-trash-alt"> </i></a>
-                                        <a href="#" class="delete-item" data-id="${data}"> <i class= "fas fa-trash-alt" > </i></a > |
+                                        <a href="/Users/detail?guid=${data}"><i class="fas fa-eye"></i></i></a> |
+                                        <a href="#" class="delete-item" data-id="${data}"> <i class= "fas fa-trash-alt" > </i></a >
                                         </div>
                                     `
                         }
