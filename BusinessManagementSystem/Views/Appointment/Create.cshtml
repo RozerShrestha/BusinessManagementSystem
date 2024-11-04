@@ -1,0 +1,70 @@
+﻿@model BusinessManagementSystem.Dto.AppointmentDto
+<h4>Create Appointment</h4>
+<hr />
+<form asp-action="Create" method="post" enctype="multipart/form-data" asp-controller="Appointment">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-12">
+        <div class="card card-outline card-dark">
+            <div class="card-header">
+                <h3 class="card-title">General Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="ClientName" class="control-label"></label>
+                        <input asp-for="ClientName" class="form-control" />
+                        <span asp-validation-for="ClientName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="ClientPhoneNumber" class="control-label"></label>
+                        <input asp-for="ClientPhoneNumber" class="form-control" />
+                        <span asp-validation-for="ClientPhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="AppointmentDate" class="control-label"></label>
+                        <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Category" class="control-label"></label>
+                        <input asp-for="Category" class="form-control" />
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="EstimatedHours" class="control-label"></label>
+                        <input asp-for="EstimatedHours" class="form-control" type="number" step="0.1" />
+                        <span asp-validation-for="EstimatedHours" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Deposit" class="control-label"></label>
+                        <input asp-for="Deposit" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="Deposit" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Fee" class="control-label"></label>
+                        <input asp-for="Fee" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="Fee" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Discount" class="control-label"></label>
+                        <input asp-for="Discount" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="Discount" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Status" class="control-label"></label>
+                        <input asp-for="Status" class="form-control" />
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

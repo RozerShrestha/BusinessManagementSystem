@@ -62,15 +62,6 @@ namespace BusinessManagementSystem.Repositories
             return _responseDtoUserRole;
         }
 
-        //public ResponseDto<User> GetUser(Guid guid)
-        //{
-        //    UserDto userDto=new UserDto();
-        //    var item = _dbContext.Users.Include(m=>m.UserRoles).Where(p => p.Guid == guid).SingleOrDefault();
-
-        //    return _responseDtoUser;
-
-                              
-        //}
 
         public dynamic RoleList()
         {

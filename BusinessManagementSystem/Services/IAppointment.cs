@@ -2,7 +2,7 @@
 
 namespace BusinessManagementSystem.Services
 {
-    public interface IDepartment : IGeneric<Department>
+    public interface IAppointment:IGeneric<Appointment>
     {
     }
 }

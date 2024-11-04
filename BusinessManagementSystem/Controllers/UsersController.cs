@@ -188,8 +188,6 @@ namespace BusinessManagementSystem.Controllers
            
         }
         
-        
-
         [HttpGet]
         public IActionResult Test(Guid id)
         {
@@ -222,7 +220,6 @@ namespace BusinessManagementSystem.Controllers
             }
             
         }
-
 
 
         #region API CALLS

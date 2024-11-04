@@ -61,6 +61,7 @@ namespace BusinessManagementSystem.Dto
         public string? ProfilePictureLink { get; set; }
         public string? Skills { get; set; }
         public string? Notes { get; set; }
+        public int Percentage { get; set; }
 
     }
 }

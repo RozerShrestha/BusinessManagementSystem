@@ -4,6 +4,7 @@ using BusinessManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241102115235_Appintment Referal added")]
+    partial class AppintmentReferaladded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,16 +33,8 @@ namespace BusinessManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Allergies")
-                        .IsRequired()
-                        .HasColumnType("varchar(500)");
-
                     b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ArtistPreferance")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -53,9 +48,6 @@ namespace BusinessManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(20)");
 
-                    b.Property<bool>("ConsentFormSigned")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -68,44 +60,18 @@ namespace BusinessManagementSystem.Migrations
                     b.Property<double>("Discount")
                         .HasColumnType("float");
 
-                    b.Property<double>("EstimatedHours")
-                        .HasColumnType("float");
-
                     b.Property<double>("Fee")
                         .HasColumnType("float");
 
-                    b.Property<bool>("FollowUpRequired")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("InkColorPreferance")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("MedicalConditions")
-                        .IsRequired()
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("PainToleranceLevel")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Placement")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                    b.Property<double>("Hours")
+                        .HasColumnType("float");
 
                     b.Property<int>("ReferalId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SessionNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("TattooDesign")
-                        .IsRequired()
-                        .HasColumnType("varchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -115,9 +81,6 @@ namespace BusinessManagementSystem.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("guid")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 

@@ -13,9 +13,13 @@ namespace BusinessManagementSystem.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<BasicConfiguration> BasicConfigurations { get; set; }
-        public DbSet<Department> Departments { get; set; }
         public DbSet<MenuRole> MenuRoles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Referal> Referals { get; set; }
+
+
+
         //Constructor calling the Base DbContext Class Constructor
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
@@ -41,6 +45,11 @@ namespace BusinessManagementSystem.Data
             modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new MenuRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new BasicConfigurationEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new MenuRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AppointmentEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ReferalEntityConfiguration());
+            
 
 
         }

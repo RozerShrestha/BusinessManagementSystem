@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using BusinessManagementSystem.Helper;
 
 namespace BusinessManagementSystem.Models
 {
@@ -39,9 +40,8 @@ namespace BusinessManagementSystem.Models
         public bool FirstPasswordReset { get; set; }
         [Required]
         public string Salt { get; set; }
-        [NotMapped]
-        public int RoleId { get; set; }
-
+        [RequiredIf("Occupation", "Tattoo Artist","Percentage Field required")]
+        public int Percentage { get; set; }
         public string? FacebookLink { get; set; }
         public string? InstagramLink { get; set; }
         public string? TiktokLink { get; set; }
@@ -51,6 +51,8 @@ namespace BusinessManagementSystem.Models
 
         [JsonIgnore]
         public ICollection<UserRole> UserRoles { get; set; }
+        [JsonIgnore]
+        public ICollection<Appointment> Appointments { get; set; }
 
     }
 

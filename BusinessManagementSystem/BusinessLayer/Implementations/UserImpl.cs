@@ -21,7 +21,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         ResponseDto<UserRoleDto> _responseUserRole;
         ResponseDto<UserDto> _responseUserDto;
 
-
         public UserImpl(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -100,12 +99,12 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             item.Data.Gender=userDto.Gender;
             item.Data.Occupation=userDto.Occupation;
             item.Data.Status=userDto.Status;
-            item.Data.RoleId= userDto.RoleId;
             item.Data.FacebookLink=userDto.FacebookLink;
             item.Data.InstagramLink = userDto.InstagramLink;
             item.Data.TiktokLink = userDto.TiktokLink;
             item.Data.Skills = userDto.Skills;
             item.Data.Notes= userDto.Notes;
+            item.Data.Percentage=userDto.Percentage;
             var userRole = item.Data.UserRoles.Where(p => p.UserId == userDto.UserId).SingleOrDefault();
             if(userRole!=null)
             {

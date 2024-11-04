@@ -1,4 +1,5 @@
 ﻿using BusinessManagementSystem.Enums;
+using BusinessManagementSystem.Models;
 
 namespace BusinessManagementSystem.Utility
 {
@@ -34,6 +35,19 @@ namespace BusinessManagementSystem.Utility
             { Occupation.Cleaner.ToString(), "Cleaner" },
             { Occupation.ChiefOperatingOfficer.ToString(), "Chief Operating Officer" },
             { Occupation.ChiefFinanceOfficer.ToString(), "Chief Finance Officer" }
+        };
+
+        public static readonly Dictionary<string, string> AppointmentStatus = new Dictionary<string, string>
+        {
+            { AppointmentStat.Scheduled.ToString(), "Scheduled" },
+            { AppointmentStat.Confirmed.ToString(), "Confirmed" },
+            { AppointmentStat.Pending.ToString(), "Pending" },
+            { AppointmentStat.InProgress.ToString(), "In Progress" },
+            { AppointmentStat.Completed.ToString(), "Completed" },
+            { AppointmentStat.Cancelled.ToString(), "Cancelled" },
+            { AppointmentStat.NotShown.ToString(), "Not Shown" },
+            { AppointmentStat.Rescheduled.ToString(), "Rescheduled" },
+            { AppointmentStat.DepositPending.ToString(), "Deposit Pending" }
         };
 
 
