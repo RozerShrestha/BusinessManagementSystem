@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json.Serialization;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BusinessManagementSystem.Models
 {
@@ -38,7 +39,16 @@ namespace BusinessManagementSystem.Models
         [DisplayName("Employer Address")]
         [Required]
         public required string EmployerAddress { get; set; }
-        
+        [DisplayName("Tattoo Price")]
+        [Required]
+        public double TattooPrice { get; set; }
+        [DisplayName("Piercing Price")]
+        [Required]
+        public double PiercingPrice { get; set; }
+        [DisplayName("DeadLock Price")]
+        [Required]
+        public double DreadLockPrice { get; set; }
+
 
     }
     public class BasicConfigurationEntityConfiguration : IEntityTypeConfiguration<BasicConfiguration>

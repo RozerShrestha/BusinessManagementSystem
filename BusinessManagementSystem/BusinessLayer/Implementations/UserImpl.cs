@@ -4,6 +4,7 @@ using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Controllers;
 using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Repositories;
 using BusinessManagementSystem.Services;
@@ -76,6 +77,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             User u = new User();
             u = _mapper.Map<User>(userDto);
             u.HashPassword = hashInfo.Hash;
+            u.Occupation = SD.Occupations.FirstOrDefault(x => x.Value == userDto.Occupation).Key;
             u.Status = true;
             u.Salt=hashInfo.Salt;
             u.FirstPasswordReset = false;
@@ -137,6 +139,12 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             var roleLIst = _unitOfWork.Users.RoleList();
             return roleLIst;
+        }
+
+        public dynamic GetAllActiveTattooArtist()
+        {
+            var activeTattooArtist = _unitOfWork.Users.ArtistList();
+            return activeTattooArtist;
         }
     }
 }

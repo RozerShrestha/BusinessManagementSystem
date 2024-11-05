@@ -6,6 +6,7 @@ namespace BusinessManagementSystem.Services
 {
     public interface IUnitOfWork
     {
+        IBase Base { get; }
         IUser Users { get; }
         IRole Role { get; }
         IMenu Menu { get; }
@@ -13,7 +14,8 @@ namespace BusinessManagementSystem.Services
         IUserRole UserRole { get; }
         IBasicConfiguration BasicConfiguration { get; }      
         IDashboard Dashboard { get; }
-        IBase Base { get; }
+        IReferal Referal { get; }
+        IAppointment Appointment { get; }
         void BeginTransaction();
         void Commit();
         void Rollback();

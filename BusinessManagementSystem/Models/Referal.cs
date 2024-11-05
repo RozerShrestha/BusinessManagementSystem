@@ -9,7 +9,11 @@ namespace BusinessManagementSystem.Models
         [Key]
         public int Id { get; set; }
         public string FullName { get; set; }
+        public DateOnly ReferalAppointDate { get; set; }
+        public int Commission { get; set; }
         public bool Status { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
+
     }
     public class ReferalEntityConfiguration : IEntityTypeConfiguration<Referal>
     {

@@ -37,17 +37,22 @@ namespace BusinessManagementSystem.Utility
             { Occupation.ChiefFinanceOfficer.ToString(), "Chief Finance Officer" }
         };
 
-        public static readonly Dictionary<string, string> AppointmentStatus = new Dictionary<string, string>
+        public static readonly Dictionary<string, string> TattooCategories = new Dictionary<string, string>
         {
-            { AppointmentStat.Scheduled.ToString(), "Scheduled" },
-            { AppointmentStat.Confirmed.ToString(), "Confirmed" },
-            { AppointmentStat.Pending.ToString(), "Pending" },
+            { TattooCategory.Tattoo.ToString(), "Tattoo" },
+            { TattooCategory.Dreadlock.ToString(), "DreadLock" },
+            { TattooCategory.Piercing.ToString(), "Piercing" }
+        };
+
+        public static readonly Dictionary<string, string> ApointmentStatus = new Dictionary<string, string>
+        {
             { AppointmentStat.InProgress.ToString(), "In Progress" },
+            { AppointmentStat.Scheduled.ToString(), "Scheduled" },
+            { AppointmentStat.Rescheduled.ToString(), "Re Scheduled" },
+            { AppointmentStat.Confirmed.ToString(), "COnfirmed" },
             { AppointmentStat.Completed.ToString(), "Completed" },
             { AppointmentStat.Cancelled.ToString(), "Cancelled" },
             { AppointmentStat.NotShown.ToString(), "Not Shown" },
-            { AppointmentStat.Rescheduled.ToString(), "Rescheduled" },
-            { AppointmentStat.DepositPending.ToString(), "Deposit Pending" }
         };
 
 

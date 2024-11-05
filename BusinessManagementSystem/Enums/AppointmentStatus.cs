@@ -4,12 +4,10 @@
     {
         Scheduled=1,
         Confirmed=2,
-        Pending=3,
-        InProgress=4,
-        Completed=5,
-        Cancelled=6,
-        NotShown=7,
-        Rescheduled=8,
-        DepositPending=9,
+        InProgress=3,
+        Completed=4,
+        Cancelled=5,
+        NotShown=6,
+        Rescheduled=7,
     }
 }

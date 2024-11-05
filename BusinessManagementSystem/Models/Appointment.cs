@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace BusinessManagementSystem.Models
@@ -9,20 +11,24 @@ namespace BusinessManagementSystem.Models
     {
         [Key]
         public int Id { get; set; }
-        public Guid guid { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
+        public Guid guid { get; set; }
+        public int UserId { get; set; }
+        public int ReferalId { get; set; }
+        [Required]
+        [DisplayName("Client Name")]
         public string ClientName { get; set; }
         [Required]
+        [DisplayName("Client Phone Number")]
         public string ClientPhoneNumber { get; set; }
         [Required]
+        [DisplayName("Appointment Date")]
         public DateTime AppointmentDate { get; set; }
-        [JsonIgnore]
-        public User User { get; set; }
-        [JsonIgnore]
-        public Referal Referal { get; set; }
         [Required]
         public string Category { get; set; }
         [Required]
+        [DisplayName("Estimated Hours")]
         public double EstimatedHours { get; set; }
         [Required]
         public double Deposit { get; set; }
@@ -30,16 +36,38 @@ namespace BusinessManagementSystem.Models
         public double Discount { get; set; }
         [Required]
         public string Status { get; set; }
-        public string TattooDesign { get; set; }
-        public string Placement { get; set; }
-        public string InkColorPreferance { get; set; }
+        [DisplayName("Tattoo Design")]
+        public string? TattooDesign { get; set; }
+        public string? Placement { get; set; }
+        [DisplayName("Ink Color Preferance")]
+        public string? InkColorPreferance { get; set; }
+        [Required]
+        [DisplayName("Artist Preference")]
         public string ArtistPreferance { get; set; }
+        [Required]
         public string Allergies { get; set; }
+        [Required]
+        [DisplayName("Medical Conditions")]
         public string MedicalConditions { get; set; }
+        [DisplayName("Pain Tolerance Level")]
         public string PainToleranceLevel { get; set; }
+        [DisplayName("Session Number")]
         public int SessionNumber { get; set; }
+        [Required]
+        [DisplayName("Consent Form Sign")]
         public bool ConsentFormSigned { get; set; }
+        [DisplayName("Followup Required")]
         public bool FollowUpRequired { get; set; }
+        [JsonIgnore]
+        public User User { get; set; }
+        [JsonIgnore]
+        public Referal Referal { get; set; }
+        //public Appointment(int appointmentId, User user, Referal referal)
+        //{
+        //    Id = appointmentId;
+        //    UserId=user.Id;
+        //    ReferalId=referal.Id;
+        //}
 
     }
 

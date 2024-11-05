@@ -28,17 +28,19 @@ namespace BusinessManagementSystem.Repositories
             MenuRole=new MenuRoleRepository(_dbContext);
             UserRole=new UserRoleRepository(_dbContext);
             BasicConfiguration = new BasicConfigurationRepository(_dbContext);
+            Appointment = new AppointmentRepository(_dbContext);
+            Referal=new ReferalRepository(_dbContext);
         }
 
         public IUser Users { get; private set; }
-
         public IBase Base { get; private set; }
         public IDashboard Dashboard { get; private set; }
         public IRole Role { get; private set; }
         public IMenu Menu { get; private set; }
         public IMenuRole MenuRole { get; private set; }
         public IUserRole UserRole { get; private set; }
-
+        public IReferal Referal { get; }
+        public IAppointment Appointment { get; }
         public IBasicConfiguration BasicConfiguration { get; private set; }
         
         public void BeginTransaction()

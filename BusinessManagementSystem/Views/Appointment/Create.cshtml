@@ -1,4 +1,4 @@
-﻿@model BusinessManagementSystem.Dto.AppointmentDto
+﻿@model BusinessManagementSystem.Models.Appointment
 <h4>Create Appointment</h4>
 <hr />
 <form asp-action="Create" method="post" enctype="multipart/form-data" asp-controller="Appointment">
@@ -21,50 +21,114 @@
                         <input asp-for="ClientPhoneNumber" class="form-control" />
                         <span asp-validation-for="ClientPhoneNumber" class="text-danger"></span>
                     </div>
-
                     <div class="col-md-4">
                         <label asp-for="AppointmentDate" class="control-label"></label>
                         <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
                         <span asp-validation-for="AppointmentDate" class="text-danger"></span>
                     </div>
-
                     <div class="col-md-4">
                         <label asp-for="Category" class="control-label"></label>
-                        <input asp-for="Category" class="form-control" />
+                        @Html.DropDownListFor(model => model.Category, (SelectList)ViewBag.TattooCategories, "--Select--", new { @class = "form-control" })
                         <span asp-validation-for="Category" class="text-danger"></span>
                     </div>
-
+                    <div class="col-md-4">
+                        <label asp-for="ArtistPreferance" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.ArtistPreferance, (SelectList)ViewBag.ArtistList, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="ArtistPreferance" class="text-danger"></span>
+                    </div>
                     <div class="col-md-4">
                         <label asp-for="EstimatedHours" class="control-label"></label>
                         <input asp-for="EstimatedHours" class="form-control" type="number" step="0.1" />
                         <span asp-validation-for="EstimatedHours" class="text-danger"></span>
                     </div>
-
                     <div class="col-md-4">
                         <label asp-for="Deposit" class="control-label"></label>
                         <input asp-for="Deposit" class="form-control" type="number" step="0.01" />
                         <span asp-validation-for="Deposit" class="text-danger"></span>
                     </div>
-
+                    <div class="col-md-4">
+                        <label asp-for="Status" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card card-outline card-dark">
+            <div class="card-header">
+                <h3 class="card-title">Other Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                   
+                    <div class="col-md-4">
+                        <label asp-for="TattooDesign" class="control-label"></label>
+                        <input asp-for="TattooDesign" class="form-control" />
+                        <span asp-validation-for="TattooDesign" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Placement" class="control-label"></label>
+                        <input asp-for="Placement" class="form-control" />
+                        <span asp-validation-for="Placement" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="InkColorPreferance" class="control-label"></label>
+                        <input asp-for="InkColorPreferance" class="form-control" />
+                        <span asp-validation-for="InkColorPreferance" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label asp-for="Allergies" class="control-label"></label>
+                        <input asp-for="Allergies" class="form-control" />
+                        <span asp-validation-for="Allergies" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="MedicalConditions" class="control-label"></label>
+                        <input asp-for="MedicalConditions" class="form-control" />
+                        <span asp-validation-for="MedicalConditions" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Placement" class="control-label"></label>
+                        <input asp-for="Placement" class="form-control" />
+                        <span asp-validation-for="Placement" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="PainToleranceLevel" class="control-label"></label>
+                        <input asp-for="PainToleranceLevel" class="form-control" />
+                        <span asp-validation-for="PainToleranceLevel" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="SessionNumber" class="control-label"></label>
+                        <input asp-for="SessionNumber" class="form-control" />
+                        <span asp-validation-for="SessionNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="ConsentFormSigned" class="control-label"></label>
+                        <input asp-for="ConsentFormSigned" class="form-control" />
+                        <span asp-validation-for="ConsentFormSigned" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="FollowUpRequired" class="control-label"></label>
+                        <input asp-for="FollowUpRequired" class="form-control" />
+                        <span asp-validation-for="FollowUpRequired" class="text-danger"></span>
+                    </div>
                     <div class="col-md-4">
                         <label asp-for="Fee" class="control-label"></label>
                         <input asp-for="Fee" class="form-control" type="number" step="0.01" />
                         <span asp-validation-for="Fee" class="text-danger"></span>
                     </div>
-
                     <div class="col-md-4">
                         <label asp-for="Discount" class="control-label"></label>
                         <input asp-for="Discount" class="form-control" type="number" step="0.01" />
                         <span asp-validation-for="Discount" class="text-danger"></span>
                     </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Status" class="control-label"></label>
-                        <input asp-for="Status" class="form-control" />
-                        <span asp-validation-for="Status" class="text-danger"></span>
-                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <input type="submit" value="Create" class="btn btn-success my-button" />
         </div>
     </div>
 </form>

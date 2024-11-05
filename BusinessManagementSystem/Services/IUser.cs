@@ -10,6 +10,7 @@ namespace BusinessManagementSystem.Services
         ResponseDto<UserRoleDto> GetAllUser(string filter);
         //ResponseDto<UserDto> GetUser(Guid guid);
         dynamic RoleList();
+        dynamic ArtistList();
 
     }
 }

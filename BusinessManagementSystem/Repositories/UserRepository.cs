@@ -1,5 +1,6 @@
 ﻿using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
@@ -67,6 +68,11 @@ namespace BusinessManagementSystem.Repositories
         {
             var roleLIst = _dbContext.Roles.Select(p => new { Id = p.Id, Name = p.Name }).ToList();
             return roleLIst;
+        }
+        public dynamic ArtistList()
+        {
+            var artistList = _dbContext.Users.Where(p=>p.Occupation.Equals(Occupation.TattooArtist.ToString()) && p.Status==true).Select(p => new { Id = p.Id, Name = p.FullName }).ToList();
+            return artistList;
         }
     }
 }

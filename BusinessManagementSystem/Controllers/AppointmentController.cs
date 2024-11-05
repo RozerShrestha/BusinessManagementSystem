@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
+using Newtonsoft.Json;
 
 namespace BusinessManagementSystem.Controllers
 {
@@ -17,15 +18,14 @@ namespace BusinessManagementSystem.Controllers
         public ResponseDto<UserDto> _responseAppointmentDto;
         private ILogger<AppointmentController> _logger;
         private readonly ModalView _modalView;
-        private readonly dynamic roleList;
-        //private ModalView _modalView;
+        private readonly dynamic artistList;
         public AppointmentController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<AppointmentController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
-            roleList = _businessLayer.UserService.RoleList();
 
             _responseDto = new ResponseDto<Appointment>();
             _responseAppointmentDto = new ResponseDto<UserDto>();
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected User?", "");
+            artistList = _businessLayer.UserService.GetAllActiveTattooArtist();
             _logger = logger;
 
         }
@@ -34,7 +34,10 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Create()
         {
-
+            var jso = JsonConvert.SerializeObject(artistList,new JsonSerializerSettings { ReferenceLoopHandling=ReferenceLoopHandling.Ignore});
+            ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
+            ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
+            ViewBag.AppointmentStatus=new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View();
         }
 
