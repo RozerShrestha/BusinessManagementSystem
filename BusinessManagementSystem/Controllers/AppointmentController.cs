@@ -34,11 +34,29 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Create()
         {
-            var jso = JsonConvert.SerializeObject(artistList,new JsonSerializerSettings { ReferenceLoopHandling=ReferenceLoopHandling.Ignore});
+            //var jso = JsonConvert.SerializeObject(artistList,new JsonSerializerSettings { ReferenceLoopHandling=ReferenceLoopHandling.Ignore});
             ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
             ViewBag.AppointmentStatus=new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        public IActionResult Create(Appointment appointment)
+        {
+            ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
+            ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+
+            if (ModelState.IsValid)
+            {
+                return View(appointment);
+            }
+            else
+            {
+                return View(appointment);
+            }
         }
 
     }

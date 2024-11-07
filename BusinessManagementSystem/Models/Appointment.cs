@@ -12,37 +12,45 @@ namespace BusinessManagementSystem.Models
         [Key]
         public int Id { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Required]
         public Guid guid { get; set; }
         public int UserId { get; set; }
         public int ReferalId { get; set; }
         [Required]
-        [DisplayName("Client Name")]
+        [DisplayName("Client Name *")]
         public string ClientName { get; set; }
         [Required]
-        [DisplayName("Client Phone Number")]
+        [DisplayName("Client Phone Number *")]
         public string ClientPhoneNumber { get; set; }
         [Required]
-        [DisplayName("Appointment Date")]
+        [DisplayName("Appointment Date *")]
         public DateTime AppointmentDate { get; set; }
         [Required]
+        [DisplayName("Category *")]
         public string Category { get; set; }
+        //we need required if Status is something
+        [DisplayName("Total Hours *")]
+        public double TotalHours { get; set; }
         [Required]
-        [DisplayName("Estimated Hours")]
-        public double EstimatedHours { get; set; }
-        [Required]
+        [Range(1000, int.MaxValue, ErrorMessage ="Deposit amount should be more than equal to 1000")]
+        [DisplayName("Deposit *")]
         public double Deposit { get; set; }
-        public double Fee { get; set; }
+        [DisplayName("Discount")]
         public double Discount { get; set; }
+        [DisplayName("Discount In Hour")]
+        public double DiscountInHour { get; set; }
+        [DisplayName("Total Cost")]
+        public double TotalCost { get; set; }
         [Required]
+        [DisplayName("Status *")]
         public string Status { get; set; }
         [DisplayName("Tattoo Design")]
         public string? TattooDesign { get; set; }
+        [DisplayName("Placement")]
         public string? Placement { get; set; }
         [DisplayName("Ink Color Preferance")]
         public string? InkColorPreferance { get; set; }
         [Required]
-        [DisplayName("Artist Preference")]
+        [DisplayName("Artist Preference *")]
         public string ArtistPreferance { get; set; }
         [Required]
         public string Allergies { get; set; }
@@ -58,6 +66,7 @@ namespace BusinessManagementSystem.Models
         public bool ConsentFormSigned { get; set; }
         [DisplayName("Followup Required")]
         public bool FollowUpRequired { get; set; }
+
         [JsonIgnore]
         public User User { get; set; }
         [JsonIgnore]
