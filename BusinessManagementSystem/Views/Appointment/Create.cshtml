@@ -32,9 +32,14 @@
                         <span asp-validation-for="Category" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="ArtistPreferance" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.ArtistPreferance, (SelectList)ViewBag.ArtistList, "--Select--", new { @class = "form-control" })
-                        <span asp-validation-for="ArtistPreferance" class="text-danger"></span>
+                        <label asp-for="ReferalId" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.ReferalId, (SelectList)ViewBag.ReferalList, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="ReferalId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="UserId" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.ArtistList, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="UserId" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="Status" class="control-label"></label>
@@ -43,11 +48,7 @@
                     </div>
                     
                 </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <input type="button" value="Calculate Total Cost" class="btn btn-info my-button" />
-                    </div>
-                </div>
+               
             </div>
         </div>
         <div class="card card-outline card-dark">
@@ -84,32 +85,27 @@
                         <span asp-validation-for="MedicalConditions" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="Placement" class="control-label"></label>
-                        <input asp-for="Placement" class="form-control" />
-                        <span asp-validation-for="Placement" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-4">
                         <label asp-for="PainToleranceLevel" class="control-label"></label>
                         <input asp-for="PainToleranceLevel" class="form-control" />
                         <span asp-validation-for="PainToleranceLevel" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="SessionNumber" class="control-label"></label>
-                        <input asp-for="SessionNumber" class="form-control" />
+                        <input asp-for="SessionNumber" value="1" class="form-control" />
                         <span asp-validation-for="SessionNumber" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="ConsentFormSigned" class="control-label"></label>
                         <select asp-for="ConsentFormSigned" class="form-control">
                             <option value="true">Yes</option>
-                            <option value="false">No</option>
+                            <option value="false" selected>No</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="FollowUpRequired" class="control-label"></label>
                         <select asp-for="FollowUpRequired" class="form-control">
                             <option value="true">Yes</option>
-                            <option value="false">No</option>
+                            <option value="false" selected>No</option>
                         </select>
                     </div>
                 </div>
@@ -124,12 +120,12 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label asp-for="TotalHours" class="control-label"></label>
-                        <input asp-for="TotalHours" class="form-control" type="number" step="0.1" />
+                        <input asp-for="TotalHours" value="1" class="form-control" type="number" step="0.1" />
                         <span asp-validation-for="TotalHours" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="Deposit" class="control-label"></label>
-                        <input asp-for="Deposit" class="form-control" type="number" step="0.01" />
+                        <input asp-for="Deposit" value="0" class="form-control" type="number" step="0.01" />
                         <span asp-validation-for="Deposit" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
@@ -144,8 +140,11 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="TotalCost" class="control-label"></label>
-                        <input asp-for="TotalCost" value="0" class="form-control" type="number" step="0.01" />
+                        <input asp-for="TotalCost" value="0" class="form-control" readonly type="number" step="0.01" />
                         <span asp-validation-for="TotalCost" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="button" value="Calculate Total Cost" class="btn btn-info my-button calculateTotalCost" />
                     </div>
                 </div>
             </div>
@@ -163,11 +162,26 @@
 
 @section Scripts {
     <script>
-        function CalculateTotalCost() {
-            var inputValue1 = document.getElementById("fpUsername").value;
-            var inputValue2 = $("#fpUsername").val();
-            alert(`you Enter ${inputValue1} and ${inputValue2}`);
-        }
+        $('.calculateTotalCost').on('click', function () {
+            let category = $('#Category').val();
+            let totalHours = $('#TotalHours').val();
+            let deposit = $('#Deposit').val();
+            let discount = $('#Discount').val();
+            let discountInHour = $('#DiscountInHour').val();
+            $('#TotalCost').val();
+            $.ajax({
+                type: 'GET',
+                url: `/Appointment/GetPaymentCalculation?category=${category}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}`,
+                contentType: 'application/json',
+                success: function (response) {
+                    alert(response.costDescription);
+                    $('#TotalCost').val(response.totalCost);
+                },
+                error: function (error) {
+                    toastr.error("Error due to: " + error.responseText);
+                }
+            });
+        });
     </script>
 }
 

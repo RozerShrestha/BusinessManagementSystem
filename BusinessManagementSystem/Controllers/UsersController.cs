@@ -130,10 +130,7 @@ namespace BusinessManagementSystem.Controllers
 
         public IActionResult Edit(Guid guid)
         {
-            if (guid==Guid.Empty)
-            {
-                return NotFound();
-            }
+            if (guid==Guid.Empty)return NotFound();
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
             var _responseDto = _businessLayer.UserService.GetUserByGuid(guid);
@@ -194,58 +191,6 @@ namespace BusinessManagementSystem.Controllers
             return View();
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "superadmin")]
-        public IActionResult DeleteConfirmed(int UserId)
-        {
-            _responseDto = _businessLayer.UserService.GetUserById(UserId);
-            if (_responseDto.Data != null)
-            {
-                try
-                {
-                    _responseDto=_businessLayer.UserService.DeleteUser(UserId);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                  _notyf.Error($"Error deleting User due to : {ex.Message}");
-                    return View(_responseDto.Data.Guid);
-                }
-            }
-            else
-            {
-                _notyf.Error("Error: User not Found");
-                return NotFound();
-            }
-            
-        }
-
-
-        #region API CALLS
-
-        [HttpGet]
-        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
-        public IActionResult GetAllUser()
-        {
-            string who = roleName;
-            if(who==SD.Role_Superadmin)
-                _responseUserRoleDto = _businessLayer.UserService.GetAllUser(SD.Role_Superadmin);
-            else
-            {
-                _responseUserRoleDto = _businessLayer.UserService.GetAllUser(SD.Role_ApartmentAdmin);
-            }
-
-            if (_responseUserRoleDto.StatusCode == HttpStatusCode.OK)
-            {
-                return Ok(_responseUserRoleDto);
-            }
-            else
-            {
-                return BadRequest(_responseUserRoleDto);
-            }
-            
-        }
         [Authorize(Roles = "superadmin")]
         [HttpGet]
         public IActionResult Delete(Guid guid)
@@ -273,6 +218,61 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "superadmin")]
+        public IActionResult DeleteConfirmed(int UserId)
+        {
+            _responseDto = _businessLayer.UserService.GetUserById(UserId);
+            if (_responseDto.Data != null)
+            {
+                try
+                {
+                    _responseDto=_businessLayer.UserService.DeleteUser(UserId);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                  _notyf.Error($"Error deleting User due to : {ex.Message}");
+                    return View(_responseDto.Data.Guid);
+                }
+            }
+            else
+            {
+                _notyf.Error("Error: User not Found");
+                return NotFound();
+            }
+            
+        }
+
+       
+
+        #region API CALLS
+
+        [HttpGet]
+        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
+        public IActionResult GetAllUser()
+        {
+            string who = roleName;
+            if(who==SD.Role_Superadmin)
+                _responseUserRoleDto = _businessLayer.UserService.GetAllUser(SD.Role_Superadmin);
+            else
+            {
+                _responseUserRoleDto = _businessLayer.UserService.GetAllUser(SD.Role_ApartmentAdmin);
+            }
+
+            if (_responseUserRoleDto.StatusCode == HttpStatusCode.OK)
+            {
+                return Ok(_responseUserRoleDto);
+            }
+            else
+            {
+                return BadRequest(_responseUserRoleDto);
+            }
+            
+        }
+       
         #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,9 @@ namespace BusinessManagementSystem.Models
         public int Id { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid guid { get; set; }
+        [DisplayName("Artist Preferance")]
         public int UserId { get; set; }
+        [DisplayName("Referal")]
         public int ReferalId { get; set; }
         [Required]
         [DisplayName("Client Name *")]
@@ -50,16 +53,14 @@ namespace BusinessManagementSystem.Models
         [DisplayName("Ink Color Preferance")]
         public string? InkColorPreferance { get; set; }
         [Required]
-        [DisplayName("Artist Preference *")]
-        public string ArtistPreferance { get; set; }
-        [Required]
+        [DisplayName("Allergies *")]
         public string Allergies { get; set; }
         [Required]
-        [DisplayName("Medical Conditions")]
+        [DisplayName("Medical Conditions *")]
         public string MedicalConditions { get; set; }
-        [DisplayName("Pain Tolerance Level")]
+        [DisplayName("Pain Tolerance Level *")]
         public string PainToleranceLevel { get; set; }
-        [DisplayName("Session Number")]
+        [DisplayName("Session Number *")]
         public int SessionNumber { get; set; }
         [Required]
         [DisplayName("Consent Form Sign")]
@@ -67,16 +68,14 @@ namespace BusinessManagementSystem.Models
         [DisplayName("Followup Required")]
         public bool FollowUpRequired { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
+        [ForeignKey("UserId")]
+        [ValidateNever]
         public User User { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
+        [ForeignKey("ReferalId")]
+        [ValidateNever]
         public Referal Referal { get; set; }
-        //public Appointment(int appointmentId, User user, Referal referal)
-        //{
-        //    Id = appointmentId;
-        //    UserId=user.Id;
-        //    ReferalId=referal.Id;
-        //}
 
     }
 
@@ -91,7 +90,6 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.TattooDesign).HasColumnType("varchar(500)");
             builder.Property(x => x.Placement).HasColumnType("varchar(150)");
             builder.Property(x => x.InkColorPreferance).HasColumnType("varchar(150)");
-            builder.Property(x => x.ArtistPreferance).HasColumnType("varchar(150)");
             builder.Property(x => x.Allergies).HasColumnType("varchar(500)");
             builder.Property(x => x.MedicalConditions).HasColumnType("varchar(500)");
             builder.Property(x => x.PainToleranceLevel).HasColumnType("varchar(150)");

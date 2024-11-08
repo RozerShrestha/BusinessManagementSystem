@@ -1,4 +1,6 @@
-﻿namespace BusinessManagementSystem.BusinessLayer.Services
+﻿using BusinessManagementSystem.Services;
+
+namespace BusinessManagementSystem.BusinessLayer.Services
 {
     public interface IBusinessLayer
     {
@@ -7,5 +9,7 @@
         IBasicConfigurationService BasicConfigurationService { get; }
         IMenuService MenuService { get; }
         IRoleService RoleService { get; }
+        IAppointmentService AppointmentService { get; }
+        IReferalService ReferalService { get; }
     }
 }

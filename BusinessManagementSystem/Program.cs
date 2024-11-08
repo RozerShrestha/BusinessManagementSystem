@@ -18,6 +18,9 @@ using NLog.Web;
 using System.Net;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http.Json;
 
 static IHostBuilder CreateHostBuilder(string[] args) =>
     Host.CreateDefaultBuilder(args)
@@ -38,19 +41,22 @@ var mapperConfiguration = new MapperConfiguration(configuration =>
 });
 var mapper = mapperConfiguration.CreateMapper();
 var builder = WebApplication.CreateBuilder(args);
+// Add services to the container.
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<ApplicationDBContext>(options => 
 { 
     options.UseSqlServer(builder.Configuration.GetConnectionString("BMSConnection")); 
 });
-// Add services to the container.
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    options.SerializerOptions.WriteIndented = true; // Optional for readability
+});
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<ILogin<LoginResponseDto>, LoginRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-//builder.Services.AddScoped<IBaseService, BaseImpl>();
 builder.Services.AddScoped<IBusinessLayer, BusinessLayerImpl>();
-
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
@@ -177,7 +183,6 @@ app.UseStatusCodePages(context =>
 app.UseAuthorization();
 app.MapControllers();
 app.UseNotyf();
-//app.MapRazorPages();
 app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Login}/{action=index}/{id?}");

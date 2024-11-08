@@ -19,6 +19,9 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             BasicConfigurationService = new BasicConfigurationImpl(_unitOfWork);
             MenuService = new MenuImpl(_unitOfWork);
             RoleService=new RoleImpl(_unitOfWork);
+            AppointmentService = new AppointmentImpl(_unitOfWork, mapper);
+            ReferalService = new ReferalImpl(_unitOfWork, mapper);
+
             
         }
         public IBaseService BaseService { get; private set; }
@@ -28,7 +31,9 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public IBasicConfigurationService BasicConfigurationService { get; private set; }
 
         public IMenuService MenuService { get; private set; }
-        public IRoleService RoleService { get; set; }
+        public IRoleService RoleService { get; private set; }
+        public IAppointmentService AppointmentService { get; private set; }
+        public IReferalService ReferalService { get; private set; }
 
     }
 }

@@ -1,5 +1,196 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model BusinessManagementSystem.Models.Appointment
+<h4>Create Appointment</h4>
+<hr />
+<form asp-action="Edit" method="post" enctype="multipart/form-data" asp-controller="Appointment">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="guid" />
+    <input type="hidden" asp-for="Id" />
+
+    <div class="col-md-12">
+        <div class="card card-outline card-dark">
+            <div class="card-header">
+                <h3 class="card-title">General Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="ClientName" class="control-label"></label>
+                        <input asp-for="ClientName" class="form-control" />
+                        <span asp-validation-for="ClientName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="ClientPhoneNumber" class="control-label"></label>
+                        <input asp-for="ClientPhoneNumber" class="form-control" />
+                        <span asp-validation-for="ClientPhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="AppointmentDate" class="control-label"></label>
+                        <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Category" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.Category, (SelectList)ViewBag.TattooCategories, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="ReferalId" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.ReferalId, (SelectList)ViewBag.ReferalList, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="ReferalId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="UserId" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.ArtistList, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="UserId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Status" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="card card-outline card-dark">
+            <div class="card-header">
+                <h3 class="card-title">Other Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <label asp-for="TattooDesign" class="control-label"></label>
+                        <input asp-for="TattooDesign" class="form-control" />
+                        <span asp-validation-for="TattooDesign" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Placement" class="control-label"></label>
+                        <input asp-for="Placement" class="form-control" />
+                        <span asp-validation-for="Placement" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="InkColorPreferance" class="control-label"></label>
+                        <input asp-for="InkColorPreferance" class="form-control" />
+                        <span asp-validation-for="InkColorPreferance" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Allergies" class="control-label"></label>
+                        <input asp-for="Allergies" class="form-control" />
+                        <span asp-validation-for="Allergies" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="MedicalConditions" class="control-label"></label>
+                        <input asp-for="MedicalConditions" class="form-control" />
+                        <span asp-validation-for="MedicalConditions" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="PainToleranceLevel" class="control-label"></label>
+                        <input asp-for="PainToleranceLevel" class="form-control" />
+                        <span asp-validation-for="PainToleranceLevel" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="SessionNumber" class="control-label"></label>
+                        <input asp-for="SessionNumber" value="1" class="form-control" />
+                        <span asp-validation-for="SessionNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="ConsentFormSigned" class="control-label"></label>
+                        <select asp-for="ConsentFormSigned" class="form-control">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="FollowUpRequired" class="control-label"></label>
+                        <select asp-for="FollowUpRequired" class="form-control">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-outline card-dark">
+            <div class="card-header">
+                <h3 class="card-title">Payment Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="TotalHours" class="control-label"></label>
+                        <input asp-for="TotalHours" class="form-control" type="number" step="0.1" />
+                        <span asp-validation-for="TotalHours" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Deposit" class="control-label"></label>
+                        <input asp-for="Deposit" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="Deposit" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Discount" class="control-label"></label>
+                        <input asp-for="Discount" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="Discount" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="DiscountInHour" class="control-label"></label>
+                        <input asp-for="DiscountInHour" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="DiscountInHour" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="TotalCost" class="control-label"></label>
+                        <input asp-for="TotalCost" class="form-control" readonly type="number" step="0.01" />
+                        <span asp-validation-for="TotalCost" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="button" value="Calculate Total Cost" class="btn btn-info my-button calculateTotalCost" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <input type="submit" value="Update" class="btn btn-success my-button" />
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $('.calculateTotalCost').on('click', function () {
+            let category = $('#Category').val();
+            let totalHours = $('#TotalHours').val();
+            let deposit = $('#Deposit').val();
+            let discount = $('#Discount').val();
+            let discountInHour = $('#DiscountInHour').val();
+            $('#TotalCost').val();
+            $.ajax({
+                type: 'GET',
+                url: `/Appointment/GetPaymentCalculation?category=${category}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}`,
+                contentType: 'application/json',
+                success: function (response) {
+                    alert(response.costDescription);
+                    $('#TotalCost').val(response.totalCost);
+                },
+                error: function (error) {
+                    toastr.error("Error due to: " + error.responseText);
+                }
+            });
+        });
+    </script>
 }
+
+
+
+
+
+
+

@@ -22,6 +22,14 @@ namespace BusinessManagementSystem.Helper
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src =>src.UserId))
                 .ForMember(dest => dest.Guid, opt => opt.MapFrom(src => Helper.Helpers.GenerateGUID()));
 
+            //mapping Appointment to AppointmentDto
+            CreateMap<Appointment, AppointmentDto>()
+                .ForMember(dest => dest.AppointmentId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.ReferalName, opt => opt.MapFrom(src => src.Referal.FullName));
+
+
+
             //string occupationValue = "";
             //CreateMap<User, User>()
             //    .ForMember(dest => dest.Occupation, opt => opt.MapFrom(src => SD.Occupations.TryGetValue(src.Occupation, out occupationValue)));

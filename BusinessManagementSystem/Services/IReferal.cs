@@ -4,5 +4,6 @@ namespace BusinessManagementSystem.Services
 {
     public interface IReferal : IGeneric<Referal>
     {
+        dynamic ReferalList();
     }
 }

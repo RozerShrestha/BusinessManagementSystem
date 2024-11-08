@@ -1,4 +1,5 @@
-﻿using BusinessManagementSystem.Data;
+﻿using AspNetCore;
+using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
@@ -16,6 +17,9 @@ namespace BusinessManagementSystem.Repositories
             _responseAppointmentDto = new ResponseDto<AppointmentDto>();
         }
 
-
+        //public int GetTotalCost(string category, int totalHours, int deposit, int discount, int discountInHour)
+        //{
+        //   var categoryFee=
+        //}
     }
 }
