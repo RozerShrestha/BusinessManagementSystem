@@ -1,10 +1,4 @@
 ﻿@model BusinessManagementSystem.Dto.UserDto
-@* <style scoped>
-    .select2-container--default .select2-selection--multiple .select2-selection__rendered li {
-        list-style: none;
-        color: #000000;
-    }
-</style> *@
 <h4>Create</h4>
 <hr />
 
@@ -24,7 +18,7 @@
                     </div>
                         <div class="col-md-4">
                             <label asp-for="UserName" class="control-label"></label>
-                            <input asp-for="UserName" class="form-control" />
+                            <input asp-for="UserName" class="form-control userNameChange" />
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
@@ -138,3 +132,25 @@
             </div>
         </div>
 </form>
+
+@section Scripts {
+    <script>
+        $('.userNameChange').change(function () {
+            let username = $('#UserName').val();
+            $.ajax({
+                type: 'GET',
+                url: `/Users/UserNameValid?username=${username}`,
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response) toastr.success(`${username} is valid`);
+                    else toastr.error(`User Name: ${username} is Invalid`);
+                    
+
+                },
+                error: function (error) {
+                    toastr.error("Error due to: " + error.responseText);
+                }
+            });
+        });
+    </script>
+}

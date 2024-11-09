@@ -132,7 +132,7 @@ namespace BusinessManagementSystem.Controllers
         {
             if (guid==Guid.Empty)return NotFound();
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
-            ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Key", "Value");
             var _responseDto = _businessLayer.UserService.GetUserByGuid(guid);
             if (_responseDto == null)
              {
@@ -173,7 +173,7 @@ namespace BusinessManagementSystem.Controllers
                     {
                         _notyf.Error(error.ErrorMessage);
                     }
-                    return View(_responseDto.Data);
+                    return View(userDto);
                 }
             }
             else
@@ -255,13 +255,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult GetAllUser()
         {
             string who = roleName;
-            if(who==SD.Role_Superadmin)
-                _responseUserRoleDto = _businessLayer.UserService.GetAllUser(SD.Role_Superadmin);
-            else
-            {
-                _responseUserRoleDto = _businessLayer.UserService.GetAllUser(SD.Role_ApartmentAdmin);
-            }
-
+           _responseUserRoleDto = _businessLayer.UserService.GetAllUser(who);
             if (_responseUserRoleDto.StatusCode == HttpStatusCode.OK)
             {
                 return Ok(_responseUserRoleDto);
@@ -271,6 +265,12 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest(_responseUserRoleDto);
             }
             
+        }
+        [HttpGet]
+        public IActionResult UserNameValid(string username)
+        {
+            var userNameValidityCheck = _businessLayer.UserService.ValidateUser(username);
+            return Ok(userNameValidityCheck);
         }
        
         #endregion

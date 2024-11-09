@@ -23,12 +23,12 @@ namespace BusinessManagementSystem.Helper
             var instance = validationContext.ObjectInstance;
             var type = instance.GetType();
             var propertyvalue = type.GetProperty(PropertyName).GetValue(instance, null);
-            if (propertyvalue.ToString() == Value.ToString())
+            if (propertyvalue.ToString().ToLower() == Value.ToString().ToLower())
             {
-                if(value==null || value as string == string.Empty)
-                {
+                //if(value==null || value as string == string.Empty)
+                //{
                     return new ValidationResult(ErrorMessage);
-                }
+                //}
                 
             }
             return ValidationResult.Success;
@@ -87,5 +87,4 @@ namespace BusinessManagementSystem.Helper
             return ValidationResult.Success;
         }
     }
-
 }

@@ -39,11 +39,16 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Index()
         {
             ViewBag.ModalInformation = _modalView;
-            return View(_responseDto);
+            return View();
+        }
+
+        public IActionResult MyAppointments()
+        {
+            ViewBag.ModalInformation = _modalView;
+            return View();
         }
 
         [HttpGet]
-        
         public IActionResult Create()
         {
             //var jso = JsonConvert.SerializeObject(artistList,new JsonSerializerSettings { ReferenceLoopHandling=ReferenceLoopHandling.Ignore});
@@ -208,26 +213,24 @@ namespace BusinessManagementSystem.Controllers
         [HttpGet]
         public IActionResult GetAllAppointment()
         {
-           
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointment();
-            
-
-            if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK)
-            {
-                return Ok(_responseAppointmentDto.Datas);
-            }
-            else
-            {
-                return BadRequest();
-            }
+            if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK)return Ok(_responseAppointmentDto.Datas);
+            else return BadRequest();
         }
         [HttpGet]
-        public IActionResult GetPaymentCalculation(string category, int totalHours, int deposit, int discount=0, int discountInHour=0)
+        public IActionResult GetAllAppointmentByArtist()
+        {
+            _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointmentByArtist(userId);
+            if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK) return Ok(_responseAppointmentDto.Datas);
+            else return BadRequest();
+        }
+        [HttpGet]
+        public IActionResult GetPaymentCalculation(bool isForeigner, string category, int totalHours, int deposit, int discount=0, int discountInHour=0)
         {
             int totalCost = 0;
             if (!string.IsNullOrEmpty(category) && totalHours != 0 && deposit >= 1000)
             {
-                string costDescription = _businessLayer.AppointmentService.GetTotalCost(category, totalHours, deposit, discount, discountInHour,out totalCost);
+                string costDescription = _businessLayer.AppointmentService.GetTotalCost(isForeigner, category, totalHours, deposit, discount, discountInHour,out totalCost);
                 var result = new
                 {
                     TotalCost = totalCost,

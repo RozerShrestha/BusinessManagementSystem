@@ -17,6 +17,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<User> DeleteUser(int id);
         dynamic RoleList();
         dynamic GetAllActiveTattooArtist();
+        bool ValidateUser(string username);
 
     }
 }

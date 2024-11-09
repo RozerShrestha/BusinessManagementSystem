@@ -50,15 +50,15 @@
 
                 const itemId = $('#confirmationModalDel').data('item-id');
                 $('#confirmationModalDel').modal('hide');
-                const table = $('#tblMyClaims').DataTable();
+                const table = $('#tblEmployeeList').DataTable();
                 const $row = $(this).closest('tr');
                 $.ajax({
                     type: 'GET',
                     url: `/Users/Delete?guid=${itemId}`,
                     contentType: 'application/json',
                     success: function (response) {
-                        table.ajax.reload();
                         toastr.success('Successfully Deleted');
+                        table.ajax.reload();
                     },
                     error: function (error) {
                         toastr.error("Error Deleting");

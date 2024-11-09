@@ -35,6 +35,28 @@
             }           
         });
     });
+
+    $('.calculateTotalCost').on('click', function () {
+        let category = $('#Category').val();
+        let totalHours = $('#TotalHours').val();
+        let deposit = $('#Deposit').val();
+        let discount = $('#Discount').val();
+        let discountInHour = $('#DiscountInHour').val();
+        let isForeigner = $('#IsForeigner').val()
+        $('#TotalCost').val();
+        $.ajax({
+            type: 'GET',
+            url: `/Appointment/GetPaymentCalculation?isForeigner=${isForeigner}&category=${category}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}`,
+            contentType: 'application/json',
+            success: function (response) {
+                alert(response.costDescription);
+                $('#TotalCost').val(response.totalCost);
+            },
+            error: function (error) {
+                toastr.error("Error due to: " + error.responseText);
+            }
+        });
+    });
 </script>
 
 

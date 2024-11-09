@@ -31,5 +31,6 @@ namespace BusinessManagementSystem.Dto
         public int SessionNumber { get; set; }
         public bool ConsentFormSigned { get; set; }
         public bool FollowUpRequired { get; set; }
+        public bool IsForeigner { get; set; }
     }
 }

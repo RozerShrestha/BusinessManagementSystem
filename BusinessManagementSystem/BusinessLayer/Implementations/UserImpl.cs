@@ -146,6 +146,13 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var activeTattooArtist = _unitOfWork.Users.ArtistList();
             return activeTattooArtist;
         }
+
+        public bool ValidateUser(string username)
+        {
+           var item = _unitOfWork.Users.GetFirstOrDefault(p => p.UserName == username).Data;
+            if (item == null) return true;
+            else return false;
+        }
     }
 }
 

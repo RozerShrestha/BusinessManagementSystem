@@ -6,6 +6,8 @@ namespace BusinessManagementSystem.BusinessLayer.Services
     public interface IAppointmentService
     {
         ResponseDto<AppointmentDto> GetAllAppointment();
+        ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId);
+
         ResponseDto<Appointment> GetAppointmentById(int id);
         ResponseDto<Appointment> GetAppointmentByGuid(Guid guid);
         ResponseDto<Appointment> GetAppointmentByStatus(string status);
@@ -13,7 +15,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<Appointment> UpdateAppointment(Appointment appointment);
         ResponseDto<Appointment> DeleteAppointmentByGuid(Guid guid);
         ResponseDto<Appointment> DeleteAppointmentById(int id);
-        string GetTotalCost(string category, int totalHours, int deposit, int discount, int discountInHour, out int totalCost);
+        string GetTotalCost(bool isForeigner,string category, int totalHours, int deposit, int discount, int discountInHour, out int totalCost);
 
     }
 }

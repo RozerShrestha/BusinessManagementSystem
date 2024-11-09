@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using BusinessManagementSystem.Helper;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel;
@@ -62,11 +63,13 @@ namespace BusinessManagementSystem.Models
         public string PainToleranceLevel { get; set; }
         [DisplayName("Session Number *")]
         public int SessionNumber { get; set; }
-        [Required]
+        [RequiredIf("ConsentFormSigned","False","Concent Form should be Yes")]
         [DisplayName("Consent Form Sign")]
         public bool ConsentFormSigned { get; set; }
         [DisplayName("Followup Required")]
         public bool FollowUpRequired { get; set; }
+        [DisplayName("Is Foreigner")]
+        public bool IsForeigner { get; set; }
 
         //[JsonIgnore]
         [ForeignKey("UserId")]

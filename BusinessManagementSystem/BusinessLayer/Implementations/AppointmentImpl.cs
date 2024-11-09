@@ -35,6 +35,18 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             return _responseAppointmentDto;
         }
 
+        public ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId)
+        {
+            _responseDto = _unitOfWork.Appointment.GetAll(p => p.UserId == userId, includeProperties: "User,Referal");
+            foreach (var item in _responseDto.Datas)
+            {
+                AppointmentDto appointmentDto = new AppointmentDto();
+                appointmentDto = _mapper.Map<AppointmentDto>(item);
+                _responseAppointmentDto.Datas.Add(appointmentDto);
+            }
+            return _responseAppointmentDto;
+        }
+
         public ResponseDto<Appointment> GetAppointmentByGuid(Guid guid)
         {
             _responseDto = _unitOfWork.Appointment.GetFirstOrDefault(p => p.guid == guid);
@@ -79,7 +91,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             return _responseDto;
         }
 
-        public string GetTotalCost(string category, int totalHours, int deposit, int discount, int discountInHour,out int totalCost)
+        public string GetTotalCost(bool isForeigner, string category, int totalHours, int deposit, int discount, int discountInHour,out int totalCost)
         {
             double categoryCost=0;
             if (category == "Tattoo")
@@ -95,11 +107,15 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                categoryCost = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data.PiercingPrice;
             }
 
+            categoryCost = isForeigner ? categoryCost * 2 : categoryCost;
+
             totalCost = Convert.ToInt32(categoryCost) * (totalHours - discountInHour) - deposit - discount;
 
             string calculationDescription = $"Category: {category}({categoryCost}) \n Deposit: {deposit} \n Total Hours: {totalHours}-{discountInHour} \n Discount in Price: {discount} \n TotalCost: {totalCost}";
 
             return calculationDescription; 
         }
+
+        
     }
 }

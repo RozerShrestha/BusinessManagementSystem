@@ -42,6 +42,13 @@
                         <span asp-validation-for="UserId" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
+                        <label asp-for="IsForeigner" class="control-label"></label>
+                        <select asp-for="IsForeigner" class="form-control">
+                            <option value="true">Yes</option>
+                            <option value="false" selected>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
                         <label asp-for="Status" class="control-label"></label>
                         @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, "--Select--", new { @class = "form-control" })
                         <span asp-validation-for="Status" class="text-danger"></span>
@@ -100,6 +107,7 @@
                             <option value="true">Yes</option>
                             <option value="false" selected>No</option>
                         </select>
+                        <span asp-validation-for="ConsentFormSigned" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="FollowUpRequired" class="control-label"></label>
@@ -161,28 +169,7 @@
 </form>
 
 @section Scripts {
-    <script>
-        $('.calculateTotalCost').on('click', function () {
-            let category = $('#Category').val();
-            let totalHours = $('#TotalHours').val();
-            let deposit = $('#Deposit').val();
-            let discount = $('#Discount').val();
-            let discountInHour = $('#DiscountInHour').val();
-            $('#TotalCost').val();
-            $.ajax({
-                type: 'GET',
-                url: `/Appointment/GetPaymentCalculation?category=${category}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}`,
-                contentType: 'application/json',
-                success: function (response) {
-                    alert(response.costDescription);
-                    $('#TotalCost').val(response.totalCost);
-                },
-                error: function (error) {
-                    toastr.error("Error due to: " + error.responseText);
-                }
-            });
-        });
-    </script>
+    
 }
 
 
