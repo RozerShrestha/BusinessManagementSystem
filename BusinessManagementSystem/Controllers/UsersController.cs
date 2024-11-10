@@ -24,6 +24,7 @@ namespace BusinessManagementSystem.Controllers
     {
         public ResponseDto<User> _responseDto;
         public ResponseDto<UserDto> _responseUserDto;
+        public ResponseDto<UserDetailDto> _responseUserDetailDto;
         public ResponseDto<UserRoleDto> _responseUserRoleDto;
         private ILogger<UsersController> _logger;
         private readonly ModalView _modalView;
@@ -34,6 +35,7 @@ namespace BusinessManagementSystem.Controllers
             
             _responseDto = new ResponseDto<User>();
             _responseUserDto = new ResponseDto<UserDto>();
+            _responseUserDetailDto = new ResponseDto<UserDetailDto>();
             _responseUserRoleDto = new ResponseDto<UserRoleDto>();
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected User?", "");
             _logger = logger;
@@ -50,31 +52,29 @@ namespace BusinessManagementSystem.Controllers
         [HttpGet]
         public IActionResult Detail(Guid guid)
         {
-            if(guid == Guid.Empty)
+            _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
+            _responseUserDetailDto = _businessLayer.UserService.GetUserDetailDtoById(_responseUserDto.Data.UserId);
+            if(_responseUserDetailDto.StatusCode == HttpStatusCode.OK)
             {
-                _responseDto = _businessLayer.UserService.GetUserById(userId);
-                if (_responseDto.StatusCode == HttpStatusCode.OK)
-                {
-                    guid = _responseDto.Data.Guid;
-                    _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
-                    if(_responseUserDto.StatusCode == HttpStatusCode.OK)
-                    {
-                        return View(_responseUserDto.Data);
-                    }
-                }
-                return NotFound();
+                return View(_responseUserDetailDto.Data);
             }
             else
             {
-                _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
-                if (_responseUserDto.StatusCode == HttpStatusCode.OK)
-                {
-                    return View(_responseUserDto.Data);
-                }
-                else
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult MyProfile()
+        {
+            _responseUserDetailDto = _businessLayer.UserService.GetUserDetailDtoById(userId);
+            if (_responseUserDetailDto.StatusCode == HttpStatusCode.OK)
+            {
+                return View(_responseUserDetailDto.Data);
+            }
+            else
+            {
+                return NotFound();
             }
         }
 

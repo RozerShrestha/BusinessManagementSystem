@@ -10,6 +10,7 @@ using BusinessManagementSystem.Repositories;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Net;
 
 namespace BusinessManagementSystem.BusinessLayer.Implementations
@@ -21,6 +22,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         ResponseDto<User> _responseDto;
         ResponseDto<UserRoleDto> _responseUserRole;
         ResponseDto<UserDto> _responseUserDto;
+        ResponseDto<UserDetailDto> _responseUserDetailDto;
 
         public UserImpl(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -28,6 +30,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = new ResponseDto<User>();
             _responseUserRole = new ResponseDto<UserRoleDto>();
             _responseUserDto = new ResponseDto<UserDto>();
+            _responseUserDetailDto = new ResponseDto<UserDetailDto>();
             _mapper = mapper;
         }
         public ResponseDto<UserRoleDto> GetAllUser(string roleName)
@@ -40,6 +43,23 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = _unitOfWork.Users.GetFirstOrDefault(p =>p.Id==id, includeProperties: "UserRoles.Role");
             return _responseDto;
         }
+
+        public ResponseDto<UserDetailDto> GetUserDetailDtoById(int id)
+        {
+            try
+            {
+                _responseDto = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == id, includeProperties: "Appointments");
+                UserDetailDto userDetailDto = _mapper.Map<UserDetailDto>(_responseDto.Data);
+                _responseUserDetailDto.Data = userDetailDto;
+            }
+            catch (Exception ex)
+            {
+                _responseUserDto.StatusCode = HttpStatusCode.InternalServerError;
+                _responseUserDto.Message = _responseDto.Message + "Exception:" + ex.Message;
+            }
+            return _responseUserDetailDto;
+        }
+
         public ResponseDto<UserDto> GetUserByGuid(Guid guid)
         {
             try
@@ -56,8 +76,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 _responseUserDto.Message=_responseDto.Message +"Exception:"+ ex.Message;
                 
             }
-            
-            
             return _responseUserDto;
         }
         public ResponseDto<User> GetAllActiveUsers()

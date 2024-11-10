@@ -87,11 +87,13 @@
                     </div>
                     <div class="card-body" style="height: 840px; overflow-y: auto;">
                         <div class="tab-content">
-                            @foreach(var appointment in Model.Appointments){
+                            @foreach (var appointment in Model.Appointments)
+                            {
                                 <div class="tab-pane active" id="timeline">
                                     <div class="timeline timeline-inverse">
                                         <div class="time-label">
-                                            @if (appointment.Status == "Completed"){
+                                            @if (appointment.Status == "Completed")
+                                            {
                                                 <span class="bg-success">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
                                             else if (appointment.Status == "Cancelled")
@@ -102,12 +104,12 @@
                                             {
                                                 <span class="bg-lightblue">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
-                                    </div>
-                                    <div>
-                                        <i class="fas fa-envelope bg-dark"></i>
-                                        <div class="timeline-item">
-                                            <span class="time"><i class="far fa-clock"></i> 12:05</span>
-                                            <h3 class="timeline-header"><a href="#">Client Name: </a> @appointment.ClientName</h3>
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-envelope bg-dark"></i>
+                                            <div class="timeline-item">
+                                                <span class="time"><i class="far fa-clock"></i> 12:05</span>
+                                                <h3 class="timeline-header"><a href="#">Client Name: </a> @appointment.ClientName</h3>
                                                 <div class="timeline-body">
                                                     <table>
                                                         <tbody>
@@ -154,14 +156,14 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <i class="far fa-clock bg-gray"></i>
                                         </div>
                                     </div>
-                                    <div>
-                                        <i class="far fa-clock bg-gray"></i>
-                                    </div>
                                 </div>
-                            </div>
-                          }
+                            }
                             <div class="tab-pane" id="activity">
                                 <div class="post">
                                     <div class="user-block">
@@ -262,11 +264,11 @@
                                     <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
                                 </div>
                             </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>

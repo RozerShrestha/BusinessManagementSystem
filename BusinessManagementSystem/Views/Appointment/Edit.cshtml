@@ -153,6 +153,7 @@
                         <input asp-for="TotalCost" class="form-control" readonly type="number" step="0.01" />
                         <span asp-validation-for="TotalCost" class="text-danger"></span>
                     </div>
+                    
                     <div class="col-md-12">
                         <input type="button" value="Calculate Total Cost" class="btn btn-info my-button calculateTotalCost" />
                     </div>
@@ -163,11 +164,14 @@
 
 
     </div>
-    <div class="row">
-        <div class="col-md-3">
-            <input type="submit" value="Update" class="btn btn-success my-button" />
+    @if(Model.Status!="Completed")
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <input type="submit" value="Update" class="btn btn-success my-button" />
+            </div>
         </div>
-    </div>
+    }
 </form>
 
 @section Scripts {
