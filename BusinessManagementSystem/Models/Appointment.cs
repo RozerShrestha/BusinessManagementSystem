@@ -71,9 +71,12 @@ namespace BusinessManagementSystem.Models
         [DisplayName("Is Foreigner")]
         public bool IsForeigner { get; set; }
 
+        //[RequiredIf("Status","Completed")]
+        public Tip Tip { get; set; }
+
         //[JsonIgnore]
         [ForeignKey("UserId")]
-        [ValidateNever]
+        
         public User User { get; set; }
         //[JsonIgnore]
         [ForeignKey("ReferalId")]

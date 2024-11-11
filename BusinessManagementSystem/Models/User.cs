@@ -48,6 +48,7 @@ namespace BusinessManagementSystem.Models
         public string? ProfilePictureLink { get; set; }
         public string? Skills { get; set; }
         public string? Notes { get; set; }
+        public bool DefaultTips { get; set; }
 
         [JsonIgnore]
         public ICollection<UserRole> UserRoles { get; set; }
