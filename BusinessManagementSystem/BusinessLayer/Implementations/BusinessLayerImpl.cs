@@ -21,6 +21,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             RoleService=new RoleImpl(_unitOfWork);
             AppointmentService = new AppointmentImpl(_unitOfWork, mapper);
             ReferalService = new ReferalImpl(_unitOfWork, mapper);
+            TipService = new TipImpl(_unitOfWork, mapper);
 
             
         }
@@ -34,6 +35,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public IRoleService RoleService { get; private set; }
         public IAppointmentService AppointmentService { get; private set; }
         public IReferalService ReferalService { get; private set; }
-
+        public ITipService TipService { get; private set; }
     }
 }

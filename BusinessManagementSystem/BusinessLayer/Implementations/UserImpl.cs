@@ -125,6 +125,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             item.Data.Skills = userDto.Skills;
             item.Data.Notes= userDto.Notes;
             item.Data.Percentage=userDto.Percentage;
+            item.Data.DefaultTips = userDto.DefaultTips;
             var userRole = item.Data.UserRoles.Where(p => p.UserId == userDto.UserId).SingleOrDefault();
             if(userRole!=null)
             {

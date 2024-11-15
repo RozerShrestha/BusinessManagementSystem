@@ -3,6 +3,7 @@ using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using Newtonsoft.Json;
 
 namespace BusinessManagementSystem.BusinessLayer.Implementations
 {
@@ -66,8 +67,15 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         public ResponseDto<Appointment> CreateAppointment(Appointment appointment)
         {
+            if (appointment.Status == "Completed")
+            {
+                if (appointment.TipAmount != 0)
+                {
+                    appointment.Tips = CreateTip(appointment);
+                }
+            }
             appointment.guid = Helper.Helpers.GenerateGUID();
-            _responseDto = _unitOfWork.Appointment.Insert(appointment);
+             _responseDto = _unitOfWork.Appointment.Insert(appointment);
             return _responseDto;
         }
 
@@ -87,6 +95,13 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
         public ResponseDto<Appointment> UpdateAppointment(Appointment appointment)
         {
+            if (appointment.Status == "Completed")
+            {
+                if (appointment.TipAmount != 0)
+                {
+                    appointment.Tips = CreateTip(appointment);
+                }
+            }
             _responseDto = _unitOfWork.Appointment.Update(appointment);
             return _responseDto;
         }
@@ -116,6 +131,24 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             return calculationDescription; 
         }
 
-        
+        private List<Tip> CreateTip(Appointment appointment)
+        {
+            List<Tip> tipList = new List<Tip>();
+            var tipUsers = _unitOfWork.Users.GetAll(p => p.DefaultTips == true).Datas;
+            tipUsers.Add(_unitOfWork.Users.GetById(appointment.UserId).Data);
+            int tipToDivideNumber=tipUsers.Count();
+            var tipAmount = appointment.TipAmount;
+            var tipAmountForUsers = tipAmount / tipToDivideNumber;
+            foreach (var tipuser in tipUsers)
+            {
+                Tip tip = new Tip();
+                tip.TipAmount =(double)tipAmount;
+                tip.AppointmentId = appointment.Id;
+                tip.TipAmountForUsers =Math.Floor((double)tipAmountForUsers);
+                tip.TipAssignedToUser = tipuser.Id;
+                tipList.Add(tip);
+            }  
+            return tipList;
+        }
     }
 }

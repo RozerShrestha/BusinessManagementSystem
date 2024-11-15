@@ -17,6 +17,7 @@ namespace BusinessManagementSystem.Data
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Referal> Referals { get; set; }
+        public DbSet<Tip> Tips { get; set; }
 
 
 
@@ -49,6 +50,8 @@ namespace BusinessManagementSystem.Data
             modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ReferalEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TipEntityConfiguration());
+
             
 
 

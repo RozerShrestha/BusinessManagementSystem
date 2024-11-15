@@ -70,11 +70,15 @@ namespace BusinessManagementSystem.Models
         public bool FollowUpRequired { get; set; }
         [DisplayName("Is Foreigner")]
         public bool IsForeigner { get; set; }
+        [DisplayName("Tips if Available")]
+        public double? TipAmount { get; set; }
 
         //[RequiredIf("Status","Completed")]
-        public Tip Tip { get; set; }
+        [ValidateNever]
+        public ICollection<Tip> Tips { get; set; }
 
         //[JsonIgnore]
+        [ValidateNever]
         [ForeignKey("UserId")]
         
         public User User { get; set; }

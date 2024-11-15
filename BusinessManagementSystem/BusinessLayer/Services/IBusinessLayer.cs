@@ -11,5 +11,6 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         IRoleService RoleService { get; }
         IAppointmentService AppointmentService { get; }
         IReferalService ReferalService { get; }
+        ITipService TipService { get; }
     }
 }

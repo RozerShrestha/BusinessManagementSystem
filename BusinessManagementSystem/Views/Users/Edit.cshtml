@@ -79,6 +79,13 @@
                         @Html.DropDownList("RoleId", ViewData["RoleList"] as SelectList, new { @class = "form-control" })
                         <span asp-validation-for="RoleId" class="text-danger"></span>
                     </div>
+                    <div class="col-md-4">
+                        <label asp-for="DefaultTips" class="control-label"></label>
+                        <select asp-for="DefaultTips" class="form-control">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

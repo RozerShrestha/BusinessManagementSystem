@@ -1,0 +1,147 @@
+﻿<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>All Tip Information</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tblTipList" style="width:100%" class="table table-striped table-bordered table-sm">
+                        <thead class="table-header">
+                            <tr class="border-bottom-0 tr-header header">
+                                <th>ID</th>
+                                <th>Appointment Id</th>
+                                <th>Tip Artist</th>
+                                <th>Tip Amount</th>
+                                <th>Tip Amount For Users</th>
+                                <th>Tip Created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_ModalView" />
+
+@section Scripts {
+    <script>
+        var datatable = null;
+        $(document).ready(function () {
+            loadDataTable();
+
+            $('#tblTipList').on('click', '.delete-item', function (e) {
+                e.preventDefault();
+                const itemId = $(this).data('id');
+                $('#confirmationModalDel').modal('show'); // Show the Bootstrap modal
+                $('#confirmationModalDel').data('item-id', itemId); // Store claim ID in the modal data
+            });
+
+            $('#confirmDelete').on('click', function () {
+
+                const itemId = $('#confirmationModalDel').data('item-id');
+                $('#confirmationModalDel').modal('hide');
+                const table = $('#tblTipList').DataTable();
+                const $row = $(this).closest('tr');
+                $.ajax({
+                    type: 'GET',
+                    url: `/Tip/Delete?guid=${itemId}`,
+                    contentType: 'application/json',
+                    success: function (response) {
+                        toastr.success('Successfully Deleted');
+                        table.ajax.reload();
+                    },
+                    error: function (error) {
+                        toastr.error("Error Deleting");
+                    }
+                });
+            });
+        });
+        function loadDataTable() {
+            if (datatable) {
+                $("#tblTipList").DataTable().destroy();
+            }
+            datatable = $("#tblTipList").DataTable({
+                fixHeader: {
+                    header: true,
+                    headerOffset: 50
+                },
+                autoWidth: true,
+                lengthMenu: [[25, 50, -1], [25, 50, "All"]],
+                "ajax": {
+                    "url": `/Tip/GetAllTips`,
+                    "dataSrc": function (data) {
+                        debugger;
+                        // return data.datas.map(function (item) {
+                        //     item.user.roleName=item.roleName
+                        //     return item.user;
+                        return data;
+
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "id",
+                    },
+                    {
+                        "data": "appointmentId",
+                    },
+                    {
+                        "data": "user.fullName",
+                    },
+                    {
+                        "data": "tipAmount",
+                    },
+                    {
+                        "data": "tipAmountForUsers",
+                    },
+                    {
+                        "data": "createdAt",
+                        "render": function (data) {
+                            return formatDate(data);
+                        }
+                    },
+                    {
+                        "data": "id",
+                        "render": function (data) {
+                            return `
+                                    <div>
+                                        <a href="/Tip/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
+                                        <a href="/Tip/detail?guid=${data}"><i class="fas fa-eye"></i></i></a> |
+                                        <a href="#" class="delete-item" data-id="${data}"> <i class= "fas fa-trash-alt" > </i></a >
+                                        </div>
+                                    `
+                        }
+                    }
+                ]
+            });
+
+        }
+
+        function formatDate(input) {
+            // Parse the input date string
+            const date = new Date(input);
+
+            // Extract parts of the date
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+            const day = String(date.getDate()).padStart(2, '0');
+
+            let hours = date.getHours();
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+
+            // Convert 24-hour time to 12-hour format
+            hours = hours % 12;
+            hours = hours ? hours : 12; // If hour is 0, set it to 12
+
+            // Format the date
+            return `${year}-${month}-${day}(${hours}:${minutes} ${ampm})`;
+        }
+
+    </script>
+}

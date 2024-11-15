@@ -63,6 +63,8 @@ namespace BusinessManagementSystem.Dto
         public string? Skills { get; set; }
         public string? Notes { get; set; }
         public int Percentage { get; set; }
+        [DisplayName("Default Tips")]
+        public bool DefaultTips { get; set; }
 
     }
 }

@@ -16,6 +16,7 @@ namespace BusinessManagementSystem.Services
         IDashboard Dashboard { get; }
         IReferal Referal { get; }
         IAppointment Appointment { get; }
+        ITip Tip { get; }
         void BeginTransaction();
         void Commit();
         void Rollback();
