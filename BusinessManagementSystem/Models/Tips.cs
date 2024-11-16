@@ -9,16 +9,15 @@ namespace BusinessManagementSystem.Models
     public class Tip:BaseEntity
     {
         public int Id { get; set; }
+        public int AppointmentId { get; set; }
         public double TipAmount { get; set; }
         public double TipAmountForUsers { get; set; }
         public int TipAssignedToUser { get; set; }
-        public int AppointmentId { get; set; }
+        
         [ForeignKey("AppointmentId")]
         [ValidateNever]
         public virtual Appointment Appointment { get; set; }
-        [JsonIgnore]
-        [ValidateNever]
-        public User User { get; set; }
+        public bool TipSettlement { get; set; }
 
     }
     public class TipEntityConfiguration : IEntityTypeConfiguration<Tip>

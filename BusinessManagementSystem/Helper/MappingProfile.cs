@@ -36,6 +36,10 @@ namespace BusinessManagementSystem.Helper
                 .ForMember(dest => dest.ReferalName, opt => opt.MapFrom(src => src.Referal.FullName));
 
 
+            //mapping Tip to TipDto
+            CreateMap<Tip, TipDto>()
+                .ForMember(dest => dest.TipId, opt => opt.MapFrom(src => src.Id));
+
 
             //string occupationValue = "";
             //CreateMap<User, User>()

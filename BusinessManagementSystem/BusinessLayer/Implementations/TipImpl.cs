@@ -11,28 +11,24 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         ResponseDto<Tip> _responseDto;
+        public ResponseDto<TipDto> _responseTipDto;
         public TipImpl(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _responseDto = new ResponseDto<Tip>();
+            _responseTipDto = new ResponseDto<TipDto>();
         }
-        public ResponseDto<Tip> GetAllTips()
+        public ResponseDto<TipDto> GetAllTips()
         {
-           var items= _unitOfWork.Tip.GetAll(includeProperties:"Appointment").Datas;
-            foreach(var item in items)
-            {
-                var user = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == item.TipAssignedToUser).Data;
-                item.User = user;
-                _responseDto.Datas.Add(item);
-            }
-            return _responseDto;
+            _responseTipDto = _unitOfWork.Tip.GetAllTips();
+            return _responseTipDto;
         }
 
-        public ResponseDto<Tip> GetMyTips(int userId)
+        public ResponseDto<TipDto> GetMyTips(int userId)
         {
-            _responseDto = _unitOfWork.Tip.GetAll(p => p.TipAssignedToUser == userId);
-            return _responseDto;
+            var tips = _unitOfWork.Tip.GetAll(p => p.TipAssignedToUser == userId);
+            return _responseTipDto;
         }
     }
 }

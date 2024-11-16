@@ -135,7 +135,9 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             List<Tip> tipList = new List<Tip>();
             var tipUsers = _unitOfWork.Users.GetAll(p => p.DefaultTips == true).Datas;
-            tipUsers.Add(_unitOfWork.Users.GetById(appointment.UserId).Data);
+            var tipArtistAssigned = _unitOfWork.Users.GetById(appointment.UserId).Data;
+            tipUsers.Add(tipArtistAssigned);
+            
             int tipToDivideNumber=tipUsers.Count();
             var tipAmount = appointment.TipAmount;
             var tipAmountForUsers = tipAmount / tipToDivideNumber;

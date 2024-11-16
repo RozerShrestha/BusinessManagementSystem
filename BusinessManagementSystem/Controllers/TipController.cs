@@ -14,6 +14,7 @@ namespace BusinessManagementSystem.Controllers
     public class TipController : BaseController
     {
         public ResponseDto<Tip> _responseDto;
+        public ResponseDto<TipDto> _responseTipDto;
         private ILogger<TipController> _logger;
         private readonly ModalView _modalView;
         private readonly dynamic artistList;
@@ -21,6 +22,7 @@ namespace BusinessManagementSystem.Controllers
         public TipController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<TipController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responseDto = new ResponseDto<Tip>();
+            _responseTipDto = new ResponseDto<TipDto>();
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Tip?", "");
             _logger = logger;
         }
@@ -39,8 +41,8 @@ namespace BusinessManagementSystem.Controllers
         [HttpGet]
         public IActionResult GetAllTips()
         {
-            _responseDto = _businessLayer.TipService.GetAllTips();
-            if (_responseDto.StatusCode == HttpStatusCode.OK) return Ok(_responseDto.Datas);
+            _responseTipDto = _businessLayer.TipService.GetAllTips();
+            if (_responseTipDto.StatusCode == HttpStatusCode.OK) return Ok(_responseTipDto.Datas);
             else
                 return BadRequest();
         }
@@ -48,7 +50,7 @@ namespace BusinessManagementSystem.Controllers
         [HttpGet]
         public IActionResult GetMyTips()
         {
-            _responseDto = _businessLayer.TipService.GetMyTips(userId);
+            _responseTipDto = _businessLayer.TipService.GetMyTips(userId);
             if (_responseDto.StatusCode == HttpStatusCode.OK) return Ok(_responseDto.Datas);
             else
                 return BadRequest();

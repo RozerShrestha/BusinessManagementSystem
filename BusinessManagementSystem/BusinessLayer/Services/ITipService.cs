@@ -5,7 +5,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
 {
     public interface ITipService
     {
-        ResponseDto<Tip> GetAllTips();
-        ResponseDto<Tip> GetMyTips(int userId);
+        ResponseDto<TipDto> GetAllTips();
+        ResponseDto<TipDto> GetMyTips(int userId);
     }
 }
