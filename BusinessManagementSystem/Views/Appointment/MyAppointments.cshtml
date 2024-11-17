@@ -3,7 +3,7 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header">
-                <h2>All Appointment Information</h2>
+                <h2>My Appointments</h2>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -40,33 +40,6 @@
         var datatable = null;
         $(document).ready(function () {
             loadDataTable('Active');
-
-            $('#tblMyAppointmentList').on('click', '.delete-item', function (e) {
-                e.preventDefault();
-                const itemId = $(this).data('id');
-                $('#confirmationModalDel').modal('show'); // Show the Bootstrap modal
-                $('#confirmationModalDel').data('item-id', itemId); // Store claim ID in the modal data
-            });
-
-            $('#confirmDelete').on('click', function () {
-
-                const itemId = $('#confirmationModalDel').data('item-id');
-                $('#confirmationModalDel').modal('hide');
-                const table = $('#tblMyAppointmentList').DataTable();
-                const $row = $(this).closest('tr');
-                $.ajax({
-                    type: 'GET',
-                    url: `/Appointment/Delete?guid=${itemId}`,
-                    contentType: 'application/json',
-                    success: function (response) {
-                        toastr.success('Successfully Deleted');
-                        table.ajax.reload();
-                    },
-                    error: function (error) {
-                        toastr.error("Error Deleting");
-                    }
-                });
-            });
         });
         function loadDataTable(status) {
             if (datatable) {
@@ -101,13 +74,13 @@
                         "data": "clientPhoneNumber",
                     },
                     {
-                        "data": "userName",
+                        "data": "artistAssigned",
                     },
                     {
                         "data": "category",
                     },
                     {
-                        "data": "referalName",
+                        "data": "referalFullName",
                     },
                     {
                         "data": "appointmentDate",

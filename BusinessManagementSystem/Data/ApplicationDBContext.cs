@@ -18,6 +18,7 @@ namespace BusinessManagementSystem.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Referal> Referals { get; set; }
         public DbSet<Tip> Tips { get; set; }
+        public DbSet<Payment> Payments { get; set; }
 
 
 

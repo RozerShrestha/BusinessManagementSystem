@@ -87,10 +87,10 @@
                     </div>
                     <div class="card-body" style="height: 840px; overflow-y: auto;">
                         <div class="tab-content">
+                            <div class="tab-pane active" id="timeline">
                             @foreach (var appointment in Model.Appointments)
                             {
-                                <div class="tab-pane active" id="timeline">
-                                    <div class="timeline timeline-inverse">
+                                <div class="timeline timeline-inverse">
                                         <div class="time-label">
                                             @if (appointment.Status == "Completed")
                                             {
@@ -143,15 +143,15 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>Discount in Hour : </td>
-                                                                <td>@appointment.DiscountInHour</td>
+                                                                <td>@appointment.Payment.DiscountInHour</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Discount in Amount : </td>
-                                                                <td>@appointment.Discount</td>
+                                                                <td>@appointment.Payment.Discount</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Total Cost Including Deposit : </td>
-                                                                <td>@(appointment.TotalCost + appointment.Deposit)</td>
+                                                                <td>@(appointment.Payment.TotalCost + appointment.Payment.Deposit)</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -162,8 +162,8 @@
                                             <i class="far fa-clock bg-gray"></i>
                                         </div>
                                     </div>
-                                </div>
                             }
+                            </div>
                             <div class="tab-pane" id="activity">
                                 <div class="post">
                                     <div class="user-block">

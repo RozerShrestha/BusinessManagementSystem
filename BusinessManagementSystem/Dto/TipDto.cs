@@ -7,6 +7,7 @@ namespace BusinessManagementSystem.Dto
     {
         public int TipId { get; set; }
         public int AppointmentId { get; set; }
+        public Guid AppointmentGuid { get; set; }
         public double TipAmount { get; set; }
         public double TipAmountForUsers { get; set; }
         public string ArtistAssigned { get; set; }

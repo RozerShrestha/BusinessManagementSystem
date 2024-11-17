@@ -10,7 +10,7 @@ using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
-    [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+    [Authorize]
     public class TipController : BaseController
     {
         public ResponseDto<Tip> _responseDto;
@@ -26,11 +26,13 @@ namespace BusinessManagementSystem.Controllers
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Tip?", "");
             _logger = logger;
         }
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Index()
         {
             ViewBag.ModalInformation = _modalView;
             return View();
         }
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyTips()
         {
             ViewBag.ModalInformation = _modalView;
@@ -38,7 +40,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         #region API
-        [HttpGet]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult GetAllTips()
         {
             _responseTipDto = _businessLayer.TipService.GetAllTips();
@@ -47,11 +49,11 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest();
         }
 
-        [HttpGet]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult GetMyTips()
         {
             _responseTipDto = _businessLayer.TipService.GetMyTips(userId);
-            if (_responseDto.StatusCode == HttpStatusCode.OK) return Ok(_responseDto.Datas);
+            if (_responseTipDto.StatusCode == HttpStatusCode.OK) return Ok(_responseTipDto.Datas);
             else
                 return BadRequest();
         }

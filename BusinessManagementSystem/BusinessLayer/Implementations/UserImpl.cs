@@ -49,7 +49,9 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             try
             {
                 _responseDto = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == id, includeProperties: "Appointments");
+                var appointMents = _unitOfWork.Appointment.GetAll(p => p.UserId == id, includeProperties: "Payment").Datas;
                 UserDetailDto userDetailDto = _mapper.Map<UserDetailDto>(_responseDto.Data);
+                userDetailDto.Appointments = appointMents;
                 _responseUserDetailDto.Data = userDetailDto;
             }
             catch (Exception ex)

@@ -47,6 +47,16 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.ModalInformation = _modalView;
             return View();
         }
+        public IActionResult Detail(Guid guid)
+        {
+            if (guid == Guid.Empty) return NotFound();
+            var _responseDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
+            if (_responseDto == null)
+            {
+                return NotFound();
+            }
+            return View(_responseDto.Data);
+        }
 
         [HttpGet]
         public IActionResult Create()
@@ -56,20 +66,21 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
             ViewBag.AppointmentStatus=new SelectList(SD.ApointmentStatus, "Key", "Value");
+            ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Appointment appointment)
+        public IActionResult Create(AppointmentDto appointmentDto)
         {
             ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
             ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
-
+            ViewBag.PaymentMethod=new SelectList(SD.PaymentMethods, "Key", "Value");
             if (ModelState.IsValid)
             {
-                _responseDto=_businessLayer.AppointmentService.CreateAppointment(appointment);
+                _responseDto=_businessLayer.AppointmentService.CreateAppointment(appointmentDto);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);
@@ -78,7 +89,7 @@ namespace BusinessManagementSystem.Controllers
                 else
                 {
                     _notyf.Error(_responseDto.Message);
-                    return View(appointment);
+                    return View(appointmentDto);
                 }
             }
             else
@@ -88,32 +99,32 @@ namespace BusinessManagementSystem.Controllers
                 {
                     _notyf.Error(error.ErrorMessage);
                 }
-                return View(appointment);
+                return View(appointmentDto);
             }
         }
 
         public IActionResult Edit(Guid guid)
-        {
+      {
             if (guid == Guid.Empty)return NotFound();
             ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
             ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
-            var _responseDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
-            if (_responseDto == null)
+            ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
+            _responseAppointmentDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
+
+            if (_responseAppointmentDto.StatusCode != HttpStatusCode.OK)
             {
                 return NotFound();
             }
-            return View(_responseDto.Data);
+            return View(_responseAppointmentDto.Data);
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Appointment appointment)
+        public IActionResult Edit(AppointmentDto appointmentDto)
         {
-            //ModelState.Remove(nameof(userDto.Password)); //just to ignore ConfirmPassword to validate
-            //ModelState.Remove(nameof(userDto.ConfirmPassword)); //just to ignore ConfirmPassword to validate
             if (roleName == SD.Role_Superadmin || userId == userDto.UserId)
             {
                 if (ModelState.IsValid)
@@ -122,18 +133,19 @@ namespace BusinessManagementSystem.Controllers
                     ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
                     ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
                     ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
-                    
-                    _responseDto = _businessLayer.AppointmentService.UpdateAppointment(appointment);
+                    ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
+
+                    _responseDto = _businessLayer.AppointmentService.UpdateAppointment(appointmentDto);
                     if (_responseDto.StatusCode == HttpStatusCode.OK)
                     {
                         _notyf.Success(_responseDto.Message);
+                        return RedirectToAction(nameof(Index));
                     }
                     else
                     {
                         _notyf.Error(_responseDto.Message);
-                        return View(userDto);
+                        return View(appointmentDto);
                     }
-                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
@@ -142,7 +154,7 @@ namespace BusinessManagementSystem.Controllers
                     {
                         _notyf.Error(error.ErrorMessage);
                     }
-                    return View(_responseDto.Data);
+                    return View(appointmentDto);
                 }
             }
             else
@@ -150,8 +162,6 @@ namespace BusinessManagementSystem.Controllers
                 _notyf.Warning($"{fullName} is not authroized to perform this task");
                 return RedirectToAction(nameof(Index));
             }
-
-
         }
 
         [HttpGet]
@@ -185,26 +195,14 @@ namespace BusinessManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int appointmentId)
         {
-            _responseDto = _businessLayer.AppointmentService.GetAppointmentById(appointmentId);
-            if (_responseDto.Data != null)
-            {
-                try
-                {
-                    _responseDto = _businessLayer.AppointmentService.DeleteAppointmentById(appointmentId);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    _notyf.Error($"Error deleting User due to : {ex.Message}");
-                    return View(_responseDto.Data.guid);
-                }
-            }
+            _responseDto = _businessLayer.AppointmentService.DeleteAppointmentById(appointmentId);
+            if(_responseDto.StatusCode == HttpStatusCode.OK)
+                return RedirectToAction(nameof(Index));
             else
             {
-                _notyf.Error("Error: User not Found");
-                return NotFound();
+                _notyf.Error($"Error deleting User due to : {_responseDto.Message}");
+                return View();
             }
-
         }
 
 

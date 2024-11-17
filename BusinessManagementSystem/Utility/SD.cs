@@ -56,6 +56,17 @@ namespace BusinessManagementSystem.Utility
         };
 
 
+        public static readonly Dictionary<string, string> PaymentMethods = new Dictionary<string, string>
+        {
+            { PaymentMethod.BankQR.ToString(), "Bank QR" },
+            { PaymentMethod.CardPayment.ToString(), "Card Payment" },
+            { PaymentMethod.Cash.ToString(), "Cash" },
+            { PaymentMethod.Esewa.ToString(), "ESewa" },
+            { PaymentMethod.ImePay.ToString(), "ImePay" },
+            { PaymentMethod.Khalti.ToString(), "Khalti" }
+        };
+
+
     }
 
     public static class DocumentType

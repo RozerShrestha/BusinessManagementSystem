@@ -34,16 +34,16 @@ namespace BusinessManagementSystem.Models
         //we need required if Status is something
         [DisplayName("Total Hours *")]
         public double TotalHours { get; set; }
-        [Required]
-        [Range(1000, int.MaxValue, ErrorMessage ="Deposit amount should be more than equal to 1000")]
-        [DisplayName("Deposit *")]
-        public double Deposit { get; set; }
-        [DisplayName("Discount")]
-        public double Discount { get; set; }
-        [DisplayName("Discount In Hour")]
-        public double DiscountInHour { get; set; }
-        [DisplayName("Total Cost")]
-        public double TotalCost { get; set; }
+        //[Required]
+        //[Range(1000, int.MaxValue, ErrorMessage ="Deposit amount should be more than equal to 1000")]
+        //[DisplayName("Deposit *")]
+        //public double Deposit { get; set; }
+        //[DisplayName("Discount")]
+        //public double Discount { get; set; }
+        //[DisplayName("Discount In Hour")]
+        //public double DiscountInHour { get; set; }
+        //[DisplayName("Total Cost")]
+        //public double TotalCost { get; set; }
         [Required]
         [DisplayName("Status *")]
         public string Status { get; set; }
@@ -70,19 +70,14 @@ namespace BusinessManagementSystem.Models
         public bool FollowUpRequired { get; set; }
         [DisplayName("Is Foreigner")]
         public bool IsForeigner { get; set; }
-        [DisplayName("Tips if Available")]
-        public double? TipAmount { get; set; }
-
+        [ValidateNever]
+        public Payment Payment { get; set; }
         //[RequiredIf("Status","Completed")]
         [ValidateNever]
         public ICollection<Tip> Tips { get; set; }
-
-        //[JsonIgnore]
         [ValidateNever]
         [ForeignKey("UserId")]
-        
         public User User { get; set; }
-        //[JsonIgnore]
         [ForeignKey("ReferalId")]
         [ValidateNever]
         public Referal Referal { get; set; }

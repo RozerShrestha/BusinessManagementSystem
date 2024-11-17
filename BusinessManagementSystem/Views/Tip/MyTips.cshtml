@@ -2,7 +2,7 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header">
-                <h2>All Tips Information</h2>
+                <h2>My Tips Information</h2>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -17,7 +17,7 @@
                                 <th>Tip Created</th>
                                 <th>Tip Updated</th>
                                 <th>Tip Settlement</th>
-                                <th>Action</th>
+                                <th>Appointment Link</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,33 +35,6 @@
         var datatable = null;
         $(document).ready(function () {
             loadDataTable();
-
-            $('#tblTipList').on('click', '.delete-item', function (e) {
-                e.preventDefault();
-                const itemId = $(this).data('id');
-                $('#confirmationModalDel').modal('show'); // Show the Bootstrap modal
-                $('#confirmationModalDel').data('item-id', itemId); // Store claim ID in the modal data
-            });
-
-            $('#confirmDelete').on('click', function () {
-
-                const itemId = $('#confirmationModalDel').data('item-id');
-                $('#confirmationModalDel').modal('hide');
-                const table = $('#tblTipList').DataTable();
-                const $row = $(this).closest('tr');
-                $.ajax({
-                    type: 'GET',
-                    url: `/Tip/Delete?guid=${itemId}`,
-                    contentType: 'application/json',
-                    success: function (response) {
-                        toastr.success('Successfully Deleted');
-                        table.ajax.reload();
-                    },
-                    error: function (error) {
-                        toastr.error("Error Deleting");
-                    }
-                });
-            });
         });
         function loadDataTable() {
             if (datatable) {
@@ -75,7 +48,7 @@
                 autoWidth: true,
                 lengthMenu: [[25, 50, -1], [25, 50, "All"]],
                 "ajax": {
-                    "url": `/Tip/GetAllTips`,
+                    "url": `/Tip/GetMyTips`,
                     "dataSrc": function (data) {
                         debugger;
                         // return data.datas.map(function (item) {
@@ -120,10 +93,10 @@
                         "data": "appointmentGuid",
                         "render": function (data) {
                             return `
-                                    <div>
-                                        <a href="/Appointment/detail?guid=${data}" target = "_blank"><i class="fas fa-eye"></i></i></a>
-                                    </div>
-                                    `
+                                            <div>
+                                                <a href="/Appointment/detail?guid=${data}" target = "_blank"><i class="fas fa-eye"></i></i></a>
+                                            </div>
+                                            `
                         }
                     }
                 ]

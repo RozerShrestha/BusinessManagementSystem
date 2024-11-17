@@ -27,8 +27,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
         public ResponseDto<TipDto> GetMyTips(int userId)
         {
-            var tips = _unitOfWork.Tip.GetAll(p => p.TipAssignedToUser == userId);
+            _responseTipDto = _unitOfWork.Tip.GetMyTips(userId);
             return _responseTipDto;
-        }
+         }
     }
 }
