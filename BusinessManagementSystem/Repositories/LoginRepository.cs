@@ -40,7 +40,7 @@ namespace BusinessManagementSystem.Repositories
                 if (userData==null)
                 {
                     _responseDto.StatusCode =HttpStatusCode.NotFound ;
-                    _responseDto.Message = "Username Invalid";
+                    _responseDto.Message = "Username or Password is invalid";
                 }
                 else
                 {
@@ -147,7 +147,7 @@ namespace BusinessManagementSystem.Repositories
         }
         public User GetUser(LoginRequestDto l)
         {
-            var item = _db.Users.Where(p => p.UserName == l.Username || p.Email==l.Username || p.PhoneNumber==l.Username).FirstOrDefault();
+            var item = _db.Users.Where(p => (p.UserName == l.Username || p.Email==l.Username || p.PhoneNumber==l.Username) && p.Status==true).FirstOrDefault();
             return item;
         }
         public  bool IsEmailAvailable(string Email)

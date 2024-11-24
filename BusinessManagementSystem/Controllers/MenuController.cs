@@ -63,7 +63,7 @@ namespace BusinessManagementSystem.Controllers
         public ActionResult Create(Menu menu)
         {
             if (ModelState.IsValid)
-            {
+            { 
                 _responseDto = _businessLayer.MenuService.CreateMenu(menu);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {

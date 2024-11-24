@@ -15,7 +15,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         ResponseDto<Appointment> _responseDto;
         ResponseDto<AppointmentDto> _responseAppointmentDto;
         int totalCost;
-
         public AppointmentImpl(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -24,17 +23,24 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseAppointmentDto = new ResponseDto<AppointmentDto>();
             
         }
-        
         public ResponseDto<AppointmentDto> GetAllAppointment()
         {
             try
             {
                 _responseDto = _unitOfWork.Appointment.GetAll(includeProperties: "User,Referal,Payment");
-                foreach (var item in _responseDto.Datas)
+                if (_responseDto.Datas.Count > 0)
                 {
-                    AppointmentDto appointmentDto = new AppointmentDto();
-                    appointmentDto = _mapper.Map<AppointmentDto>(item);
-                    _responseAppointmentDto.Datas.Add(appointmentDto);
+                    foreach (var item in _responseDto.Datas)
+                    {
+                        AppointmentDto appointmentDto = new AppointmentDto();
+                        appointmentDto = _mapper.Map<AppointmentDto>(item);
+                        _responseAppointmentDto.Datas.Add(appointmentDto);
+                    }
+                }
+                else
+                {
+                    _responseAppointmentDto.StatusCode=_responseDto.StatusCode;
+                    _responseAppointmentDto.Message=_responseDto.Message;
                 }
             }
             catch (Exception ex)
@@ -42,20 +48,26 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 _responseAppointmentDto.StatusCode = HttpStatusCode.InternalServerError;
                 _responseAppointmentDto.Message= ex.Message;
             }
-           
             return _responseAppointmentDto;
         }
-
         public ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId)
         {
             try
             {
                 _responseDto = _unitOfWork.Appointment.GetAll(p => p.UserId == userId, includeProperties: "User,Referal,Payment");
-                foreach (var item in _responseDto.Datas)
+                if (_responseDto.Datas.Count > 0)
                 {
-                    AppointmentDto appointmentDto = new AppointmentDto();
-                    appointmentDto = _mapper.Map<AppointmentDto>(item);
-                    _responseAppointmentDto.Datas.Add(appointmentDto);
+                    foreach (var item in _responseDto.Datas)
+                    {
+                        AppointmentDto appointmentDto = new AppointmentDto();
+                        appointmentDto = _mapper.Map<AppointmentDto>(item);
+                        _responseAppointmentDto.Datas.Add(appointmentDto);
+                    }
+                }
+                else
+                {
+                    _responseAppointmentDto.StatusCode = _responseDto.StatusCode;
+                    _responseAppointmentDto.Message = _responseDto.Message;
                 }
             }
             catch (Exception ex)
@@ -66,13 +78,21 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             
             return _responseAppointmentDto;
         }
-
         public ResponseDto<AppointmentDto> GetAppointmentByGuid(Guid guid)
         {
             try
             {
                 _responseDto = _unitOfWork.Appointment.GetFirstOrDefault(p => p.guid == guid, includeProperties: "Payment");
-                _responseAppointmentDto.Data = _mapper.Map<AppointmentDto>(_responseDto.Data);
+                if(_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    _responseAppointmentDto.Data = _mapper.Map<AppointmentDto>(_responseDto.Data);
+                }
+                else
+                {
+                    _responseAppointmentDto.StatusCode=_responseDto.StatusCode;
+                    _responseAppointmentDto.Message=_responseDto.Message;
+                }
+               
             }
             catch (Exception ex)
             {
@@ -81,13 +101,21 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             }
             return _responseAppointmentDto;
         }
-
         public ResponseDto<AppointmentDto> GetAppointmentById(int id)
         {
             try
             {
                 _responseDto = _unitOfWork.Appointment.GetById(id);
-                _responseAppointmentDto.Data = _mapper.Map<AppointmentDto>(_responseDto.Data);
+                if(_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    _responseAppointmentDto.Data = _mapper.Map<AppointmentDto>(_responseDto.Data);
+                }
+                else
+                {
+                    _responseAppointmentDto.StatusCode=_responseDto.StatusCode;
+                    _responseAppointmentDto.Message=_responseDto.Message;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -97,36 +125,51 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
            
             return _responseAppointmentDto;
         }
-
         public ResponseDto<Appointment> GetAppointmentByStatus(string status)
         {
             _responseDto = _unitOfWork.Appointment.GetFirstOrDefault(p => p.Status == status);
             return _responseDto;
-        }
+        }       
         public ResponseDto<Appointment> CreateAppointment(AppointmentDto appointmentDto)
         {
-            Appointment appointment = new Appointment();
-            appointment = _mapper.Map<Appointment>(appointmentDto);
-            appointment.guid = Helper.Helpers.GenerateGUID();
-            appointment.Payment = CreatePayment(appointmentDto);
-            if (appointmentDto.Status == "Completed")
+            try
             {
-                if (appointmentDto.TipAmount != 0)
+                Appointment appointment = new Appointment();
+                appointment = _mapper.Map<Appointment>(appointmentDto);
+                appointment.guid = Helper.Helpers.GenerateGUID();
+                appointment.Payment = CreatePayment(appointmentDto);
+                if (appointmentDto.Status == "Completed")
                 {
-                    appointment.Tips = CreateTip(appointmentDto); 
+                    if (appointmentDto.TipAmount != 0)
+                    {
+                        appointment.Tips = CreateTip(appointmentDto);
+                    }
                 }
+                _responseDto = _unitOfWork.Appointment.Insert(appointment);
+                return _responseDto;
             }
-             _responseDto = _unitOfWork.Appointment.Insert(appointment);
-            return _responseDto;
-        }
+            catch (Exception ex)
+            {
+                _responseDto.StatusCode = HttpStatusCode.InternalServerError;
+                _responseDto.Message = ex.Message;
+                return _responseDto;
+            }
 
+        }
         public ResponseDto<Appointment> DeleteAppointmentByGuid(Guid guid)
         {
-            var item = _unitOfWork.Appointment.GetFirstOrDefault(p => p.guid == guid).Data;
-            _responseDto = _unitOfWork.Appointment.Delete(item);
+            var item = _unitOfWork.Appointment.GetFirstOrDefault(p => p.guid == guid);
+            if (item.StatusCode == HttpStatusCode.OK)
+            {
+                _responseDto = _unitOfWork.Appointment.Delete(item.Data);
+            }
+            else
+            {
+                _responseDto.StatusCode = item.StatusCode;
+                _responseDto.Message = item.Message;
+            }
             return _responseDto;
         }
-
         public ResponseDto<Appointment> DeleteAppointmentById(int id)
         {
             var item = _unitOfWork.Appointment.GetById(id);
@@ -142,41 +185,46 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             
             return _responseDto;
         }
-
         public ResponseDto<Appointment> UpdateAppointment(AppointmentDto appointmentDto)
         {
             var item = _unitOfWork.Appointment.GetFirstOrDefault(p => p.guid == appointmentDto.guid, includeProperties: "Payment");
-            item.Data.ClientName = appointmentDto.ClientName;
-            item.Data.ClientPhoneNumber = appointmentDto.ClientPhoneNumber;
-            item.Data.AppointmentDate = appointmentDto.AppointmentDate;
-            item.Data.Category = appointmentDto.Category;
-            item.Data.ReferalId = appointmentDto.ReferalId;
-            item.Data.UserId = appointmentDto.UserId;
-            item.Data.IsForeigner = appointmentDto.IsForeigner;
-            item.Data.Status = appointmentDto.Status;
-            item.Data.TattooDesign = appointmentDto.TattooDesign;
-            item.Data.Placement = appointmentDto.Placement;
-            item.Data.InkColorPreferance = appointmentDto.InkColorPreferance;
-            item.Data.Allergies = appointmentDto.Allergies;
-            item.Data.MedicalConditions = appointmentDto.MedicalConditions;
-            item.Data.PainToleranceLevel = appointmentDto.PainToleranceLevel;
-            item.Data.SessionNumber = appointmentDto.SessionNumber;
-            item.Data.ConsentFormSigned = appointmentDto.ConsentFormSigned;
-            item.Data.FollowUpRequired = appointmentDto.FollowUpRequired;
-            item.Data.TotalHours = appointmentDto.TotalHours;
-            item.Data.Payment=UpdatePayment(item.Data.Payment, appointmentDto);
-            if (item.Data.Status == "Completed")
+            if(item.StatusCode == HttpStatusCode.OK)
             {
-                if (appointmentDto.TipAmount != 0)
+                item.Data.ClientName = appointmentDto.ClientName;
+                item.Data.ClientPhoneNumber = appointmentDto.ClientPhoneNumber;
+                item.Data.AppointmentDate = appointmentDto.AppointmentDate;
+                item.Data.Category = appointmentDto.Category;
+                item.Data.ReferalId = appointmentDto.ReferalId;
+                item.Data.UserId = appointmentDto.UserId;
+                item.Data.IsForeigner = appointmentDto.IsForeigner;
+                item.Data.Status = appointmentDto.Status;
+                item.Data.TattooDesign = appointmentDto.TattooDesign;
+                item.Data.Placement = appointmentDto.Placement;
+                item.Data.InkColorPreferance = appointmentDto.InkColorPreferance;
+                item.Data.Allergies = appointmentDto.Allergies;
+                item.Data.MedicalConditions = appointmentDto.MedicalConditions;
+                item.Data.PainToleranceLevel = appointmentDto.PainToleranceLevel;
+                item.Data.SessionNumber = appointmentDto.SessionNumber;
+                item.Data.ConsentFormSigned = appointmentDto.ConsentFormSigned;
+                item.Data.FollowUpRequired = appointmentDto.FollowUpRequired;
+                item.Data.TotalHours = appointmentDto.TotalHours;
+                item.Data.Payment = UpdatePayment(item.Data.Payment, appointmentDto);
+                if (item.Data.Status == "Completed")
                 {
-                    item.Data.Tips = CreateTip(appointmentDto);
+                    if (appointmentDto.TipAmount != 0)
+                    {
+                        item.Data.Tips = CreateTip(appointmentDto);
+                    }
                 }
+                _responseDto = _unitOfWork.Appointment.Update(item.Data);
             }
-
-            _responseDto = _unitOfWork.Appointment.Update(item.Data);
+            else
+            {
+                _responseDto.StatusCode = item.StatusCode;
+                _responseDto.Message = item.Message;
+            }
             return _responseDto;
         }
-
         public string GetTotalCost(bool isForeigner, string category, int totalHours, int deposit, int discount, int discountInHour,out int totalCost)
         {
             double categoryCost=0;
@@ -201,7 +249,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
             return calculationDescription; 
         }
-
         private List<Tip> CreateTip(AppointmentDto appointmentDto)
         {
             List<Tip> tipList = new List<Tip>();
@@ -227,20 +274,29 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             Payment payment = new Payment();
             payment = _mapper.Map<Payment>(appointmentDto);
-            payment.PaymentToArtist = (appointmentDto.TotalCost + appointmentDto.Deposit) / 2;
-            payment.PaymentToStudio= (appointmentDto.TotalCost + appointmentDto.Deposit) / 2;
+            payment.PaymentToArtist = appointmentDto.TotalCost / 2;
+            payment.PaymentToStudio= appointmentDto.TotalCost / 2;
             return payment;
         }
         private Payment UpdatePayment(Payment payment, AppointmentDto appointmentDto)
         {
+            float artistPercentage = GetArtistPercentage(appointmentDto);
+            float studioPercentage = 1 - artistPercentage;
             payment.Deposit = appointmentDto.Deposit;
             payment.Discount = appointmentDto.Discount;
             payment.DiscountInHour = appointmentDto.DiscountInHour;
             payment.TotalCost = appointmentDto.TotalCost;
             payment.PaymentMethod = appointmentDto.PaymentMethod;
-            payment.PaymentToArtist = (payment.TotalCost + payment.Deposit) / 2;
-            payment.PaymentToStudio = (payment.TotalCost + payment.Deposit) / 2;
+            payment.PaymentToArtist =Math.Round(payment.TotalCost * artistPercentage);
+            payment.PaymentToStudio = Math.Round(payment.TotalCost *studioPercentage);
             return payment;
+        }
+
+        private float GetArtistPercentage(AppointmentDto appointmentDto)
+        {
+           var item =_unitOfWork.Users.GetById(appointmentDto.UserId).Data;
+            float artistPercentage = (float)item.Percentage / 100;
+            return artistPercentage;
         }
     }
 }

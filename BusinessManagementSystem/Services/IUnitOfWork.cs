@@ -17,6 +17,7 @@ namespace BusinessManagementSystem.Services
         IReferal Referal { get; }
         IAppointment Appointment { get; }
         ITip Tip { get; }
+        IPayment Payment { get; }
         void BeginTransaction();
         void Commit();
         void Rollback();

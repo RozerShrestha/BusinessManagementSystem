@@ -93,15 +93,19 @@
                                     <div class="timeline timeline-inverse">
                                         <div class="time-label">
                                             @if (appointment.Status == "Completed"){
-                                                <span class="bg-success">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
+                                                <span class="bg-success color-palette">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
                                             else if (appointment.Status == "Cancelled")
                                             {
-                                                <span class="bg-danger">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
+                                                <span class="bg-danger color-palette">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
                                             else if (appointment.Status == "Scheduled" || appointment.Status == "ReScheduled")
                                             {
-                                                <span class="bg-lightblue">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
+                                                <span class="bg-success disabled color-palette">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
+                                            }
+                                            else if (appointment.Status == "InProgress")
+                                            {
+                                                <span class="bg-primary color-palette">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
                                     </div>
                                     <div>

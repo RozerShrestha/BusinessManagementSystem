@@ -31,6 +31,7 @@ namespace BusinessManagementSystem.Repositories
             Appointment = new AppointmentRepository(_dbContext);
             Referal=new ReferalRepository(_dbContext);
             Tip=new TipRepository(_dbContext);
+            Payment=new PaymentRepository(_dbContext);
         }
 
         public IUser Users { get; private set; }
@@ -43,6 +44,7 @@ namespace BusinessManagementSystem.Repositories
         public IReferal Referal { get; }
         public IAppointment Appointment { get; }
         public ITip Tip { get; }
+        public IPayment Payment { get; }
         public IBasicConfiguration BasicConfiguration { get; private set; }
         
         public void BeginTransaction()

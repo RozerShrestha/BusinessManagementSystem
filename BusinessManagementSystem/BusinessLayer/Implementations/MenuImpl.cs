@@ -19,13 +19,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _unitOfWork = unitOfWork;
             _responseDto = new ResponseDto<Menu>();
         }
-
         public dynamic ParentList()
         {
             var parentList=_unitOfWork.Menu.ParentList();
             return parentList;
         }
-
         public Multiselect RoleList()
         {
             var roles = _unitOfWork.Role.GetRoles();
@@ -43,19 +41,16 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = _unitOfWork.Menu.GetAll(p => p.Status == true);
             return _responseDto;
         }
-
         public ResponseDto<Menu> GetAllInactiveMenus()
         {
             _responseDto = _unitOfWork.Menu.GetAll(p => p.Status == false);
             return _responseDto;
         }
-
         public ResponseDto<Menu> GetAllMenu()
         {
             _responseDto = _unitOfWork.Menu.GetAll();
             return _responseDto;
         }
-
         public ResponseDto<Menu> GetMenuById(int id)
         {
             _responseDto = _unitOfWork.Menu.GetFirstOrDefault(p => p.Id == id, includeProperties: "MenuRoles");
@@ -83,19 +78,16 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto.Data.Multiselect = roleLists;
             return _responseDto;
         }
-
         public ResponseDto<Menu> CreateMenu(Menu menu)
         {
             _responseDto = _unitOfWork.Menu.CreateMenu(menu);
             return _responseDto;
         }
-
         public ResponseDto<Menu> UpdateMenu(Menu menu)
         {
             _responseDto = _unitOfWork.Menu.UpdateMenu(menu);
             return _responseDto;
         }
-
         public ResponseDto<Menu> DeleteMenu(int id)
         {
             Menu menu=_unitOfWork.Menu.GetById(id).Data;
@@ -111,7 +103,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             return _responseDto;
 
         }
-
         public dynamic GetMenuRoles(int id)
         {
             var menuAssignedRoles = _unitOfWork.MenuRole.GetRolesAssignedToMenu(id);

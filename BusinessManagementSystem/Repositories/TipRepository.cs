@@ -2,6 +2,8 @@
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Net;
 
 namespace BusinessManagementSystem.Repositories
 {
@@ -35,7 +37,13 @@ namespace BusinessManagementSystem.Repositories
                                     CreatedBy=t.CreatedBy,
                                     UpdatedBy=t.UpdatedBy,
                                }).ToList();
-            _responseTipDto.Datas = tipD;
+            if(tipD.Count > 0 ) _responseTipDto.Datas = tipD;
+            else
+            {
+                _responseTipDto.StatusCode = HttpStatusCode.NotFound;
+                _responseTipDto.Message = "Not Found";
+            }
+            
             return _responseTipDto;
                              
         }
@@ -62,6 +70,12 @@ namespace BusinessManagementSystem.Repositories
                             CreatedBy = t.CreatedBy,
                             UpdatedBy = t.UpdatedBy,
                         }).ToList();
+            if (tipD.Count > 0)_responseTipDto.Datas = tipD;
+            else
+            {
+                _responseTipDto.StatusCode = HttpStatusCode.NotFound;
+                _responseTipDto.Message = "Not Found";
+            }
             _responseTipDto.Datas = tipD;
             return _responseTipDto;
         }

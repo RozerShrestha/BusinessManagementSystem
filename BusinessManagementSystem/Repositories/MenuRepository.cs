@@ -15,7 +15,6 @@ namespace BusinessManagementSystem.Repositories
     {
         private readonly ApplicationDBContext _db;
         public ResponseDto<Menu> _responseDto;
-
         public MenuRepository(ApplicationDBContext db) : base(db)
         {
             _responseDto = new ResponseDto<Menu>();
@@ -38,7 +37,6 @@ namespace BusinessManagementSystem.Repositories
             try
             {
                 List<Role> selectedRoles = null;
-
                 var selectedRoles1 = menu.Multiselect.SelectedItems.ToList();
                 selectedRoles = _db.Roles.Where(p => selectedRoles1.Contains(p.Id)).ToList();
                 _db.Database.BeginTransaction();
@@ -53,39 +51,31 @@ namespace BusinessManagementSystem.Repositories
                 }
                 _db.SaveChanges();
                 _db.Database.CommitTransaction();
-
             }
             catch (Exception ex)
             {
                 _responseDto.StatusCode = HttpStatusCode.InternalServerError;
                 _responseDto.Message = ex.ToString();
-                _db.Database.RollbackTransaction();
-                
+                _db.Database.RollbackTransaction();  
             }
             return _responseDto;
         }
-
         public ResponseDto<Menu> GetMenuById(int id)
         {
             return _responseDto;
         }
-
-
         public ResponseDto<Menu> UpdateMenu(Menu menu)
         {
             try
             {
                 _db.Database.BeginTransaction();
                 //_db.MenuRoles.RemoveRange(menu.MenuRoles);
-
                 var previousMenuRoles = _db.Menus.Include(m => m.MenuRoles).Where(p => p.Id == menu.Id).SingleOrDefault();
-
                 List<Role> selectedRoles = null;
                 var selectedRoles1 = menu.Multiselect.SelectedItems.ToList();
                 selectedRoles = _db.Roles.Where(p => selectedRoles1.Contains(p.Id)).ToList();
 
                 _db.MenuRoles.RemoveRange(previousMenuRoles.MenuRoles);
-
                 foreach (var role in selectedRoles)
                 {
                     MenuRole menuRole = new()
@@ -96,7 +86,6 @@ namespace BusinessManagementSystem.Repositories
                     _db.MenuRoles.AddRange(menuRole);
                     //_db.SaveChanges();
                 }
-
                 var menuToUpdate = _db.Menus.Where(m => m.Id == menu.Id).SingleOrDefault();
                 _db.Entry(menuToUpdate).CurrentValues.SetValues(menu);
                 _db.Entry(menuToUpdate).State = EntityState.Modified;
@@ -109,10 +98,7 @@ namespace BusinessManagementSystem.Repositories
                 _responseDto.Message = ex.ToString();
                 _db.Database.RollbackTransaction();
             }
-            
             return _responseDto;
-        }
-
-        
+        }  
     }
 }

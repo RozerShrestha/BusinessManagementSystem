@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="UserName" class="control-label"></label>
-                        <input asp-for="UserName" class="form-control" />
+                        <input asp-for="UserName" class="form-control" readonly />
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
@@ -36,12 +36,12 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="DateOfBirth" class="control-label"></label>
-                        <input asp-for="DateOfBirth" class="form-control" type="date" />
+                        <input asp-for="DateOfBirth" class="form-control" readonly type="date" />
                         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="Gender" class="control-label"></label>
-                        <select asp-for="Gender" class="form-control">
+                        <select asp-for="Gender" class="form-control" readonly>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             <option value="other">Other</option>

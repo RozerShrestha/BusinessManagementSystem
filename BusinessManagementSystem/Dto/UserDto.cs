@@ -43,6 +43,7 @@ namespace BusinessManagementSystem.Dto
         [Required]
         public string Gender { get; set; }
         [Required]
+        [RequiredIf("Occupation","Select Occupation", "Please choose another option")]
         public string Occupation { get; set; }
         [Required]
         public bool Status { get; set; }
@@ -61,8 +62,11 @@ namespace BusinessManagementSystem.Dto
         [DisplayName("Profile Picture Link")]
         public string? ProfilePictureLink { get; set; }
         public string? Skills { get; set; }
+
         public string? Notes { get; set; }
-        public int Percentage { get; set; }
+        [Required]
+        [NotRequiredIf("Occupation", "TattooArtist", "Percentage field should not be Empty if Occupation is TattooArtist")]
+        public int? Percentage { get; set; }
         [DisplayName("Default Tips")]
         public bool DefaultTips { get; set; }
 

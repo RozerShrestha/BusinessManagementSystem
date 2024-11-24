@@ -10,7 +10,7 @@ using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
     public class TipController : BaseController
     {
         public ResponseDto<Tip> _responseDto;
@@ -26,13 +26,11 @@ namespace BusinessManagementSystem.Controllers
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Tip?", "");
             _logger = logger;
         }
-        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Index()
         {
             ViewBag.ModalInformation = _modalView;
             return View();
         }
-        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyTips()
         {
             ViewBag.ModalInformation = _modalView;
@@ -40,20 +38,19 @@ namespace BusinessManagementSystem.Controllers
         }
 
         #region API
-        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult GetAllTips()
         {
             _responseTipDto = _businessLayer.TipService.GetAllTips();
-            if (_responseTipDto.StatusCode == HttpStatusCode.OK) return Ok(_responseTipDto.Datas);
+            if (_responseTipDto.StatusCode == HttpStatusCode.OK || _responseTipDto.StatusCode==HttpStatusCode.NotFound) return Ok(_responseTipDto.Datas);
             else
                 return BadRequest();
         }
 
-        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        
         public IActionResult GetMyTips()
         {
             _responseTipDto = _businessLayer.TipService.GetMyTips(userId);
-            if (_responseTipDto.StatusCode == HttpStatusCode.OK) return Ok(_responseTipDto.Datas);
+            if (_responseTipDto.StatusCode == HttpStatusCode.OK || _responseTipDto.StatusCode == HttpStatusCode.NotFound) return Ok(_responseTipDto.Datas);
             else
                 return BadRequest();
         }

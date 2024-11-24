@@ -25,11 +25,7 @@ namespace BusinessManagementSystem.Helper
             var propertyvalue = type.GetProperty(PropertyName).GetValue(instance, null);
             if (propertyvalue.ToString().ToLower() == Value.ToString().ToLower())
             {
-                //if(value==null || value as string == string.Empty)
-                //{
-                    return new ValidationResult(ErrorMessage);
-                //}
-                
+                return new ValidationResult(ErrorMessage); 
             }
             return ValidationResult.Success;
         }
@@ -55,6 +51,31 @@ namespace BusinessManagementSystem.Helper
                 {
                     return new ValidationResult(ErrorMessage);
                 }
+            }
+            return ValidationResult.Success;
+        }
+    }
+
+    public class NotRequiredIfAttribute : ValidationAttribute
+    {
+        public string PropertyName { get; set; }
+        public Object Value { get; set; }
+
+        public NotRequiredIfAttribute(string propertyName, object value, string errorMessage = "")
+        {
+            PropertyName = propertyName;
+            Value = value;
+            ErrorMessage = errorMessage;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var instance = validationContext.ObjectInstance;
+            var type = instance.GetType();
+            var propertyvalue = type.GetProperty(PropertyName).GetValue(instance, null);
+            if (propertyvalue.ToString().ToLower() != Value.ToString().ToLower())
+            {
+                return new ValidationResult(ErrorMessage);
             }
             return ValidationResult.Success;
         }

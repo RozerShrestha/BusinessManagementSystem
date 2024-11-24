@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-md-4">
                             <label asp-for="Email" class="control-label"></label>
-                            <input asp-for="Email" class="form-control" type="email" />
+                        <input asp-for="Email" class="form-control emailChange" type="email" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
@@ -51,17 +51,17 @@
                         </div>
                         <div class="col-md-4">
                             <label asp-for="PhoneNumber" class="control-label"></label>
-                            <input asp-for="PhoneNumber" class="form-control" />
+                            <input asp-for="PhoneNumber" class="form-control phoneNumberChange" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
                             <label asp-for="Occupation" class="control-label"></label>
-                            @Html.DropDownListFor(model => model.Occupation, (SelectList)ViewBag.OccupationList, "Select an Occupation", new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.Occupation, (SelectList)ViewBag.OccupationList, new { @class = "form-control" })
                             <span asp-validation-for="Occupation" class="text-danger"></span>
                         </div>
                     <div class="col-md-4">
                         <label asp-for="Percentage" class="control-label"></label>
-                        <input asp-for="Percentage" class="form-control" />
+                        <input asp-for="Percentage" value="0" class="form-control" />
                         <span asp-validation-for="Percentage" class="text-danger"></span>
                     </div>
                         <div class="col-md-4">
@@ -149,9 +149,43 @@
                 url: `/Users/UserNameValid?username=${username}`,
                 contentType: 'application/json',
                 success: function (response) {
-                    if (response) toastr.success(`${username} is valid`);
+                    if (response) toastr.success(`User Name: ${username} is valid`);
                     else toastr.error(`User Name: ${username} is Invalid`);
                     
+
+                },
+                error: function (error) {
+                    toastr.error("Error due to: " + error.responseText);
+                }
+            });
+        });
+        $('.emailChange').change(function () {
+            let email = $('#Email').val();
+            $.ajax({
+                type: 'GET',
+                url: `/Users/EmailValid?email=${email}`,
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response) toastr.success(`Email: ${email} is valid`);
+                    else toastr.error(`Email: ${email} is Invalid`);
+
+
+                },
+                error: function (error) {
+                    toastr.error("Error due to: " + error.responseText);
+                }
+            });
+        });
+        $('.phoneNumberChange').change(function () {
+            let phoneNumber = $('#PhoneNumber').val();
+            $.ajax({
+                type: 'GET',
+                url: `/Users/PhoneNumberValid?phoneNumber=${phoneNumber}`,
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response) toastr.success(`Phone Number: ${phoneNumber} is valid`);
+                    else toastr.error(`Phone Number: ${phoneNumber} is Invalid`);
+
 
                 },
                 error: function (error) {

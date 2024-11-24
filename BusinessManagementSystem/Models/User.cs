@@ -40,7 +40,7 @@ namespace BusinessManagementSystem.Models
         public bool FirstPasswordReset { get; set; }
         [Required]
         public string Salt { get; set; }
-        [RequiredIf("Occupation", "Tattoo Artist","Percentage Field required")]
+        
         public int Percentage { get; set; }
         public string? FacebookLink { get; set; }
         public string? InstagramLink { get; set; }

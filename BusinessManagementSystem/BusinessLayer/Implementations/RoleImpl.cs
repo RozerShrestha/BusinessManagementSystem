@@ -10,7 +10,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
     {
         private readonly IUnitOfWork _unitOfWork;
         ResponseDto<Role> _responseDto;
-
         public RoleImpl(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -21,25 +20,21 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = _unitOfWork.Role.Insert(role);
             return _responseDto;
         }
-
         public ResponseDto<Role> DeleteRole(Role role)
         {
             _responseDto = _unitOfWork.Role.Delete(role);
             return _responseDto;
         }
-
         public ResponseDto<Role> GetAllRoles()
         {
             _responseDto = _unitOfWork.Role.GetAll();
             return _responseDto;
         }
-
         public ResponseDto<Role> GetRoleById(int id)
         {
             _responseDto = _unitOfWork.Role.GetById(id);
             return _responseDto;
         }
-
         public ResponseDto<Role> UpdateRole(Role role)
         {
             _responseDto=_unitOfWork.Role.Update(role);

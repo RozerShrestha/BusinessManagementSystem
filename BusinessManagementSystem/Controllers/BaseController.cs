@@ -22,6 +22,7 @@ namespace BusinessManagementSystem.Controllers
         protected readonly IEmailSender _emailSender;
         public static int roleId;
         public static int userId;
+        public static Guid userGuid;
         public static string roleName = string.Empty;
         public static string username = string.Empty;
         public static string email = string.Empty;

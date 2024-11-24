@@ -28,6 +28,7 @@ namespace BusinessManagementSystem.Utility
 
         public static readonly Dictionary<string, string> Occupations = new Dictionary<string, string>
         {
+            { "Select Occupation", "Select Occupation" },
             { Occupation.TattooArtist.ToString(), "Tattoo Artist" },
             { Occupation.Barista.ToString(), "Barista" },
             { Occupation.Manager.ToString(), "Manager" },
@@ -49,7 +50,7 @@ namespace BusinessManagementSystem.Utility
             { AppointmentStat.InProgress.ToString(), "In Progress" },
             { AppointmentStat.Scheduled.ToString(), "Scheduled" },
             { AppointmentStat.Rescheduled.ToString(), "Re Scheduled" },
-            { AppointmentStat.Confirmed.ToString(), "COnfirmed" },
+            { AppointmentStat.Confirmed.ToString(), "Confirmed" },
             { AppointmentStat.Completed.ToString(), "Completed" },
             { AppointmentStat.Cancelled.ToString(), "Cancelled" },
             { AppointmentStat.NotShown.ToString(), "Not Shown" },

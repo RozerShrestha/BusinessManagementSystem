@@ -51,6 +51,7 @@
             success: function (response) {
                 alert(response.costDescription);
                 $('#TotalCost').val(response.totalCost);
+                $('#btnApppointmentSubmit').prop('disabled', false);
             },
             error: function (error) {
                 toastr.error("Error due to: " + error.responseText);

@@ -67,7 +67,8 @@ namespace BusinessManagementSystem.Data
                     Gender = "Male",
                     Occupation = "Chief Operating Officer",
                     CreatedBy = "System",
-                    UpdatedBy = "System"
+                    UpdatedBy = "System",
+                    DefaultTips=false
                 };
 
                 ur.User = u;

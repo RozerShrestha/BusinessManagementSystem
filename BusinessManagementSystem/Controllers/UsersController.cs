@@ -53,17 +53,18 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Detail(Guid guid)
         {
             _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
-            _responseUserDetailDto = _businessLayer.UserService.GetUserDetailDtoById(_responseUserDto.Data.UserId);
-            if(_responseUserDetailDto.StatusCode == HttpStatusCode.OK)
+            if (_responseUserDto.StatusCode == HttpStatusCode.OK)
             {
-                return View(_responseUserDetailDto.Data);
+                _responseUserDetailDto = _businessLayer.UserService.GetUserDetailDtoById(_responseUserDto.Data.UserId);
+                if (_responseUserDetailDto.StatusCode == HttpStatusCode.OK) return View(_responseUserDetailDto.Data);
+                else return NotFound();
             }
             else
             {
                 return NotFound();
             }
         }
-
+ 
         [HttpGet]
         public IActionResult MyProfile()
         {
@@ -148,7 +149,7 @@ namespace BusinessManagementSystem.Controllers
             ModelState.Remove(nameof(userDto.Password)); //just to ignore ConfirmPassword to validate
             ModelState.Remove(nameof(userDto.ConfirmPassword)); //just to ignore ConfirmPassword to validate
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
-            ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Key", "Value");
             if(roleName==SD.Role_Superadmin || userId== userDto.UserId)
             {
                 if (ModelState.IsValid)
@@ -180,9 +181,7 @@ namespace BusinessManagementSystem.Controllers
             {
                 _notyf.Warning($"{fullName} is not authroized to perform this task");
                 return RedirectToAction(nameof(Index));
-            }
-            
-           
+            } 
         }
         
         [HttpGet]
@@ -243,7 +242,6 @@ namespace BusinessManagementSystem.Controllers
                 _notyf.Error("Error: User not Found");
                 return NotFound();
             }
-            
         }
 
        
@@ -251,7 +249,7 @@ namespace BusinessManagementSystem.Controllers
         #region API CALLS
 
         [HttpGet]
-        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
+ 
         public IActionResult GetAllUser()
         {
             string who = roleName;
@@ -264,15 +262,29 @@ namespace BusinessManagementSystem.Controllers
             {
                 return BadRequest(_responseUserRoleDto);
             }
-            
         }
+        
         [HttpGet]
         public IActionResult UserNameValid(string username)
         {
-            var userNameValidityCheck = _businessLayer.UserService.ValidateUser(username);
+            var userNameValidityCheck = _businessLayer.UserService.ValidateUserName(username);
             return Ok(userNameValidityCheck);
         }
-       
+
+        [HttpGet]
+        public IActionResult EmailValid(string email)
+        {
+            var emailValidityCheck=_businessLayer.UserService.ValidateEmail(email);
+            return Ok(emailValidityCheck);
+        }
+
+        [HttpGet]
+        public IActionResult PhoneNumberValid(string phoneNumber)
+        {
+            var phoneValidityCheck = _businessLayer.UserService.ValidatePhoneNumber(phoneNumber);
+            return Ok(phoneValidityCheck);
+        }
+
         #endregion
     }
 }
