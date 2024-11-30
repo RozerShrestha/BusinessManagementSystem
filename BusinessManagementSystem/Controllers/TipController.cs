@@ -50,7 +50,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult GetMyTips()
         {
             _responseTipDto = _businessLayer.TipService.GetMyTips(userId);
-            if (_responseTipDto.StatusCode == HttpStatusCode.OK || _responseTipDto.StatusCode == HttpStatusCode.NotFound) return Ok(_responseTipDto.Datas);
+            if (_responseTipDto.StatusCode == HttpStatusCode.OK || _responseTipDto.StatusCode == HttpStatusCode.NotFound   ) return Ok(_responseTipDto.Datas);
             else
                 return BadRequest();
         }

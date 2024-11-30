@@ -1,6 +1,7 @@
 ﻿ using AutoMapper;
 using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using Newtonsoft.Json;
@@ -23,11 +24,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseAppointmentDto = new ResponseDto<AppointmentDto>();
             
         }
-        public ResponseDto<AppointmentDto> GetAllAppointment()
+        public ResponseDto<AppointmentDto> GetAllAppointment(RequestDto requestDto)
         {
             try
             {
-                _responseDto = _unitOfWork.Appointment.GetAll(includeProperties: "User,Referal,Payment");
+                _responseDto = _unitOfWork.Appointment.GetAll(p=>p.AppointmentDate>=requestDto.StartDate && p.AppointmentDate<=requestDto.EndDate && p.Status==requestDto.Status, orderBy:p=>p.ClientName, includeProperties: "User,Referal,Payment");
                 if (_responseDto.Datas.Count > 0)
                 {
                     foreach (var item in _responseDto.Datas)
@@ -48,7 +49,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 _responseAppointmentDto.StatusCode = HttpStatusCode.InternalServerError;
                 _responseAppointmentDto.Message= ex.Message;
             }
-            return _responseAppointmentDto;
+             return _responseAppointmentDto;
         }
         public ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId)
         {
@@ -225,7 +226,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             }
             return _responseDto;
         }
-        public string GetTotalCost(bool isForeigner, string category, int totalHours, int deposit, int discount, int discountInHour,out int totalCost)
+        public string GetTotalCost(bool isForeigner, string category, double totalHours, int deposit, int discount, double discountInHour,out double totalCost)
         {
             double categoryCost=0;
             if (category == "Tattoo")
@@ -248,6 +249,16 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             string calculationDescription = $"Category: {category}({categoryCost}) \n Deposit: {deposit} \n Total Hours: {totalHours}-{discountInHour} \n Discount in Price: {discount} \n TotalCost: {totalCost}";
 
             return calculationDescription; 
+        }
+        public RequestDto GetInitialRequestDtoFilter()
+        {
+            RequestDto requestDto = new RequestDto
+            {
+                Status = AppointmentStat.Completed.ToString(),
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now
+            };
+            return requestDto;
         }
         private List<Tip> CreateTip(AppointmentDto appointmentDto)
         {
@@ -289,9 +300,9 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             payment.PaymentMethod = appointmentDto.PaymentMethod;
             payment.PaymentToArtist =Math.Round(payment.TotalCost * artistPercentage);
             payment.PaymentToStudio = Math.Round(payment.TotalCost *studioPercentage);
+            payment.TipAmount = appointmentDto.TipAmount;
             return payment;
         }
-
         private float GetArtistPercentage(AppointmentDto appointmentDto)
         {
            var item =_unitOfWork.Users.GetById(appointmentDto.UserId).Data;

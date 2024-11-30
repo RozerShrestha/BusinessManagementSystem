@@ -104,22 +104,25 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-        public  ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool tracked = false)
+        public  ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, Expression<Func<T,object>> orderBy=null, bool orderByDescending=false, string includeProperties = null, bool tracked = false)
         {
             try
             {
                 IQueryable<T> query = _dbSet;
+                if (!tracked)
+                    query = _dbSet.AsNoTracking();
                 if (filter != null)
                     query = query.Where(filter);
-
-
-
                 if (includeProperties != null)
                 {
                     foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                     {
                         query = query.Include(includeProp);
                     }
+                }
+                if (orderBy != null)
+                {
+                    query = orderByDescending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
                 }
 
                 foreach (var item in query)

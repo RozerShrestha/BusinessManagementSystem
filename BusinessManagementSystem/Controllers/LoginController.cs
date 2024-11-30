@@ -42,7 +42,7 @@ namespace BusinessManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult LoginUser(LoginRequestDto loginRequest)
-        {
+         {
             ModelState.Remove(nameof(loginRequest.ConfirmPassword)); //just to ignore ConfirmPassword to validate
             if (ModelState.IsValid)
             {

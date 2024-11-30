@@ -1,9 +1,13 @@
-﻿
-<div class="row">
+﻿<div class="row">
     <div class="col-xl-12">
-        <div class="card">
+        <div class="card card-dark card-outline">
             <div class="card-header">
-                <h2>All Appointments</h2>
+                <div class="card-title">
+                    <h3>All Appointments</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <partial name="_DateRangeFilter" />
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -39,17 +43,27 @@
     <script>
         var datatable = null;
         $(document).ready(function () {
-            loadDataTable('Active');
-
+            $("#btnFilterLoad").on("click", function (e) {
+                e.preventDefault(); // Prevent form submission if the button is inside a form
+                // Collect data from inputs
+                const requestDto = {
+                    StartDate: $("#StartDate").val(),
+                    EndDate: $("#EndDate").val(),
+                    Status: $("#Status").val()
+                };
+                const formData = [];
+                formData.push({ name: "startDate", value: $("#StartDate").val() });
+                formData.push({ name: "endDate", value: $("#EndDate").val() });
+                formData.push({ name: "status", value: $("#Status").val() });
+                loadDataTable(formData);
+            });
             $('#tblAppointmentList').on('click', '.delete-item', function (e) {
                 e.preventDefault();
                 const itemId = $(this).data('id');
                 $('#confirmationModalDel').modal('show'); // Show the Bootstrap modal
                 $('#confirmationModalDel').data('item-id', itemId); // Store claim ID in the modal data
             });
-
             $('#confirmDelete').on('click', function () {
-
                 const itemId = $('#confirmationModalDel').data('item-id');
                 $('#confirmationModalDel').modal('hide');
                 const table = $('#tblAppointmentList').DataTable();
@@ -68,7 +82,7 @@
                 });
             });
         });
-        function loadDataTable(status) {
+        function loadDataTable(formData) {
             if (datatable) {
                 $("#tblAppointmentList").DataTable().destroy();
             }
@@ -79,82 +93,63 @@
                 },
                 autoWidth: true,
                 lengthMenu: [[25, 50, -1], [25, 50, "All"]],
-                "ajax": {
-                    "url": `/Appointment/GetAllAppointment`,
-                    "dataSrc": function (data) {
-                        debugger;
-                        // return data.datas.map(function (item) {
-                        //     item.user.roleName=item.roleName
-                        //     return item.user;
-                        return data;
-                        
-                    }
+                ordering:false,
+                ajax: {
+                    url: '/Appointment/GetAllAppointment',
+                    type:'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: function () {
+                        return JSON.stringify({
+                            startDate: $("#StartDate").val(),
+                            endDate: $("#EndDate").val(),
+                            status: $("#Status").val()
+                        });
+                    },
+                    dataSrc: "" // Optional, if response is an array
                 },
-                "columns": [
-                    {
-                        "data": "appointmentId",
+                columns: [
+                    {'data': 'appointmentId'},
+                    {'data': 'clientName'},
+                    {'data': 'clientPhoneNumber'},
+                    {'data': 'artistAssigned'},
+                    {'data': 'category'},
+                    {'data': 'referalFullName'},
+                    {'data': 'appointmentDate',
+                          'render': function (data) {
+                                    return formatDate(data);
+                                }
                     },
-                    {
-                        "data": "clientName",
-                    },
-                    {
-                        "data": "clientPhoneNumber",
-                    },
-                    {
-                        "data": "artistAssigned",
-                    },
-                    {
-                        "data": "category",
-                    },
-                    {
-                        "data": "referalFullName",
-                    },
-                    {
-                        "data": "appointmentDate",
-                        "render": function (data) {
-                            return formatDate(data);
-                        }
-                    },
-                    {
-                        "data": "totalHours",
-                    },
-                    {
-                        "data": "discount",
-                    },
-                    {
-                        "data": "discountInHour",
-                    },
-                    {
-                        "data": "totalCost",
-                    },
-                    {
-                        "data": "status",
-                    },
-                    {
-                        "data": "guid",
-                        "render": function (data) {
-                            return `
-                                    <div>
-                                        <a href="/Appointment/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
-                                        <a href="/Appointment/detail?guid=${data}"><i class="fas fa-eye"></i></i></a> |
-                                        <a href="#" class="delete-item" data-id="${data}"> <i class= "fas fa-trash-alt" > </i></a >
-                                        </div>
-                                    `
-                        }
-                    }
+                    {'data': 'totalHours'},
+                    {'data': 'discount'},
+                    {'data': 'discountInHour'},
+                    {'data': 'totalCost'},
+                    {'data': 'status'},
+                    {'data': 'guid',
+                              'render': function (data) {
+                                        return `
+                                                <div>
+                                                    <a href="/Appointment/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
+                                                    <a href="/Appointment/detail?guid=${data}"><i class="fas fa-eye"></i></i></a> |
+                                                    <a href="#" class="delete-item" data-id="${data}"> <i class= "fas fa-trash-alt" > </i></a >
+                                                    </div>
+                                                `
+                                    }
+                                }
                 ],
-                "createdRow": function (row, data, dataIndex) {
-                    if (data.status === "Completed") {
-                        $(row).css('color', 'green'); // Hghlight row in green 
+                createdRow: function (row, data, dataIndex) {
+                    if (data.status === 'Completed') {
+                        $(row).css('color', 'green'); // Hghlight row in green
                     }
-                    else if(data.status=="Cancelled"){
+                    else if (data.status == 'InProgress') {
+                        $(row).css('color', 'blue'); // Hghlight row in green
+                    }
+                    else if(data.status=='Cancelled'){
                         $(row).css('color', 'red'); // Hghlight row in green 
                     }
                 }
             });
 
         }
-
         function formatDate(input) {
             // Parse the input date string
             const date = new Date(input);

@@ -7,7 +7,7 @@ namespace BusinessManagementSystem.Services
     {
         public ResponseDto<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null, bool tracked = false);
         public ResponseDto<T> GetSingleOrDefault(string includeProperties = null, bool tracked = false);
-        public ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool tracked=false);
+        public ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, Expression<Func<T, object>> orderBy = null, bool orderByDescending = false, string includeProperties = null, bool tracked=false);
         public ResponseDto<T> GetById(int id);
         public ResponseDto<T> Insert(T Entity);
         public ResponseDto<T> Update(T Entity);

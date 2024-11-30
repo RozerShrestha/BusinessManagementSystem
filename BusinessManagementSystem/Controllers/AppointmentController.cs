@@ -13,6 +13,8 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Diagnostics.Contracts;
 using BusinessManagementSystem.Helper;
+using BusinessManagementSystem.Enums;
+using AspNetCore;
 
 namespace BusinessManagementSystem.Controllers
 {
@@ -39,8 +41,10 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Index()
         {
+            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
             ViewBag.ModalInformation = _modalView;
-            return View();
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+            return View(requestDto);
         }
 
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
@@ -78,6 +82,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Create(AppointmentDto appointmentDto)
         {
+            var js = JsonConvert.SerializeObject(appointmentDto);
             ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
             ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
@@ -110,7 +115,7 @@ namespace BusinessManagementSystem.Controllers
 
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Edit(Guid guid)
-      {
+        {
             if (guid == Guid.Empty)return NotFound();
             ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
             ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
@@ -220,11 +225,11 @@ namespace BusinessManagementSystem.Controllers
 
         #region API CALLS
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "superadmin")]
-        public IActionResult GetAllAppointment()
+        public IActionResult GetAllAppointment([FromBody] RequestDto requestDto)
         {
-            _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointment();
+            _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointment(requestDto);
             if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK || _responseAppointmentDto.StatusCode == HttpStatusCode.NotFound) return Ok(_responseAppointmentDto.Datas);
             else return BadRequest();
         }
@@ -238,9 +243,9 @@ namespace BusinessManagementSystem.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult GetPaymentCalculation(bool isForeigner, string category, int totalHours, int deposit, int discount=0, int discountInHour=0)
+        public IActionResult GetPaymentCalculation(bool isForeigner, string category, double totalHours, int deposit, int discount=0, double discountInHour=0)
         {
-            int totalCost = 0;
+            double totalCost = 0.0;
             if (!string.IsNullOrEmpty(category) && totalHours != 0 && deposit >= 1000)
             {
                 string costDescription = _businessLayer.AppointmentService.GetTotalCost(isForeigner, category, totalHours, deposit, discount, discountInHour,out totalCost);
