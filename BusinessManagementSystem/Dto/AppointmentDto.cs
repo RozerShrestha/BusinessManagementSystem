@@ -71,6 +71,7 @@ namespace BusinessManagementSystem.Dto
         [DisplayName("Tips if Available")]
         public double TipAmount { get; set; }
         [DisplayName("Payment Method")]
+        [NotRequiredIf(nameof(Status),"Completed","Payment Method is required")]
         public string PaymentMethod { get; set; }
     }
 }

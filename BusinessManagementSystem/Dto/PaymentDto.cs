@@ -6,6 +6,7 @@ namespace BusinessManagementSystem.Dto
     {
         public int PaymentId { get; set; }
         public int AppointmentId { get; set; }
+        public Guid AppointmentGuid { get; set; }
         public int UserId { get; set; }
         public string ArtistName { get; set; }
         public double Deposit { get; set; }

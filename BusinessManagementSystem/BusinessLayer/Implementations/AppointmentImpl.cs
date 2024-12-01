@@ -4,6 +4,7 @@ using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -28,7 +29,22 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             try
             {
-                _responseDto = _unitOfWork.Appointment.GetAll(p=>p.AppointmentDate>=requestDto.StartDate && p.AppointmentDate<=requestDto.EndDate && p.Status==requestDto.Status, orderBy:p=>p.ClientName, includeProperties: "User,Referal,Payment");
+                requestDto.EndDate = requestDto.EndDate.AddDays(1);
+                if (requestDto.Status == AppointmentStat.All.ToString())
+                {
+                    _responseDto = _unitOfWork.Appointment.GetAll(p => p.AppointmentDate >= requestDto.StartDate && p.AppointmentDate <= requestDto.EndDate,
+                                        orderBy: p => p.AppointmentDate,
+                                        orderByDescending: true,
+                                        includeProperties: "User,Referal,Payment");
+                }
+                else
+                {
+                    _responseDto = _unitOfWork.Appointment.GetAll(p => p.AppointmentDate >= requestDto.StartDate && p.AppointmentDate <= requestDto.EndDate && p.Status == requestDto.Status,
+                                        orderBy: p => p.AppointmentDate,
+                                        orderByDescending: true,
+                                        includeProperties: "User,Referal,Payment");
+                }
+                
                 if (_responseDto.Datas.Count > 0)
                 {
                     foreach (var item in _responseDto.Datas)
@@ -51,11 +67,27 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             }
              return _responseAppointmentDto;
         }
-        public ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId)
+        public ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId, RequestDto requestDto)
         {
             try
             {
-                _responseDto = _unitOfWork.Appointment.GetAll(p => p.UserId == userId, includeProperties: "User,Referal,Payment");
+                requestDto.EndDate = requestDto.EndDate.AddDays(1);
+                if (requestDto.Status == AppointmentStat.All.ToString())
+                {
+                    _responseDto = _unitOfWork.Appointment.GetAll(p => p.UserId == userId && p.AppointmentDate >= requestDto.StartDate && p.AppointmentDate <= requestDto.EndDate,
+                    orderBy: p => p.AppointmentDate,
+                    orderByDescending: true,
+                    includeProperties: "User,Referal,Payment");
+                }
+                else
+                {
+                    _responseDto = _unitOfWork.Appointment.GetAll(p => p.UserId == userId && p.AppointmentDate >= requestDto.StartDate && p.AppointmentDate <= requestDto.EndDate && p.Status == requestDto.Status,
+                    orderBy: p => p.AppointmentDate,
+                    orderByDescending: true,
+                    includeProperties: "User,Referal,Payment");
+
+                }
+                    
                 if (_responseDto.Datas.Count > 0)
                 {
                     foreach (var item in _responseDto.Datas)
@@ -252,11 +284,12 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         public RequestDto GetInitialRequestDtoFilter()
         {
+            int lastDay = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
             RequestDto requestDto = new RequestDto
             {
-                Status = AppointmentStat.Completed.ToString(),
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now
+                Status = AppointmentStat.All.ToString(),
+                StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
             };
             return requestDto;
         }

@@ -1,9 +1,14 @@
 ﻿
 <div class="row">
     <div class="col-xl-12">
-        <div class="card">
+        <div class="card card-dark card-outline">
             <div class="card-header">
-                <h2>My Appointments</h2>
+                <div class="card-title">
+                    <h3>My Appointments</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <partial name="_DateRangeFilter" />
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -15,7 +20,7 @@
                                 <th>Client Number</th>
                                 <th>Artist Assigned</th>
                                 <th>Category</th>
-                                <th>Refered By</th>
+                                @* <th>Refered By</th> *@
                                 <th>Appointment Date</th>
                                 <th>Total Hours</th>
                                 <th>Discount</th>
@@ -39,9 +44,18 @@
     <script>
         var datatable = null;
         $(document).ready(function () {
-            loadDataTable('Active');
+            loadDataTable();
+            $("#btnFilterLoad").on("click", function (e) {
+                e.preventDefault(); // Prevent form submission if the button is inside a form
+                loadDataTable();
+            });
         });
-        function loadDataTable(status) {
+        function loadDataTable() {
+            const requestDto = {
+                StartDate: $("#StartDate").val(),
+                EndDate: $("#EndDate").val(),
+                Status: $("#Status").val()
+            };
             if (datatable) {
                 $("#tblMyAppointmentList").DataTable().destroy();
             }
@@ -52,82 +66,60 @@
                 },
                 autoWidth: true,
                 lengthMenu: [[25, 50, -1], [25, 50, "All"]],
-                "ajax": {
-                    "url": `/Appointment/GetAllAppointmentByArtist`,
-                    "dataSrc": function (data) {
-                        debugger;
-                        // return data.datas.map(function (item) {
-                        //     item.user.roleName=item.roleName
-                        //     return item.user;
-                        return data;
-
-                    }
+                ordering: false,
+                ajax: {
+                    url: '/Appointment/GetAllAppointmentByArtist',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: function () {
+                        return JSON.stringify(requestDto);
+                    },
+                    dataSrc: "" // Optional, if response is an array
                 },
-                "columns": [
+                columns: [
+                    { 'data': 'appointmentId' },
+                    { 'data': 'clientName' },
+                    { 'data': 'clientPhoneNumber' },
+                    { 'data': 'artistAssigned' },
+                    { 'data': 'category' },
+                    // {'data': 'referalFullName'},
                     {
-                        "data": "appointmentId",
-                    },
-                    {
-                        "data": "clientName",
-                    },
-                    {
-                        "data": "clientPhoneNumber",
-                    },
-                    {
-                        "data": "artistAssigned",
-                    },
-                    {
-                        "data": "category",
-                    },
-                    {
-                        "data": "referalFullName",
-                    },
-                    {
-                        "data": "appointmentDate",
-                        "render": function (data) {
+                        'data': 'appointmentDate',
+                        'render': function (data) {
                             return formatDate(data);
                         }
                     },
+                    { 'data': 'totalHours' },
+                    { 'data': 'discount' },
+                    { 'data': 'discountInHour' },
+                    { 'data': 'totalCost' },
+                    { 'data': 'status' },
                     {
-                        "data": "totalHours",
-                    },
-                    {
-                        "data": "discount",
-                    },
-                    {
-                        "data": "discountInHour",
-                    },
-                    {
-                        "data": "totalCost",
-                    },
-                    {
-                        "data": "status",
-                    },
-                    {
-                        "data": "guid",
-                        "render": function (data) {
+                        'data': 'guid',
+                        'render': function (data) {
                             return `
                                     <div>
                                         <a href="/Appointment/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
-                                        <a href="/Appointment/detail?guid=${data}"><i class="fas fa-eye"></i></i></a> |
-                                        <a href="#" class="delete-item" data-id="${data}"> <i class= "fas fa-trash-alt" > </i></a >
+                                        <a href="/Appointment/detail?guid=${data}"><i class="fas fa-eye"></i></i></a>
                                         </div>
                                     `
                         }
                     }
                 ],
-                "createdRow": function (row, data, dataIndex) {
-                    if (data.status === "Completed") {
+                createdRow: function (row, data, dataIndex) {
+                    if (data.status === 'Completed') {
                         $(row).css('color', 'green'); // Hghlight row in green
                     }
-                    else if (data.status == "Cancelled") {
+                    else if (data.status == 'InProgress') {
+                        $(row).css('color', 'blue'); // Hghlight row in green
+                    }
+                    else if (data.status == 'Cancelled') {
                         $(row).css('color', 'red'); // Hghlight row in green
                     }
                 }
             });
 
         }
-
         function formatDate(input) {
             // Parse the input date string
             const date = new Date(input);
@@ -148,6 +140,5 @@
             // Format the date
             return `${year}-${month}-${day}(${hours}:${minutes} ${ampm})`;
         }
-
     </script>
 }

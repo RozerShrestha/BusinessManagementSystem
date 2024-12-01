@@ -6,7 +6,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
     public interface IAppointmentService
     {
         ResponseDto<AppointmentDto> GetAllAppointment(RequestDto requestDto);
-        ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId);
+        ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId, RequestDto requestDto);
 
         ResponseDto<AppointmentDto> GetAppointmentById(int id);
         ResponseDto<AppointmentDto> GetAppointmentByGuid(Guid guid);

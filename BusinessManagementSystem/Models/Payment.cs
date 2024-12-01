@@ -17,7 +17,7 @@ namespace BusinessManagementSystem.Models
         public double TipAmount { get; set; }
         public double PaymentToStudio { get; set; }
         public double PaymentToArtist { get; set; }
-        public string PaymentMethod { get; set; }
+        public string? PaymentMethod { get; set; }
         public bool PaymentSettlement { get; set; }
         [ValidateNever]
         [ForeignKey(nameof(AppointmentId))]

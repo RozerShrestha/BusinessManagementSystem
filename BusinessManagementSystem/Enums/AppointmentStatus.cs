@@ -9,5 +9,6 @@
         Cancelled=5,
         NotShown=6,
         Rescheduled=7,
+        All=8
     }
 }

@@ -50,8 +50,10 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyAppointments()
         {
+            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
             ViewBag.ModalInformation = _modalView;
-            return View();
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+            return View(requestDto);
         }
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Detail(Guid guid)
@@ -233,11 +235,11 @@ namespace BusinessManagementSystem.Controllers
             if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK || _responseAppointmentDto.StatusCode == HttpStatusCode.NotFound) return Ok(_responseAppointmentDto.Datas);
             else return BadRequest();
         }
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult GetAllAppointmentByArtist()
+        public IActionResult GetAllAppointmentByArtist([FromBody] RequestDto requestDto)
         {
-            _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointmentByArtist(userId);
+            _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointmentByArtist(userId, requestDto);
             if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK || _responseAppointmentDto.StatusCode==HttpStatusCode.NotFound) return Ok(_responseAppointmentDto.Datas);
             else return BadRequest();
         }

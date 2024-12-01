@@ -22,6 +22,7 @@ namespace BusinessManagementSystem.Repositories
                               {
                                   PaymentId= p.Id,
                                   AppointmentId=a.Id,
+                                  AppointmentGuid=a.guid,
                                   UserId=u.Id,
                                   ArtistName=u.FullName,
                                   Deposit=p.Deposit,
@@ -54,6 +55,7 @@ namespace BusinessManagementSystem.Repositories
                               {
                                   PaymentId = p.Id,
                                   AppointmentId = a.Id,
+                                  AppointmentGuid=a.guid,
                                   UserId = u.Id,
                                   ArtistName = u.FullName,
                                   Deposit = p.Deposit,

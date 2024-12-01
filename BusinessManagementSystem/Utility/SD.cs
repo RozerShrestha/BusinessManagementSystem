@@ -47,13 +47,15 @@ namespace BusinessManagementSystem.Utility
 
         public static readonly Dictionary<string, string> ApointmentStatus = new Dictionary<string, string>
         {
+            {AppointmentStat.All.ToString(),"All" },
             { AppointmentStat.InProgress.ToString(), "In Progress" },
             { AppointmentStat.Scheduled.ToString(), "Scheduled" },
             { AppointmentStat.Rescheduled.ToString(), "Re Scheduled" },
             { AppointmentStat.Confirmed.ToString(), "Confirmed" },
             { AppointmentStat.Completed.ToString(), "Completed" },
             { AppointmentStat.Cancelled.ToString(), "Cancelled" },
-            { AppointmentStat.NotShown.ToString(), "Not Shown" },
+            { AppointmentStat.NotShown.ToString(), "Not Shown" }
+            
         };
 
 
