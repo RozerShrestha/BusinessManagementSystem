@@ -71,7 +71,6 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Create()
         {
-            //var jso = JsonConvert.SerializeObject(artistList,new JsonSerializerSettings { ReferenceLoopHandling=ReferenceLoopHandling.Ignore});
             ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
             ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
@@ -126,11 +125,23 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
 
-            if (_responseAppointmentDto.StatusCode != HttpStatusCode.OK)
+            if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == _responseAppointmentDto.Data.UserId)
             {
-                return NotFound();
+                if (_responseAppointmentDto.StatusCode != HttpStatusCode.OK)
+                {
+                    return NotFound();
+                }
+                else
+                    return View(_responseAppointmentDto.Data);
             }
-            return View(_responseAppointmentDto.Data);
+            else
+            {
+                _notyf.Warning($"{fullName} is not authroized to perform this task");
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            
+            
 
         }
 
@@ -139,29 +150,28 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Edit(AppointmentDto appointmentDto)
         {
-            if (roleName == SD.Role_Superadmin || userId == userDto.UserId)
+            if (roleName == SD.Role_Superadmin || roleName==SD.Role_TattooAdmin || userId == appointmentDto.UserId)
             {
+                ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
+                ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
+                ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
+                ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+                ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
                 if (ModelState.IsValid)
                 {
-                    ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
-                    ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
-                    ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
-                    ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
-                    ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
-
-                    //to update totalCost
-
-
                     _responseDto = _businessLayer.AppointmentService.UpdateAppointment(appointmentDto);
                     if (_responseDto.StatusCode == HttpStatusCode.OK)
                     {
                         _notyf.Success(_responseDto.Message);
-                        return RedirectToAction(nameof(Index));
+                        if(roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
+                            return RedirectToAction(nameof(Index));
+                         else
+                            return RedirectToAction(nameof(MyAppointments));
                     }
                     else
                     {
                         _notyf.Error(_responseDto.Message);
-                        return View(appointmentDto);
+                        return RedirectToAction("Edit", new { guid = _responseDto.Data.guid });
                     }
                 }
                 else
@@ -171,13 +181,13 @@ namespace BusinessManagementSystem.Controllers
                     {
                         _notyf.Error(error.ErrorMessage);
                     }
-                    return View(appointmentDto);
+                    return RedirectToAction("Edit", new { guid = appointmentDto.guid });
                 }
             }
             else
             {
                 _notyf.Warning($"{fullName} is not authroized to perform this task");
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AccessDenied", "Error");
             }
         }
 
@@ -228,7 +238,7 @@ namespace BusinessManagementSystem.Controllers
         #region API CALLS
 
         [HttpPost]
-        [Authorize(Roles = "superadmin")]
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult GetAllAppointment([FromBody] RequestDto requestDto)
         {
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointment(requestDto);

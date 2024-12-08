@@ -1,9 +1,11 @@
 ﻿using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Net;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BusinessManagementSystem.Repositories
 {
@@ -16,14 +18,15 @@ namespace BusinessManagementSystem.Repositories
             _responseTipDto = new ResponseDto<TipDto>();
         }
 
-        public ResponseDto<TipDto> GetAllTips()
+        public ResponseDto<TipDto> GetAllTips(RequestDto requestDto)
         {
-            var tipD = (from t in _dbContext.Tips
+            var query = (from t in _dbContext.Tips
                                join a in _dbContext.Appointments on t.AppointmentId equals a.Id
                                join u in _dbContext.Users on t.TipAssignedToUser equals u.Id
-                               select new TipDto
+                               where t.CreatedAt >= requestDto.StartDate && t.CreatedAt <= requestDto.EndDate
+                                select new TipDto
                                {
-                                    TipId = t.Id,
+                                     TipId = t.Id,
                                     AppointmentId = a.Id,
                                     AppointmentGuid=a.guid,
                                     TipAmount=t.TipAmount,
@@ -37,7 +40,7 @@ namespace BusinessManagementSystem.Repositories
                                     CreatedBy=t.CreatedBy,
                                     UpdatedBy=t.UpdatedBy,
                                }).ToList();
-            if(tipD.Count > 0 ) _responseTipDto.Datas = tipD;
+            if (query.Count > 0 ) _responseTipDto.Datas = query;
             else
             {
                 _responseTipDto.StatusCode = HttpStatusCode.NotFound;
@@ -48,13 +51,13 @@ namespace BusinessManagementSystem.Repositories
                              
         }
 
-        public ResponseDto<TipDto> GetMyTips(int userId)
+        public ResponseDto<TipDto> GetMyTips(int userId, RequestDto requestDto)
         {
-            var tipD = (from t in _dbContext.Tips
+            var query = (from t in _dbContext.Tips
                         join a in _dbContext.Appointments on t.AppointmentId equals a.Id
                         join u in _dbContext.Users on t.TipAssignedToUser equals u.Id
-                        where t.TipAssignedToUser==userId
-                        select new TipDto
+                        where t.TipAssignedToUser==userId && t.CreatedAt >= requestDto.StartDate && t.CreatedAt <= requestDto.EndDate
+                         select new TipDto
                         {
                             TipId = t.Id,
                             AppointmentId = a.Id,
@@ -70,13 +73,13 @@ namespace BusinessManagementSystem.Repositories
                             CreatedBy = t.CreatedBy,
                             UpdatedBy = t.UpdatedBy,
                         }).ToList();
-            if (tipD.Count > 0)_responseTipDto.Datas = tipD;
+            if (query.Count > 0)_responseTipDto.Datas = query;
             else
             {
                 _responseTipDto.StatusCode = HttpStatusCode.NotFound;
                 _responseTipDto.Message = "Not Found";
             }
-            _responseTipDto.Datas = tipD;
+            _responseTipDto.Datas = query;
             return _responseTipDto;
         }
     }

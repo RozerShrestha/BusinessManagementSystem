@@ -3,7 +3,9 @@ using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 using System.Text.Encodings.Web;
 
@@ -26,28 +28,36 @@ namespace BusinessManagementSystem.Controllers
 
         public IActionResult AllPayments()
         {
+            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
             ViewBag.ModalInformation = _modalView;
-            return View();
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+            return View(requestDto);
         }
         public IActionResult MyPayments()
         {
+            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
             ViewBag.ModalInformation = _modalView;
-            return View();
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+            return View(requestDto);
         }
+        //public IActionResult PaymentSettlement()
+        //{
+             
+        //}
 
         #region API
-        public IActionResult GetAllPayments(RequestDto requestDto)
+        [HttpPost]
+        public IActionResult GetAllPayments([FromBody] RequestDto requestDto)
         {
-            _responsePaymentDto = _businessLayer.PaymentService.GetAllPayments();
+            _responsePaymentDto = _businessLayer.PaymentService.GetAllPayments(requestDto);
             if (_responsePaymentDto.StatusCode == HttpStatusCode.OK || _responsePaymentDto.StatusCode == HttpStatusCode.NotFound) return Ok(_responsePaymentDto.Datas);
             else
                 return BadRequest();
         }
-
-
-        public IActionResult GetMyPayments(RequestDto requestDto)
+        [HttpPost]
+        public IActionResult GetMyPayments([FromBody] RequestDto requestDto)
         {
-            _responsePaymentDto = _businessLayer.PaymentService.GetMyPayments(userId);
+            _responsePaymentDto = _businessLayer.PaymentService.GetMyPayments(userId,requestDto);
             if (_responsePaymentDto.StatusCode == HttpStatusCode.OK || _responsePaymentDto.StatusCode == HttpStatusCode.NotFound) return Ok(_responsePaymentDto.Datas);
             else
                 return BadRequest();

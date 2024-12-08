@@ -3,8 +3,10 @@ using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 using System.Text.Encodings.Web;
 
@@ -28,28 +30,34 @@ namespace BusinessManagementSystem.Controllers
         }
         public IActionResult Index()
         {
+            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            requestDto.ParameterFilter = "NoStatus"; 
             ViewBag.ModalInformation = _modalView;
-            return View();
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+            return View(requestDto);
         }
         public IActionResult MyTips()
         {
+            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            requestDto.ParameterFilter = "NoStatus";
             ViewBag.ModalInformation = _modalView;
-            return View();
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+            return View(requestDto);
         }
 
         #region API
-        public IActionResult GetAllTips()
+        public IActionResult GetAllTips([FromBody] RequestDto requestDto)
         {
-            _responseTipDto = _businessLayer.TipService.GetAllTips();
+            _responseTipDto = _businessLayer.TipService.GetAllTips(requestDto);
             if (_responseTipDto.StatusCode == HttpStatusCode.OK || _responseTipDto.StatusCode==HttpStatusCode.NotFound) return Ok(_responseTipDto.Datas);
             else
                 return BadRequest();
         }
 
         
-        public IActionResult GetMyTips()
+        public IActionResult GetMyTips([FromBody] RequestDto requestDto)
         {
-            _responseTipDto = _businessLayer.TipService.GetMyTips(userId);
+            _responseTipDto = _businessLayer.TipService.GetMyTips(userId, requestDto);
             if (_responseTipDto.StatusCode == HttpStatusCode.OK || _responseTipDto.StatusCode == HttpStatusCode.NotFound   ) return Ok(_responseTipDto.Datas);
             else
                 return BadRequest();

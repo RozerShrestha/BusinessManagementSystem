@@ -14,8 +14,8 @@ namespace BusinessManagementSystem.Helper
             CreateMap<User, UserDto>()
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.UserRoles.SingleOrDefault().Role.Id))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.UserRoles.SingleOrDefault().Role.Name))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
-
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.userGuid, opt => opt.MapFrom(src => src.Guid));
             //mapping UserDto to User
             CreateMap<UserDto, User>()
                 .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => DateOnly.Parse(src.DateOfBirth.ToString())))

@@ -3,29 +3,61 @@
 <style scoped>
     .social-icons {
         display: flex;
-        justify-content:center;
+        justify-content: center;
         list-style-type: none;
         padding: 0;
         margin: 0;
     }
 
-    .social-icons li {
-        margin-right: 10px; /* adjust the spacing as needed */
-    }
+        .social-icons li {
+            margin-right: 10px; /* adjust the spacing as needed */
+        }
 
-    .social-icons li a {
-        text-decoration: none;
-        color: inherit; /* keeps icon colors as defined by the font-awesome icons */
-    }
+            .social-icons li a {
+                text-decoration: none;
+                color: inherit; /* keeps icon colors as defined by the font-awesome icons */
+            }
 
-    .social-icons li a i {
-        font-size: 34px; /* adjust the icon size as needed */
-    }
+                .social-icons li a i {
+                    font-size: 34px; /* adjust the icon size as needed */
+                }
 
     .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
         color: #fff;
         background-color: #343a40;
     }
+
+    .highlightComplete {
+        background-color: green;
+        color: white;
+        border-radius: 5px;
+        padding: 3px;
+        margin-left: 0px;
+        left: 10px;
+    }
+
+    .highlightProgress {
+        background-color: green;
+        color: white;
+        border-radius: 5px;
+        padding: 3px;
+        margin-left: 0px;
+        left: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 3px 15px; /* Add padding to each cell */
+    }
+
+    .tdHeader {
+        font-weight: 600; /* Highlight the labels */
+    }
+
 </style>
 <section class="content">
     <div class="container-fluid">
@@ -81,101 +113,112 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#appointment" data-toggle="tab">Appointments</a></li>
-                            @* <li class="nav-item"><a class="nav-link" href="#activity" data-toggle="tab">Activity</a></li> *@
+                            <li class="nav-item"><a class="nav-link active" href="#timeline" data-toggle="tab">Appointments</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#activity" data-toggle="tab">Activity</a></li>
                         </ul>
                     </div>
-                    <div class="card-body" style="height: 840px; overflow-y: auto;>
+                    <div class="card-body" style="height: 840px; overflow-y: auto;">
                         <div class="tab-content">
-                            @foreach(var appointment in Model.Appointments)
-                            {
-                                <div class="tab-pane active" id="appointment">
+                            <div class="tab-pane active" id="timeline">
+                                @foreach (var appointment in Model.Appointments)
+                                {
                                     <div class="timeline timeline-inverse">
                                         <div class="time-label">
-                                            @if (appointment.Status == "Completed"){
-                                                <span class="bg-success color-palette">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
+                                            @if (appointment.Status == "Completed")
+                                            {
+                                                <span class="bg-success">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
                                             else if (appointment.Status == "Cancelled")
                                             {
-                                                <span class="bg-danger color-palette">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
+                                                <span class="bg-danger">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
                                             else if (appointment.Status == "Scheduled" || appointment.Status == "ReScheduled")
                                             {
-                                                <span class="bg-success disabled color-palette">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
+                                                <span class="bg-lightblue">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
-                                            else if (appointment.Status == "InProgress")
+                                            else
                                             {
-                                                <span class="bg-primary color-palette">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
+                                                <span class="bg-yellow">@appointment.AppointmentDate.ToString("yyyy MMMM dd, h:mm:ss tt")</span>
                                             }
-                                    </div>
-                                    <div>
-                                        <i class="fas fa-envelope bg-dark"></i>
-                                        <div class="timeline-item">
-                                            <span class="time"><i class="far fa-clock"></i> 12:05</span>
-                                            <h3 class="timeline-header"><a href="#">Client Name: </a> @appointment.ClientName</h3>
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-arrow-up"></i>
+                                            <div class="timeline-item">
+                                                <span class="time"><i class="fas fa-link"></i><a href="@Url.Action("detail", "Appointment", new { guid = appointment.guid})" class="time-link" target="_blank"> appointment link </a></span>
+                                                <h3 class="timeline-header"><a href="#">Client Name: </a> @appointment.ClientName</h3>
                                                 <div class="timeline-body">
                                                     <table>
                                                         <tbody>
                                                             <tr>
-                                                                <td>Status : </td>
-                                                                <td>@appointment.Status</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Phone Number : </td>
+                                                                <td class="tdHeader">Status:</td>
+                                                                @if (appointment.Status == "Completed")
+                                                                {
+                                                                    <td class="text-success">@appointment.Status</td>
+                                                                }
+                                                                else if (appointment.Status == "Cancelled")
+                                                                {
+                                                                    <td class="text-danger">@appointment.Status</td>
+                                                                }
+                                                                else if (appointment.Status == "Scheduled" || appointment.Status == "ReScheduled")
+                                                                {
+                                                                    <td class="text-lightblue">@appointment.Status</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td class="text-yellow">@appointment.Status</td>
+                                                                }
+
+                                                                <td class="tdHeader">Phone Number:</td>
                                                                 <td>@appointment.ClientPhoneNumber</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Foreigner : </td>
+                                                                <td class="tdHeader">Foreigner:</td>
                                                                 <td>@appointment.IsForeigner</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Tattoo Design : </td>
+
+                                                                <td class="tdHeader">Tattoo Design:</td>
                                                                 <td>@appointment.TattooDesign</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Placement : </td>
+                                                                <td class="tdHeader">Placement:</td>
                                                                 <td>@appointment.Placement</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Ink Color Preference : </td>
+
+                                                                <td class="tdHeader">Ink Color Preference:</td>
                                                                 <td>@appointment.InkColorPreferance</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Total Hours : </td>
+                                                                <td class="tdHeader">Total Hours:</td>
                                                                 <td>@appointment.TotalHours</td>
-                                                            </tr>
-                                                           @*  <tr>
-                                                                <td>Discount in Hour : </td>
-                                                                <td>@appointment.DiscountInHour</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Discount in Amount : </td>
-                                                                <td>@appointment.Discount</td>
+
+                                                                <td class="tdHeader">Discount in Hour:</td>
+                                                                <td>@appointment.Payment.DiscountInHour</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Total Cost Including Deposit : </td>
-                                                                <td>@(appointment.TotalCost + appointment.Deposit)</td>
-                                                            </tr> *@
+                                                                <td class="tdHeader">Discount in Amount:</td>
+                                                                <td>@appointment.Payment.Discount</td>
+
+                                                                <td class="tdHeader">Total Cost Including Deposit:</td>
+                                                                <td>@(appointment.Payment.TotalCost + appointment.Payment.Deposit)</td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
+
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-arrow-down"></i>
                                         </div>
                                     </div>
-                                    <div>
-                                        <i class="far fa-clock bg-gray"></i>
-                                    </div>
-                                </div>
+                                }
                             </div>
-                            }
-                        @if (Model.Appointments.Count == 0)
-                        {
-                            <h4>No Appointments available</h4>
-                        }
-                    </div>
+                            <div class="tab-pane" id="activity">
+                                <p>here goes the activity</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>

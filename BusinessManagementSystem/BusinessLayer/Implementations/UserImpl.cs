@@ -48,13 +48,16 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             try
             {
                 _responseDto = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == id, includeProperties: "Appointments");
-                if(_responseDto.StatusCode== HttpStatusCode.OK)
+                if(_responseDto.StatusCode== HttpStatusCode.OK) 
                 {
-                    var appointMents = _unitOfWork.Appointment.GetAll(p => p.UserId == id, includeProperties: "Payment").Datas;
+                    var appointMents = _unitOfWork.Appointment.GetAll(p => p.UserId == id,
+                        orderBy:p=>p.AppointmentDate,
+                        orderByDescending:true,
+                        includeProperties: "Payment").Datas;
                      UserDetailDto userDetailDto = _mapper.Map<UserDetailDto>(_responseDto.Data);
                     userDetailDto.Appointments = appointMents;
                     _responseUserDetailDto.Data = userDetailDto;
-                    _responseUserDetailDto.StatusCode = HttpStatusCode.OK;
+                    _responseUserDetailDto.StatusCode = HttpStatusCode.OK ;
                 }
                 else
                 {

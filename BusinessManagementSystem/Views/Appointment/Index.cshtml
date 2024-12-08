@@ -43,7 +43,6 @@
     <script>
         var datatable = null;
         $(document).ready(function () {
-            
             loadDataTable();
             $("#btnFilterLoad").on("click", function (e) {
                 e.preventDefault(); // Prevent form submission if the button is inside a form
@@ -140,28 +139,7 @@
                         $(row).css('color', 'red'); // Hghlight row in green 
                     }
                 }
-            });
-
-        }
-        function formatDate(input) {
-            // Parse the input date string
-            const date = new Date(input);
-
-            // Extract parts of the date
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-            const day = String(date.getDate()).padStart(2, '0');
-
-            let hours = date.getHours();
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-
-            // Convert 24-hour time to 12-hour format
-            hours = hours % 12;
-            hours = hours ? hours : 12; // If hour is 0, set it to 12
-
-            // Format the date
-            return `${year}-${month}-${day}(${hours}:${minutes} ${ampm})`;
+            }); 
         }
     </script>
 }

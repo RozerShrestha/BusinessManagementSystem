@@ -11,6 +11,7 @@ namespace BusinessManagementSystem.Dto
         public DateTime EndDate { get; set; }
         [JsonPropertyName("status")]
         public string Status { get; set; }
+        public string ParameterFilter { get; set; }
 
     }
 }

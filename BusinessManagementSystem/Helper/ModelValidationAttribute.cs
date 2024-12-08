@@ -23,6 +23,7 @@ namespace BusinessManagementSystem.Helper
             var instance = validationContext.ObjectInstance;
             var type = instance.GetType();
             var propertyvalue = type.GetProperty(PropertyName).GetValue(instance, null);
+            var mainPropertyvalue=type.GetProperty(validationContext.MemberName).GetValue(instance, null);
             if (propertyvalue.ToString().ToLower() == Value.ToString().ToLower())
             {
                 return new ValidationResult(ErrorMessage); 
@@ -30,20 +31,58 @@ namespace BusinessManagementSystem.Helper
             return ValidationResult.Success;
         }
     }
-    public class RequiredIfHasValueAttribute : ValidationAttribute
+    public class RequiredIfValueMatchAttribute : ValidationAttribute
     {
         public string PropertyName { get; set; }
         public Object Value { get; set; }
 
-        public RequiredIfHasValueAttribute(string propertyName, string errorMessage = "")
+        public RequiredIfValueMatchAttribute(string propertyName, object value, string errorMessage = "")
         {
             PropertyName = propertyName;
+            Value = value;
             ErrorMessage = errorMessage;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var property = validationContext.ObjectType.GetProperty(PropertyName);
+            var instance = validationContext.ObjectInstance;
+            var type = instance.GetType();
+            var propertyvalue = type.GetProperty(PropertyName).GetValue(instance, null);
+            var mainPropertyvalue = type.GetProperty(validationContext.MemberName).GetValue(instance, null);
+            if (propertyvalue.ToString().ToLower() == Value.ToString().ToLower())
+            {
+                if (string.IsNullOrEmpty(mainPropertyvalue.ToString()))
+                {
+                    return new ValidationResult(ErrorMessage);
+                }
+                else
+                {
+                    return ValidationResult.Success;
+                }
+            }
+            else
+            {
+                return ValidationResult.Success;
+            }
+        }
+    }
+    public class RequiredIfHasValueAttribute : ValidationAttribute
+    {
+        public string PropertyToValidate { get; set; }
+        public string PropertyToCompare { get; set; }
+        public Object Value { get; set; }
+
+        public RequiredIfHasValueAttribute(string propertyToValidate, string propertyToCompare, object value, string errorMessage = "")
+        {
+            PropertyToValidate = propertyToValidate;
+            PropertyToCompare = propertyToCompare;
+            Value = value;
+            ErrorMessage = errorMessage;
+        }
+         
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var property = validationContext.ObjectType.GetProperty(PropertyToValidate);
             var dependentValue = property.GetValue(validationContext.ObjectInstance, null);
             if (dependentValue != null && dependentValue as string != string.Empty)
             {
@@ -55,7 +94,6 @@ namespace BusinessManagementSystem.Helper
             return ValidationResult.Success;
         }
     }
-
     public class NotRequiredIfAttribute : ValidationAttribute
     {
         public string PropertyName { get; set; }

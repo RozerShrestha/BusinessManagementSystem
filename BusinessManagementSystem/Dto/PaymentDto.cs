@@ -18,5 +18,6 @@ namespace BusinessManagementSystem.Dto
         public string PaymentMethod { get; set; }
         public bool PaymentSettlement { get; set; }
         public string AppointmentStatus { get; set; }
+        public DateTime PaymentDate { get; set; }
     }
 }

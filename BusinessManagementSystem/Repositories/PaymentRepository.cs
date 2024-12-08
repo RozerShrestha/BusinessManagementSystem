@@ -1,8 +1,10 @@
 ﻿using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using System.Net;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BusinessManagementSystem.Repositories
 {
@@ -13,11 +15,12 @@ namespace BusinessManagementSystem.Repositories
         {
             _responsePaymentDto = new ResponseDto<PaymentDto>();
         }
-        public ResponseDto<PaymentDto> GetAllPayments()
+        public ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto)
         {
-            var paymentDto = (from p in _dbContext.Payments
+            var query = from p in _dbContext.Payments
                               join a in _dbContext.Appointments on p.AppointmentId equals a.Id
                               join u in _dbContext.Users on p.UserId equals u.Id
+                              where p.UpdatedAt>=requestDto.StartDate && p.UpdatedAt<=requestDto.EndDate
                               select new PaymentDto
                               {
                                   PaymentId= p.Id,
@@ -33,8 +36,16 @@ namespace BusinessManagementSystem.Repositories
                                   PaymentToArtist=p.PaymentToArtist,
                                   PaymentMethod=p.PaymentMethod,
                                   PaymentSettlement=p.PaymentSettlement,
-                                  AppointmentStatus = a.Status
-                              }).ToList();
+                                  AppointmentStatus = a.Status,
+                                  PaymentDate=(DateTime)a.UpdatedAt
+                              };
+            if(requestDto.Status!= AppointmentStat.All.ToString())
+            {
+                query = (IQueryable<PaymentDto>)query.Where(k => k.AppointmentStatus == requestDto.Status);
+            }
+            query = query.OrderByDescending(x => x.PaymentDate);
+            var paymentDto = query.ToList();
+
             if (paymentDto.Count > 0) _responsePaymentDto.Datas = paymentDto;
             else
             {
@@ -44,13 +55,12 @@ namespace BusinessManagementSystem.Repositories
             _responsePaymentDto.Datas = paymentDto;
             return _responsePaymentDto;
         }
-
-        public ResponseDto<PaymentDto> GetMyPayments(int userId)
+        public ResponseDto<PaymentDto> GetMyPayments(int userId, RequestDto requestDto)
         {
-            var paymentDto = (from p in _dbContext.Payments
+            var query = from p in _dbContext.Payments
                               join a in _dbContext.Appointments on p.AppointmentId equals a.Id
                               join u in _dbContext.Users on p.UserId equals u.Id
-                              where u.Id==userId
+                              where u.Id==userId && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate
                               select new PaymentDto
                               {
                                   PaymentId = p.Id,
@@ -66,8 +76,15 @@ namespace BusinessManagementSystem.Repositories
                                   PaymentToArtist = p.PaymentToArtist,
                                   PaymentMethod = p.PaymentMethod,
                                   PaymentSettlement = p.PaymentSettlement,
-                                  AppointmentStatus=a.Status
-                              }).ToList();
+                                  AppointmentStatus=a.Status,
+                                  PaymentDate = (DateTime)a.UpdatedAt
+                              };
+            if (requestDto.Status != AppointmentStat.All.ToString())
+            {
+                query = (IQueryable<PaymentDto>)query.Where(k => k.AppointmentStatus == requestDto.Status);
+            }
+            query = query.OrderByDescending(x => x.PaymentDate);
+            var paymentDto = query.ToList();
             if (paymentDto.Count > 0) _responsePaymentDto.Datas = paymentDto;
             else
             {
@@ -77,13 +94,12 @@ namespace BusinessManagementSystem.Repositories
             _responsePaymentDto.Datas = paymentDto;
             return _responsePaymentDto;
         }
-
-        public ResponseDto<PaymentDto> GetMyPayments(Guid guid)
+        public ResponseDto<PaymentDto> GetMyPayments(Guid guid, RequestDto requestDto)
         {
-            var paymentDto = (from p in _dbContext.Payments
+            var query =  from p in _dbContext.Payments
                               join a in _dbContext.Appointments on p.AppointmentId equals a.Id
                               join u in _dbContext.Users on p.UserId equals u.Id
-                              where u.Guid==guid
+                              where u.Guid==guid && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate
                               select new PaymentDto
                               {
                                   PaymentId = p.Id,
@@ -98,8 +114,14 @@ namespace BusinessManagementSystem.Repositories
                                   PaymentToArtist = p.PaymentToArtist,
                                   PaymentMethod = p.PaymentMethod,
                                   PaymentSettlement = p.PaymentSettlement,
-                                  AppointmentStatus = a.Status
-                              }).ToList();
+                                  AppointmentStatus = a.Status,
+                                  PaymentDate = (DateTime)a.UpdatedAt
+                              };
+            if (requestDto.Status == AppointmentStat.All.ToString())
+            {
+                query = (IQueryable<PaymentDto>)query.Where(k => k.AppointmentStatus == requestDto.Status).OrderByDescending(x => x.PaymentDate);
+            }
+            var paymentDto = query.ToList();
             if (paymentDto.Count > 0) _responsePaymentDto.Datas = paymentDto;
             else
             {

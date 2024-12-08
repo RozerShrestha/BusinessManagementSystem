@@ -19,15 +19,15 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = new ResponseDto<Tip>();
             _responseTipDto = new ResponseDto<TipDto>();
         }
-        public ResponseDto<TipDto> GetAllTips()
+        public ResponseDto<TipDto> GetAllTips(RequestDto requestDto)
         {
-            _responseTipDto = _unitOfWork.Tip.GetAllTips();
+            _responseTipDto = _unitOfWork.Tip.GetAllTips(requestDto);
             return _responseTipDto;
         }
 
-        public ResponseDto<TipDto> GetMyTips(int userId)
+        public ResponseDto<TipDto> GetMyTips(int userId, RequestDto requestDto)
         {
-            _responseTipDto = _unitOfWork.Tip.GetMyTips(userId);
+            _responseTipDto = _unitOfWork.Tip.GetMyTips(userId, requestDto);
             return _responseTipDto;
          }
     }

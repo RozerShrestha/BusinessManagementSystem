@@ -46,7 +46,7 @@ namespace BusinessManagementSystem.Dto
         public string PainToleranceLevel { get; set; }
         [DisplayName("Session Number *")]
         public int SessionNumber { get; set; }
-        [RequiredIf("ConsentFormSigned", "False", "Concent Form should be Yes")]
+        [RequiredIf(nameof(ConsentFormSigned), "False", "Concent Form should be Yes")]
         [DisplayName("Consent Form Sign")]
         public bool ConsentFormSigned { get; set; }
         [DisplayName("Followup Required")]
@@ -71,7 +71,7 @@ namespace BusinessManagementSystem.Dto
         [DisplayName("Tips if Available")]
         public double TipAmount { get; set; }
         [DisplayName("Payment Method")]
-        [NotRequiredIf(nameof(Status),"Completed","Payment Method is required")]
-        public string PaymentMethod { get; set; }
+        [RequiredIfValueMatchAttribute(nameof(Status),"Completed","If Status is Completed, PaymentMethod is required")] 
+        public string? PaymentMethod { get; set; }
     }
 }

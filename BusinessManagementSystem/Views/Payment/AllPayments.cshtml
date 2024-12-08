@@ -1,9 +1,13 @@
-﻿
-<div class="row">
+﻿<div class="row">
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header">
-                <h2>All Payments</h2>
+                <div class="card-title">
+                    <h3>All Payments</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <partial name="_DateRangeFilter" />
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -20,6 +24,7 @@
                                 <th>Payment To Artist</th>
                                 <th>Payment Method</th>
                                 <th>Appointment Status</th>
+                                <th>Updated Date</th>
                                 <Th>Payment Settlement</Th>
                                 <th>Action</th>
                             </tr>
@@ -38,36 +43,18 @@
     <script>
         var datatable = null;
         $(document).ready(function () {
-            loadDataTable('Active');
-
-            $('#tblAllPaymentList').on('click', '.delete-item', function (e) {
-                e.preventDefault();
-                const itemId = $(this).data('id');
-                $('#confirmationModalDel').modal('show'); // Show the Bootstrap modal
-                $('#confirmationModalDel').data('item-id', itemId); // Store claim ID in the modal data
-            });
-
-            $('#confirmDelete').on('click', function () {
-
-                const itemId = $('#confirmationModalDel').data('item-id');
-                $('#confirmationModalDel').modal('hide');
-                const table = $('#tblAllPaymentList').DataTable();
-                const $row = $(this).closest('tr');
-                $.ajax({
-                    type: 'GET',
-                    url: `/Payment/Delete?guid=${itemId}`,
-                    contentType: 'application/json',
-                    success: function (response) {
-                        toastr.success('Successfully Deleted');
-                        table.ajax.reload();
-                    },
-                    error: function (error) {
-                        toastr.error("Error Deleting");
-                    }
-                });
+            loadDataTable();
+            $("#btnFilterLoad").on("click", function (e) {
+                e.preventDefault(); // Prevent form submission if the button is inside a form
+                loadDataTable();
             });
         });
-        function loadDataTable(status) {
+        function loadDataTable() {
+            const requestDto = {
+                StartDate: $("#StartDate").val(),
+                EndDate: $("#EndDate").val(),
+                Status: $("#Status").val()
+            };
             if (datatable) {
                 $("#tblAllPaymentList").DataTable().destroy();
             }
@@ -78,54 +65,36 @@
                 },
                 autoWidth: true,
                 lengthMenu: [[25, 50, -1], [25, 50, "All"]],
-                "ajax": {
-                    "url": `/Payment/GetAllPayments`,
-                    "dataSrc": function (data) {
-                        debugger;
-                        // return data.datas.map(function (item) {
-                        //     item.user.roleName=item.roleName
-                        //     return item.user;
-                        return data;
-                        
-                    }
+                ajax: {
+                    url: `/Payment/GetAllPayments`,
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: function () {
+                        return JSON.stringify(requestDto);
+                    },
+                    dataSrc: "" // Optional, if response is an array
                 },
-                "columns": [
+                columns: [
+                    {'data': 'appointmentId'},
+                    {'data': 'artistName'},
+                    {'data': 'deposit'},
+                    {'data': 'discount'},
+                    {'data': 'discountInHour'},
+                    {'data': 'totalCost'},
+                    {'data': 'paymentToStudio'},
+                    {'data': 'paymentToArtist'},
+                    {'data': 'paymentMethod'},
+                    {'data': 'appointmentStatus'},
                     {
-                        "data": "appointmentId",
+                        'data': 'paymentDate',
+                        'render': function (data) {
+                            return formatDate(data);
+                        }
                     },
+                    {'data': 'paymentSettlement'},
                     {
-                        "data": "artistName",
-                    },
-                    {
-                        "data": "deposit",
-                    },
-                    {
-                        "data": "discount",
-                    },
-                    {
-                        "data": "discountInHour",
-                    },
-                    {
-                        "data": "totalCost",
-                    },
-                    {
-                        "data": "paymentToStudio",
-                    },
-                    {
-                        "data": "paymentToArtist",
-                    },
-                    {
-                        "data": "paymentMethod",
-                    },
-                    {
-                        "data": "appointmentStatus",
-                    },
-                    {
-                        "data": "paymentSettlement",
-                    },
-                    {
-                        "data": "appointmentGuid",
-                        "render": function (data) {
+                        'data': 'appointmentGuid',
+                        'render': function (data) {
                             return `
                                     <div>
                                         <a href="/Appointment/detail?guid=${data}"><i class="fas fa-eye"></i></i></a>
@@ -134,38 +103,15 @@
                         }
                     }
                 ],
-                "createdRow": function (row, data, dataIndex) {
-                    if (data.status === "Completed") {
+                'createdRow': function (row, data, dataIndex) {
+                    if (data.status === 'Completed') {
                         $(row).css('color', 'green'); // Hghlight row in green 
                     }
-                    else if(data.status=="Cancelled"){
+                    else if(data.status=='Cancelled'){
                         $(row).css('color', 'red'); // Hghlight row in green 
                     }
                 }
             });
-
         }
-
-        function formatDate(input) {
-            // Parse the input date string
-            const date = new Date(input);
-
-            // Extract parts of the date
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-            const day = String(date.getDate()).padStart(2, '0');
-
-            let hours = date.getHours();
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-
-            // Convert 24-hour time to 12-hour format
-            hours = hours % 12;
-            hours = hours ? hours : 12; // If hour is 0, set it to 12
-
-            // Format the date
-            return `${year}-${month}-${day}(${hours}:${minutes} ${ampm})`;
-        }
-
     </script>
 }

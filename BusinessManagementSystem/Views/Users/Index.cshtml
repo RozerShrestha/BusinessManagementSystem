@@ -115,6 +115,9 @@
                     },
                     {
                         "data": "status",
+                        "render": function (data) {
+                            return data == false ? "In Active" : "Active";
+                        }
                     },
                     {
                         "data": "roleName",
@@ -131,7 +134,12 @@
                                     `
                         }
                     }
-                ]
+                ],
+                "createdRow": function (row, data, dataIndex) {
+                    if (data.status == false) {
+                        $(row).css('color', 'red'); // Hghlight row in green
+                    }
+                }
             });
 
         }

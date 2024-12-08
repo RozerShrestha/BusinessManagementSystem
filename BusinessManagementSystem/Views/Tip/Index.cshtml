@@ -1,8 +1,13 @@
 ﻿<div class="row">
     <div class="col-xl-12">
-        <div class="card">
+        <div class="card card-dark card-outline">
             <div class="card-header">
-                <h2>All Tips Information</h2>
+                <div class="card-title">
+                    <h3>All Tips</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <partial name="_DateRangeFilter" />
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -15,13 +20,17 @@
                                 <th>Tip Amount For Users</th>
                                 <th>TipAssigned To User</th>
                                 <th>Tip Created</th>
-                                <th>Tip Updated</th>
                                 <th>Tip Settlement</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2" style="text-align:right">Total:</th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -35,35 +44,17 @@
         var datatable = null;
         $(document).ready(function () {
             loadDataTable();
-
-            $('#tblTipList').on('click', '.delete-item', function (e) {
-                e.preventDefault();
-                const itemId = $(this).data('id');
-                $('#confirmationModalDel').modal('show'); // Show the Bootstrap modal
-                $('#confirmationModalDel').data('item-id', itemId); // Store claim ID in the modal data
-            });
-
-            $('#confirmDelete').on('click', function () {
-
-                const itemId = $('#confirmationModalDel').data('item-id');
-                $('#confirmationModalDel').modal('hide');
-                const table = $('#tblTipList').DataTable();
-                const $row = $(this).closest('tr');
-                $.ajax({
-                    type: 'GET',
-                    url: `/Tip/Delete?guid=${itemId}`,
-                    contentType: 'application/json',
-                    success: function (response) {
-                        toastr.success('Successfully Deleted');
-                        table.ajax.reload();
-                    },
-                    error: function (error) {
-                        toastr.error("Error Deleting");
-                    }
-                });
+            $("#btnFilterLoad").on("click", function (e) {
+                e.preventDefault(); // Prevent form submission if the button is inside a form
+                loadDataTable();
             });
         });
         function loadDataTable() {
+            const requestDto = {
+                StartDate: $("#StartDate").val(),
+                EndDate: $("#EndDate").val(),
+                Status: $("#Status").val()
+            };
             if (datatable) {
                 $("#tblTipList").DataTable().destroy();
             }
@@ -74,51 +65,29 @@
                 },
                 autoWidth: true,
                 lengthMenu: [[25, 50, -1], [25, 50, "All"]],
-                "ajax": {
-                    "url": `/Tip/GetAllTips`,
-                    "dataSrc": function (data) {
-                        debugger;
-                        // return data.datas.map(function (item) {
-                        //     item.user.roleName=item.roleName
-                        //     return item.user;
-                        return data;
-
-                    }
+               ajax: {
+                    url: '/Tip/GetAllTips',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: function () {
+                        return JSON.stringify(requestDto);
+                    },
+                    dataSrc: '' // Optional, if response is an array
                 },
-                "columns": [
-                    {
-                        "data": "tipId",
-                    },
-                    {
-                        "data": "appointmentId",
-                    },
-                    {
-                        "data": "tipAmount",
-                    },
-                    {
-                        "data": "tipAmountForUsers",
-                    },
-                    {
-                        "data": "tipAssignedToUserFullName",
-                    },
-                    {
-                        "data": "createdAt",
-                        "render": function (data) {
+                columns: [
+                    {'data': 'tipId'},
+                    {'data': 'appointmentId'},
+                    {'data': 'tipAmount'},
+                    {'data': 'tipAmountForUsers'},
+                    {'data': 'tipAssignedToUserFullName'},
+                    {'data': 'createdAt',
+                        'render': function (data) {
                             return formatDate(data);
                         }
                     },
-                    {
-                        "data": "UpdatedAt",
-                        "render": function (data) {
-                            return formatDate(data);
-                        }
-                    },
-                    {
-                        "data": "tipSettlement",
-                    },
-                    {
-                        "data": "appointmentGuid",
-                        "render": function (data) {
+                    {'data': 'tipSettlement'},
+                    {'data': 'appointmentGuid',
+                        'render': function (data) {
                             return `
                                     <div>
                                         <a href="/Appointment/detail?guid=${data}" target = "_blank"><i class="fas fa-eye"></i></i></a>
@@ -128,34 +97,6 @@
                     }
                 ]
             });
-
         }
-
-        function formatDate(input) {
-            if (input != undefined) {
-                // Parse the input date string
-                const date = new Date(input);
-
-                // Extract parts of the date
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-                const day = String(date.getDate()).padStart(2, '0');
-
-                let hours = date.getHours();
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-
-                // Convert 24-hour time to 12-hour format
-                hours = hours % 12;
-                hours = hours ? hours : 12; // If hour is 0, set it to 12
-
-                // Format the date
-                return `${year}-${month}-${day}(${hours}:${minutes} ${ampm})`;
-            }
-            else{
-                return null;
-            }
-        }
-
     </script>
 }

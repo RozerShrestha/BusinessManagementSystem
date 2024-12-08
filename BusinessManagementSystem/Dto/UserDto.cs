@@ -14,6 +14,7 @@ namespace BusinessManagementSystem.Dto
     {
         //[ValidateNever]
         public int UserId { get; set; }
+        public Guid userGuid { get; set; }
         [Required]
         [DisplayName("User Name")]
         public string UserName { get; set; }

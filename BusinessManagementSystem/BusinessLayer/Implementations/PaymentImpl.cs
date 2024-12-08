@@ -20,21 +20,21 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = new ResponseDto<Payment>();
             _responsePaymentDto = new ResponseDto<PaymentDto>();
         }
-        public ResponseDto<PaymentDto> GetAllPayments()
+        public ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto)
         {
-            _responsePaymentDto = _unitOfWork.Payment.GetAllPayments();
+            _responsePaymentDto = _unitOfWork.Payment.GetAllPayments(requestDto);
             return _responsePaymentDto;
         }
 
-        public ResponseDto<PaymentDto> GetMyPayments(int userId)
+        public ResponseDto<PaymentDto> GetMyPayments(int userId, RequestDto requestDto)
         {
-            _responsePaymentDto = _unitOfWork.Payment.GetMyPayments(userId);
+            _responsePaymentDto = _unitOfWork.Payment.GetMyPayments(userId, requestDto);
             return _responsePaymentDto;
         }
 
-        public ResponseDto<PaymentDto> GetMyPayments(Guid guid)
+        public ResponseDto<PaymentDto> GetMyPayments(Guid guid, RequestDto requestDto)
         {
-            _responsePaymentDto = _unitOfWork.Payment.GetMyPayments(guid);
+            _responsePaymentDto = _unitOfWork.Payment.GetMyPayments(guid, requestDto);
             return _responsePaymentDto;
         }
     }

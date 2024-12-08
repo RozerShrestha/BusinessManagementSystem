@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using NuGet.Protocol.Plugins;
+using System;
 using System.Net;
 using System.Text.Encodings.Web;
 
@@ -68,10 +69,12 @@ namespace BusinessManagementSystem.Controllers
         [HttpGet]
         public IActionResult MyProfile()
         {
-            _responseUserDetailDto = _businessLayer.UserService.GetUserDetailDtoById(userId);
-            if (_responseUserDetailDto.StatusCode == HttpStatusCode.OK)
+            //_responseUserDetailDto = _businessLayer.UserService.GetUserDetailDtoById(userId);
+            var item = _businessLayer.UserService.GetUserById(userId);
+            
+            if (item.StatusCode == HttpStatusCode.OK)
             {
-                return View(_responseUserDetailDto.Data);
+                return RedirectToAction("Detail", new { guid = item.Data.Guid });
             }
             else
             {
@@ -134,18 +137,18 @@ namespace BusinessManagementSystem.Controllers
             if (guid==Guid.Empty)return NotFound();
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
             ViewBag.OccupationList = new SelectList(SD.Occupations, "Key", "Value");
-            var _responseDto = _businessLayer.UserService.GetUserByGuid(guid);
-            if (_responseDto == null)
+            _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
+            if (_responseUserDto == null)
              {
                 return NotFound();
             }
-            return View(_responseDto.Data);
+            return View(_responseUserDto.Data);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(UserDto userDto, IFormFile? ProfilePictureLink)
-      {
+        {
             ModelState.Remove(nameof(userDto.Password)); //just to ignore ConfirmPassword to validate
             ModelState.Remove(nameof(userDto.ConfirmPassword)); //just to ignore ConfirmPassword to validate
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
@@ -163,7 +166,7 @@ namespace BusinessManagementSystem.Controllers
                     else
                     {
                         _notyf.Error(_responseDto.Message);
-                        return View(userDto);
+                        return RedirectToAction("Edit", new { guid = _responseDto.Data.Guid });
                     }
                     return RedirectToAction(nameof(Index));
                 }
@@ -174,7 +177,7 @@ namespace BusinessManagementSystem.Controllers
                     {
                         _notyf.Error(error.ErrorMessage);
                     }
-                    return View(userDto);
+                    return RedirectToAction("Edit", new { guid = userDto.userGuid });
                 }
             }
             else
