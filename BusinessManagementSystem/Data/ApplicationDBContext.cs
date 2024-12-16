@@ -101,7 +101,9 @@ namespace BusinessManagementSystem.Data
                         if (entity.State == EntityState.Added)
                         {
                             baseEntity.CreatedAt = now;
+                            baseEntity.UpdatedAt = now;
                             baseEntity.CreatedBy = userName;
+                            baseEntity.UpdatedBy = userName;
                         }
                         else if (entity.State == EntityState.Added || entity.State == EntityState.Modified)
                         {

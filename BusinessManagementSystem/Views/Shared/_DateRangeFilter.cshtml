@@ -1,23 +1,44 @@
 ﻿   @model BusinessManagementSystem.Dto.RequestDto
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label asp-for="StartDate" class="control-label"></label>
         <input asp-for="StartDate" class="form-control" type="date" />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label asp-for="EndDate" class="control-label"></label>
         <input asp-for="EndDate" class="form-control" type="date" />
         <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
-    @if(Model.ParameterFilter!="NoStatus"){
-        <div class="col-md-3">
+    @if (Model.ParameterFilter.Contains("User"))
+    {
+        <div class="col-md-2">
+            <label asp-for="UserId" class="control-label"></label>
+            @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.ArtistList, new { @class = "form-control" })
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+    }
+    @if (Model.ParameterFilter.Contains("Status"))
+    {
+        <div class="col-md-2">
             <label asp-for="Status" class="control-label"></label>
             @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, new { @class = "form-control" })
             <span asp-validation-for="Status" class="text-danger"></span>
         </div>
     }
-    <div class="col-md-3">
+    @if (Model.ParameterFilter.Contains("Settlement"))
+    {
+        <div class="col-md-2">
+            <label asp-for="Settlement" class="control-label"></label>
+            <select asp-for="Settlement" class="form-control">
+                <option value="true">Settlement Done</option>
+                <option value="false" selected>Settlement Pending</option>
+                <option value="ALL" selected>All Settlement</option>
+
+            </select>
+        </div>
+    }
+    <div class="col-md-2">
         <input type="submit" id="btnFilterLoad" value="Load" class="btn btn-success" style="margin-top:30px" />
     </div>
 </div>

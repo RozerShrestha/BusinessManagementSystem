@@ -10,10 +10,17 @@ namespace BusinessManagementSystem.Repositories
 {
     public class PaymentRepository : GenericRepository<Payment>, IPayment
     {
-        public ResponseDto<PaymentDto> _responsePaymentDto;
+        ResponseDto<PaymentDto> _responsePaymentDto;
+        ResponseDto<PaymentSettlementDto> _responsePaymentSettlementDto;
+        ResponseDto<TipSettlementDto> _responseTipSettlementDto;
+        ResponseDto<PaymentTipSettlementDto> _responsePaymentTipSettlementDto;
+
         public PaymentRepository(ApplicationDBContext dbContext) : base(dbContext)
         {
             _responsePaymentDto = new ResponseDto<PaymentDto>();
+            _responsePaymentSettlementDto = new ResponseDto<PaymentSettlementDto>();
+            _responseTipSettlementDto = new ResponseDto<TipSettlementDto>();
+            _responsePaymentTipSettlementDto = new ResponseDto<PaymentTipSettlementDto>();
         }
         public ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto)
         {
@@ -37,9 +44,9 @@ namespace BusinessManagementSystem.Repositories
                                   PaymentMethod=p.PaymentMethod,
                                   PaymentSettlement=p.PaymentSettlement,
                                   AppointmentStatus = a.Status,
-                                  PaymentDate=(DateTime)a.UpdatedAt
+                                  PaymentDate=a.UpdatedAt
                               };
-            if(requestDto.Status!= AppointmentStat.All.ToString())
+            if(requestDto.Status!= AppointmentStat.All.ToString())  
             {
                 query = (IQueryable<PaymentDto>)query.Where(k => k.AppointmentStatus == requestDto.Status);
             }
@@ -96,7 +103,7 @@ namespace BusinessManagementSystem.Repositories
         }
         public ResponseDto<PaymentDto> GetMyPayments(Guid guid, RequestDto requestDto)
         {
-            var query =  from p in _dbContext.Payments
+            var queryPayments =  from p in _dbContext.Payments
                               join a in _dbContext.Appointments on p.AppointmentId equals a.Id
                               join u in _dbContext.Users on p.UserId equals u.Id
                               where u.Guid==guid && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate
@@ -117,11 +124,12 @@ namespace BusinessManagementSystem.Repositories
                                   AppointmentStatus = a.Status,
                                   PaymentDate = (DateTime)a.UpdatedAt
                               };
+
             if (requestDto.Status == AppointmentStat.All.ToString())
             {
-                query = (IQueryable<PaymentDto>)query.Where(k => k.AppointmentStatus == requestDto.Status).OrderByDescending(x => x.PaymentDate);
+                queryPayments = (IQueryable<PaymentDto>)queryPayments.Where(k => k.AppointmentStatus == requestDto.Status).OrderByDescending(x => x.PaymentDate);
             }
-            var paymentDto = query.ToList();
+            var paymentDto = queryPayments.ToList();
             if (paymentDto.Count > 0) _responsePaymentDto.Datas = paymentDto;
             else
             {
@@ -130,6 +138,142 @@ namespace BusinessManagementSystem.Repositories
             }
             _responsePaymentDto.Datas = paymentDto;
             return _responsePaymentDto;
+        }
+        public ResponseDto<PaymentTipSettlementDto> GetPaymentTipSettlement(RequestDto requestDto)
+        {
+            var payS = GetPaymentSettlement(requestDto);
+            var tipS = GetTipSettlement(requestDto);
+            PaymentTipSettlementDto paymentTipSettlementDto = new PaymentTipSettlementDto
+            {
+                PaymentSettlements = payS.Datas,
+                TipSettlements = tipS.Datas,
+                TotalPayments = payS.Datas.Sum(p => p.PaymentToArtist),
+                TotalTips=tipS.Datas.Sum(p=>p.TipAmountForUser),
+                GrandTotal= payS.Datas.Sum(p => p.PaymentToArtist) + tipS.Datas.Sum(p => p.TipAmountForUser)
+            };
+            
+            if (payS.StatusCode != HttpStatusCode.OK)
+            { 
+                _responsePaymentTipSettlementDto.StatusCode = payS.StatusCode;
+                _responsePaymentTipSettlementDto.Message = payS.Message;
+            }
+            if (tipS.StatusCode != HttpStatusCode.OK)
+            {
+                _responsePaymentTipSettlementDto.StatusCode = tipS.StatusCode;
+                _responsePaymentTipSettlementDto.Message += tipS.Message;
+            }
+            _responsePaymentTipSettlementDto.Data = paymentTipSettlementDto;
+            return _responsePaymentTipSettlementDto;
+        }
+        
+        private ResponseDto<PaymentSettlementDto> GetPaymentSettlement(RequestDto requestDto)
+        {
+            try
+            {
+                var queryPayments = from u in _dbContext.Users
+                            join a in _dbContext.Appointments on u.Id equals a.UserId
+                            join p in _dbContext.Payments on a.Id equals p.AppointmentId
+                            select new
+                            {
+                                User = u,
+                                Appointment = a,
+                                Payment = p
+                            };
+
+                // Apply conditions dynamically
+                if (requestDto.StartDate != null)
+                    queryPayments = queryPayments.Where(x => x.Payment.UpdatedAt >= requestDto.StartDate);
+                if (requestDto.EndDate != null)
+                    queryPayments = queryPayments.Where(x => x.Payment.UpdatedAt <= requestDto.EndDate);
+                if (requestDto.UserId > 0)
+                    queryPayments = queryPayments.Where(x => x.User.Id == requestDto.UserId);
+                if (requestDto.Status!="All")
+                    queryPayments = queryPayments.Where(x => x.Appointment.Status == requestDto.Status);
+                if (requestDto.Settlement!= "ALL")
+                    queryPayments = queryPayments.Where(x => x.Payment.PaymentSettlement == bool.Parse(requestDto.Settlement));
+
+                // Project the result
+                var paymentItems = queryPayments
+                    .Select(x => new PaymentSettlementDto
+                    {
+                        UserId = x.User.Id,
+                        AppointmentId = x.Appointment.Id,
+                        PaymentId=x.Payment.Id,
+                        ArtistName = x.User.FullName,
+                        AppointmentDate = x.Appointment.AppointmentDate,
+                        PaymentUpdatedDate=x.Payment.UpdatedAt,
+                        ClientName = x.Appointment.ClientName,
+                        TotalCost = x.Payment.TotalCost,
+                        PaymentToStudio = x.Payment.PaymentToStudio,
+                        PaymentToArtist = x.Payment.PaymentToArtist,
+                        PaymentMethod = x.Payment.PaymentMethod,
+                        Status = x.Appointment.Status,
+                        PaymentSettlement = x.Payment.PaymentSettlement
+                    })
+                    .OrderByDescending(x => x.AppointmentDate)
+                    .ToList();
+                
+                    _responsePaymentSettlementDto.Datas = paymentItems;
+            }
+            catch (Exception ex)
+            {
+                _responsePaymentSettlementDto.StatusCode = HttpStatusCode.NotFound;
+                _responsePaymentSettlementDto.Message = ex.Message;
+            }
+            return _responsePaymentSettlementDto;
+        }
+        private ResponseDto<TipSettlementDto> GetTipSettlement(RequestDto requestDto)
+        {
+            try
+            {
+                var queryTips = from u in _dbContext.Users
+                                join a in _dbContext.Appointments on u.Id equals a.UserId
+                                join t in _dbContext.Tips on a.Id equals t.AppointmentId
+                                select new
+                                {
+                                    User = u,
+                                    Appointment = a,
+                                    Tip = t
+                                };
+
+                // Apply conditions dynamically
+                if (requestDto.StartDate != null)
+                    queryTips = queryTips.Where(x => x.Tip.CreatedAt >= requestDto.StartDate);
+                if (requestDto.EndDate != null)
+                    queryTips = queryTips.Where(x => x.Tip.CreatedAt <= requestDto.EndDate);
+                if (requestDto.UserId > 0)
+                    queryTips = queryTips.Where(x => x.Tip.TipAssignedToUser == requestDto.UserId);
+                if (requestDto.Status!="All")
+                    queryTips = queryTips.Where(x => x.Appointment.Status == requestDto.Status);
+                if (requestDto.Settlement!= "ALL")
+                    queryTips = queryTips.Where(x => x.Tip.TipSettlement == bool.Parse(requestDto.Settlement));
+
+                // Project the result
+                var tipItems = queryTips
+                    .Select(x => new TipSettlementDto
+                    {
+                        UserId = x.User.Id,
+                        AppointmentId = x.Appointment.Id,
+                        TipId=x.Tip.Id,
+                        AppointmentDate = x.Appointment.AppointmentDate,
+                        TipCreatedDate=x.Tip.CreatedAt,
+                        ClientName = x.Appointment.ClientName,
+                        ArtistName = x.User.FullName,
+                        TipAmount=x.Tip.TipAmount,
+                        TipAmountForUser=x.Tip.TipAmountForUsers,
+                        TipSettlement=x.Tip.TipSettlement,
+                        Status = x.Appointment.Status,
+                    })
+                    .OrderByDescending(x => x.AppointmentDate)
+                    .ToList();
+                    _responseTipSettlementDto.Datas = tipItems;
+            }
+            catch (Exception ex)
+            {
+                _responseTipSettlementDto.StatusCode = HttpStatusCode.NotFound;
+                _responseTipSettlementDto.Message = ex.Message;
+            }
+            return _responseTipSettlementDto;
         }
     }
 }

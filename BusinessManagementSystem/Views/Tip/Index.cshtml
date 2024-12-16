@@ -24,11 +24,13 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+
                         <tfoot>
                             <tr>
                                 <th colspan="2" style="text-align:right">Total:</th>
+                                <th></th>
+                                <th></th>
+                                <th colspan="4"></th>
                             </tr>
                         </tfoot>
                     </table>
@@ -59,6 +61,37 @@
                 $("#tblTipList").DataTable().destroy();
             }
             datatable = $("#tblTipList").DataTable({
+                footerCallback: function (row, data, start, end, display) {
+                    var api = this.api();
+
+                    // Helper function to parse numbers safely
+                    var intVal = function (i) {
+                        return typeof i === 'string'
+                            ? i.replace(/[\$,]/g, '') * 1
+                            : typeof i === 'number'
+                                ? i
+                                : 0;
+                    };
+
+                    // Calculate the total for filtered rows (visible rows after search)
+                    var totalTipAmount = api
+                        .column(2, { search: 'applied' }) // Target the 4th column
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                    var totalTipAmountForUser = api
+                        .column(3, { search: 'applied' }) // Target the 4th column
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                    
+
+                    // Update the footer
+                    $(api.column(2).footer()).html(totalTipAmount);
+                    $(api.column(3).footer()).html(totalTipAmountForUser);
+                },
                 fixHeader: {
                     header: true,
                     headerOffset: 50

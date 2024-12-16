@@ -1,4 +1,5 @@
 ﻿using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Models;
 
 namespace BusinessManagementSystem.BusinessLayer.Services
 {
@@ -7,5 +8,8 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(int userId, RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(Guid guid, RequestDto requestDto);
+        ResponseDto<PaymentTipSettlementDto> GetPaymentTipSettlement(RequestDto requestDto);
+        bool UpdatePaymentTipSettlement(PaymentTipSettlementDto paymentTipSettlementDto);
+
     }
 }

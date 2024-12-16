@@ -178,7 +178,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                         appointment.Tips = CreateTip(appointmentDto);
                     }
                 }
-                _responseDto = _unitOfWork.Appointment.Insert(appointment);
+                 _responseDto = _unitOfWork.Appointment.Insert(appointment);
                 return _responseDto;
             }
             catch (Exception ex)
@@ -296,10 +296,19 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         private List<Tip> CreateTip(AppointmentDto appointmentDto)
         {
             List<Tip> tipList = new List<Tip>();
+            var appointmentCreated = _unitOfWork.Users.GetById(appointmentDto.AppointmentCreatedId).Data;
             var tipUsers = _unitOfWork.Users.GetAll(p => p.DefaultTips == true).Datas;
+
+            //to remove either of one tattoo admin
+            tipUsers.RemoveAll(p => p.Id != appointmentCreated.Id && p.Occupation != Occupation.Manager.ToString());
+
+            //to add that artist who did the tattoo
             var tipArtistAssigned = _unitOfWork.Users.GetById(appointmentDto.UserId).Data;
-            tipUsers.Add(tipArtistAssigned);
-             
+            if (!tipUsers.Any(p => p.UserName == tipArtistAssigned.UserName))
+            {
+                tipUsers.Add(tipArtistAssigned);
+            }
+            //
             int tipToDivideNumber=tipUsers.Count();
             var tipAmount = appointmentDto.TipAmount;
             var tipAmountForUsers = tipAmount / tipToDivideNumber;

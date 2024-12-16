@@ -8,6 +8,7 @@ namespace BusinessManagementSystem.Services
         ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(int userId, RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(Guid guid, RequestDto requestDto);
-
+        ResponseDto<PaymentTipSettlementDto> GetPaymentTipSettlement(RequestDto requestDto);
+        //ResponseDto<PaymentTipSettlementDto> UpdatePaymentTipSettlement(PaymentTipSettlementDto paymentTipSettlementDto);
     }
 }

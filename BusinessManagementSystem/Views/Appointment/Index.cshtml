@@ -64,11 +64,17 @@
                     url: `/Appointment/Delete?guid=${itemId}`,
                     contentType: 'application/json',
                     success: function (response) {
-                        toastr.success('Successfully Deleted');
+                        if (response.statusCode == 200) {
+                            toastr.success('Successfully Deleted');
+                        }
+                        else{
+                            toastr.error(response.message);
+                        }
+                        
                         table.ajax.reload();
                     },
                     error: function (error) {
-                        toastr.error("Error Deleting");
+                        toastr.error("Error Deleting due to:"+ error);
                     }
                 });
             });

@@ -31,7 +31,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Index()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
-            requestDto.ParameterFilter = "NoStatus"; 
+            requestDto.ParameterFilter = "Status"; 
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto);
@@ -39,7 +39,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult MyTips()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
-            requestDto.ParameterFilter = "NoStatus";
+            requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto);

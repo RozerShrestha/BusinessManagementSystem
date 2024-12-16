@@ -8,16 +8,16 @@ namespace BusinessManagementSystem.Dto
         public int AppointmentId { get; set; }
         public Guid AppointmentGuid { get; set; }
         public int UserId { get; set; }
-        public string ArtistName { get; set; }
+        public string? ArtistName { get; set; }
         public double Deposit { get; set; }
-        public double Discount { get; set; }
+        public double Discount { get; set; } 
         public double DiscountInHour { get; set; }
         public double TotalCost { get; set; }
         public double PaymentToStudio { get; set; }
         public double PaymentToArtist { get; set; }
-        public string PaymentMethod { get; set; }
+        public string? PaymentMethod { get; set; }
         public bool PaymentSettlement { get; set; }
-        public string AppointmentStatus { get; set; }
-        public DateTime PaymentDate { get; set; }
+        public string? AppointmentStatus { get; set; }
+        public DateTime? PaymentDate { get; set; }
     }
 }

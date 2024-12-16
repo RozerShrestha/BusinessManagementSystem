@@ -42,6 +42,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Index()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto);
@@ -51,6 +52,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult MyAppointments()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto);
@@ -68,7 +70,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Create()
         {
             ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
@@ -80,7 +82,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Create(AppointmentDto appointmentDto)
         {
             var js = JsonConvert.SerializeObject(appointmentDto);
@@ -114,7 +116,7 @@ namespace BusinessManagementSystem.Controllers
             }
         }
 
-        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Edit(Guid guid)
         {
             if (guid == Guid.Empty)return NotFound();
@@ -147,9 +149,10 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Edit(AppointmentDto appointmentDto)
         {
+            appointmentDto.AppointmentCreatedId = userId;
             if (roleName == SD.Role_Superadmin || roleName==SD.Role_TattooAdmin || userId == appointmentDto.UserId)
             {
                 ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
@@ -206,16 +209,16 @@ namespace BusinessManagementSystem.Controllers
                 _responseDto = _businessLayer.AppointmentService.DeleteAppointmentByGuid(item.Data.guid);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
-                    return Ok();
+                    return Ok(_responseDto);
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest(_responseDto);
                 }
             }
             else
             {
-                return BadRequest();
+                return BadRequest(_responseDto);
             }
         }
 

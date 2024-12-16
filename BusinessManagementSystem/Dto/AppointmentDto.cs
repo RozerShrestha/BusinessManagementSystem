@@ -73,5 +73,6 @@ namespace BusinessManagementSystem.Dto
         [DisplayName("Payment Method")]
         [RequiredIfValueMatchAttribute(nameof(Status),"Completed","If Status is Completed, PaymentMethod is required")] 
         public string? PaymentMethod { get; set; }
+        public int AppointmentCreatedId { get; set; }
     }
 }
