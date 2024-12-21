@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241115191515_If Any migration left")]
-    partial class IfAnymigrationleft
+    [Migration("20241221184317_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,15 +61,6 @@ namespace BusinessManagementSystem.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Deposit")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
-
-                    b.Property<double>("DiscountInHour")
-                        .HasColumnType("float");
-
                     b.Property<bool>("FollowUpRequired")
                         .HasColumnType("bit");
 
@@ -102,12 +93,6 @@ namespace BusinessManagementSystem.Migrations
 
                     b.Property<string>("TattooDesign")
                         .HasColumnType("varchar(500)");
-
-                    b.Property<double?>("TipAmount")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TotalCost")
-                        .HasColumnType("float");
 
                     b.Property<double>("TotalHours")
                         .HasColumnType("float");
@@ -264,6 +249,67 @@ namespace BusinessManagementSystem.Migrations
                     b.ToTable("MenuRoles");
                 });
 
+            modelBuilder.Entity("BusinessManagementSystem.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Deposit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("DiscountInHour")
+                        .HasColumnType("float");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PaymentSettlement")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("PaymentToArtist")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PaymentToStudio")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TipAmount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TotalCost")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
+                });
+
             modelBuilder.Entity("BusinessManagementSystem.Models.Referal", b =>
                 {
                     b.Property<int>("Id")
@@ -356,6 +402,9 @@ namespace BusinessManagementSystem.Migrations
 
                     b.Property<int>("TipAssignedToUser")
                         .HasColumnType("int");
+
+                    b.Property<bool>("TipSettlement")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -534,6 +583,17 @@ namespace BusinessManagementSystem.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("BusinessManagementSystem.Models.Payment", b =>
+                {
+                    b.HasOne("BusinessManagementSystem.Models.Appointment", "Appointment")
+                        .WithOne("Payment")
+                        .HasForeignKey("BusinessManagementSystem.Models.Payment", "AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+                });
+
             modelBuilder.Entity("BusinessManagementSystem.Models.Tip", b =>
                 {
                     b.HasOne("BusinessManagementSystem.Models.Appointment", "Appointment")
@@ -566,6 +626,9 @@ namespace BusinessManagementSystem.Migrations
 
             modelBuilder.Entity("BusinessManagementSystem.Models.Appointment", b =>
                 {
+                    b.Navigation("Payment")
+                        .IsRequired();
+
                     b.Navigation("Tips");
                 });
 

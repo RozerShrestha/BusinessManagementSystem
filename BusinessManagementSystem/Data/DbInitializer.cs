@@ -68,7 +68,8 @@ namespace BusinessManagementSystem.Data
                     Occupation = "Chief Operating Officer",
                     CreatedBy = "System",
                     UpdatedBy = "System",
-                    DefaultTips=false
+                    DefaultTips=false,
+                    Status=true
                 };
 
                 ur.User = u;
@@ -104,22 +105,28 @@ namespace BusinessManagementSystem.Data
             var isMenuCreated = _db.Menus.Any();
             if (!isMenuCreated)
             {
-                //List<Menu> menus =
-                //[
-                //new Menu {  Parent = 0,     Name = "Configurations",          Url = "#",                    Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "fas fa-cogs" },
-                //new Menu {  Parent = 1,     Name = "Basic Configuration",     Url = "/BasicConfiguration",  Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-gear" },
-                //new Menu {  Parent = 1,     Name = "Menu",                    Url = "/Menu",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon = "bi bi-menu-app" }
-                //];
+                List<Menu> menus = new List<Menu>
+                    {
+                        new Menu { Parent = 0, Name = "Configurations", Url = "#", Sort = 1, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fas fa-cogs" },
+                        new Menu { Parent = 1, Name = "Basic Configuration", Url = "/BasicConfiguration", Sort = 1, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "bi bi-gear" },
+                        new Menu { Parent = 1, Name = "Menu", Url = "/Menu", Sort = 2, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "bi bi-menu-app" },
+                        new Menu { Parent = 1, Name = "Role", Url = "/Role/Index", Sort = 3, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 0, Name = "Users", Url = "#", Sort = 2, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fas fa-user-friends" },
+                        new Menu { Parent = 5, Name = "Create User", Url = "/Users/Create", Sort = 2, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 5, Name = "All Users", Url = "/Users/Index", Sort = 1, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 5, Name = "My Profile", Url = "/Users/MyProfile", Sort = 3, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 0, Name = "Payment", Url = "#", Sort = 4, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fas fa-rupee-sign" },
+                        new Menu { Parent = 9, Name = "All Payments", Url = "/Payment/AllPayments", Sort = 1, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 9, Name = "My Payments", Url = "/Payment/MyPayments", Sort = 2, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 9, Name = "All Tips", Url = "/Tip/Index", Sort = 3, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 9, Name = "My Tips", Url = "/Tip/MyTips", Sort = 4, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 9, Name = "Payment Settlement", Url = "/Payment/PaymentSettlement", Sort = 5, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 0, Name = "Appointment", Url = "#", Sort = 3, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fas fa-calendar-check" },
+                        new Menu { Parent = 15, Name = "All Appointments", Url = "/Appointment", Sort = 1, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 15, Name = "Create Appointment", Url = "/Appointment/Create", Sort = 2, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" },
+                        new Menu { Parent = 15, Name = "My Appointments", Url = "/Appointment/MyAppointments", Sort = 3, Status = true, CreatedBy = "System", UpdatedBy = "System", Icon = "fa" }
+                    };
 
-                List<Menu> menus = [
-                    new Menu { Parent = 0,     Name ="Configurations",          Url ="#",                    Sort = 1, Status = true,   CreatedBy="NULL", UpdatedBy="NULL",     Icon ="fas fa-cogs"},
-                    new Menu { Parent = 1,     Name ="Basic Configuration",     Url ="/BasicConfiguration",  Sort = 1, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon ="bi bi-gear"},
-                    new Menu { Parent = 1,     Name ="Menu",                    Url ="/Menu",               Sort = 2, Status = true,   CreatedBy="System", UpdatedBy="System",     Icon ="bi bi-menu-app"},
-                    new Menu { Parent = 0,     Name ="Users",                   Url ="#",                    Sort = 2, Status = true,   CreatedBy="NULL", UpdatedBy="NULL",     Icon ="fa"},
-                    new Menu { Parent = 1002,  Name ="Create User",             Url ="/Users/Create", Sort = 1, Status = true, CreatedBy="rozer.shrestha", UpdatedBy="rozer.shrestha", Icon ="fa"},
-                    new Menu { Parent = 1002, Name ="All Users", Url ="/Users/Index", Sort = 2, Status = true, CreatedBy="rozer.shrestha", UpdatedBy="rozer.shrestha", Icon ="fa"},
-                    new Menu { Parent = 1002, Name ="My Profile", Url ="/Users/Detail", Sort = 3, Status = true, CreatedBy="rozer.shrestha", UpdatedBy="rozer.shrestha", Icon ="fa"}
-                ];
 
 
                 var roles = _db.Roles.ToList();
