@@ -51,12 +51,7 @@
                             <option value="false">No</option>
                         </select>
                     </div>
-                    <div class="col-md-4">
-                        <label asp-for="Status" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, "--Select--", new { @class = "form-control" })
-                        <span asp-validation-for="Status" class="text-danger"></span>
-                    </div>
-
+                   
                 </div>
 
             </div>
@@ -164,6 +159,12 @@
                         @Html.DropDownListFor(model => model.PaymentMethod, (SelectList)ViewBag.PaymentMethod, "--Select--", new { @class = "form-control" })
                         <span asp-validation-for="PaymentMethod" class="text-danger"></span>
                     </div>
+                    <div class="col-md-4">
+                        <label asp-for="Status" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, "--Select--", new { @class = "form-control" })
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+
                     <div class="col-md-12">
                         <input type="button" value="Calculate Total Cost" class="btn btn-info my-button calculateTotalCost" />
                     </div>

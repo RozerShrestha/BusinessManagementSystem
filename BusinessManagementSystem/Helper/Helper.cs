@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using OfficeOpenXml;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace BusinessManagementSystem.Helper
 {
@@ -79,7 +80,6 @@ namespace BusinessManagementSystem.Helper
             string fileName = "";
             string returnString="";
             var extension = Path.GetExtension(file.FileName);
-
             if (documentType == "ProfilePicture")
             {
                 fileName =file.FileName;
@@ -123,16 +123,25 @@ namespace BusinessManagementSystem.Helper
             }
             return returnString;
         }
-        public static bool ValidateDocumentUpload(IFormFile file)
+        public static string ValidateDocumentUpload(IFormFile file)
         {
-            if (file == null)
-                return true;
+            string message = string.Empty;
+            if (file == null) //file can be empty as well so.
+                message= string.Empty;
             else
             {
-                string[] validExcel = { ".pdf",".jpeg",".jpg",".png" };
-                var extension = Path.GetExtension(file.FileName);
-                return validExcel.Contains(extension);
+                var fileSizeInKb = file.Length / 1024;
+                if (fileSizeInKb >= 1024)
+                    message = "Please Upload the picture of size less than 1 MB";
+                else
+                {
+                    string[] validExcel = { ".jpeg", ".jpg", ".png" };
+                    var extension = Path.GetExtension(file.FileName);
+                    if (!validExcel.Contains(extension))
+                        message = "File extenstion invalid, please upload only jpeg, jpg and png format";
+                }
             }
+            return message;
         }
         public static MemoryStream DownloadExcelIntoDifferentSheet(List<string[]> batchForPrint, List<string[]> batchAll)
         {

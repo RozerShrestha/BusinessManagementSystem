@@ -89,9 +89,12 @@
                         </table>
                     </div>
                 </div>
-                <div class="row">
-                    <input type="submit" id="btnInitiatePayment" value="Initiate Payment" class="btn btn-success" style="margin-top:30px" />
-                </div>
+                @if (User.IsInRole("superadmin"))
+                {
+                    <div class="row">
+                        <input type="submit" id="btnInitiatePayment" value="Initiate Payment" class="btn btn-success" style="margin-top:30px" />
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -261,6 +264,8 @@
             });
         }
         function updatePaymentTipSettlementInfo(){
+            // let startDate = $("#StartDate").val();
+            // let endDate = $("#EndDate").val();
             $.ajax({
                 url: `/Payment/UpdatePaymentTipSettlementData`,
                 type: 'POST',

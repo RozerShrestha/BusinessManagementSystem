@@ -300,7 +300,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var tipUsers = _unitOfWork.Users.GetAll(p => p.DefaultTips == true).Datas;
 
             //to remove either of one tattoo admin
-            tipUsers.RemoveAll(p => p.Id != appointmentCreated.Id && p.Occupation != Occupation.Manager.ToString());
+            tipUsers.RemoveAll(p => p.Id != appointmentCreated.Id && !p.PhoneNumber.Contains("9851217750"));
 
             //to add that artist who did the tattoo
             var tipArtistAssigned = _unitOfWork.Users.GetById(appointmentDto.UserId).Data;

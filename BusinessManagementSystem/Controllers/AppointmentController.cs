@@ -29,7 +29,6 @@ namespace BusinessManagementSystem.Controllers
         private readonly dynamic referalList;
         public AppointmentController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<AppointmentController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
-
             _responseDto = new ResponseDto<Appointment>();
             _responseAppointmentDto = new ResponseDto<AppointmentDto>();
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Appointment?", "");

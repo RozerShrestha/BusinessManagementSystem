@@ -94,7 +94,7 @@ namespace BusinessManagementSystem.Repositories
         }
         public dynamic ArtistList()
         {
-            var artistList = _dbContext.Users.Where(p=>p.Occupation.Equals(Occupation.TattooArtist.ToString()) && p.Status==true).Select(p => new { Id = p.Id, Name = p.FullName }).ToList().OrderBy(x=>x.Name);
+            var artistList = _dbContext.Users.Where(p=>p.Occupation.Equals("Tattoo Artist") && p.Status==true).Select(p => new { Id = p.Id, Name = p.FullName }).ToList().OrderBy(x=>x.Name);
             return artistList;
         }
     }

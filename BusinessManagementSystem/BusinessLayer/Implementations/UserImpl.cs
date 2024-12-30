@@ -108,7 +108,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 User u = new User();
                 u = _mapper.Map<User>(userDto);
                 u.HashPassword = hashInfo.Hash;
-                u.Occupation = SD.Occupations.FirstOrDefault(x => x.Value == userDto.Occupation).Key;
+                u.Occupation = SD.Occupations.FirstOrDefault(x => x.Value == userDto.Occupation).Value;
                 u.Status = true;
                 u.Salt = hashInfo.Salt;
                 u.FirstPasswordReset = false;

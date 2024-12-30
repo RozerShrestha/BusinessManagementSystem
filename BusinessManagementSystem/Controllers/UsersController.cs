@@ -99,10 +99,11 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
 
             //validating document upload
-            if (!Helpers.ValidateDocumentUpload(ProfilePictureLink))
+            if (Helpers.ValidateDocumentUpload(ProfilePictureLink)!=string.Empty)
             {
-                _notyf.Warning("Profile Picture Upload Error: Valid files are of extension pdf or jpg or jpeg");
-                return BadRequest("Error saving Profile Picture. Please check valid extensions(pdf,jpeg,jpg,png)");
+                string message = Helpers.ValidateDocumentUpload(ProfilePictureLink);
+                _notyf.Warning(message);
+                return BadRequest(message);
             }
 
 
@@ -132,11 +133,12 @@ namespace BusinessManagementSystem.Controllers
             }
         }
 
+        [Authorize(Roles = "superadmin")]
         public IActionResult Edit(Guid guid)
         {
             if (guid==Guid.Empty)return NotFound();
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
-            ViewBag.OccupationList = new SelectList(SD.Occupations, "Key", "Value");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
             _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
             if (_responseUserDto == null)
              {
@@ -152,9 +154,17 @@ namespace BusinessManagementSystem.Controllers
             ModelState.Remove(nameof(userDto.Password)); //just to ignore ConfirmPassword to validate
             ModelState.Remove(nameof(userDto.ConfirmPassword)); //just to ignore ConfirmPassword to validate
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
-            ViewBag.OccupationList = new SelectList(SD.Occupations, "Key", "Value");
+            ViewBag.OccupationList = new SelectList(SD.Occupations, "Value", "Value");
             if(roleName==SD.Role_Superadmin || userId== userDto.UserId)
             {
+                //validating document upload
+                if (Helpers.ValidateDocumentUpload(ProfilePictureLink) != string.Empty)
+                {
+                    string message = Helpers.ValidateDocumentUpload(ProfilePictureLink);
+                    _notyf.Warning(message);
+                    return BadRequest(message);
+                }
+
                 if (ModelState.IsValid)
                 {
                     userDto.ProfilePictureLink = ProfilePictureLink == null ? string.Empty : Helpers.DocUpload(ProfilePictureLink, "ProfilePicture", username);
@@ -193,8 +203,8 @@ namespace BusinessManagementSystem.Controllers
             return View();
         }
 
-        [Authorize(Roles = "superadmin")]
         [HttpGet]
+        [Authorize(Roles = "superadmin")]
         public IActionResult Delete(Guid guid)
         {
             if (guid == Guid.Empty)
@@ -248,11 +258,9 @@ namespace BusinessManagementSystem.Controllers
         }
 
        
-
         #region API CALLS
 
         [HttpGet]
- 
         public IActionResult GetAllUser()
         {
             string who = roleName;

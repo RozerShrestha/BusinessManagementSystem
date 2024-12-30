@@ -21,7 +21,6 @@ namespace BusinessManagementSystem.Controllers
         private ResponseDto<Role> _responseDto;
         private ILogger<RoleController> _logger;
         public  ModalView _modalView;
-
         public RoleController(IWebHostEnvironment env, IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<RoleController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _env = env;

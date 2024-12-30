@@ -4,6 +4,8 @@ using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop;
+using System;
 
 namespace BusinessManagementSystem.Data
 {
@@ -46,6 +48,21 @@ namespace BusinessManagementSystem.Data
                 ];
                 _db.AddRange(roles);
                 _db.SaveChanges();
+            }
+
+            var isReferalExist = _db.Referals.Any();
+            if (!isReferalExist)
+            {
+                Referal referal = new Referal
+                {
+                    FullName = "No Referal",
+                    ReferalAppointDate = DateOnly.FromDateTime(DateTime.Now),
+                    Commission = 10,
+                    Status = true,
+                };
+                _db.Add(referal);
+                _db.SaveChanges();
+                
             }
 
             //create user if not created

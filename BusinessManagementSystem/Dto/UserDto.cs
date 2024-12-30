@@ -66,7 +66,7 @@ namespace BusinessManagementSystem.Dto
 
         public string? Notes { get; set; }
         [Required]
-        [NotRequiredIf("Occupation", "TattooArtist", "Percentage field should not be Empty if Occupation is TattooArtist")]
+        [RequiredIfValueMatchAttribute(nameof(Occupation), "Tattoo Artist", "Percentage field is required, if Occupation is Tattoo Artist")]
         public int? Percentage { get; set; }
         [DisplayName("Default Tips")]
         public bool DefaultTips { get; set; }

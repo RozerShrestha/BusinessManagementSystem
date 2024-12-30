@@ -12,12 +12,10 @@ namespace BusinessManagementSystem.Repositories
     public class TipRepository : GenericRepository<Tip>, ITip
     {
         public ResponseDto<TipDto> _responseTipDto;
-
         public TipRepository(ApplicationDBContext dbContext) : base(dbContext)
         {
             _responseTipDto = new ResponseDto<TipDto>();
         }
-
         public ResponseDto<TipDto> GetAllTips(RequestDto requestDto)
         {
             var query = (from t in _dbContext.Tips
@@ -50,7 +48,6 @@ namespace BusinessManagementSystem.Repositories
             return _responseTipDto;
                              
         }
-
         public ResponseDto<TipDto> GetMyTips(int userId, RequestDto requestDto)
         {
             var query = (from t in _dbContext.Tips

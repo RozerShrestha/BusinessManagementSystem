@@ -45,7 +45,6 @@ namespace BusinessManagementSystem.Repositories
                 }).OrderBy(m => m.Sort).ToList();
             return menuFilter;
         }
-
         public UserDto UserDetail(string userName)
         {
             try
@@ -79,7 +78,6 @@ namespace BusinessManagementSystem.Repositories
             }
             return userDto;
         }
-
         public dynamic RoleList()
         {
             var roleLIst = _db.Roles.Select(p => new { Id = p.Id, Name = p.Name }).ToList();

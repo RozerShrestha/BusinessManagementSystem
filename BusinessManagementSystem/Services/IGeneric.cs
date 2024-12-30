@@ -11,6 +11,7 @@ namespace BusinessManagementSystem.Services
         public ResponseDto<T> GetById(int id);
         public ResponseDto<T> Insert(T Entity);
         public ResponseDto<T> Update(T Entity);
+        public ResponseDto<T> UpdateAll(List<T> entities);
         public ResponseDto<T> Delete(T entity);
         public ResponseDto<T> DeleteRange(IEnumerable<T> entities);
     }

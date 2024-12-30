@@ -9,6 +9,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<PaymentDto> GetMyPayments(int userId, RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(Guid guid, RequestDto requestDto);
         ResponseDto<PaymentTipSettlementDto> GetPaymentTipSettlement(RequestDto requestDto);
+        ResponseDto<PaymentHistory> GetPaymentHistory(RequestDto requestDto);
         bool UpdatePaymentTipSettlement(PaymentTipSettlementDto paymentTipSettlementDto);
 
     }

@@ -200,6 +200,26 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
+        public ResponseDto<T> UpdateAll(List<T> entities) 
+        {
+            try
+            {
+                _dbContext.Database.BeginTransaction();
+                _dbSet.UpdateRange(entities);
+                _dbContext.SaveChanges();
+                _dbContext.Database.CommitTransaction();
+                _responseDto.StatusCode = HttpStatusCode.OK;
+                _responseDto.Datas = entities;
+            }
+            catch (Exception ex)
+            {
+                _dbContext.Database.RollbackTransaction();
+                _responseDto.Message = "Failed due to: " + ex.Message;
+                _responseDto.StatusCode = HttpStatusCode.InternalServerError;
+                _responseDto.Datas = entities;
+            }
+            return _responseDto;
+        }
         public  ResponseDto<T> Delete(T entity)
         {
             try

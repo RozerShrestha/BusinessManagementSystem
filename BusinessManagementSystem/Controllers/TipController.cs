@@ -28,6 +28,7 @@ namespace BusinessManagementSystem.Controllers
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Tip?", "");
             _logger = logger;
         }
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Index()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
@@ -36,6 +37,7 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto);
         }
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyTips()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
@@ -46,6 +48,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         #region API
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult GetAllTips([FromBody] RequestDto requestDto)
         {
             _responseTipDto = _businessLayer.TipService.GetAllTips(requestDto);
@@ -54,7 +57,7 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest();
         }
 
-        
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult GetMyTips([FromBody] RequestDto requestDto)
         {
             _responseTipDto = _businessLayer.TipService.GetMyTips(userId, requestDto);

@@ -14,6 +14,7 @@ namespace BusinessManagementSystem.Repositories
         ResponseDto<PaymentSettlementDto> _responsePaymentSettlementDto;
         ResponseDto<TipSettlementDto> _responseTipSettlementDto;
         ResponseDto<PaymentTipSettlementDto> _responsePaymentTipSettlementDto;
+        ResponseDto<PaymentHistory> _responsePaymentHistory;
 
         public PaymentRepository(ApplicationDBContext dbContext) : base(dbContext)
         {
@@ -21,6 +22,7 @@ namespace BusinessManagementSystem.Repositories
             _responsePaymentSettlementDto = new ResponseDto<PaymentSettlementDto>();
             _responseTipSettlementDto = new ResponseDto<TipSettlementDto>();
             _responsePaymentTipSettlementDto = new ResponseDto<PaymentTipSettlementDto>();
+            _responsePaymentHistory = new ResponseDto<PaymentHistory>();
         }
         public ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto)
         {
@@ -145,8 +147,11 @@ namespace BusinessManagementSystem.Repositories
             var tipS = GetTipSettlement(requestDto);
             PaymentTipSettlementDto paymentTipSettlementDto = new PaymentTipSettlementDto
             {
+                UserId=requestDto.UserId,
                 PaymentSettlements = payS.Datas,
                 TipSettlements = tipS.Datas,
+                StartDate=requestDto.StartDate,
+                EndDate=requestDto.EndDate,
                 TotalPayments = payS.Datas.Sum(p => p.PaymentToArtist),
                 TotalTips=tipS.Datas.Sum(p=>p.TipAmountForUser),
                 GrandTotal= payS.Datas.Sum(p => p.PaymentToArtist) + tipS.Datas.Sum(p => p.TipAmountForUser)
@@ -165,7 +170,23 @@ namespace BusinessManagementSystem.Repositories
             _responsePaymentTipSettlementDto.Data = paymentTipSettlementDto;
             return _responsePaymentTipSettlementDto;
         }
-        
+        public ResponseDto<PaymentHistory> CreatePaymentHistory(PaymentHistory paymentHistory)
+        {
+            try
+            {
+                _dbContext.Add(paymentHistory);
+                _dbContext.SaveChanges();
+                _responsePaymentHistory.Data = paymentHistory;
+            }
+            catch (Exception ex)
+            {
+                _responsePaymentHistory.Message = ex.Message;
+                _responsePaymentHistory.Data = paymentHistory;
+                _responsePaymentHistory.StatusCode = HttpStatusCode.InternalServerError;
+            }
+            return _responsePaymentHistory;
+           
+        }
         private ResponseDto<PaymentSettlementDto> GetPaymentSettlement(RequestDto requestDto)
         {
             try
@@ -274,6 +295,30 @@ namespace BusinessManagementSystem.Repositories
                 _responseTipSettlementDto.Message = ex.Message;
             }
             return _responseTipSettlementDto;
+        }
+
+        public ResponseDto<PaymentHistory> GetPaymentHistory(RequestDto requestDto)
+        {
+            try
+            {
+                var paymentHistory = (from p in _dbContext.PaymentHistories
+                                      select p);
+                if (requestDto.StartDate != null)
+                    paymentHistory = paymentHistory.Where(x => x.PaymentFrom >=DateOnly.FromDateTime(requestDto.StartDate));
+                if (requestDto.EndDate != null)
+                    paymentHistory = paymentHistory.Where(x => x.PaymentFrom <= DateOnly.FromDateTime(requestDto.StartDate));
+                if (requestDto.UserId > 0)
+                    paymentHistory = paymentHistory.Where(x => x.UserId == requestDto.UserId);
+                paymentHistory.OrderByDescending(x => x.PaymentFrom).AsQueryable();
+
+                _responsePaymentHistory.Datas = paymentHistory.ToList();
+            }
+            catch (Exception ex)
+            {
+                _responsePaymentHistory.Message = ex.Message;
+                _responsePaymentHistory.StatusCode = HttpStatusCode.InternalServerError;
+            }
+            return _responsePaymentHistory;
         }
     }
 }

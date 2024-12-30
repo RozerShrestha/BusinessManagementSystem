@@ -19,6 +19,7 @@ namespace BusinessManagementSystem.Data
         public DbSet<Referal> Referals { get; set; }
         public DbSet<Tip> Tips { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentHistory> PaymentHistories { get; set; }
 
 
 
@@ -52,17 +53,12 @@ namespace BusinessManagementSystem.Data
             modelBuilder.ApplyConfiguration(new AppointmentEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ReferalEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TipEntityConfiguration());
-
-            
-
-
         }
         private IConfigurationRoot GetConfiguration()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             return builder.Build();
         }
-
         public override int SaveChanges()
         {
             try
@@ -74,14 +70,12 @@ namespace BusinessManagementSystem.Data
             {
                 throw ex;
             }
-
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             AddTimestamps();
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
-
         private void AddTimestamps()
         {
             var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System";
@@ -94,8 +88,6 @@ namespace BusinessManagementSystem.Data
                 {
                     if (entity.Entity is BaseEntity baseEntity)
                     {
-
-
                         var now = DateTime.Now; // current datetime
 
                         if (entity.State == EntityState.Added)

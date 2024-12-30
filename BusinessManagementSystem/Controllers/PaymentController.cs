@@ -4,6 +4,7 @@ using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
@@ -11,6 +12,7 @@ using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
+    [Authorize]
     public class PaymentController : BaseController
     {
         public ResponseDto<PaymentDto> _responsePaymentDto;
@@ -18,15 +20,17 @@ namespace BusinessManagementSystem.Controllers
         private ILogger<PaymentController> _logger;
         private readonly ModalView _modalView;
         private readonly dynamic artistList;
+        private readonly dynamic artist;
         public PaymentController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<PaymentController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responsePaymentDto = new ResponseDto<PaymentDto>();
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Payment?", "");
             artistList = _businessLayer.UserService.GetAllActiveTattooArtist();
+            artist = ((IEnumerable<dynamic>)artistList).Where(artist => artist.Id == userId).ToList();
             _logger = logger;
 
         }
-
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult AllPayments()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
@@ -35,6 +39,7 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto);
         }
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyPayments()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
@@ -43,18 +48,34 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto); 
         }
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult PaymentSettlement()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "User,Status,Settlement";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
-            ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
+            if (roleName == "superadmin")
+                ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
+            else
+                ViewBag.ArtistList = new SelectList(artist, "Id", "Name");
+            return View(requestDto);
+        }
+        public IActionResult PaymentHistory()
+        {
+            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            requestDto.ParameterFilter = "User";
+            ViewBag.ModalInformation = _modalView;
+            if(roleName=="superadmin")
+                ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
+            else
+                ViewBag.ArtistList = new SelectList(artist, "Id", "Name");
             return View(requestDto);
         }
 
         #region API
         [HttpPost]
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult GetAllPayments([FromBody] RequestDto requestDto)
         {
             _responsePaymentDto = _businessLayer.PaymentService.GetAllPayments(requestDto);
@@ -63,6 +84,7 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest();
         }
         [HttpPost]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult GetMyPayments([FromBody] RequestDto requestDto)
         {
             _responsePaymentDto = _businessLayer.PaymentService.GetMyPayments(userId,requestDto);
@@ -71,6 +93,7 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest();
         }
         [HttpPost]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult GetPaymentTipSettlementData([FromBody] RequestDto requestDto)
          {
             _responsePaymentTipSettlementDto = _businessLayer.PaymentService.GetPaymentTipSettlement(requestDto);
@@ -79,15 +102,20 @@ namespace BusinessManagementSystem.Controllers
             else
                 return BadRequest();
         }
-
         [HttpPost]
-        //Update the payment Settlement and Tip Settlement and then add the payment history
+        [Authorize(Roles = "superadmin")]
         public IActionResult UpdatePaymentTipSettlementData([FromBody] PaymentTipSettlementDto paymentTipSettlementDto)
         {
             var response =_businessLayer.PaymentService.UpdatePaymentTipSettlement(paymentTipSettlementDto);
-            //need to update the payment history as well.
             return Ok(response);
         }
+        [HttpPost]
+        public IActionResult GetPaymentHistory([FromBody] RequestDto requestDto)
+        {
+            var response = _businessLayer.PaymentService.GetPaymentHistory(requestDto);
+            return Ok(response.Datas);
+        }
+        
         #endregion         
     }
 } 

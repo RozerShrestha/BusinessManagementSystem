@@ -13,7 +13,7 @@ using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
-    [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
+    [Authorize(Roles = "superadmin")]
     public class BasicConfigurationController : BaseController
     {
         private IWebHostEnvironment _env;
@@ -32,7 +32,6 @@ namespace BusinessManagementSystem.Controllers
             _responseDto = _businessLayer.BasicConfigurationService.GetBasicConfig();
             return View(_responseDto.Data);
         }
-
         public IActionResult Update(BasicConfiguration basicConfiguration)
         {
             if (ModelState.IsValid)
