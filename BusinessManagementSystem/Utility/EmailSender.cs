@@ -40,7 +40,8 @@ namespace BusinessManagementSystem.Utility
                 //send email
                 using (var emailClient = new SmtpClient())
                 {
-                    emailClient.Connect(hostName, port, MailKit.Security.SecureSocketOptions.None);
+                    emailClient.Connect(hostName, port, MailKit.Security.SecureSocketOptions.Auto);
+                    emailClient.Authenticate(emailAddress, password);
                     emailClient.Send(emailToSend);
                     emailClient.Disconnect(true);
                 }
@@ -48,19 +49,16 @@ namespace BusinessManagementSystem.Utility
             _logger.LogInformation($"## {this.GetType().Name} Email Send to {email} Message: {htmlMessage}");
             return Task.CompletedTask;
         }
-        public string PrepareEmail(string message, string fullName, string patientName, string type="New", int id=0, string status=null, int claimAmount=0, int paidAmount=0, string remark=null)
+        public string PrepareEmail(UserDto userDto, string message)
         {
             StringBuilder sb = new StringBuilder(message);
-            sb.Replace("{{fullName}}", fullName);
-            sb.Replace("{{patientName}}", patientName);
-            if (type=="Update")
-            {
-                sb.Replace("{{id}}", id.ToString());
-                sb.Replace("{{status}}", status);
-                sb.Replace("{{claimAmount}}", claimAmount.ToString());
-                sb.Replace("{{paidAmount}}", paidAmount==0?"N/A":paidAmount.ToString());
-                sb.Replace("{{remark}}", remark);
-            }
+            sb.Replace("{{fullname}}", userDto.FullName);
+            sb.Replace("{{username}}", userDto.UserName);
+            sb.Replace("{{email}}", userDto.Email);
+            sb.Replace("{{mobilenumber}}", userDto.PhoneNumber);
+            sb.Replace("{{password}}", userDto.Password);
+            sb.Replace("{{dateofbirth}}", userDto.DateOfBirth.ToString());
+            sb.Replace("{{occupation}}", userDto.Occupation);
             return sb.ToString();
         }
         public string PrepareEmailFamily(string message, string fullName, string iNumber, int id = 0)

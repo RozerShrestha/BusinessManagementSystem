@@ -76,7 +76,6 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.EmployerAddress).HasColumnType("varchar(100)");
             builder.Property(x => x.Password).HasColumnType("varchar(250)");
             builder.Property(x => x.ApplicationTitle).HasColumnType("varchar(250)");
-
             builder.Property(x => x.CreatedBy).HasColumnType("varchar(150)");
             builder.Property(x => x.UpdatedBy).HasColumnType("varchar(150)");
 
