@@ -23,7 +23,7 @@ namespace BusinessManagementSystem.Utility
         {
             _unitOfWork= unitOfWork;
             _logger= logger;
-            //GetEmailDetail();
+             GetEmailDetail();
 
         }
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
@@ -35,6 +35,7 @@ namespace BusinessManagementSystem.Utility
                 emailToSend.To.Add(MailboxAddress.Parse(email));
                 emailToSend.Subject = subject;
                 emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
+                
 
                 //send email
                 using (var emailClient = new SmtpClient())
@@ -89,16 +90,15 @@ namespace BusinessManagementSystem.Utility
 
             return sb.ToString();
         }
-        //private void GetEmailDetail()
-        //{
-        //    var basicInfo = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data;
-        //    emailAlias = basicInfo.EmailAlias;
-        //    emailAddress = basicInfo.Email;
-        //    password= basicInfo.Password;
-        //    hostName = basicInfo.HostName;
-        //    port = basicInfo.Port;
+        private void GetEmailDetail()
+        {
+            var basicInfo = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data;
+            emailAlias = basicInfo.EmailAlias;
+            emailAddress = basicInfo.Email;
+            password = basicInfo.Password;
+            hostName = basicInfo.HostName;
+            port = basicInfo.Port;
 
-        //}
-        
+        }
     }
 }

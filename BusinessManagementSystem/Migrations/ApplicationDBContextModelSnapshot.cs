@@ -113,7 +113,7 @@ namespace BusinessManagementSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.BasicConfiguration", b =>
@@ -127,6 +127,14 @@ namespace BusinessManagementSystem.Migrations
                     b.Property<string>("ApplicationTitle")
                         .IsRequired()
                         .HasColumnType("varchar(250)");
+
+                    b.Property<string>("AppointmentUpdateTemplateArtist")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AppointmentUpdateTemplateClient")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -161,9 +169,25 @@ namespace BusinessManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("NewAppointmentTemplateArtist")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewAppointmentTemplateClient")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewUserEmailTemplate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("varchar(250)");
+
+                    b.Property<string>("PaymentSettlementTemplateArtist")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("PiercingPrice")
                         .HasColumnType("float");
@@ -182,7 +206,7 @@ namespace BusinessManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BasicConfigurations");
+                    b.ToTable("BasicConfigurations", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.Menu", b =>
@@ -228,7 +252,7 @@ namespace BusinessManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menus");
+                    b.ToTable("Menus", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.MenuRole", b =>
@@ -243,7 +267,7 @@ namespace BusinessManagementSystem.Migrations
 
                     b.HasIndex("MenuId");
 
-                    b.ToTable("MenuRoles");
+                    b.ToTable("MenuRoles", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.Payment", b =>
@@ -304,7 +328,7 @@ namespace BusinessManagementSystem.Migrations
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.PaymentHistory", b =>
@@ -353,7 +377,7 @@ namespace BusinessManagementSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PaymentHistories");
+                    b.ToTable("PaymentHistories", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.Referal", b =>
@@ -391,7 +415,7 @@ namespace BusinessManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Referals");
+                    b.ToTable("Referals", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.Role", b =>
@@ -420,7 +444,7 @@ namespace BusinessManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.Tip", b =>
@@ -465,7 +489,7 @@ namespace BusinessManagementSystem.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Tips");
+                    b.ToTable("Tips", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.User", b =>
@@ -573,7 +597,7 @@ namespace BusinessManagementSystem.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.UserRole", b =>
@@ -588,7 +612,7 @@ namespace BusinessManagementSystem.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.Appointment", b =>

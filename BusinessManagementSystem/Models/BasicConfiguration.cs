@@ -48,6 +48,19 @@ namespace BusinessManagementSystem.Models
         [DisplayName("DeadLock Price")]
         [Required]
         public double DreadLockPrice { get; set; }
+        [DisplayName("New User Template")]
+        public string NewUserEmailTemplate { get; set; }
+        [DisplayName("New Appointment Template Client")]
+        public string NewAppointmentTemplateClient { get; set; }
+        [DisplayName("New Appointment Template Artist")]
+        public string NewAppointmentTemplateArtist { get; set; }
+        [DisplayName("Update Appointment Template Client")]
+        public string AppointmentUpdateTemplateClient { get; set; }
+        [DisplayName("Update Appointment Template Artist")]
+        public string AppointmentUpdateTemplateArtist { get; set; }
+        [DisplayName("Payment Settlement Template Artist")]
+        public string PaymentSettlementTemplateArtist { get; set; }
+
 
 
     }

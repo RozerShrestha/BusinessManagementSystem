@@ -105,8 +105,6 @@ namespace BusinessManagementSystem.Controllers
                 _notyf.Warning(message);
                 return BadRequest(message);
             }
-
-
             if (ModelState.IsValid)
             {
                 userDto.ProfilePictureLink =ProfilePictureLink==null?string.Empty: Helpers.DocUpload(ProfilePictureLink, "ProfilePicture", username);
@@ -114,6 +112,8 @@ namespace BusinessManagementSystem.Controllers
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);
+
+                    _emailSender.SendEmailAsync(email: userDto.Email, subject: "Welcome to Freak Street Tattoo", "");
                     return RedirectToAction(nameof(Index));
                 } 
                 else

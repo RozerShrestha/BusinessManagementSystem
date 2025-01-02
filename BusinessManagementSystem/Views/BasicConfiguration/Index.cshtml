@@ -85,6 +85,45 @@
                 </div>
             </div>
         </div>
+        <div class="card card-dark card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Email Template</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label asp-for="NewUserEmailTemplate"></label>
+                        @Html.TextAreaFor(m => m.NewUserEmailTemplate, new { @class = "form-control" })
+                        <span asp-validation-for="NewUserEmailTemplate" class="text-sm-center"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="NewAppointmentTemplateClient"></label>
+                        @Html.TextAreaFor(m => m.NewAppointmentTemplateClient, new { @class = "form-control" })
+                        <span asp-validation-for="NewAppointmentTemplateClient" class="text-sm-center"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="NewAppointmentTemplateArtist"></label>
+                        @Html.TextAreaFor(m => m.NewAppointmentTemplateArtist, new { @class = "form-control" })
+                        <span asp-validation-for="NewAppointmentTemplateArtist" class="text-sm-center"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="AppointmentUpdateTemplateClient"></label>
+                        @Html.TextAreaFor(m => m.AppointmentUpdateTemplateClient, new { @class = "form-control" })
+                        <span asp-validation-for="AppointmentUpdateTemplateClient" class="text-sm-center"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="AppointmentUpdateTemplateArtist"></label>
+                        @Html.TextAreaFor(m => m.AppointmentUpdateTemplateArtist, new { @class = "form-control" })
+                        <span asp-validation-for="AppointmentUpdateTemplateArtist" class="text-sm-center"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="PaymentSettlementTemplateArtist"></label>
+                        @Html.TextAreaFor(m => m.PaymentSettlementTemplateArtist, new { @class = "form-control" })
+                        <span asp-validation-for="PaymentSettlementTemplateArtist" class="text-sm-center"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div col-md-12>
         <div class="m-3">
