@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using NuGet.Protocol.Plugins;
@@ -173,6 +174,9 @@ namespace BusinessManagementSystem.Controllers
                     if (_responseDto.StatusCode == HttpStatusCode.OK)
                     {
                         _notyf.Success(_responseDto.Message);
+                        //var message = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewUserEmailTemplate;
+                        //string htmlEmailNewUser = _emailSender.PrepareEmail(userDto, message);
+                        //_emailSender.SendEmailAsync(email: userDto.Email, subject: "Welcome to Freak Street Tattoo", htmlEmailNewUser);
                     }
                     else
                     {
