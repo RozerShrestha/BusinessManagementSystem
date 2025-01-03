@@ -96,6 +96,10 @@ namespace BusinessManagementSystem.Controllers
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);
+                    var message = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewAppointmentTemplateArtist;
+                    string artistEmail = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data.Email;
+                    string htmlNewAppointmentArtist = _emailSender.PrepareEmailNewAppointmentArtist(appointmentDto,message);
+                    _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlNewAppointmentArtist);
                     return RedirectToAction(nameof(Index));
                 }
                 else

@@ -61,12 +61,14 @@ namespace BusinessManagementSystem.Utility
             sb.Replace("{{occupation}}", userDto.Occupation);
             return sb.ToString();
         }
-        public string PrepareEmailFamily(string message, string fullName, string iNumber, int id = 0)
+        public string PrepareEmailNewAppointmentArtist(AppointmentDto appointmentDto, string message)
         {
             StringBuilder sb = new StringBuilder(message);
-            sb.Replace("{{fullName}}", fullName);
-            sb.Replace("{{inumber}}", iNumber);
-            sb.Replace("{{id}}", id.ToString());
+            sb.Replace("{{artistname}}", appointmentDto.ArtistAssigned);
+            sb.Replace("{{clientname}}", appointmentDto.ClientName);
+            sb.Replace("{{clientphonenumber}}", appointmentDto.ClientPhoneNumber);
+            sb.Replace("{{appointmentdate}}", appointmentDto.AppointmentDate.ToString());
+            sb.Replace("{{outletname}}", appointmentDto.Placement);
             
             return sb.ToString();
         }
