@@ -58,7 +58,6 @@ namespace BusinessManagementSystem.Utility
             
         };
 
-
         public static readonly Dictionary<string, string> PaymentMethods = new Dictionary<string, string>
         {
             { PaymentMethod.BankQR.ToString(), "Bank QR" },
@@ -67,6 +66,12 @@ namespace BusinessManagementSystem.Utility
             { PaymentMethod.Esewa.ToString(), "ESewa" },
             { PaymentMethod.ImePay.ToString(), "ImePay" },
             { PaymentMethod.Khalti.ToString(), "Khalti" }
+        };
+
+        public static readonly Dictionary<string, string> OutletList = new Dictionary<string, string>()
+        {
+            {"Freak Street", "Freak Street" },
+            {"Babar Mahal","Babar Mahal" }
         };
 
 

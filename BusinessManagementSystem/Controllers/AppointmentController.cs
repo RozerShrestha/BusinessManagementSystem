@@ -77,6 +77,7 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
             ViewBag.AppointmentStatus=new SelectList(SD.ApointmentStatus, "Key", "Value");
             ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
+            ViewBag.Outlet = new SelectList(SD.OutletList, "Key", "Value");
             return View();
         }
 
@@ -90,6 +91,7 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             ViewBag.PaymentMethod=new SelectList(SD.PaymentMethods, "Key", "Value");
+            ViewBag.Outlet = new SelectList(SD.OutletList, "Key", "Value");
             if (ModelState.IsValid)
             {
                 _responseDto=_businessLayer.AppointmentService.CreateAppointment(appointmentDto);
@@ -97,7 +99,9 @@ namespace BusinessManagementSystem.Controllers
                 {
                     _notyf.Success(_responseDto.Message);
                     var message = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewAppointmentTemplateArtist;
-                    string artistEmail = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data.Email;
+                    var userInfo = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data;
+                    string artistEmail = userInfo.Email;
+                    appointmentDto.ArtistAssigned = userInfo.FullName;
                     string htmlNewAppointmentArtist = _emailSender.PrepareEmailNewAppointmentArtist(appointmentDto,message);
                     _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlNewAppointmentArtist);
                     return RedirectToAction(nameof(Index));
@@ -128,6 +132,7 @@ namespace BusinessManagementSystem.Controllers
             ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
+            ViewBag.Outlet = new SelectList(SD.OutletList, "Key", "Value");
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
 
             if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == _responseAppointmentDto.Data.UserId)
@@ -163,6 +168,7 @@ namespace BusinessManagementSystem.Controllers
                 ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
                 ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
                 ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
+                ViewBag.Outlet = new SelectList(SD.OutletList, "Key", "Value");
                 if (ModelState.IsValid)
                 {
                     _responseDto = _businessLayer.AppointmentService.UpdateAppointment(appointmentDto);

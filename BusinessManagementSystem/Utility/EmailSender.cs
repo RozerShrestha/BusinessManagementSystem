@@ -68,7 +68,7 @@ namespace BusinessManagementSystem.Utility
             sb.Replace("{{clientname}}", appointmentDto.ClientName);
             sb.Replace("{{clientphonenumber}}", appointmentDto.ClientPhoneNumber);
             sb.Replace("{{appointmentdate}}", appointmentDto.AppointmentDate.ToString());
-            sb.Replace("{{outletname}}", appointmentDto.Placement);
+            sb.Replace("{{outletname}}", appointmentDto.Outlet);
             
             return sb.ToString();
         }

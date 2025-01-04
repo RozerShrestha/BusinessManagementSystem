@@ -53,6 +53,7 @@ namespace BusinessManagementSystem.Dto
         public bool FollowUpRequired { get; set; }
         [DisplayName("Is Foreigner")]
         public bool IsForeigner { get; set; }
+        public string? Outlet { get; set; }
         [DisplayName("Total Hours *")]
         public double TotalHours { get; set; }
         [Required]

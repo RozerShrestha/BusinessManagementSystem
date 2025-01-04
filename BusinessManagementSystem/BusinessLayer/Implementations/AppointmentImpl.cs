@@ -230,6 +230,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 item.Data.ReferalId = appointmentDto.ReferalId;
                 item.Data.UserId = appointmentDto.UserId;
                 item.Data.IsForeigner = appointmentDto.IsForeigner;
+                item.Data.Outlet=appointmentDto.Outlet;
                 item.Data.Status = appointmentDto.Status;
                 item.Data.TattooDesign = appointmentDto.TattooDesign;
                 item.Data.Placement = appointmentDto.Placement;

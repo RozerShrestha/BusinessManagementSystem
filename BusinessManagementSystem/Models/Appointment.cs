@@ -71,6 +71,7 @@ namespace BusinessManagementSystem.Models
         [ForeignKey("ReferalId")]
         [ValidateNever]
         public Referal Referal { get; set; }
+        public string? Outlet { get; set; }
 
     }
 

@@ -48,6 +48,11 @@
                             <option value="true">Yes</option>
                         </select>
                     </div>
+                    <div class="col-md-4">
+                        <label asp-for="Outlet" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.Outlet, (SelectList)ViewBag.Outlet, new { @class = "form-control" })
+                        <span asp-validation-for="Outlet" class="text-danger"></span>
+                    </div>
                 </div>
                
             </div>
