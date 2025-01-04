@@ -28,17 +28,17 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="Category" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.Category, (SelectList)ViewBag.TattooCategories, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Category, (SelectList)ViewBag.AppointmentSelectList["TattooCategories"], new { @class = "form-control" })
                         <span asp-validation-for="Category" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="ReferalId" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.ReferalId, (SelectList)ViewBag.ReferalList, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.ReferalId, (SelectList)ViewBag.AppointmentSelectList["ReferalList"], new { @class = "form-control" })
                         <span asp-validation-for="ReferalId" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="UserId" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.ArtistList, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.AppointmentSelectList["ArtistList"], new { @class = "form-control" })
                         <span asp-validation-for="UserId" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
@@ -50,7 +50,7 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="Outlet" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.Outlet, (SelectList)ViewBag.Outlet, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Outlet, (SelectList)ViewBag.AppointmentSelectList["Outlet"], new { @class = "form-control" })
                         <span asp-validation-for="Outlet" class="text-danger"></span>
                     </div>
                 </div>
@@ -157,12 +157,12 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="PaymentMethod" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.PaymentMethod, (SelectList)ViewBag.PaymentMethod, "--Select--", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.PaymentMethod, (SelectList)ViewBag.AppointmentSelectList["PaymentMethod"], "--Select--", new { @class = "form-control" })
                         <span asp-validation-for="PaymentMethod" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="Status" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentSelectList["AppointmentStatus"], new { @class = "form-control" })
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
                     <div class="col-md-12">

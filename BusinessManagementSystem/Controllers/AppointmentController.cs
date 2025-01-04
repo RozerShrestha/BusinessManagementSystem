@@ -25,15 +25,11 @@ namespace BusinessManagementSystem.Controllers
         public ResponseDto<AppointmentDto> _responseAppointmentDto;
         private ILogger<AppointmentController> _logger;
         private readonly ModalView _modalView;
-        private readonly dynamic artistList;
-        private readonly dynamic referalList;
         public AppointmentController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<AppointmentController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _responseDto = new ResponseDto<Appointment>();
             _responseAppointmentDto = new ResponseDto<AppointmentDto>();
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Appointment?", "");
-            artistList = _businessLayer.UserService.GetAllActiveTattooArtist();
-            referalList = _businessLayer.ReferalService.GetAllActiveReferalList();
             _logger = logger;
 
         }
@@ -72,12 +68,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Create()
         {
-            ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
-            ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
-            ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
-            ViewBag.AppointmentStatus=new SelectList(SD.ApointmentStatus, "Key", "Value");
-            ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
-            ViewBag.Outlet = new SelectList(SD.OutletList, "Key", "Value");
+            AppointmentSelectListViewBag();
             return View();
         }
 
@@ -86,15 +77,10 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Create(AppointmentDto appointmentDto)
         {
             var js = JsonConvert.SerializeObject(appointmentDto);
-            ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
-            ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
-            ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
-            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
-            ViewBag.PaymentMethod=new SelectList(SD.PaymentMethods, "Key", "Value");
-            ViewBag.Outlet = new SelectList(SD.OutletList, "Key", "Value");
+            AppointmentSelectListViewBag();
             if (ModelState.IsValid)
             {
-                _responseDto=_businessLayer.AppointmentService.CreateAppointment(appointmentDto);
+                _responseDto = _businessLayer.AppointmentService.CreateAppointment(appointmentDto);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);
@@ -102,7 +88,7 @@ namespace BusinessManagementSystem.Controllers
                     var userInfo = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data;
                     string artistEmail = userInfo.Email;
                     appointmentDto.ArtistAssigned = userInfo.FullName;
-                    string htmlNewAppointmentArtist = _emailSender.PrepareEmailNewAppointmentArtist(appointmentDto,message);
+                    string htmlNewAppointmentArtist = _emailSender.PrepareEmailNewAppointmentArtist(appointmentDto, message);
                     _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlNewAppointmentArtist);
                     return RedirectToAction(nameof(Index));
                 }
@@ -126,13 +112,8 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Edit(Guid guid)
         {
-            if (guid == Guid.Empty)return NotFound();
-            ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
-            ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
-            ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
-            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
-            ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
-            ViewBag.Outlet = new SelectList(SD.OutletList, "Key", "Value");
+            if (guid == Guid.Empty) return NotFound();
+            AppointmentSelectListViewBag();
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
 
             if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == _responseAppointmentDto.Data.UserId)
@@ -150,8 +131,8 @@ namespace BusinessManagementSystem.Controllers
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            
-            
+
+
 
         }
 
@@ -161,23 +142,18 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Edit(AppointmentDto appointmentDto)
         {
             appointmentDto.AppointmentCreatedId = userId;
-            if (roleName == SD.Role_Superadmin || roleName==SD.Role_TattooAdmin || userId == appointmentDto.UserId)
+            if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == appointmentDto.UserId)
             {
-                ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
-                ViewBag.ReferalList = new SelectList(referalList, "Id", "Name");
-                ViewBag.TattooCategories = new SelectList(SD.TattooCategories, "Key", "Value");
-                ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
-                ViewBag.PaymentMethod = new SelectList(SD.PaymentMethods, "Key", "Value");
-                ViewBag.Outlet = new SelectList(SD.OutletList, "Key", "Value");
+                AppointmentSelectListViewBag();
                 if (ModelState.IsValid)
                 {
                     _responseDto = _businessLayer.AppointmentService.UpdateAppointment(appointmentDto);
                     if (_responseDto.StatusCode == HttpStatusCode.OK)
                     {
                         _notyf.Success(_responseDto.Message);
-                        if(roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
+                        if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
                             return RedirectToAction(nameof(Index));
-                         else
+                        else
                             return RedirectToAction(nameof(MyAppointments));
                     }
                     else
@@ -237,7 +213,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult DeleteConfirmed(int appointmentId)
         {
             _responseDto = _businessLayer.AppointmentService.DeleteAppointmentById(appointmentId);
-            if(_responseDto.StatusCode == HttpStatusCode.OK)
+            if (_responseDto.StatusCode == HttpStatusCode.OK)
                 return RedirectToAction(nameof(Index));
             else
             {
@@ -262,17 +238,17 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult GetAllAppointmentByArtist([FromBody] RequestDto requestDto)
         {
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointmentByArtist(userId, requestDto);
-            if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK || _responseAppointmentDto.StatusCode==HttpStatusCode.NotFound) return Ok(_responseAppointmentDto.Datas);
+            if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK || _responseAppointmentDto.StatusCode == HttpStatusCode.NotFound) return Ok(_responseAppointmentDto.Datas);
             else return BadRequest();
         }
         [HttpGet]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult GetPaymentCalculation(bool isForeigner, string category, double totalHours, int deposit, int discount=0, double discountInHour=0)
+        public IActionResult GetPaymentCalculation(bool isForeigner, string category, double totalHours, int deposit, int discount = 0, double discountInHour = 0)
         {
             double totalCost = 0.0;
             if (!string.IsNullOrEmpty(category) && totalHours != 0 && deposit >= 1000)
             {
-                string costDescription = _businessLayer.AppointmentService.GetTotalCost(isForeigner, category, totalHours, deposit, discount, discountInHour,out totalCost);
+                string costDescription = _businessLayer.AppointmentService.GetTotalCost(isForeigner, category, totalHours, deposit, discount, discountInHour, out totalCost);
                 var result = new
                 {
                     TotalCost = totalCost,
@@ -284,7 +260,7 @@ namespace BusinessManagementSystem.Controllers
             {
                 return BadRequest("Parameters didn't match the required data");
             }
-             
+
         }
 
         #endregion

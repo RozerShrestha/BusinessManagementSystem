@@ -4,9 +4,11 @@ using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 using System.Numerics;
 using System.Security.Claims;
@@ -89,6 +91,21 @@ namespace BusinessManagementSystem.Controllers
         protected string EncodedString(string text)
         {
             return _javaScriptEncoder.Encode(text);
+        }
+
+        protected void AppointmentSelectListViewBag()
+        {
+            dynamic artistList = _businessLayer.UserService.GetAllActiveTattooArtist();
+            dynamic referalList = _businessLayer.ReferalService.GetAllActiveReferalList();
+            ViewBag.AppointmentSelectList = new Dictionary<string, SelectList>
+            {
+                { "ArtistList", new SelectList(artistList, "Id", "Name") },
+                { "ReferalList", new SelectList(referalList, "Id", "Name") },
+                { "TattooCategories", new SelectList(SD.TattooCategories, "Key", "Value") },
+                { "AppointmentStatus", new SelectList(SD.ApointmentStatus, "Key", "Value") },
+                { "PaymentMethod", new SelectList(SD.PaymentMethods, "Key", "Value") },
+                { "Outlet", new SelectList(SD.OutletList, "Key", "Value") }
+            };
         }
     }
 }
