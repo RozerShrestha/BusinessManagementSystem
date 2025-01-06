@@ -69,6 +69,9 @@ namespace BusinessManagementSystem.Utility
             sb.Replace("{{clientphonenumber}}", appointmentDto.ClientPhoneNumber);
             sb.Replace("{{appointmentdate}}", appointmentDto.AppointmentDate.ToString());
             sb.Replace("{{outletname}}", appointmentDto.Outlet);
+            sb.Replace("{{tattooDesign}}", appointmentDto.TattooDesign);
+            sb.Replace("{{placement}}", appointmentDto.Placement);
+            sb.Replace("{{inkcolorpreference}}", appointmentDto.InkColorPreferance);
             
             return sb.ToString();
         }
@@ -77,12 +80,15 @@ namespace BusinessManagementSystem.Utility
             StringBuilder sb = new StringBuilder(message);
             sb.Replace("{{artistname}}", appointmentDto.ArtistAssigned);
             sb.Replace("{{clientname}}", appointmentDto.ClientName);
-
             sb.Replace("{{clientphonenumber}}", appointmentDto.ClientPhoneNumber);
             sb.Replace("{{appointmentdate}}", appointmentDto.AppointmentDate.ToString());
             sb.Replace("{{outletname}}", appointmentDto.Outlet);
             sb.Replace("{{artistphonenumber}}", _unitOfWork.Users.GetById(appointmentDto.UserId).Data.PhoneNumber);
-
+            sb.Replace("{{tattooDesign}}", appointmentDto.TattooDesign);
+            sb.Replace("{{placement}}", appointmentDto.Placement);
+            sb.Replace("{{inkcolorpreference}}", appointmentDto.InkColorPreferance);
+            sb.Replace("{{estimatedhour}}", appointmentDto.TotalHours.ToString());
+            sb.Replace("{{deposit}}", appointmentDto.Deposit.ToString());
 
             return sb.ToString();
         }

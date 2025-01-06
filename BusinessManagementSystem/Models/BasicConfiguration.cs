@@ -60,6 +60,10 @@ namespace BusinessManagementSystem.Models
         public string AppointmentUpdateTemplateArtist { get; set; }
         [DisplayName("Payment Settlement Template Artist")]
         public string PaymentSettlementTemplateArtist { get; set; }
+        [DisplayName("Appointment Complete Client")]
+        public string AppointmentCompletedClient { get; set; }
+        [DisplayName("Appointment Complete Artist")]
+        public string AppointmentCompletedArtist { get; set; }
 
 
 

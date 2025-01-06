@@ -117,6 +117,16 @@
                         <span asp-validation-for="AppointmentUpdateTemplateArtist" class="text-sm-center"></span>
                     </div>
                     <div class="col-md-12">
+                        <label asp-for="AppointmentCompletedClient"></label>
+                        @Html.TextAreaFor(m => m.AppointmentCompletedClient, new { @class = "form-control", @style = "height:500px" })
+                        <span asp-validation-for="AppointmentCompletedClient" class="text-sm-center"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="AppointmentCompletedArtist"></label>
+                        @Html.TextAreaFor(m => m.AppointmentCompletedArtist, new { @class = "form-control", @style = "height:500px" })
+                        <span asp-validation-for="AppointmentCompletedArtist" class="text-sm-center"></span>
+                    </div>
+                    <div class="col-md-12">
                         <label asp-for="PaymentSettlementTemplateArtist"></label>
                         @Html.TextAreaFor(m => m.PaymentSettlementTemplateArtist, new { @class = "form-control", @style="height:500px" })
                         <span asp-validation-for="PaymentSettlementTemplateArtist" class="text-sm-center"></span>
