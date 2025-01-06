@@ -1,0 +1,98 @@
+﻿<html lang="en">
+<body>
+    <div>
+        <p>Dear <b>{{artistname}}</b>,</p>
+        <p>We wanted to inform you that an appointment has been rescheduled and is assigned to you. Here are the updated details:</p>
+        <p><strong>Client Name:</strong> {{clientname}}</p>
+        <p><strong>Client Phone Number:</strong> {{clientphonenumber}}</p>
+        <p><strong>New Date:</strong> {{appointmentdate}}</p>
+        <p><strong>Location:</strong><span style="color:red; font-weight:bold "> Freak Street Tattoo, {{outletname}}</span></p>
+        <p>Please review the updated schedule and prepare accordingly. If there are any specific design ideas, references, or special requests from the client, we will share them with you in advance.</p>
+        <p>If you have any questions or need further assistance, feel free to reach out to us.</p>
+        <p>Thank you for your flexibility and continued dedication. We’re confident you’ll provide an outstanding experience for the client!</p>
+        <p>Warm regards,<br>Freak Street Tattoo</p>
+    </div>
+</body>
+</html>
+
+<html lang="en">
+<body>
+        <p>Dear <b>{{clientname}}</b>,</p>
+        <p>We wanted to inform you that your appointment has been rescheduled. Here are the updated details of your appointment:</p>
+        <p><strong>New Date:</strong> {{appointmentdate}}</p>
+        <p><strong>Artist:</strong> {{artistname}}</p>
+        <p>Artist Phone Number: {{artistphonenumber}}</p>
+        <p><strong>Location:</strong><span style="color:red; font-weight:bold "> Freak Street Tattoo, {{outletname}}</span></p>
+        <p>We apologize for any inconvenience this change may cause and greatly appreciate your understanding. If you have any specific design ideas, references, or special requests, feel free to email us or bring them along to your appointment.</p>
+        <p>To ensure a smooth experience, kindly arrive at least 10 minutes before your scheduled time. Also, please let us know at least 24 hours in advance if you need to reschedule or cancel your appointment again.</p>
+        <p>We look forward to seeing you soon!</p>
+        <p>Warm regards,<br>Freak Street Tattoo</p>
+</body>
+</html>
+
+<html>
+<body>
+        <p>Dear <b>{{artistname}}</b>,</p>
+        <p>We’re excited to inform you that a new appointment has been assigned to you. Here are the details of the appointment:</p>
+        <p><strong>Client Name:</strong> {{clientname}}</p>
+        <p><strong>Client Phone Number:</strong> {{clientphonenumber}}</p>
+        <p><strong>Date:</strong> {{appointmentdate}}</p>
+        <p><strong>Location:</strong><span style="color:red; font-weight:bold "> Freak Street Tattoo, {{outletname}}</span></p>
+        <p>Please ensure you review the client's preferences and prepare accordingly. Also, please connect with client using Whatsapp or any other medium to communicate.</p>
+        <p><a href="http://202.51.74.20:2025/Appointment/MyAppointments" target="_blank">Click here to see your appointments</a></p>
+        <p>Thank you for your dedication and talent. We’re confident you’ll deliver an exceptional experience!</p>
+        <p>Warm regards,<br>Freak Street Tattoo</p>
+</body>
+</html>
+
+<html lang="en">
+<body>
+        <p>Dear <b>{{clientname}}</b>,</p>
+        <p>Thank you for choosing Freak Street Tattoo! We’re excited to be a part of your tattoo journey. Here are the details of your appointment:</p>
+        <p>Date: {{appointmentdate}}</p>
+        <p>Artist: {{artistname}}</p>
+        <p>Artist Phone Number: {{artistphonenumber}}</p>
+        <p><strong>Location:</strong><span style="color:red; font-weight:bold "> Freak Street Tattoo, {{outletname}}</span></p>
+        <p>If you have any specific design ideas, references, or special requests, feel free to email us or bring them along to your appointment.</p>
+        <p>To ensure a smooth experience, kindly arrive at least 10 minutes before your scheduled time. Also, please let us know at least 24 hours in advance if you need to reschedule or cancel your appointment.</p>
+        <p>We look forward to seeing you soon!</p>
+        <p>Warm regards,<br>Freak Street Tattoo</p>
+</body>
+</html>
+
+<html>
+<body>
+    <p>Hi <b>{{fullname}}</b>,</p>
+    <p>Welcome to <b>Freak Street Tattoo Family</b>.</p>
+    <p>Your user account has been created, and below are the details:</p>
+    <p>
+        User Name: <b>{{username}}</b><br>
+        Email: <b>{{email}}</b><br>
+        Mobile Number: <b>{{mobilenumber}}</b><br>
+        Password: <b>{{password}}</b><br>
+        Date of Birth: <b>{{dateofbirth}}</b><br>
+        Occupation: <b>{{occupation}}</b>
+    </p>
+    <p><a href="http://202.51.74.20:2025/login" target="_blank">Click here to log in</a></p>
+    <p>Thank you.</p>
+    <p>Regards,<br>
+    <b>Freak Street Tattoo</b></p>
+</body>
+</html>
+
+<html lang="en">
+<body>
+    <div>
+        <p>Dear <b>{{artistname}}</b>,</p>
+        <p>We hope this message finds you well. We’re writing to inform you about the settlement of your payment for the work completed during the following dates:</p>
+        <p><strong>Start Date:</strong> {{startdate}}</p>
+        <p><strong>End Date:</strong> {{enddate}}</p>
+	<p><strong>Payment From Tips:</strong> {{totalTips}}</p>
+	<p><strong>Payment From Tattoo:</strong> {{totalPayment}}</p>
+        <p><strong>Amount Settled:</strong> {{grandTotal}}</p>
+        <p>If you have any questions or require further details regarding the payment, feel free to reach out to us. We’re happy to assist!</p>
+        <p>Thank you for your excellent work and dedication. We look forward to continuing our collaboration!</p>
+        <p>Warm regards,<br>Freak Street Tattoo</p>
+    </div>
+</body>
+</html>
