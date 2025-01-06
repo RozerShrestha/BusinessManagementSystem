@@ -84,12 +84,17 @@ namespace BusinessManagementSystem.Controllers
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);
-                    var message = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewAppointmentTemplateArtist;
+                    #region email
+                    var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewAppointmentTemplateArtist;
+                    var messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewAppointmentTemplateClient;
                     var userInfo = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data;
                     string artistEmail = userInfo.Email;
                     appointmentDto.ArtistAssigned = userInfo.FullName;
-                    string htmlNewAppointmentArtist = _emailSender.PrepareEmailNewAppointmentArtist(appointmentDto, message);
+                    string htmlNewAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
+                    string htmlNewAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
                     _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlNewAppointmentArtist);
+                    _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "New Appointment", htmlNewAppointmentClient);
+                    #endregion
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -142,6 +147,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Edit(AppointmentDto appointmentDto)
         {
             appointmentDto.AppointmentCreatedId = userId;
+            appointmentDto.DbStatus = _businessLayer.AppointmentService.GetAppointmentByGuid(appointmentDto.guid).Data.Status;
             if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == appointmentDto.UserId)
             {
                 AppointmentSelectListViewBag();
@@ -151,6 +157,17 @@ namespace BusinessManagementSystem.Controllers
                     if (_responseDto.StatusCode == HttpStatusCode.OK)
                     {
                         _notyf.Success(_responseDto.Message);
+                        #region email
+                        var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentUpdateTemplateArtist;
+                        var messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentUpdateTemplateClient;
+                        var userInfo = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data;
+                        string artistEmail = userInfo.Email;
+                        appointmentDto.ArtistAssigned = userInfo.FullName;
+                        string htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
+                        string htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
+                        _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlUpdateAppointmentArtist);
+                        _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "New Appointment", htmlUpdateAppointmentClient);
+                        #endregion
                         if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
                             return RedirectToAction(nameof(Index));
                         else
@@ -169,7 +186,8 @@ namespace BusinessManagementSystem.Controllers
                     {
                         _notyf.Error(error.ErrorMessage);
                     }
-                    return RedirectToAction("Edit", new { guid = appointmentDto.guid });
+                    //return RedirectToAction("Edit", new { guid = appointmentDto.guid });
+                    return View(appointmentDto);
                 }
             }
             else

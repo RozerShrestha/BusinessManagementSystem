@@ -25,6 +25,9 @@ namespace BusinessManagementSystem.Dto
         [DisplayName("Client Phone Number *")]
         public string ClientPhoneNumber { get; set; }
         [Required]
+        [DisplayName("Client Email *")]
+        public string ClientEmail { get; set; }
+        [Required]
         [DisplayName("Appointment Date *")]
         public DateTime AppointmentDate { get; set; }
         [Required]
@@ -59,6 +62,7 @@ namespace BusinessManagementSystem.Dto
         [Required]
         [DisplayName("Status *")]
         public string Status { get; set; }
+        public string? DbStatus { get; set; }
         [Required]
         [Range(1000, int.MaxValue, ErrorMessage = "Deposit amount should be more than equal to 1000")]
         [DisplayName("Deposit *")]

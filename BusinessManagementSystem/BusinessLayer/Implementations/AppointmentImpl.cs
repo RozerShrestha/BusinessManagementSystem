@@ -119,6 +119,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 if(_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _responseAppointmentDto.Data = _mapper.Map<AppointmentDto>(_responseDto.Data);
+                    _responseAppointmentDto.Data.DbStatus = _responseDto.Data.Status;
                 }
                 else
                 {
@@ -225,6 +226,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             {
                 item.Data.ClientName = appointmentDto.ClientName;
                 item.Data.ClientPhoneNumber = appointmentDto.ClientPhoneNumber;
+                item.Data.ClientEmail = appointmentDto.ClientEmail;
                 item.Data.AppointmentDate = appointmentDto.AppointmentDate;
                 item.Data.Category = appointmentDto.Category;
                 item.Data.ReferalId = appointmentDto.ReferalId;
@@ -242,6 +244,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 item.Data.ConsentFormSigned = appointmentDto.ConsentFormSigned;
                 item.Data.FollowUpRequired = appointmentDto.FollowUpRequired;
                 item.Data.TotalHours = appointmentDto.TotalHours;
+                item.Data.Outlet = appointmentDto.Outlet;
                 item.Data.Payment = UpdatePayment(item.Data.Payment, appointmentDto);
                 if (item.Data.Status == "Completed")
                 {

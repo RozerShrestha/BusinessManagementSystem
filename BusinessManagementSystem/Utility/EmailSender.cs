@@ -61,7 +61,7 @@ namespace BusinessManagementSystem.Utility
             sb.Replace("{{occupation}}", userDto.Occupation);
             return sb.ToString();
         }
-        public string PrepareEmailNewAppointmentArtist(AppointmentDto appointmentDto, string message)
+        public string PrepareEmailAppointmentArtist(AppointmentDto appointmentDto, string message)
         {
             StringBuilder sb = new StringBuilder(message);
             sb.Replace("{{artistname}}", appointmentDto.ArtistAssigned);
@@ -72,24 +72,21 @@ namespace BusinessManagementSystem.Utility
             
             return sb.ToString();
         }
-        public string PrepareEmailHrApproved(string message, string fullName)
+        public string PrepareEmailAppointmentClient(AppointmentDto appointmentDto, string message)
         {
             StringBuilder sb = new StringBuilder(message);
-            sb.Replace("{{fullName}}", fullName);
+            sb.Replace("{{artistname}}", appointmentDto.ArtistAssigned);
+            sb.Replace("{{clientname}}", appointmentDto.ClientName);
+
+            sb.Replace("{{clientphonenumber}}", appointmentDto.ClientPhoneNumber);
+            sb.Replace("{{appointmentdate}}", appointmentDto.AppointmentDate.ToString());
+            sb.Replace("{{outletname}}", appointmentDto.Outlet);
+            sb.Replace("{{artistphonenumber}}", _unitOfWork.Users.GetById(appointmentDto.UserId).Data.PhoneNumber);
+
 
             return sb.ToString();
         }
-        public string PrepareEmailInsurancePlan(string message, string fullName, string oldPlan, string newPlan, string iNumber, int id = 0)
-        {
-            StringBuilder sb = new StringBuilder(message);
-            sb.Replace("{{fullName}}", fullName);
-            sb.Replace("{{inumber}}", iNumber);
-            sb.Replace("{{oldplan}}", oldPlan);
-            sb.Replace("{{newplan}}", newPlan);
-            sb.Replace("{{id}}", id.ToString());
 
-            return sb.ToString();
-        }
         private void GetEmailDetail()
         {
             var basicInfo = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data;

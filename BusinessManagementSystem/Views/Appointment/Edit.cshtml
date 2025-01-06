@@ -25,6 +25,11 @@
                         <span asp-validation-for="ClientPhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
+                        <label asp-for="ClientEmail" class="control-label"></label>
+                        <input asp-for="ClientEmail" class="form-control" type="email" />
+                        <span asp-validation-for="ClientEmail" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
                         <label asp-for="AppointmentDate" class="control-label"></label>
                         <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
                         <span asp-validation-for="AppointmentDate" class="text-danger"></span>
@@ -179,7 +184,7 @@
 
 
     </div>
-    @if(Model.Status!="Completed")
+    @if(Model.DbStatus!="Completed")
     {
         <span>Click <b>Calculate Total Cost</b> button First to active submit button</span>
          <div class="col-md-12">
@@ -189,7 +194,7 @@
                 </div>
             </div>
         </div>
-    }
+     }
 </form>
 
 @section Scripts {

@@ -31,6 +31,11 @@
                         <span asp-validation-for="ClientPhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
+                        <label asp-for="ClientEmail" class="control-label"></label>
+                        <input asp-for="ClientEmail" class="form-control" type="email" />
+                        <span asp-validation-for="ClientEmail" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
                         <label asp-for="AppointmentDate" class="control-label"></label>
                         <input asp-for="AppointmentDate" class="form-control non-editable"  type="datetime-local" />
                         <span asp-validation-for="AppointmentDate" class="text-danger"></span>

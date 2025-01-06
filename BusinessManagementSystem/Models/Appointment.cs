@@ -26,6 +26,9 @@ namespace BusinessManagementSystem.Models
         [DisplayName("Client Phone Number *")]
         public string ClientPhoneNumber { get; set; }
         [Required]
+        [DisplayName("Client Email *")]
+        public string ClientEmail { get; set; }
+        [Required]
         [DisplayName("Appointment Date *")]
         public DateTime AppointmentDate { get; set; }
         [Required]
@@ -89,6 +92,7 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.Allergies).HasColumnType("varchar(500)");
             builder.Property(x => x.MedicalConditions).HasColumnType("varchar(500)");
             builder.Property(x => x.PainToleranceLevel).HasColumnType("varchar(150)");
+            builder.Property(x => x.ClientEmail).HasColumnType("varchar(500)");
         }
     }
 }
