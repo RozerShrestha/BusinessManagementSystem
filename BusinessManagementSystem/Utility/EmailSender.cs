@@ -28,6 +28,10 @@ namespace BusinessManagementSystem.Utility
         }
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
+            if(htmlMessage.Contains("completed"))
+            {
+                subject = "Regarding Appointment Completion";
+            }
             new Task(() =>
             {
                 var emailToSend = new MimeMessage();
@@ -49,6 +53,7 @@ namespace BusinessManagementSystem.Utility
             _logger.LogInformation($"## {this.GetType().Name} Email Send to {email} Message: {htmlMessage}");
             return Task.CompletedTask;
         }
+        //for New User Creation
         public string PrepareEmail(UserDto userDto, string message)
         {
             StringBuilder sb = new StringBuilder(message);
@@ -57,39 +62,71 @@ namespace BusinessManagementSystem.Utility
             sb.Replace("{{email}}", userDto.Email);
             sb.Replace("{{mobilenumber}}", userDto.PhoneNumber);
             sb.Replace("{{password}}", userDto.Password);
-            sb.Replace("{{dateofbirth}}", userDto.DateOfBirth.ToString());
+            sb.Replace("{{dateofbirth}}", Helper.Helpers.FormatDate(userDto.DateOfBirth));
             sb.Replace("{{occupation}}", userDto.Occupation);
             return sb.ToString();
         }
         public string PrepareEmailAppointmentArtist(AppointmentDto appointmentDto, string message)
         {
             StringBuilder sb = new StringBuilder(message);
+            sb.Replace("{{status}}", appointmentDto.Status);
             sb.Replace("{{artistname}}", appointmentDto.ArtistAssigned);
             sb.Replace("{{clientname}}", appointmentDto.ClientName);
             sb.Replace("{{clientphonenumber}}", appointmentDto.ClientPhoneNumber);
-            sb.Replace("{{appointmentdate}}", appointmentDto.AppointmentDate.ToString());
+            sb.Replace("{{appointmentdate}}", Helper.Helpers.FormatDate(appointmentDto.AppointmentDate));
             sb.Replace("{{outletname}}", appointmentDto.Outlet);
             sb.Replace("{{tattooDesign}}", appointmentDto.TattooDesign);
             sb.Replace("{{placement}}", appointmentDto.Placement);
             sb.Replace("{{inkcolorpreference}}", appointmentDto.InkColorPreferance);
-            
+            sb.Replace("{{totalhours}}", appointmentDto.TotalHours.ToString());
+            sb.Replace("{{deposit}}", appointmentDto.Deposit.ToString());
+            sb.Replace("{{totalcost}}", appointmentDto.TotalCost.ToString());
+            if (appointmentDto.TipAmount > 0)
+            {
+                sb.Replace("###",$"Tip Amount: {appointmentDto.TipAmount.ToString()}");
+            }
+            else
+            {
+                sb.Replace("###", "");
+            }
             return sb.ToString();
         }
         public string PrepareEmailAppointmentClient(AppointmentDto appointmentDto, string message)
         {
             StringBuilder sb = new StringBuilder(message);
+            sb.Replace("{{status}}", appointmentDto.Status);
             sb.Replace("{{artistname}}", appointmentDto.ArtistAssigned);
             sb.Replace("{{clientname}}", appointmentDto.ClientName);
             sb.Replace("{{clientphonenumber}}", appointmentDto.ClientPhoneNumber);
-            sb.Replace("{{appointmentdate}}", appointmentDto.AppointmentDate.ToString());
+            sb.Replace("{{appointmentdate}}", Helper.Helpers.FormatDate(appointmentDto.AppointmentDate));
             sb.Replace("{{outletname}}", appointmentDto.Outlet);
             sb.Replace("{{artistphonenumber}}", _unitOfWork.Users.GetById(appointmentDto.UserId).Data.PhoneNumber);
             sb.Replace("{{tattooDesign}}", appointmentDto.TattooDesign);
             sb.Replace("{{placement}}", appointmentDto.Placement);
             sb.Replace("{{inkcolorpreference}}", appointmentDto.InkColorPreferance);
-            sb.Replace("{{estimatedhour}}", appointmentDto.TotalHours.ToString());
+            sb.Replace("{{totalhours}}", appointmentDto.TotalHours.ToString());
             sb.Replace("{{deposit}}", appointmentDto.Deposit.ToString());
+            sb.Replace("{{totalcost}}", appointmentDto.TotalCost.ToString());
+            if (appointmentDto.TipAmount > 0)
+            {
+                sb.Replace("###", $"Tip Amount: {appointmentDto.TipAmount.ToString()}");
+            }
+            else
+            {
+                sb.Replace("###", "");
+            }
 
+            return sb.ToString();
+        }
+        public string PrepareEmailPaymentSettlement(PaymentTipSettlementDto paymentTipSettlementDto, string message)
+        {
+            StringBuilder sb = new StringBuilder(message);
+            sb.Replace("{{artistname}}", paymentTipSettlementDto.ArtistName);
+            sb.Replace("{{startdate}}", Helper.Helpers.FormatDate(paymentTipSettlementDto.StartDate));
+            sb.Replace("{{enddate}}", Helper.Helpers.FormatDate(paymentTipSettlementDto.EndDate));
+            sb.Replace("{{totalTips}}", paymentTipSettlementDto.TotalTips.ToString());
+            sb.Replace("{{totalPayment}}", paymentTipSettlementDto.TotalPayments.ToString());
+            sb.Replace("{{grandTotal}}", paymentTipSettlementDto.GrandTotal.ToString());
             return sb.ToString();
         }
 
@@ -101,7 +138,6 @@ namespace BusinessManagementSystem.Utility
             password = basicInfo.Password;
             hostName = basicInfo.HostName;
             port = basicInfo.Port;
-
         }
     }
 }

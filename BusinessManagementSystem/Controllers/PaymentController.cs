@@ -107,6 +107,14 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult UpdatePaymentTipSettlementData([FromBody] PaymentTipSettlementDto paymentTipSettlementDto)
         {
             var response =_businessLayer.PaymentService.UpdatePaymentTipSettlement(paymentTipSettlementDto);
+            #region email
+            var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.PaymentSettlementTemplateArtist;
+            var userInfo = _businessLayer.UserService.GetUserById(paymentTipSettlementDto.UserId).Data;
+            string artistEmail = userInfo.Email;
+            paymentTipSettlementDto.ArtistName = userInfo.FullName;
+            string htmlPaymentSettlementArtist = _emailSender.PrepareEmailPaymentSettlement(paymentTipSettlementDto, messageArtist);
+            _emailSender.SendEmailAsync(email: artistEmail, subject: "Regarding Payment Settlement", htmlPaymentSettlementArtist);
+            #endregion
             return Ok(response);
         }
         [HttpPost]

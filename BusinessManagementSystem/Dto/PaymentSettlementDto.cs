@@ -7,6 +7,7 @@ namespace BusinessManagementSystem.Dto
         public List<PaymentSettlementDto> PaymentSettlements { get; set;}
         public List<TipSettlementDto> TipSettlements { get; set; }
         public int UserId { get; set; }
+        public string? ArtistName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double TotalPayments { get; set; }

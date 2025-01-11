@@ -171,6 +171,14 @@ namespace BusinessManagementSystem.Helper
                 return stream;
             }
         }
+        public static string FormatDate(DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd(h:mm tt)");
+        }
+        public static string FormatDate(DateOnly date)
+        {
+            return date.ToString("yyyy-MM-dd(h:mm tt)");
+        }
         private static void LoadDataIntoSheet(ExcelWorksheet sheet, List<string[]> data)
         {
             for (int i = 0; i < data.Count; i++)
@@ -181,5 +189,6 @@ namespace BusinessManagementSystem.Helper
                 }
             }
         }
+        
     }
 }

@@ -146,6 +146,10 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Edit(AppointmentDto appointmentDto)
         {
+            string htmlUpdateAppointmentArtist = "";
+            string htmlUpdateAppointmentClient = "";
+            string messageArtist = "";
+            string messageClient = "";
             appointmentDto.AppointmentCreatedId = userId;
             appointmentDto.DbStatus = _businessLayer.AppointmentService.GetAppointmentByGuid(appointmentDto.guid).Data.Status;
             if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == appointmentDto.UserId)
@@ -158,15 +162,27 @@ namespace BusinessManagementSystem.Controllers
                     {
                         _notyf.Success(_responseDto.Message);
                         #region email
-                        var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentUpdateTemplateArtist;
-                        var messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentUpdateTemplateClient;
+                        
                         var userInfo = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data;
                         string artistEmail = userInfo.Email;
                         appointmentDto.ArtistAssigned = userInfo.FullName;
-                        string htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
-                        string htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
-                        _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlUpdateAppointmentArtist);
-                        _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "New Appointment", htmlUpdateAppointmentClient);
+                        if (appointmentDto.Status == AppointmentStat.Completed.ToString())
+                        {
+                            messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentCompletedArtist;
+                            messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentCompletedClient;
+                            htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
+                            htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
+                        }
+                        else
+                        {
+                            messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentUpdateTemplateArtist;
+                            messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentUpdateTemplateClient;
+                            htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
+                            htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
+                        }
+                       
+                        _emailSender.SendEmailAsync(email: artistEmail, subject: "Regarding Change In Appointment", htmlUpdateAppointmentArtist);
+                        _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "Regarding Change In Appointment", htmlUpdateAppointmentClient);
                         #endregion
                         if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
                             return RedirectToAction(nameof(Index));
