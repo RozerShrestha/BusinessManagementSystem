@@ -11,12 +11,12 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using OfficeOpenXml;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using NLog.Web;
 
 namespace BusinessManagementSystem.Helper
 {
     public static class Helpers
     {
-        
         public static Guid GenerateGUID()
         {
             Guid obj = Guid.NewGuid();
@@ -73,32 +73,20 @@ namespace BusinessManagementSystem.Helper
             numBytesRequested: 256 / 8));
             return hashed;
         }
-        public static string DocUpload(IFormFile file, string documentType, string username = "", string nameOfFile = "")
+        public static string DocUpload(IWebHostEnvironment env, IFormFile file, string documentType, string username = "", string nameOfFile = "")
         {
             var logger = NLog.Web.NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
+            var logger1 = NLog.LogManager.Setup().LoadConfigurationFromAppSettings();
             string documentRootPath = "";
             string fileName = "";
             string returnString="";
             var extension = Path.GetExtension(file.FileName);
             if (documentType == "ProfilePicture")
             {
-                fileName =file.FileName;
-                documentRootPath = Path.GetFullPath(Path.Combine(new string[]{Environment.CurrentDirectory, "wwwroot","image", "ProfilePicture"}));
+                //fileName =file.FileName;
+                //documentRootPath = Path.GetFullPath(Path.Combine(new string[]{Environment.CurrentDirectory, "wwwroot","images", "ProfilePic"}));
+                documentRootPath = Path.Combine(env.WebRootPath, "uploads", "ProfilePic");
             }
-            else if (documentType==DocumentType.InsuranceExcelUpload)
-            {
-                fileName = nameOfFile+extension;
-                fileName = fileName.Replace("/", "-");
-                documentRootPath = Path.GetFullPath(Path.Combine(new string[] {Environment.CurrentDirectory, "wwwroot", "image", "BusinessManagementSystemExcel" })); 
-            }
-            else
-            {
-                fileName = Helpers.GenerateGUID() + extension;
-                documentRootPath = Path.GetFullPath(Path.Combine(new string[] {Environment.CurrentDirectory, "wwwroot", "image", "EmployeeRelatedDoc", username, documentType }));
-                //documentRootPath = Path.Combine(webRootPath, @$"Uploads\EmployeeRelatedDoc\{username}\{documentType}");
-            }
-
-
             if (!Directory.Exists(documentRootPath))
             {
                 Directory.CreateDirectory(documentRootPath);
@@ -106,10 +94,10 @@ namespace BusinessManagementSystem.Helper
 
             
 
-            var fullPath = Path.Combine(documentRootPath, fileName);
+            var fullPath = Path.Combine(documentRootPath, $"{username}{extension}");
             using (var fileStream = new FileStream(fullPath, FileMode.Create))
             {
-                file.CopyTo(fileStream);
+                file.CopyToAsync(fileStream);
             }
             logger.Info("## DocumentPath: " + documentRootPath);
             logger.Info("## FullPath: " + fullPath);
@@ -119,8 +107,9 @@ namespace BusinessManagementSystem.Helper
             }
             else
             {
-                returnString = fullPath.Split("wwwroot\\")[1];
+                returnString = fullPath.Split("wwwroot")[1];
             }
+            logger.Info("## returnedPath: " + returnString);
             return returnString;
         }
         public static string ValidateDocumentUpload(IFormFile file)
@@ -177,7 +166,7 @@ namespace BusinessManagementSystem.Helper
         }
         public static string FormatDate(DateOnly date)
         {
-            return date.ToString("yyyy-MM-dd(h:mm tt)");
+            return date.ToString("yyyy-MM-dd");
         }
         private static void LoadDataIntoSheet(ExcelWorksheet sheet, List<string[]> data)
         {

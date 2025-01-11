@@ -31,10 +31,11 @@ namespace BusinessManagementSystem.Controllers
         private ILogger<UsersController> _logger;
         private readonly ModalView _modalView;
         private readonly dynamic roleList;
-        public UsersController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
+        private IWebHostEnvironment _env;
+        public UsersController(IWebHostEnvironment env, IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<UsersController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             roleList = _businessLayer.UserService.RoleList();
-            
+            _env = env;
             _responseDto = new ResponseDto<User>();
             _responseUserDto = new ResponseDto<UserDto>();
             _responseUserDetailDto = new ResponseDto<UserDetailDto>();
@@ -108,7 +109,7 @@ namespace BusinessManagementSystem.Controllers
             }
             if (ModelState.IsValid)
             {
-                userDto.ProfilePictureLink =ProfilePictureLink==null?string.Empty: Helpers.DocUpload(ProfilePictureLink, "ProfilePicture", username);
+                userDto.ProfilePictureLink =ProfilePictureLink==null?string.Empty: Helpers.DocUpload(_env,ProfilePictureLink, "ProfilePicture", username);
                 _responseDto = _businessLayer.UserService.CreateUser(userDto);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
@@ -169,7 +170,7 @@ namespace BusinessManagementSystem.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    userDto.ProfilePictureLink = ProfilePictureLink == null ? string.Empty : Helpers.DocUpload(ProfilePictureLink, "ProfilePicture", username);
+                    userDto.ProfilePictureLink = ProfilePictureLink == null ? string.Empty : Helpers.DocUpload(_env, ProfilePictureLink, "ProfilePicture", userDto.Email);
                     _responseDto = _businessLayer.UserService.UpdateUser(userDto);
                     if (_responseDto.StatusCode == HttpStatusCode.OK)
                     {
