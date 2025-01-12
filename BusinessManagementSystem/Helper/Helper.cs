@@ -97,7 +97,7 @@ namespace BusinessManagementSystem.Helper
             var fullPath = Path.Combine(documentRootPath, $"{username}{extension}");
             using (var fileStream = new FileStream(fullPath, FileMode.Create))
             {
-                file.CopyToAsync(fileStream);
+                file.CopyTo(fileStream);
             }
             logger.Info("## DocumentPath: " + documentRootPath);
             logger.Info("## FullPath: " + fullPath);
