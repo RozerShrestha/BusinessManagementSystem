@@ -194,6 +194,7 @@ namespace BusinessManagementSystem.Repositories
                 var queryPayments = from u in _dbContext.Users
                             join a in _dbContext.Appointments on u.Id equals a.UserId
                             join p in _dbContext.Payments on a.Id equals p.AppointmentId
+
                             select new
                             {
                                 User = u,
@@ -302,14 +303,26 @@ namespace BusinessManagementSystem.Repositories
             try
             {
                 var paymentHistory = (from p in _dbContext.PaymentHistories
-                                      select p);
+                                      join u in _dbContext.Users
+                                      on p.UserId equals u.Id
+                                      select new PaymentHistory
+                                      {
+                                          Id = p.Id,
+                                          UserId=p.UserId,
+                                          ArtistName=u.FullName,
+                                          TotalPayment=p.TotalPayment,
+                                          TotalTips=p.TotalTips,
+                                          GrandTotal=p.GrandTotal,
+                                          PaidStatus=p.PaidStatus,
+                                          PaymentFrom=p.PaymentFrom,
+                                          PaymentTo=p.PaymentTo
+                                      }).OrderByDescending(x=>x.PaymentFrom).AsQueryable();
                 if (requestDto.StartDate != null)
                     paymentHistory = paymentHistory.Where(x => x.PaymentFrom >=DateOnly.FromDateTime(requestDto.StartDate));
                 if (requestDto.EndDate != null)
-                    paymentHistory = paymentHistory.Where(x => x.PaymentFrom <= DateOnly.FromDateTime(requestDto.StartDate));
+                    paymentHistory = paymentHistory.Where(x => x.PaymentFrom <= DateOnly.FromDateTime(requestDto.EndDate));
                 if (requestDto.UserId > 0)
                     paymentHistory = paymentHistory.Where(x => x.UserId == requestDto.UserId);
-                paymentHistory.OrderByDescending(x => x.PaymentFrom).AsQueryable();
 
                 _responsePaymentHistory.Datas = paymentHistory.ToList();
             }

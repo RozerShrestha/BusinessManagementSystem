@@ -51,7 +51,7 @@ namespace BusinessManagementSystem.Repositories
                 _responseDtoUserRole.Datas = (from u in _dbContext.Users
                                               join ur in _dbContext.UserRoles on u.Id equals ur.UserId
                                               join r in _dbContext.Roles on ur.RoleId equals r.Id
-                                              where r.Name==SD.Role_TattooAdmin || u.Occupation== "TattooArtist" || u.UserName=="prajina"
+                                              where u.Occupation == SD.Occupations[Occupation.TattooArtist.ToString()] //this is the correct one and implement similar in all below
                                               select new UserRoleDto
                                               {
                                                   User = u,
@@ -95,6 +95,7 @@ namespace BusinessManagementSystem.Repositories
         public dynamic ArtistList()
         {
             var artistList = _dbContext.Users.Where(p=>p.Occupation.Equals("Tattoo Artist") && p.Status==true).Select(p => new { Id = p.Id, Name = p.FullName }).ToList().OrderBy(x=>x.Name);
+            artistList= artistList.Union(new[] { new { Id = 0, Name = "All" } }).OrderBy(x => x.Name);
             return artistList;
         }
     }

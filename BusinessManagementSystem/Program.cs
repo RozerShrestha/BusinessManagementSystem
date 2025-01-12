@@ -172,11 +172,11 @@ app.UseStatusCodePages(context =>
         app.Logger.LogWarning("Forbidden");
         response.Redirect("/Users/AccessDenied");
     }
-    //else if (response.StatusCode == (int)HttpStatusCode.NotFound)
-    //{
-    //    app.Logger.LogWarning("NotFound");
-    //    response.Redirect("/Error/PageNotFound");
-    //}
+    else if (response.StatusCode == (int)HttpStatusCode.NotFound)
+    {
+        app.Logger.LogWarning("NotFound");
+        response.Redirect("/Error/PageNotFound");
+    }
 
     return Task.CompletedTask;
 });

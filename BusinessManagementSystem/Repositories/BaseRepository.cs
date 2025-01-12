@@ -61,7 +61,8 @@ namespace BusinessManagementSystem.Repositories
                                       u.Email,
                                       u.PhoneNumber,
                                       r.Id,
-                                      RoleName = r.Name
+                                      RoleName = r.Name,
+
 
                                   }).Single();
                 userDto.UserId = userDetail.userId;
@@ -71,6 +72,7 @@ namespace BusinessManagementSystem.Repositories
                 userDto.RoleId = userDetail.Id;
                 userDto.RoleName = userDetail.RoleName;
                 userDto.FullName = userDetail.FullName;
+                userDto.Initial = GetInitials(userDetail.FullName);
             }
             catch (Exception)
             {
@@ -82,6 +84,19 @@ namespace BusinessManagementSystem.Repositories
         {
             var roleLIst = _db.Roles.Select(p => new { Id = p.Id, Name = p.Name }).ToList();
             return roleLIst;
+        }
+        private string GetInitials(string fullName)
+        {
+            if(string.IsNullOrWhiteSpace(fullName))
+            return string.Empty;
+
+            // Split the full name into words and take the first letter of each word
+            var initials = fullName
+                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(word => char.IsLetter(word[0]))
+                .Select(word => char.ToUpper(word[0]));
+
+            return string.Concat(initials);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace BusinessManagementSystem.Models
         [Key]
         public int Id { get; set; }
         public int UserId { get; set; }
+        public string? ArtistName { get; set; }
         public double TotalPayment { get; set; }
         public double TotalTips { get; set; }
         public double GrandTotal { get; set; }

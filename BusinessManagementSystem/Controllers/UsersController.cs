@@ -152,6 +152,7 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "superadmin")]
         public IActionResult Edit(UserDto userDto, IFormFile? ProfilePictureLink)
         {
             ModelState.Remove(nameof(userDto.Password)); //just to ignore ConfirmPassword to validate

@@ -70,6 +70,7 @@ namespace BusinessManagementSystem.Dto
         public int? Percentage { get; set; }
         [DisplayName("Default Tips")]
         public bool DefaultTips { get; set; }
+        public string? Initial { get; set; }
 
     }
 }
