@@ -107,7 +107,8 @@ namespace BusinessManagementSystem.Helper
             }
             else
             {
-                returnString = fullPath.Split("wwwroot")[1];
+                
+                returnString =fullPath.Split("\\wwwroot\\").Length==3?fullPath.Split("\\wwwroot\\")[2]: fullPath.Split("\\wwwroot\\").Length == 2? fullPath.Split("\\wwwroot\\")[1]:"";
             }
             logger.Info("## returnedPath: " + returnString);
             return returnString;
