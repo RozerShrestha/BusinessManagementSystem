@@ -51,38 +51,43 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             bool isUpdated = true;
             List<Payment> paymentList = new List<Payment>();
             List<Tip> tipList=new List<Tip>();
-            foreach (var p in paymentTipSettlementDto.PaymentSettlements)
-             {
-                var payment = _unitOfWork.Payment.GetById(p.PaymentId);
-                payment.Data.PaymentSettlement = true;
-                paymentList.Add(payment.Data);
-            }
-            foreach(var t in paymentTipSettlementDto.TipSettlements)
+            if (paymentTipSettlementDto.UserId != 0)
             {
-                var tip = _unitOfWork.Tip.GetById(t.TipId);
-                tip.Data.TipSettlement = true;
-                tipList.Add(tip.Data);
-            }
-            var responsePayment =_unitOfWork.Payment.UpdateAll(paymentList);
-            var responseTip = _unitOfWork.Tip.UpdateAll(tipList);
-            if(responsePayment.StatusCode==HttpStatusCode.OK && responseTip.StatusCode==HttpStatusCode.OK)
-            {
-                PaymentHistory paymentHistory = new PaymentHistory
+                foreach (var p in paymentTipSettlementDto.PaymentSettlements)
                 {
-                    UserId=paymentTipSettlementDto.UserId,
-                    TotalPayment=paymentTipSettlementDto.TotalPayments,
-                    TotalTips=paymentTipSettlementDto.TotalTips,
-                    GrandTotal=paymentTipSettlementDto.GrandTotal,
-                    PaidStatus="Paid",
-                    PaymentFrom= DateOnly.FromDateTime(paymentTipSettlementDto.StartDate),
-                    PaymentTo= DateOnly.FromDateTime(paymentTipSettlementDto.EndDate)
-                };
-                var reponsePaymentHistory=_unitOfWork.Payment.CreatePaymentHistory(paymentHistory);
+                    var payment = _unitOfWork.Payment.GetById(p.PaymentId);
+                    payment.Data.PaymentSettlement = true;
+                    paymentList.Add(payment.Data);
+                }
+                foreach (var t in paymentTipSettlementDto.TipSettlements)
+                {
+                    var tip = _unitOfWork.Tip.GetById(t.TipId);
+                    tip.Data.TipSettlement = true;
+                    tipList.Add(tip.Data);
+                }
+                var responsePayment = _unitOfWork.Payment.UpdateAll(paymentList);
+                var responseTip = _unitOfWork.Tip.UpdateAll(tipList);
+                if (responsePayment.StatusCode == HttpStatusCode.OK && responseTip.StatusCode == HttpStatusCode.OK)
+                {
+                    PaymentHistory paymentHistory = new PaymentHistory
+                    {
+                        UserId = paymentTipSettlementDto.UserId,
+                        TotalPayment = paymentTipSettlementDto.TotalPayments,
+                        TotalTips = paymentTipSettlementDto.TotalTips,
+                        GrandTotal = paymentTipSettlementDto.GrandTotal,
+                        PaidStatus = "Paid",
+                        PaymentFrom = DateOnly.FromDateTime(paymentTipSettlementDto.StartDate),
+                        PaymentTo = DateOnly.FromDateTime(paymentTipSettlementDto.EndDate)
+                    };
+                    var reponsePaymentHistory = _unitOfWork.Payment.CreatePaymentHistory(paymentHistory);
+                }
+                return isUpdated;
             }
-           
-
-
-            return isUpdated;
+            else
+            {
+                isUpdated = false;
+                return isUpdated;
+            }
         }
     }
 }

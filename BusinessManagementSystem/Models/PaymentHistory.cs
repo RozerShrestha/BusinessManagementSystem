@@ -11,6 +11,8 @@ namespace BusinessManagementSystem.Models
         [Key]
         public int Id { get; set; }
         public int UserId { get; set; }
+        [NotMapped]
+        [ValidateNever]
         public string? ArtistName { get; set; }
         public double TotalPayment { get; set; }
         public double TotalTips { get; set; }
@@ -26,7 +28,7 @@ namespace BusinessManagementSystem.Models
     {
         public void Configure(EntityTypeBuilder<PaymentHistory> builder)
         {
-            builder.HasIndex(x => new { x.PaymentFrom, x.PaymentTo}).IsUnique();
+            builder.HasIndex(x => new { x.UserId, x.PaymentFrom, x.PaymentTo}).IsUnique();
             builder.Property(x => x.PaidStatus).HasColumnType("varchar(100)");
         }
     }
