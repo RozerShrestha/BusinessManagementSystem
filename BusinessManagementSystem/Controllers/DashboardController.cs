@@ -31,14 +31,18 @@ namespace BusinessManagementSystem.Controllers
 
         public IActionResult Index()
         {
-            List<DataPoint> dataPoints = new List<DataPoint>();
+            ViewBag.DataPointsIncomeSegregation = _businessLayer.DashboardService.GetIncomeSegregation();
+            string PaymentTipCombined= _businessLayer.DashboardService.GetPaymentTipSegregation();
+            string Payment = PaymentTipCombined.Split("##")[0];
+            string Tips = PaymentTipCombined.Split("##")[1];
 
-            dataPoints.Add(new DataPoint("Payment", 403400));
-            dataPoints.Add(new DataPoint("Tips", 57000));
-
-            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
-
+            ViewBag.DataPointsPaymentSegregation = Payment;
+            ViewBag.DataPointsTipSegregation = Tips;
             return View();
         }
+
+        #region API
+
+        #endregion
     }
 }

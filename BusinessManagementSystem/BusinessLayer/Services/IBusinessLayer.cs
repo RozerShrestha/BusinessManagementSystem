@@ -13,5 +13,6 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         IReferalService ReferalService { get; }
         ITipService TipService { get; }
         IPaymentService PaymentService { get; }
+        IDashboardService DashboardService { get; }
     }
 }

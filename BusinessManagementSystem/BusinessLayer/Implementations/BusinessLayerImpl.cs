@@ -22,7 +22,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             AppointmentService = new AppointmentImpl(_unitOfWork, mapper);
             ReferalService = new ReferalImpl(_unitOfWork, mapper);
             TipService = new TipImpl(_unitOfWork, mapper);
-            PaymentService = new PaymentImpl(_unitOfWork, mapper); 
+            PaymentService = new PaymentImpl(_unitOfWork, mapper);
+            DashboardService=new DashboardImpl(_unitOfWork, mapper);
         }
         public IBaseService BaseService { get; private set; }
 
@@ -36,5 +37,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public IReferalService ReferalService { get; private set; }
         public ITipService TipService { get; private set; }
         public IPaymentService PaymentService { get; private set; }
+        public IDashboardService DashboardService { get; private set; }
     }
 }
