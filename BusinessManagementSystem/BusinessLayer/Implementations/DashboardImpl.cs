@@ -30,16 +30,28 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             List<PaymentTipsDataPoint> dataPoints1 = new List<PaymentTipsDataPoint>();
             List<PaymentTipsDataPoint> dataPoints2 = new List<PaymentTipsDataPoint>();
+            var Payments = _unitOfWork.Payment.GetAll(p => p.PaymentSettlement == true);
+            var Tips = _unitOfWork.Tip.GetAll(q => q.TipSettlement == true);
+            foreach(var Payment in Payments.Datas)
+            {
+                dataPoints1.Add(new PaymentTipsDataPoint(_unitOfWork.Users.GetById(Payment.UserId).Data.FullName, Payment.TotalCost));
+            }
+            foreach(var Tip in Tips.Datas)
+            {
+                dataPoints2.Add(new PaymentTipsDataPoint(_unitOfWork.Users.GetById(Tip.TipAssignedToUser).Data.FullName, Tip.TipAmountForUsers));
+            }
 
-            dataPoints1.Add(new PaymentTipsDataPoint("Sanik", 234000));
-            dataPoints1.Add(new PaymentTipsDataPoint("Laddu", 310000));
-            dataPoints1.Add(new PaymentTipsDataPoint("Dinesh", 170000));
-            dataPoints1.Add(new PaymentTipsDataPoint("Pramik", 120000));
+            
 
-            dataPoints2.Add(new PaymentTipsDataPoint("Sanik", 20000));
-            dataPoints2.Add(new PaymentTipsDataPoint("Laddu", 20000));
-            dataPoints2.Add(new PaymentTipsDataPoint("Dinesh", 30000));
-            dataPoints2.Add(new PaymentTipsDataPoint("Pramik", 10000));
+            //dataPoints1.Add(new PaymentTipsDataPoint("Sanik", 234000));
+            //dataPoints1.Add(new PaymentTipsDataPoint("Laddu", 310000));
+            //dataPoints1.Add(new PaymentTipsDataPoint("Dinesh", 170000));
+            //dataPoints1.Add(new PaymentTipsDataPoint("Pramik", 120000));
+
+            //dataPoints2.Add(new PaymentTipsDataPoint("Sanik", 20000));
+            //dataPoints2.Add(new PaymentTipsDataPoint("Laddu", 20000));
+            //dataPoints2.Add(new PaymentTipsDataPoint("Dinesh", 30000));
+            //dataPoints2.Add(new PaymentTipsDataPoint("Pramik", 10000));
 
             return $"{JsonConvert.SerializeObject(dataPoints1)}##{JsonConvert.SerializeObject(dataPoints2)}";
         }
