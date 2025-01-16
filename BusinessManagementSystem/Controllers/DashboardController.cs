@@ -2,6 +2,7 @@
 using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Dto.Chart;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
@@ -30,6 +31,13 @@ namespace BusinessManagementSystem.Controllers
 
         public IActionResult Index()
         {
+            List<DataPoint> dataPoints = new List<DataPoint>();
+
+            dataPoints.Add(new DataPoint("Payment", 403400));
+            dataPoints.Add(new DataPoint("Tips", 57000));
+
+            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+
             return View();
         }
     }

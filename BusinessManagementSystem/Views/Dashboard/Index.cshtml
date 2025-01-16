@@ -1,7 +1,152 @@
 ﻿@model BusinessManagementSystem.ViewModels.DashboardVM
-<br />
-
-<br />
-<div>
-<h4>Dashboard</h4>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-dark">
+            <div class="card-header">
+                <h3 class="card-title">All Appointments</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>65</h3>
+                                <p>In Progress</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-gradient-warning">
+                            <div class="inner">
+                                <h3>150</h3>
+                                <p>Scheduled / Re Scheduled</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-maroon">
+                            <div class="inner">
+                                <h3>44</h3>
+                                <p>Confirmed</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>53</h3>
+                                <p>Completed</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card card-outline card-dark">
+            <div class="card-header">
+                <h3 class="card-title">My Appointments</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>65</h3>
+                                <p>In Progress</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-gradient-warning">
+                            <div class="inner">
+                                <h3>150</h3>
+                                <p>Scheduled / Re Scheduled</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-maroon">
+                            <div class="inner">
+                                <h3>44</h3>
+                                <p>Confirmed</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>53</h3>
+                                <p>Completed</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    </div>
 </div>
+
+
+@section Scripts {
+    <script>
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                title: {
+                    text: "Income Segregation"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 180,
+                    toolTipContent: "<b>{label}</b>: {y}",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabel: "{label} - {y}",
+                    dataPoints: @Html.Raw(ViewBag.DataPoints)
+            }]
+            });
+            chart.render();
+        }
+    </script>
+}
+
