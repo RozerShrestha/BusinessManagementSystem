@@ -30,15 +30,15 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             List<PaymentTipsDataPoint> dataPoints1 = new List<PaymentTipsDataPoint>();
             List<PaymentTipsDataPoint> dataPoints2 = new List<PaymentTipsDataPoint>();
-            var Payments = _unitOfWork.Payment.GetAll(p => p.PaymentSettlement == true);
-            var Tips = _unitOfWork.Tip.GetAll(q => q.TipSettlement == true);
-            foreach(var Payment in Payments.Datas)
+            var Payments = _unitOfWork.Payment.GetAllPayments();
+            var Tips = _unitOfWork.Tip.GetAllTips();
+            foreach(var Payment in Payments)
             {
-                dataPoints1.Add(new PaymentTipsDataPoint(_unitOfWork.Users.GetById(Payment.UserId).Data.FullName, Payment.TotalCost));
+                dataPoints1.Add(new PaymentTipsDataPoint(Payment.FullName, Payment.TotalPaymentToArtist));
             }
-            foreach(var Tip in Tips.Datas)
+            foreach(var Tip in Tips)
             {
-                dataPoints2.Add(new PaymentTipsDataPoint(_unitOfWork.Users.GetById(Tip.TipAssignedToUser).Data.FullName, Tip.TipAmountForUsers));
+                dataPoints2.Add(new PaymentTipsDataPoint(Tip.FullName, Tip.TotalPaymentToArtist));
             }
 
             

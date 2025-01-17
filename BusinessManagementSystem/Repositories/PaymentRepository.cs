@@ -333,5 +333,20 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responsePaymentHistory;
         }
+
+        public dynamic GetAllPayments()
+        {
+            var result = (from p in _dbContext.Payments
+                          join u in _dbContext.Users
+                          on p.UserId equals u.Id
+                          where p.PaymentSettlement == true
+                          group p by new { u.FullName } into g
+                          select new
+                          {
+                              FullName = g.Key.FullName,
+                              TotalPaymentToArtist = g.Sum(p => p.PaymentToArtist)
+                          }).ToList();
+            return result;
+        }
     }
 }

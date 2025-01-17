@@ -48,6 +48,22 @@ namespace BusinessManagementSystem.Repositories
             return _responseTipDto;
                              
         }
+
+        public dynamic GetAllTips()
+        {
+            var result = (from p in _dbContext.Tips
+                          join u in _dbContext.Users
+                          on p.TipAssignedToUser equals u.Id
+                          where p.TipSettlement == true
+                          group p by new { u.FullName } into g
+                          select new
+                          {
+                              FullName = g.Key.FullName,
+                              TotalPaymentToArtist = g.Sum(p => p.TipAmountForUsers)
+                          }).ToList();
+            return result;
+        }
+
         public ResponseDto<TipDto> GetMyTips(int userId, RequestDto requestDto)
         {
             var query = (from t in _dbContext.Tips
