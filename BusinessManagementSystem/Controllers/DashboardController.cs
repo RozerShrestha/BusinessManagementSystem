@@ -8,7 +8,9 @@ using BusinessManagementSystem.Services;
 using BusinessManagementSystem.Utility;
 using BusinessManagementSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text.Encodings.Web;
@@ -21,7 +23,6 @@ namespace BusinessManagementSystem.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly ILogger<DashboardController> _logger;
         //private readonly ModalView _modalView;
-        private ResponseDto<DashboardVM> _responseDto;
         public DashboardController(IWebHostEnvironment env, IBusinessLayer businessLayer, ILogger<DashboardController> logger, INotyfService notyf, IEmailSender emailSender, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
             _env = env;
@@ -29,20 +30,69 @@ namespace BusinessManagementSystem.Controllers
             //_modalView = new ModalView();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(RequestDto requestDto1)
         {
-            ViewBag.DataPointsIncomeSegregation = _businessLayer.DashboardService.GetIncomeSegregation();
-            string PaymentTipCombined= _businessLayer.DashboardService.GetPaymentTipSegregation();
+            RequestDto requestDto = new RequestDto();
+            if (requestDto1.StartDate==DateTime.MinValue)
+                requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            else
+            {
+                requestDto = requestDto1;
+            }
+            requestDto.ParameterFilter = ""; // this means only start date and end date
+            string PaymentTipCombined= _businessLayer.DashboardService.GetPaymentTipSegregation(requestDto);
             string Payment = PaymentTipCombined.Split("##")[0];
             string Tips = PaymentTipCombined.Split("##")[1];
+            var AppointmentSegregationLoginEmployee = _businessLayer.DashboardService.GetDashboardInfo(requestDto, userId);
+            IDictionary<string, dynamic> DashboardInfoDict= new Dictionary<string, dynamic>();
+            DashboardInfoDict.Add("DataPointsIncomeSegregation",_businessLayer.DashboardService.GetIncomeSegregation(requestDto));
+            DashboardInfoDict.Add("DataPointsPaymentSegregation", Payment);
+            DashboardInfoDict.Add("DataPointsTipSegregation", Tips);
+            DashboardInfoDict.Add("AppointmentSegregationLoginEmployee", AppointmentSegregationLoginEmployee);
+            if (roleName == SD.Role_TattooAdmin || roleName == SD.Role_Superadmin)
+            {
+                var AppointmentSegregationAllEmployee = _businessLayer.DashboardService.GetDashboardInfoAllEmployee(requestDto);
+                DashboardInfoDict.Add("AppointmentSegregationAllEmployee", AppointmentSegregationAllEmployee);
+            }
 
-            ViewBag.DataPointsPaymentSegregation = Payment;
-            ViewBag.DataPointsTipSegregation = Tips;
-            return View();
+            ViewBag.DashboardInfo = DashboardInfoDict;
+
+            return View(requestDto);
+        }
+
+        private IDictionary<string, dynamic> PrepareDashboardInfo(RequestDto requestDto)
+        {
+            requestDto.ParameterFilter = ""; // This means only start date and end date
+
+            string PaymentTipCombined = _businessLayer.DashboardService.GetPaymentTipSegregation(requestDto);
+            string Payment = PaymentTipCombined.Split("##")[0];
+            string Tips = PaymentTipCombined.Split("##")[1];
+            var AppointmentSegregationLoginEmployee = _businessLayer.DashboardService.GetDashboardInfo(requestDto, userId);
+
+            IDictionary<string, dynamic> DashboardInfoDict = new Dictionary<string, dynamic>
+        {
+            { "DataPointsIncomeSegregation", _businessLayer.DashboardService.GetIncomeSegregation(requestDto) },
+            { "DataPointsPaymentSegregation", Payment },
+            { "DataPointsTipSegregation", Tips },
+            { "AppointmentSegregationLoginEmployee", AppointmentSegregationLoginEmployee }
+        };
+
+            if (roleName == SD.Role_TattooAdmin || roleName == SD.Role_Superadmin)
+            {
+                var AppointmentSegregationAllEmployee = _businessLayer.DashboardService.GetDashboardInfoAllEmployee(requestDto);
+                DashboardInfoDict.Add("AppointmentSegregationAllEmployee", AppointmentSegregationAllEmployee);
+            }
+
+            return DashboardInfoDict;
         }
 
         #region API
-
+        [HttpPost]
+        public IActionResult GetDashboardInfo([FromBody] RequestDto requestDto)
+        {
+            var dashboardInfo = PrepareDashboardInfo(requestDto);
+            return Json(dashboardInfo);
+        }
         #endregion
     }
 }

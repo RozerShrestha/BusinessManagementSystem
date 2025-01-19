@@ -95,5 +95,16 @@ namespace BusinessManagementSystem.Repositories
             _responseTipDto.Datas = query;
             return _responseTipDto;
         }
+
+        public dynamic GetTipsSegregation(RequestDto requestDto)
+        {
+            var result = _dbContext.Tips.Where(t => t.TipSettlement == true && t.UpdatedAt >= requestDto.StartDate && t.UpdatedAt <= requestDto.EndDate)
+                       .GroupBy(t => 1)
+                       .Select(g => new
+                       {
+                           TotalTips = g.Sum(t => t.TipAmountForUsers)
+                       }).FirstOrDefault();
+            return result;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿ using AutoMapper;
 using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Dto.Chart;
 using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;

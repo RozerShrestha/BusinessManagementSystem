@@ -3,6 +3,7 @@ using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -346,6 +347,19 @@ namespace BusinessManagementSystem.Repositories
                               FullName = g.Key.FullName,
                               TotalPaymentToArtist = g.Sum(p => p.PaymentToArtist)
                           }).ToList();
+            return result;
+        }
+
+        public dynamic GetAllPaymentSegregation(RequestDto requestDto)
+        {
+            var result = _dbContext.Payments.Where(p => p.PaymentSettlement == true && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate)
+                        .GroupBy(p => 1) // Group by a constant value to calculate the sum over all rows
+                        .Select(g => new
+                        {
+                            TotalPaymentToStudio = g.Sum(p => p.PaymentToStudio),
+                            TotalPaymentToArtist = g.Sum(p => p.PaymentToArtist)
+                        })
+                        .FirstOrDefault();
             return result;
         }
     }

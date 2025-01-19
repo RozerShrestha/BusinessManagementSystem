@@ -7,7 +7,7 @@ namespace BusinessManagementSystem.Services
     {
         ResponseDto<TipDto> GetAllTips(RequestDto requestDto);
         dynamic GetAllTips();
-
+        dynamic GetTipsSegregation(RequestDto requestDto);
         ResponseDto<TipDto> GetMyTips(int userId, RequestDto requestDto);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Dto.Chart;
 using BusinessManagementSystem.Models;
 
 namespace BusinessManagementSystem.BusinessLayer.Services
@@ -7,7 +8,6 @@ namespace BusinessManagementSystem.BusinessLayer.Services
     {
         ResponseDto<AppointmentDto> GetAllAppointment(RequestDto requestDto);
         ResponseDto<AppointmentDto> GetAllAppointmentByArtist(int userId, RequestDto requestDto);
-
         ResponseDto<AppointmentDto> GetAppointmentById(int id);
         ResponseDto<AppointmentDto> GetAppointmentByGuid(Guid guid);
         ResponseDto<Appointment> GetAppointmentByStatus(string status);
@@ -17,6 +17,5 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<Appointment> DeleteAppointmentById(int id);
         RequestDto GetInitialRequestDtoFilter();
         string GetTotalCost(bool isForeigner,string category, double totalHours, int deposit, int discount, double discountInHour, out double totalCost);
-
     }
 }

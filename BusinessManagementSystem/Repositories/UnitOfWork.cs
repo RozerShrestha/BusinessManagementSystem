@@ -22,7 +22,7 @@ namespace BusinessManagementSystem.Repositories
             _dbContext = dBContext;
             Users = new UserRepository(_dbContext);
             Base = new BaseRepository(_dbContext);
-            //Dashboard = new DashboardRepository(_db);
+            Dashboard = new DashboardRepository(_dbContext);
             Role =new RoleRepository(_dbContext);
             Menu = new MenuRepository(_dbContext);
             MenuRole=new MenuRoleRepository(_dbContext);

@@ -7,6 +7,7 @@ namespace BusinessManagementSystem.Services
     {
         ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto);
         dynamic GetAllPayments();
+        dynamic GetAllPaymentSegregation(RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(int userId, RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(Guid guid, RequestDto requestDto);
         ResponseDto<PaymentTipSettlementDto> GetPaymentTipSettlement(RequestDto requestDto);

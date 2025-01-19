@@ -1,65 +1,48 @@
-﻿@model BusinessManagementSystem.ViewModels.DashboardVM
+﻿@{
+    var AppointmentSegregationLoginEmployee = ViewBag.DashboardInfo["AppointmentSegregationLoginEmployee"].Dynamic_Datas;
+    var boxColors = new List<string> { "bg-info", "bg-warning", "bg-maroon", "bg-success" }; // Define your colors
+    int index1 = 0; // Initialize an index for cycling through colors
+    int index2 = 0;
+}
 <div class="row">
     <div class="col-md-12">
-        <div class="card card-outline card-dark">
+        <div class="card-body">
+            <partial name="_DateRangeFilter" />
+        </div>
+    </div>
+    @if (User.IsInRole("superadmin") || User.IsInRole("admin_tattoo"))
+    {
+        var AppointmentSegregationAllEmployee = ViewBag.DashboardInfo["AppointmentSegregationAllEmployee"].Dynamic_Datas;
+        <div class="col-md-12">
+            <div class="card card-outline card-dark">
             <div class="card-header">
                 <h3 class="card-title">All Appointments</h3>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>65</h3>
-                                <p>In Progress</p>
+                        @foreach (var item in AppointmentSegregationAllEmployee)
+                        {
+                            var colorClass = boxColors[index2 % boxColors.Count]; // Cycle through the colors
+                            index2++; // Increment the index
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box @colorClass">
+                                    <div class="inner">
+                                        <h3>@item.Count</h3>
+                                        <p>@item.StatusGroup</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-pie-graph"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                </div>
                             </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-gradient-warning">
-                            <div class="inner">
-                                <h3>150</h3>
-                                <p>Scheduled / Re Scheduled</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-maroon">
-                            <div class="inner">
-                                <h3>44</h3>
-                                <p>Confirmed</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>53</h3>
-                                <p>Completed</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
+                        }
                 </div>
             </div>
         </div>
     </div>
+    }
     <div class="col-md-12">
         <div class="card card-outline card-dark">
             <div class="card-header">
@@ -67,64 +50,33 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>65</h3>
-                                <p>In Progress</p>
+                    @foreach (var item in AppointmentSegregationLoginEmployee)
+                    {
+                        var colorClass = boxColors[index1 % boxColors.Count]; // Cycle through the colors
+                        index1++; // Increment the index
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box @colorClass">
+                                <div class="inner">
+                                    <h3>@item.Count</h3>
+                                    <p>@item.StatusGroup</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-pie-graph"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-gradient-warning">
-                            <div class="inner">
-                                <h3>150</h3>
-                                <p>Scheduled / Re Scheduled</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-maroon">
-                            <div class="inner">
-                                <h3>44</h3>
-                                <p>Confirmed</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>53</h3>
-                                <p>Completed</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <div id="chartContainer1" style="height: 370px;"></div>
+        <div id="incomeSegregationContainer" style="height: 370px;"></div>
     </div>
     <div class="col-md-9">
-        <div id="chartContainer2" style="height: 370px;"></div>
+        <div id="paymentAndTipsSegregationContainer" style="height: 370px;"></div>
     </div>
 </div>
 
@@ -132,7 +84,11 @@
 @section Scripts {
     <script>
         window.onload = function () {
-            var chart1 = new CanvasJS.Chart("chartContainer1", {
+            
+
+
+
+            var incomeSegregationChart = new CanvasJS.Chart("incomeSegregationContainer", {
                 theme: "light2", // "light1", "light2", "dark1", "dark2"
                 animationEnabled: true,
                 title: {
@@ -142,13 +98,12 @@
                     type: "pie",
                     startAngle: 180,
                     toolTipContent: "<b>{label}</b>: {y}",
-                    showInLegend: "true",
                     legendText: "{label}",
                     indexLabel: "{label} - {y}",
-                    dataPoints: @Html.Raw(ViewBag.DataPointsIncomeSegregation)
-                                }]
+                    dataPoints: @Html.Raw(ViewBag.DashboardInfo["DataPointsIncomeSegregation"])
+                }]
             });
-            var chart2 = new CanvasJS.Chart("chartContainer2", {
+            var paymentAndTipsSegregationChart = new CanvasJS.Chart("paymentAndTipsSegregationContainer", {
                 animationEnabled: true,
                 title: {
                     text: "Payment and Tips"
@@ -169,29 +124,28 @@
                     {
                         type: "stackedColumn",
                         name: "Payment",
-                        showInLegend: "true",
-                        dataPoints: @Html.Raw(ViewBag.DataPointsPaymentSegregation)
+                        dataPoints: @Html.Raw(ViewBag.DashboardInfo["DataPointsPaymentSegregation"])
                     },
                     {
                         type: "stackedColumn",
                         name: "Tips",
-                        showInLegend: "true",
-                        dataPoints: @Html.Raw(ViewBag.DataPointsTipSegregation)
-                                    }
+                        dataPoints: @Html.Raw(ViewBag.DashboardInfo["DataPointsTipSegregation"])
+                    }
                 ]
             });
-            chart1.render();
-            chart2.render();
-        }
-        function toggleDataSeries(e) {
-            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                e.dataSeries.visible = false;
+            incomeSegregationChart.render();
+            paymentAndTipsSegregationChart.render();
+            function toggleDataSeries(e) {
+                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                }
+                else {
+                    e.dataSeries.visible = true;
+                }
+                paymentAndTipsSegregationChart.render();
             }
-            else {
-                e.dataSeries.visible = true;
-            }
-            chart2.render();
         }
+        
     </script>
 }
 
