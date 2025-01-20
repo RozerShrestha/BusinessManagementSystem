@@ -32,13 +32,13 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
 
         public string GetIncomeSegregation(RequestDto requestDto)
-        {
+         {
             List<IncomeSegregationDataPoint> dataPoint = new List<IncomeSegregationDataPoint>();
             var paymentInfo = _unitOfWork.Payment.GetAllPaymentSegregation(requestDto);
             var tipInfo = _unitOfWork.Tip.GetTipsSegregation(requestDto);
-            dataPoint.Add(new IncomeSegregationDataPoint("Total Payment To Artist", paymentInfo.TotalPaymentToStudio));
-            dataPoint.Add(new IncomeSegregationDataPoint("Total Payment To Studio", paymentInfo.TotalPaymentToArtist));
-            dataPoint.Add(new IncomeSegregationDataPoint("Total Tips", tipInfo.TotalTips));
+            dataPoint.Add(new IncomeSegregationDataPoint("Total Payment To Artist",paymentInfo==null? 0 : paymentInfo.TotalPaymentToArtist));
+            dataPoint.Add(new IncomeSegregationDataPoint("Total Payment To Studio", paymentInfo == null ? 0 : paymentInfo.TotalPaymentToStudio));
+            dataPoint.Add(new IncomeSegregationDataPoint("Total Tips", tipInfo == null ? 0 : tipInfo.TotalTips));
             return JsonConvert.SerializeObject(dataPoint);
         }
 

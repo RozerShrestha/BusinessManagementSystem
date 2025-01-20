@@ -54,7 +54,7 @@ namespace BusinessManagementSystem.Controllers
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "User,Status,Settlement";
             ViewBag.ModalInformation = _modalView;
-            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus.Where(p=>p.Key=="Completed"), "Key", "Value");
             if (roleName == "superadmin")
                 ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
             else
@@ -97,7 +97,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult GetPaymentTipSettlementData([FromBody] RequestDto requestDto)
          {
             _responsePaymentTipSettlementDto = _businessLayer.PaymentService.GetPaymentTipSettlement(requestDto);
-             if (_responsePaymentTipSettlementDto.StatusCode == HttpStatusCode.OK || _responsePaymentTipSettlementDto.StatusCode == HttpStatusCode.NotFound) 
+               if (_responsePaymentTipSettlementDto.StatusCode == HttpStatusCode.OK || _responsePaymentTipSettlementDto.StatusCode == HttpStatusCode.NotFound) 
                 return Ok(_responsePaymentTipSettlementDto);
             else
                 return BadRequest();

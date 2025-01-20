@@ -111,7 +111,7 @@
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active" href="#timeline" data-toggle="tab">Appointments</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#activity" data-toggle="tab">Activity</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#paymentHistory" data-toggle="tab">Payment History</a></li>
                         </ul>
                     </div>
                     <div class="card-body" style="height: 840px; overflow-y: auto;">
@@ -208,8 +208,34 @@
                                     </div>
                                 }
                             </div>
-                            <div class="tab-pane" id="activity">
-                                <p>here goes the activity</p>
+                            <div class="tab-pane" id="paymentHistory">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-header">
+                                <tr class="border-bottom-0 tr-header header">
+                                            <th>Artist Name</th>
+                                            <th>Total Payment</th>
+                                            <th>Total Tips</th>
+                                            <th>Grand Total</th>
+                                            <th>Paid Status</th>
+                                            <th>Payment From</th>
+                                            <th>Payment To</th>
+                                        </tr>
+                                    </theadclass>
+                                    <tbody>
+                                        @foreach (var paymentHistory in Model.PaymentHistories)
+                                        {
+                                            <tr>
+                                            <td>@paymentHistory.ArtistName</td>
+                                            <td>@paymentHistory.TotalPayment</td>
+                                            <td>@paymentHistory.TotalTips</td>
+                                            <td>@paymentHistory.GrandTotal</td>
+                                            <td>@paymentHistory.PaidStatus</td>
+                                            <td>@paymentHistory.PaymentFrom</td>
+                                            <td>@paymentHistory.PaymentTo</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

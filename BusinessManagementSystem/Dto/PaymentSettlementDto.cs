@@ -40,6 +40,7 @@ namespace BusinessManagementSystem.Dto
         public DateTime? TipCreatedDate { get; set; }
         public string ClientName { get; set; }
         public string ArtistName { get; set; }
+        public string TipAssignedUser { get; set; }
         public double TipAmount { get; set; }
         public double TipAmountForUser { get; set; }
         public bool TipSettlement { get; set; }

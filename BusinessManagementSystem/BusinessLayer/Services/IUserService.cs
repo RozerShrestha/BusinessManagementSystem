@@ -13,12 +13,14 @@ namespace BusinessManagementSystem.BusinessLayer.Services
 
         ResponseDto<UserDto> GetUserByGuid(Guid guid);
         ResponseDto<User> GetAllActiveUsers();
+
         ResponseDto<User> GetAllInactiveUsers();
         ResponseDto<User> CreateUser(UserDto userDto);
         ResponseDto<User> UpdateUser(UserDto userDto);
         ResponseDto<User> DeleteUser(int id);
         dynamic RoleList();
         dynamic GetAllActiveTattooArtist();
+        dynamic GetAllActiveTattooArtistWithoutAll();
         bool ValidateUserName(string username);
         bool ValidateEmail(string email);
         bool ValidatePhoneNumber(string phoneNumber);

@@ -47,6 +47,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             try
             {
+                RequestDto requestDto = new RequestDto();
+                requestDto.UserId = id;
                 _responseDto = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == id, includeProperties: "Appointments");
                 if(_responseDto.StatusCode== HttpStatusCode.OK) 
                 {
@@ -54,8 +56,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                         orderBy:p=>p.AppointmentDate,
                         orderByDescending:true,
                         includeProperties: "Payment").Datas;
+                    var paymentHistories = _unitOfWork.Payment.GetPaymentHistory(requestDto).Datas;
+
                      UserDetailDto userDetailDto = _mapper.Map<UserDetailDto>(_responseDto.Data);
                     userDetailDto.Appointments = appointMents;
+                    userDetailDto.PaymentHistories = paymentHistories;
                     _responseUserDetailDto.Data = userDetailDto;
                     _responseUserDetailDto.StatusCode = HttpStatusCode.OK ;
                 }
@@ -189,6 +194,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public dynamic GetAllActiveTattooArtist()
         {
             var activeTattooArtist = _unitOfWork.Users.ArtistList();
+            return activeTattooArtist;
+        }
+        public dynamic GetAllActiveTattooArtistWithoutAll()
+        {
+            var activeTattooArtist = _unitOfWork.Users.ArtistListWithoutAll();
             return activeTattooArtist;
         }
         public bool ValidateUserName(string username)

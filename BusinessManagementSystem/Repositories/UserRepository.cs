@@ -98,5 +98,10 @@ namespace BusinessManagementSystem.Repositories
             artistList= artistList.Union(new[] { new { Id = 0, Name = "All" } }).OrderBy(x => x.Name);
             return artistList;
         }
+        public dynamic ArtistListWithoutAll()
+        {
+            var artistList = _dbContext.Users.Where(p => p.Occupation.Equals("Tattoo Artist") && p.Status == true).Select(p => new { Id = p.Id, Name = p.FullName }).ToList().OrderBy(x => x.Name);
+            return artistList;
+        }
     }
 }

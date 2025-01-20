@@ -275,13 +275,13 @@ namespace BusinessManagementSystem.Repositories
                 var tipItems = queryTips
                     .Select(x => new TipSettlementDto
                     {
-                        UserId = x.User.Id,
                         AppointmentId = x.Appointment.Id,
                         TipId=x.Tip.Id,
                         AppointmentDate = x.Appointment.AppointmentDate,
                         TipCreatedDate=x.Tip.CreatedAt,
                         ClientName = x.Appointment.ClientName,
                         ArtistName = x.User.FullName,
+                        TipAssignedUser=x.Tip.TipAssignedToUser.ToString(),
                         TipAmount=x.Tip.TipAmount,
                         TipAmountForUser=x.Tip.TipAmountForUsers,
                         TipSettlement=x.Tip.TipSettlement,
@@ -289,7 +289,13 @@ namespace BusinessManagementSystem.Repositories
                     })
                     .OrderByDescending(x => x.AppointmentDate)
                     .ToList();
-                    _responseTipSettlementDto.Datas = tipItems;
+                List<TipSettlementDto> tipItemsNew =new List<TipSettlementDto>();
+                foreach(var tip in tipItems)
+                {
+                    tip.TipAssignedUser = _dbContext.Users.Find(Convert.ToInt32(tip.TipAssignedUser)).FullName;
+                    tipItemsNew.Add(tip);
+                }
+                    _responseTipSettlementDto.Datas = tipItemsNew;
             }
             catch (Exception ex)
             {
@@ -318,9 +324,9 @@ namespace BusinessManagementSystem.Repositories
                                           PaymentFrom=p.PaymentFrom,
                                           PaymentTo=p.PaymentTo
                                       }).OrderByDescending(x=>x.PaymentFrom).AsQueryable();
-                if (requestDto.StartDate != null)
+                if (requestDto.StartDate !=DateTime.MinValue)
                     paymentHistory = paymentHistory.Where(x => x.PaymentFrom >=DateOnly.FromDateTime(requestDto.StartDate));
-                if (requestDto.EndDate != null)
+                if (requestDto.EndDate != DateTime.MinValue)
                     paymentHistory = paymentHistory.Where(x => x.PaymentFrom <= DateOnly.FromDateTime(requestDto.EndDate));
                 if (requestDto.UserId > 0)
                     paymentHistory = paymentHistory.Where(x => x.UserId == requestDto.UserId);

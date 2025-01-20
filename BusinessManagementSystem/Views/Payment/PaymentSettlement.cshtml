@@ -45,12 +45,12 @@
                     <table id="tblTipSettlement" style="width:100%; font-size:13px">
                         <thead class="table-header">
                             <tr>
-                                <th>User ID</th>
                                 <th>Appointment ID</th>
                                 <th>Appointment Date</th>
                                 <th>Tip Created Date</th>
                                 <th>Client Name</th>
                                 <th>Artist Name</th>
+                                <th>Tip Assigned User</th>
                                 <th>Tip Amount</th>
                                 <th>Tip Amount for User</th>
                                 <th>Status</th>
@@ -237,7 +237,6 @@
                         lengthMenu: [[5, 25, -1], [5, 25, "All"]],
                         data: data.data.tipSettlements,
                         columns: [
-                            { data: 'userId' },
                             { data: 'appointmentId' },
                             { data: 'appointmentDate',
                                 render: function (data) {
@@ -251,6 +250,7 @@
                             },
                             { data: 'clientName' },
                             { data: 'artistName' },
+                            { data: 'tipAssignedUser' },
                             { data: 'tipAmount' },
                             { data: 'tipAmountForUser' },
                             { data: 'status' },

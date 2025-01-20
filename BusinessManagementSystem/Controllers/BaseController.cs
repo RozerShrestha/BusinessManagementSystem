@@ -95,14 +95,14 @@ namespace BusinessManagementSystem.Controllers
 
         protected void AppointmentSelectListViewBag()
         {
-            dynamic artistList = _businessLayer.UserService.GetAllActiveTattooArtist();
+            dynamic artistList = _businessLayer.UserService.GetAllActiveTattooArtistWithoutAll();
             dynamic referalList = _businessLayer.ReferalService.GetAllActiveReferalList();
             ViewBag.AppointmentSelectList = new Dictionary<string, SelectList>
             {
                 { "ArtistList", new SelectList(artistList, "Id", "Name") },
                 { "ReferalList", new SelectList(referalList, "Id", "Name") },
                 { "TattooCategories", new SelectList(SD.TattooCategories, "Key", "Value") },
-                { "AppointmentStatus", new SelectList(SD.ApointmentStatus, "Key", "Value") },
+                { "AppointmentStatus", new SelectList(SD.ApointmentStatus.Where(p=>p.Key!="All"), "Key", "Value") },
                 { "PaymentMethod", new SelectList(SD.PaymentMethods, "Key", "Value") },
                 { "Outlet", new SelectList(SD.OutletList, "Key", "Value") }
             };

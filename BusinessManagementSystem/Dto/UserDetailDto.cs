@@ -19,5 +19,6 @@ namespace BusinessManagementSystem.Dto
         public string? Notes { get; set; }
         public int Percentage { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<PaymentHistory> PaymentHistories { get; set; }
     }
 }
