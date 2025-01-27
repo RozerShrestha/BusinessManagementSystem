@@ -185,7 +185,8 @@ namespace BusinessManagementSystem.Repositories
             try
             {
                 _dbContext.Database.BeginTransaction();
-                _dbSet.Update(entity);
+                //_dbSet.Update(entity);
+                _dbSet.Entry(entity).State = EntityState.Modified;
                  _dbContext.SaveChanges();
                 _dbContext.Database.CommitTransaction();
                 _responseDto.StatusCode = HttpStatusCode.OK;

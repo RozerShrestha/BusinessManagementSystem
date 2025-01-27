@@ -18,6 +18,7 @@ namespace BusinessManagementSystem.Services
         IAppointment Appointment { get; }
         ITip Tip { get; }
         IPayment Payment { get; }
+        IAdvancePayment AdvancePayment { get; }
         void BeginTransaction();
         void Commit();
         void Rollback();

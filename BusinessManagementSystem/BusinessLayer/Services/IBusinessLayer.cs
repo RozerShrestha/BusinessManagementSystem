@@ -14,5 +14,6 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ITipService TipService { get; }
         IPaymentService PaymentService { get; }
         IDashboardService DashboardService { get; }
+        IAdvancePaymentService AdvancePaymentService { get; }
     }
 }

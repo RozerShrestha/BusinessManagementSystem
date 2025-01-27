@@ -8,8 +8,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 {
     public class BusinessLayerImpl : IBusinessLayer
     {
-        protected readonly IUnitOfWork _unitOfWork=null;
-        protected readonly IMapper _mapper = null;
+        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IMapper _mapper;
         public BusinessLayerImpl(IUnitOfWork unitOfWork, IMapper mapper, ApplicationDBContext dBContext) 
         { 
             _unitOfWork = unitOfWork;
@@ -24,6 +24,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             TipService = new TipImpl(_unitOfWork, mapper);
             PaymentService = new PaymentImpl(_unitOfWork, mapper);
             DashboardService=new DashboardImpl(_unitOfWork, mapper);
+            AdvancePaymentService=new AdvancePaymentImpl(_unitOfWork, mapper);
         }
         public IBaseService BaseService { get; private set; }
 
@@ -38,5 +39,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public ITipService TipService { get; private set; }
         public IPaymentService PaymentService { get; private set; }
         public IDashboardService DashboardService { get; private set; }
+
+        public IAdvancePaymentService AdvancePaymentService { get; private set; }
     }
 }

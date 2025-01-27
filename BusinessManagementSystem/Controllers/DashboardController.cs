@@ -40,20 +40,7 @@ namespace BusinessManagementSystem.Controllers
                 requestDto = requestDto1;
             }
             requestDto.ParameterFilter = ""; // this means only start date and end date
-            string PaymentTipCombined= _businessLayer.DashboardService.GetPaymentTipSegregation(requestDto);
-
-            IDictionary<string, dynamic> DashboardInfoDict= new Dictionary<string, dynamic>();
-            DashboardInfoDict.Add("DataPointsIncomeSegregation",_businessLayer.DashboardService.GetIncomeSegregation(requestDto));
-            DashboardInfoDict.Add("DataPointsPaymentSegregation", PaymentTipCombined.Split("##")[0]);
-            DashboardInfoDict.Add("DataPointsTipSegregation", PaymentTipCombined.Split("##")[1]);
-            DashboardInfoDict.Add("AppointmentSegregationLoginEmployee", _businessLayer.DashboardService.GetDashboardInfo(requestDto, userId));
-            if (roleName == SD.Role_TattooAdmin || roleName == SD.Role_Superadmin)
-            {
-                var AppointmentSegregationAllEmployee = _businessLayer.DashboardService.GetDashboardInfoAllEmployee(requestDto);
-                DashboardInfoDict.Add("AppointmentSegregationAllEmployee", AppointmentSegregationAllEmployee);
-            }
-
-            ViewBag.DashboardInfo = DashboardInfoDict;
+            DashboardViewBagList(requestDto);
 
             return View(requestDto);
         }

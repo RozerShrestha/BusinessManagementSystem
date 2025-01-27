@@ -20,6 +20,8 @@ namespace BusinessManagementSystem.Data
         public DbSet<Tip> Tips { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentHistory> PaymentHistories { get; set; }
+        public DbSet<AdvancePayment> AdvancePayments { get; set; }
+
 
 
 
@@ -53,6 +55,8 @@ namespace BusinessManagementSystem.Data
             modelBuilder.ApplyConfiguration(new AppointmentEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ReferalEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TipEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AdvancePaymentEntityConfiguration());
+
         }
         private IConfigurationRoot GetConfiguration()
         {

@@ -1,0 +1,36 @@
+﻿@model BusinessManagementSystem.Models.AdvancePayment
+<h4>Advance Payment Request</h4>
+<hr />
+
+<form asp-action="Create" method="post" enctype="multipart/form-data" asp-controller="AdvancePayment">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-12">
+        <div class="card card-outline card-dark">
+           
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="UserId" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.AdvancePaymentSelectList["Artist"], new { @class = "form-control" })
+                        <span asp-validation-for="UserId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Amount" class="control-label"></label>
+                        <input asp-for="Amount" value="0" class="form-control" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Reason" class="control-label"></label>
+                        <input asp-for="Reason" class="form-control" />
+                        <span asp-validation-for="Reason" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="submit" id="btnAdvancePaymentSubmit" value="Apply" class="btn btn-success my-button" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

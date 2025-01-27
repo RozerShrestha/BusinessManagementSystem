@@ -32,18 +32,16 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Index()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
-            requestDto.ParameterFilter = "Status"; 
+            requestDto.ParameterFilter = "Settlement"; 
             ViewBag.ModalInformation = _modalView;
-            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto);
         }
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyTips()
         {
             RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
-            requestDto.ParameterFilter = "Status";
+            requestDto.ParameterFilter = "Settlement";
             ViewBag.ModalInformation = _modalView;
-            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
             return View(requestDto);
         }
 

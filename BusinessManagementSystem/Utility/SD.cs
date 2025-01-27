@@ -37,14 +37,12 @@ namespace BusinessManagementSystem.Utility
             { Occupation.ChiefOperatingOfficer.ToString(), "Chief Operating Officer" },
             { Occupation.ChiefFinanceOfficer.ToString(), "Chief Finance Officer" }
         };
-
         public static readonly Dictionary<string, string> TattooCategories = new Dictionary<string, string>
         {
             { TattooCategory.Tattoo.ToString(), "Tattoo" },
             { TattooCategory.Dreadlock.ToString(), "DreadLock" },
             { TattooCategory.Piercing.ToString(), "Piercing" }
         };
-
         public static readonly Dictionary<string, string> ApointmentStatus = new Dictionary<string, string>
         {
             {AppointmentStat.All.ToString(),"All" },
@@ -57,7 +55,6 @@ namespace BusinessManagementSystem.Utility
             { AppointmentStat.NotShown.ToString(), "Not Shown" }
             
         };
-
         public static readonly Dictionary<string, string> PaymentMethods = new Dictionary<string, string>
         {
             { PaymentMethod.BankQR.ToString(), "Bank QR" },
@@ -67,11 +64,21 @@ namespace BusinessManagementSystem.Utility
             { PaymentMethod.ImePay.ToString(), "ImePay" },
             { PaymentMethod.Khalti.ToString(), "Khalti" }
         };
-
         public static readonly Dictionary<string, string> OutletList = new Dictionary<string, string>()
         {
             {"Freak Street", "Freak Street" },
             {"Babar Mahal","Babar Mahal" }
+        };
+        public static readonly Dictionary<string, string> PaidStatus = new Dictionary<string, string>()
+        {
+            {"00", "All" },
+            {"1", "Paid" },
+            {"0", "Unpaid" }
+        };
+        public static readonly Dictionary<bool, string> Status = new Dictionary<bool, string>()
+        {
+            {true, "Pay" },
+            {false, "Un Pay" }
         };
 
 

@@ -107,5 +107,37 @@ namespace BusinessManagementSystem.Controllers
                 { "Outlet", new SelectList(SD.OutletList, "Key", "Value") }
             };
         }
+
+        protected void DashboardViewBagList(RequestDto requestDto)
+        {
+            string PaymentTipCombined = _businessLayer.DashboardService.GetPaymentTipSegregation(requestDto);
+
+            IDictionary<string, dynamic> DashboardInfoDict = new Dictionary<string, dynamic>();
+            DashboardInfoDict.Add("DataPointsIncomeSegregation", _businessLayer.DashboardService.GetIncomeSegregation(requestDto));
+            DashboardInfoDict.Add("DataPointsPaymentSegregation", PaymentTipCombined.Split("##")[0]);
+            DashboardInfoDict.Add("DataPointsTipSegregation", PaymentTipCombined.Split("##")[1]);
+            DashboardInfoDict.Add("AppointmentSegregationLoginEmployee", _businessLayer.DashboardService.GetDashboardInfo(requestDto, userId));
+            if (roleName == SD.Role_TattooAdmin || roleName == SD.Role_Superadmin)
+            {
+                var AppointmentSegregationAllEmployee = _businessLayer.DashboardService.GetDashboardInfoAllEmployee(requestDto);
+                DashboardInfoDict.Add("AppointmentSegregationAllEmployee", AppointmentSegregationAllEmployee);
+            }
+
+            ViewBag.DashboardInfo = DashboardInfoDict;
+        }
+
+        protected void AdvancePaymentViewBagList()
+        {
+            dynamic artist = ((IEnumerable<dynamic>)_businessLayer.UserService.GetAllActiveTattooArtistWithoutAll()).Where(artist => artist.Id == userId).ToList();
+            dynamic artistList = ((IEnumerable<dynamic>)_businessLayer.UserService.GetAllActiveTattooArtistWithoutAll()).ToList();
+
+            ViewBag.AdvancePaymentSelectList = new Dictionary<string, SelectList>
+            {
+                { "Artist", new SelectList(artist, "Id", "Name") },
+                { "ArtistList", new SelectList(artistList, "Id", "Name") },
+                { "PaymentMethod", new SelectList(SD.PaymentMethods, "Key", "Value") },
+                { "Status", new SelectList(SD.Status, "Key", "Value") },
+            };
+        }
     }
 }

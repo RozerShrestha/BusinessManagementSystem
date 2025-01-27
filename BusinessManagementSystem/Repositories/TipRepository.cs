@@ -18,7 +18,8 @@ namespace BusinessManagementSystem.Repositories
         }
         public ResponseDto<TipDto> GetAllTips(RequestDto requestDto)
         {
-            var query = (from t in _dbContext.Tips
+
+            var query = from t in _dbContext.Tips
                                join a in _dbContext.Appointments on t.AppointmentId equals a.Id
                                join u in _dbContext.Users on t.TipAssignedToUser equals u.Id
                                where t.CreatedAt >= requestDto.StartDate && t.CreatedAt <= requestDto.EndDate
@@ -37,8 +38,14 @@ namespace BusinessManagementSystem.Repositories
                                     UpdatedAt=t.UpdatedAt,
                                     CreatedBy=t.CreatedBy,
                                     UpdatedBy=t.UpdatedBy,
-                               }).ToList();
-            if (query.Count > 0 ) _responseTipDto.Datas = query;
+                               };
+            if (requestDto.Settlement != "ALL")
+                query = (IQueryable<TipDto>)query.Where(p => p.TipSettlement == Convert.ToBoolean(requestDto.Settlement));
+
+            var tipDto = query.ToList();
+
+            if (tipDto.Count > 0 ) 
+                _responseTipDto.Datas = tipDto;
             else
             {
                 _responseTipDto.StatusCode = HttpStatusCode.NotFound;
@@ -66,7 +73,7 @@ namespace BusinessManagementSystem.Repositories
 
         public ResponseDto<TipDto> GetMyTips(int userId, RequestDto requestDto)
         {
-            var query = (from t in _dbContext.Tips
+            var query = from t in _dbContext.Tips
                         join a in _dbContext.Appointments on t.AppointmentId equals a.Id
                         join u in _dbContext.Users on t.TipAssignedToUser equals u.Id
                         where t.TipAssignedToUser==userId && t.CreatedAt >= requestDto.StartDate && t.CreatedAt <= requestDto.EndDate
@@ -85,14 +92,21 @@ namespace BusinessManagementSystem.Repositories
                             UpdatedAt = t.UpdatedAt,
                             CreatedBy = t.CreatedBy,
                             UpdatedBy = t.UpdatedBy,
-                        }).ToList();
-            if (query.Count > 0)_responseTipDto.Datas = query;
+                        };
+
+            if (requestDto.Settlement != "ALL")
+                query = (IQueryable<TipDto>)query.Where(p => p.TipSettlement == Convert.ToBoolean(requestDto.Settlement));
+
+            var tipDto = query.ToList();
+
+            if (tipDto.Count > 0)
+                _responseTipDto.Datas = tipDto;
             else
             {
                 _responseTipDto.StatusCode = HttpStatusCode.NotFound;
                 _responseTipDto.Message = "Not Found";
             }
-            _responseTipDto.Datas = query;
+            _responseTipDto.Datas = tipDto;
             return _responseTipDto;
         }
 

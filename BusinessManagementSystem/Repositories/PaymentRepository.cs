@@ -4,6 +4,7 @@ using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -304,7 +305,6 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseTipSettlementDto;
         }
-
         public ResponseDto<PaymentHistory> GetPaymentHistory(RequestDto requestDto)
         {
             try
@@ -322,7 +322,9 @@ namespace BusinessManagementSystem.Repositories
                                           GrandTotal=p.GrandTotal,
                                           PaidStatus=p.PaidStatus,
                                           PaymentFrom=p.PaymentFrom,
-                                          PaymentTo=p.PaymentTo
+                                          PaymentTo=p.PaymentTo,
+                                          CreatedBy=p.CreatedBy,
+                                          CreatedAt=p.CreatedAt
                                       }).OrderByDescending(x=>x.PaymentFrom).AsQueryable();
                 if (requestDto.StartDate !=DateTime.MinValue)
                     paymentHistory = paymentHistory.Where(x => x.PaymentFrom >=DateOnly.FromDateTime(requestDto.StartDate));
@@ -340,7 +342,6 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responsePaymentHistory;
         }
-
         public dynamic GetAllPayments()
         {
             var result = (from p in _dbContext.Payments
@@ -355,7 +356,6 @@ namespace BusinessManagementSystem.Repositories
                           }).ToList();
             return result;
         }
-
         public dynamic GetAllPaymentSegregation(RequestDto requestDto)
         {
             var result = _dbContext.Payments.Where(p => p.PaymentSettlement == true && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate)
@@ -368,5 +368,6 @@ namespace BusinessManagementSystem.Repositories
                         .FirstOrDefault();
             return result;
         }
+
     }
 }
