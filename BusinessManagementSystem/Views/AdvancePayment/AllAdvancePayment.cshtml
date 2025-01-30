@@ -59,7 +59,7 @@
                     url: `/AdvancePayment/Delete?guid=${itemId}`,
                     contentType: 'application/json',
                     success: function (response) {
-                        if (response.statusCode == 200) {
+                        if (response == true) {
                             toastr.success('Successfully Deleted');
                         }
                         else {

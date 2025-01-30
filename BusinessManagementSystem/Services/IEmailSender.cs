@@ -1,4 +1,5 @@
 ﻿using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Models;
 
 namespace BusinessManagementSystem.Services
 {
@@ -9,5 +10,6 @@ namespace BusinessManagementSystem.Services
         string PrepareEmailAppointmentArtist(AppointmentDto appointmentDto, string message);
         string PrepareEmailAppointmentClient(AppointmentDto appointmentDto, string message);
         string PrepareEmailPaymentSettlement(PaymentTipSettlementDto paymentTipSettlementDto, string message);
+        string PrepareEmailAdvanceSettlement(AdvancePayment advancePayment, string message, string type);
     }
 }

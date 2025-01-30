@@ -1,4 +1,5 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using AspNetCore;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessManagementSystem.BusinessLayer.Services;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Models;
@@ -51,7 +52,6 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "employee_tattoo,admin_tattoo")]
         public IActionResult Create(AdvancePayment advancePayment)
         {
             AdvancePaymentViewBagList();
@@ -63,6 +63,16 @@ namespace BusinessManagementSystem.Controllers
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success("Success");
+                    #region email
+                    var messageSuperAdmin = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AdvancePaymentSuperadminTemplate;
+                    var userSuperadmins = _businessLayer.UserService.GetSuperadminUser().Datas;
+                    foreach(var user in userSuperadmins)
+                    {
+                        string htmlAdvanceAmountSuperAdmin = _emailSender.PrepareEmailAdvanceSettlement(advancePayment, messageSuperAdmin, "msgsuperadmin");
+                        _emailSender.SendEmailAsync(email: user.Email, subject: "Advance Payment Request", htmlAdvanceAmountSuperAdmin);
+                    }
+                    
+                    #endregion
                     return RedirectToAction(nameof(MyAdvancePayment));
                 }
                 else
@@ -101,12 +111,24 @@ namespace BusinessManagementSystem.Controllers
         {
             if (advancePayment == null) return NotFound();
             AdvancePaymentViewBagList();
+            if (roleName != SD.Role_Superadmin)
+            {
+                ModelState.Remove(nameof(advancePayment.PaymentMethod));
+            }
             if (ModelState.IsValid)
             {
                 _responseDto = _businessLayer.AdvancePaymentService.UpdateAdvancePayment(advancePayment);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);
+                    if (advancePayment.Status == true)
+                    {
+                        #region email
+                        var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AdvancePaymentArtistTemplate;
+                        string htmlAdvanceAmountArtist = _emailSender.PrepareEmailAdvanceSettlement(advancePayment, messageArtist, "msgartist");
+                        _emailSender.SendEmailAsync(email: _businessLayer.UserService.GetUserById(advancePayment.UserId).Data.Email, subject: "Advance Payment", htmlAdvanceAmountArtist);
+                        #endregion
+                    }
                     if (roleName == SD.Role_Superadmin)
                         return RedirectToAction(nameof(AllAdvancePayment));
                     else
@@ -129,6 +151,34 @@ namespace BusinessManagementSystem.Controllers
                 //return RedirectToAction("Edit", new { guid = appointmentDto.guid });
                 return View(advancePayment);
             }    
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "superadmin")]
+        public IActionResult Delete(Guid guid)
+        {
+            if (guid == Guid.Empty)
+            {
+                _notyf.Error("Something went wrong");
+                return NotFound();
+            }
+            var item = _businessLayer.AdvancePaymentService.GetAdvancePayment(guid);
+            if (item.StatusCode == HttpStatusCode.OK)
+            {
+                _responseDto = _businessLayer.AdvancePaymentService.DeleteAdvancePayment(item.Data.Id);
+                if (_responseDto.StatusCode == HttpStatusCode.OK)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return BadRequest(false);
+                }
+            }
+            else
+            {
+                return BadRequest(false);
+            }
         }
 
         #region API

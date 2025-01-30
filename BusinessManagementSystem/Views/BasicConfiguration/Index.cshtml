@@ -131,6 +131,16 @@
                         @Html.TextAreaFor(m => m.PaymentSettlementTemplateArtist, new { @class = "form-control", @style="height:500px" })
                         <span asp-validation-for="PaymentSettlementTemplateArtist" class="text-sm-center"></span>
                     </div>
+                    <div class="col-md-12">
+                        <label asp-for="AdvancePaymentArtistTemplate"></label>
+                        @Html.TextAreaFor(m => m.AdvancePaymentArtistTemplate, new { @class = "form-control", @style="height:500px" })
+                        <span asp-validation-for="AdvancePaymentArtistTemplate" class="text-sm-center"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="AdvancePaymentSuperadminTemplate"></label>
+                        @Html.TextAreaFor(m => m.AdvancePaymentSuperadminTemplate, new { @class = "form-control", @style = "height:500px" })
+                        <span asp-validation-for="AdvancePaymentSuperadminTemplate" class="text-sm-center"></span>
+                    </div>
                 </div>
             </div>
         </div>

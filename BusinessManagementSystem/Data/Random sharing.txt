@@ -192,3 +192,22 @@ INSERT [dbo].[Users] ([Guid], [UserName], [Email], [FullName], [DateOfBirth], [G
 GO
 INSERT [dbo].[Users] ([Guid], [UserName], [Email], [FullName], [DateOfBirth], [Gender], [Address], [PhoneNumber], [Occupation], [HashPassword], [Status], [FirstPasswordReset], [Salt], [Percentage], [FacebookLink], [InstagramLink], [TiktokLink], [ProfilePictureLink], [Skills], [Notes], [DefaultTips], [CreatedBy], [UpdatedBy], [CreatedAt], [UpdatedAt]) VALUES (N'f4f075de-b792-4b35-9959-37916a7830bf', N'sanik', N'shahisanik1@gmail.com', N'Sanik Shahi', CAST(N'2025-01-11' AS Date), N'male', N'Wondey, Teku', N'9860598433', N'Tattoo Artist', N'Ju+xZHkuqriNksV7/xtcGGomr8BltW8e68sEorSYrwg=', 1, 0, N'BU6BNHwSj4Nn4RyRdJmIyg==', 50, NULL, NULL, NULL, N'uploads\ProfilePic\shahisanik1@gmail.com.jpg', NULL, NULL, 0, N'rozer.shrestha', N'rozer.shrestha', CAST(N'2025-01-11T17:13:24.9094594' AS DateTime2), CAST(N'2025-01-13T02:46:07.3325123' AS DateTime2))
 GO
+
+
+<html lang="en">
+<body>
+    <p>Dear <b>{{artistname}}</b>,</p>
+    <p>You have requested for an advance payment of Rs {{advanceamount}}, which has been {{status}} and transferred to you via {{paymentmethod}}. </p>
+    <p>If you have any questions or require further details regarding the payment, feel free to reach out to us. We’re happy to assist!</p>
+    <p>Thank you for your excellent work and dedication. We look forward to continuing our collaboration!</p>
+    <p>Warm regards,<br>Freak Street Tattoo</p>
+</body>
+</html>
+
+<html lang="en">
+<body>
+    <p>Dear <b>{{superadmin}}</b>,</p>
+    <p>{{artistname}} has requested for an advance payment of Rs {{advanceamount}}.</p>
+    <p>Warm regards,<br>Freak Street Tattoo</p>
+</body>
+</html>

@@ -216,6 +216,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var item = _unitOfWork.Users.GetFirstOrDefault(p => p.PhoneNumber == phoneNumber).Data;
             return item == null ? true : false;
         }
+        public ResponseDto<User> GetSuperadminUser()
+        {
+            _responseDto = _unitOfWork.Users.GetAllSuperAdmin();
+            return _responseDto;
+        }
     }
 }
 

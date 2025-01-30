@@ -13,6 +13,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
 
         ResponseDto<UserDto> GetUserByGuid(Guid guid);
         ResponseDto<User> GetAllActiveUsers();
+        ResponseDto<User> GetSuperadminUser();
 
         ResponseDto<User> GetAllInactiveUsers();
         ResponseDto<User> CreateUser(UserDto userDto);

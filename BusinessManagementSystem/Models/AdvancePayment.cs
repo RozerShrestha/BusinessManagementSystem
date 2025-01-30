@@ -13,8 +13,11 @@ namespace BusinessManagementSystem.Models
         public Guid guid { get; set; }
         [DisplayName("Artist Name")]
         public int UserId { get; set; }
+        [NotMapped]
+        [ValidateNever]
+        public string FullName { get; set; }
         public double Amount { get; set; }
-        public string? PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; }
         public string Reason { get; set; }
         public DateOnly PaidDate { get; set; }
         public bool Status { get; set; }

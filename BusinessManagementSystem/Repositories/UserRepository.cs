@@ -20,19 +20,16 @@ namespace BusinessManagementSystem.Repositories
             _responseDtoUserRole = new ResponseDto<UserRoleDto>();
             _responseDtoUser=new ResponseDto<UserDto>();
         }
-
         public List<User> GetAllActiveUsers()
         {
             List<User> activeUsers = _dbContext.Users.Where(p => p.Status == true).ToList();
             return activeUsers;
         }
-
         public List<User> GetAllInactiveUsers()
         {
             List<User> activeUsers = _dbContext.Users.Where(p => p.Status == false).ToList();
             return activeUsers;
         }
-
         public ResponseDto<UserRoleDto> GetAllUser(string filter)
         {
             if (filter == SD.Role_Superadmin)
@@ -85,8 +82,6 @@ namespace BusinessManagementSystem.Repositories
             
             return _responseDtoUserRole;
         }
-
-
         public dynamic RoleList()
         {
             var roleLIst = _dbContext.Roles.Select(p => new { Id = p.Id, Name = p.Name }).ToList();
@@ -102,6 +97,16 @@ namespace BusinessManagementSystem.Repositories
         {
             var artistList = _dbContext.Users.Where(p => p.Occupation.Equals("Tattoo Artist") && p.Status == true).Select(p => new { Id = p.Id, Name = p.FullName }).ToList().OrderBy(x => x.Name);
             return artistList;
+        }
+        public ResponseDto<User> GetAllSuperAdmin()
+        {
+            _responseDto.Datas = (from u in _dbContext.Users
+                                join ur in _dbContext.UserRoles on u.Id equals ur.UserId
+                                join r in _dbContext.Roles on ur.RoleId equals r.Id
+                                where r.Name == "superadmin"
+                                select u).ToList();
+            return _responseDto;
+            
         }
     }
 }

@@ -4,6 +4,7 @@ using BusinessManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250127153220_Basic configuration ne fields added")]
+    partial class Basicconfigurationnefieldsadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,6 @@ namespace BusinessManagementSystem.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("PaymentMethod")
-                        .IsRequired()
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Reason")
@@ -181,11 +183,11 @@ namespace BusinessManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AdvancePaymentArtistTemplate")
+                    b.Property<string>("AdvancePaymentArtist")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AdvancePaymentSuperadminTemplate")
+                    b.Property<string>("AdvancePaymentSuperadmin")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
