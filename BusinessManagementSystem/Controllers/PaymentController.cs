@@ -33,7 +33,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult AllPayments()
         {
-            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -42,7 +42,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyPayments()
         {
-            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -51,7 +51,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult PaymentSettlement()
         {
-            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "User,Status,Settlement";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus.Where(p=>p.Key=="Completed"), "Key", "Value");
@@ -63,7 +63,7 @@ namespace BusinessManagementSystem.Controllers
         }
         public IActionResult PaymentHistory()
         {
-            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "User";
             ViewBag.ModalInformation = _modalView;
             if(roleName=="superadmin")

@@ -36,7 +36,19 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             RequestDto requestDto = new RequestDto
             {
                 Status = AppointmentStat.All.ToString(),
-                StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                StartDate = new DateTime(2025, 01, 01),/*new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),*/
+                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
+            };
+            return requestDto;
+        }
+
+        public RequestDto GetInitialRequestDtoFilterDashboard()
+        {
+            int lastDay = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+            RequestDto requestDto = new RequestDto
+            {
+                Status = AppointmentStat.All.ToString(),
+                StartDate = new DateTime(2025,01,01),
                 EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
             };
             return requestDto;

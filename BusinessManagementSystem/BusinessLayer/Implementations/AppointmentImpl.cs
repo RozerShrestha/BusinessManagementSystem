@@ -287,17 +287,6 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
             return calculationDescription; 
         }
-        public RequestDto GetInitialRequestDtoFilter()
-        {
-            int lastDay = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-            RequestDto requestDto = new RequestDto
-            {
-                Status = AppointmentStat.All.ToString(),
-                StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
-                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
-            };
-            return requestDto;
-        }
         private List<Tip> CreateTip(AppointmentDto appointmentDto)
         {
             List<Tip> tipList = new List<Tip>();

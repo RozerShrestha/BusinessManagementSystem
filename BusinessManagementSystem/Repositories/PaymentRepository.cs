@@ -1,4 +1,5 @@
-﻿using BusinessManagementSystem.Data;
+﻿using AspNetCore;
+using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
@@ -17,6 +18,9 @@ namespace BusinessManagementSystem.Repositories
         ResponseDto<TipSettlementDto> _responseTipSettlementDto;
         ResponseDto<PaymentTipSettlementDto> _responsePaymentTipSettlementDto;
         ResponseDto<PaymentHistory> _responsePaymentHistory;
+        private readonly TipRepository _tipRepository;
+        private readonly AdvancePaymentRepository _advancePaymentRepository;
+
 
         public PaymentRepository(ApplicationDBContext dbContext) : base(dbContext)
         {
@@ -25,6 +29,8 @@ namespace BusinessManagementSystem.Repositories
             _responseTipSettlementDto = new ResponseDto<TipSettlementDto>();
             _responsePaymentTipSettlementDto = new ResponseDto<PaymentTipSettlementDto>();
             _responsePaymentHistory = new ResponseDto<PaymentHistory>();
+            _tipRepository = new TipRepository(dbContext);
+            _advancePaymentRepository=new AdvancePaymentRepository(dbContext);
         }
         public ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto)
         {
@@ -146,17 +152,20 @@ namespace BusinessManagementSystem.Repositories
         public ResponseDto<PaymentTipSettlementDto> GetPaymentTipSettlement(RequestDto requestDto)
         {
             var payS = GetPaymentSettlement(requestDto);
-            var tipS = GetTipSettlement(requestDto);
+            var tipS = _tipRepository.GetTipSettlement(requestDto);
+            var advanceS=_advancePaymentRepository.GetAdvancePaymentSettlement(requestDto);
             PaymentTipSettlementDto paymentTipSettlementDto = new PaymentTipSettlementDto
             {
                 UserId=requestDto.UserId,
                 PaymentSettlements = payS.Datas,
                 TipSettlements = tipS.Datas,
+                AdvancePaymentSettlements=advanceS.Datas,
                 StartDate=requestDto.StartDate,
                 EndDate=requestDto.EndDate,
                 TotalPayments = payS.Datas.Sum(p => p.PaymentToArtist),
                 TotalTips=tipS.Datas.Sum(p=>p.TipAmountForUser),
-                GrandTotal= payS.Datas.Sum(p => p.PaymentToArtist) + tipS.Datas.Sum(p => p.TipAmountForUser)
+                TotalAdvancePayments=advanceS.Datas.Sum(p=>p.Amount),
+                GrandTotal= payS.Datas.Sum(p => p.PaymentToArtist) + tipS.Datas.Sum(p => p.TipAmountForUser) - advanceS.Datas.Sum(p => p.Amount)
             };
             
             if (payS.StatusCode != HttpStatusCode.OK)
@@ -246,65 +255,6 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responsePaymentSettlementDto;
         }
-        private ResponseDto<TipSettlementDto> GetTipSettlement(RequestDto requestDto)
-        {
-            try
-            {
-                var queryTips = from u in _dbContext.Users
-                                join a in _dbContext.Appointments on u.Id equals a.UserId
-                                join t in _dbContext.Tips on a.Id equals t.AppointmentId
-                                select new
-                                {
-                                    User = u,
-                                    Appointment = a,
-                                    Tip = t
-                                };
-
-                // Apply conditions dynamically
-                if (requestDto.StartDate != null)
-                    queryTips = queryTips.Where(x => x.Tip.CreatedAt >= requestDto.StartDate);
-                if (requestDto.EndDate != null)
-                    queryTips = queryTips.Where(x => x.Tip.CreatedAt <= requestDto.EndDate);
-                if (requestDto.UserId > 0)
-                    queryTips = queryTips.Where(x => x.Tip.TipAssignedToUser == requestDto.UserId);
-                if (requestDto.Status!="All")
-                    queryTips = queryTips.Where(x => x.Appointment.Status == requestDto.Status);
-                if (requestDto.Settlement!= "ALL")
-                    queryTips = queryTips.Where(x => x.Tip.TipSettlement == bool.Parse(requestDto.Settlement));
-
-                // Project the result
-                var tipItems = queryTips
-                    .Select(x => new TipSettlementDto
-                    {
-                        AppointmentId = x.Appointment.Id,
-                        TipId=x.Tip.Id,
-                        AppointmentDate = x.Appointment.AppointmentDate,
-                        TipCreatedDate=x.Tip.CreatedAt,
-                        ClientName = x.Appointment.ClientName,
-                        ArtistName = x.User.FullName,
-                        TipAssignedUser=x.Tip.TipAssignedToUser.ToString(),
-                        TipAmount=x.Tip.TipAmount,
-                        TipAmountForUser=x.Tip.TipAmountForUsers,
-                        TipSettlement=x.Tip.TipSettlement,
-                        Status = x.Appointment.Status,
-                    })
-                    .OrderByDescending(x => x.AppointmentDate)
-                    .ToList();
-                List<TipSettlementDto> tipItemsNew =new List<TipSettlementDto>();
-                foreach(var tip in tipItems)
-                {
-                    tip.TipAssignedUser = _dbContext.Users.Find(Convert.ToInt32(tip.TipAssignedUser)).FullName;
-                    tipItemsNew.Add(tip);
-                }
-                    _responseTipSettlementDto.Datas = tipItemsNew;
-            }
-            catch (Exception ex)
-            {
-                _responseTipSettlementDto.StatusCode = HttpStatusCode.NotFound;
-                _responseTipSettlementDto.Message = ex.Message;
-            }
-            return _responseTipSettlementDto;
-        }
         public ResponseDto<PaymentHistory> GetPaymentHistory(RequestDto requestDto)
         {
             try
@@ -342,12 +292,12 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responsePaymentHistory;
         }
-        public dynamic GetAllPayments()
+        public dynamic GetAllPaymentsDashboard(RequestDto requestDto)
         {
             var result = (from p in _dbContext.Payments
                           join u in _dbContext.Users
                           on p.UserId equals u.Id
-                          where p.PaymentSettlement == true
+                          where p.PaymentSettlement == true && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate.AddDays(1)
                           group p by new { u.FullName } into g
                           select new
                           {
@@ -368,6 +318,5 @@ namespace BusinessManagementSystem.Repositories
                         .FirstOrDefault();
             return result;
         }
-
     }
 }

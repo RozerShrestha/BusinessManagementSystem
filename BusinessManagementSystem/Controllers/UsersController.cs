@@ -21,7 +21,7 @@ using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "superadmin")]
     public class UsersController : BaseController
     {
         public ResponseDto<User> _responseDto;
@@ -85,7 +85,6 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "superadmin")]
         public IActionResult Create()
         {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
@@ -94,7 +93,6 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "superadmin")]
         public IActionResult Create(UserDto userDto, IFormFile? ProfilePictureLink)
         {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
@@ -136,7 +134,6 @@ namespace BusinessManagementSystem.Controllers
             }
         }
 
-        [Authorize(Roles = "superadmin")]
         public IActionResult Edit(Guid guid)
         {
             if (guid==Guid.Empty)return NotFound();
@@ -152,7 +149,6 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "superadmin")]
         public IActionResult Edit(UserDto userDto, IFormFile? ProfilePictureLink)
         {
             ModelState.Remove(nameof(userDto.Password)); //just to ignore ConfirmPassword to validate
@@ -211,7 +207,6 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "superadmin")]
         public IActionResult Delete(Guid guid)
         {
             if (guid == Guid.Empty)
@@ -240,7 +235,6 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "superadmin")]
         public IActionResult DeleteConfirmed(int UserId)
         {
             _responseDto = _businessLayer.UserService.GetUserById(UserId);

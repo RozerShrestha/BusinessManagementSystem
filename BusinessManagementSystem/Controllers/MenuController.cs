@@ -141,11 +141,6 @@ namespace BusinessManagementSystem.Controllers
         // GET: MenuController/Delete/5
         public ActionResult Delete(int id)
         {
-            if (roleName != SD.Role_Superadmin)
-            {
-                _notyf.Warning("Only Super Admin can delete");
-                return RedirectToAction(nameof(Index));
-            }
             var item = _businessLayer.MenuService.GetMenuById(id);
             _responseDto = _businessLayer.MenuService.DeleteMenu(id);
             if (_responseDto.StatusCode == HttpStatusCode.OK)
@@ -157,25 +152,7 @@ namespace BusinessManagementSystem.Controllers
             {
                 _notyf.Error("Menu Not Found");
                 return RedirectToAction(nameof(Index));
-            }
-            
-        }
-
-        // POST: MenuController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            
-            if (_responseDto.StatusCode == HttpStatusCode.OK)
-            {
-                _notyf.Success(_responseDto.Message);
-            }
-            else
-            {
-                _notyf.Error(_responseDto.Message);
-            }
-            return RedirectToAction(nameof(Index));
+            }  
         }
     }
 }

@@ -1,4 +1,14 @@
-﻿<div class="row">
+﻿<style>
+    caption {
+        caption-side: top !important; /* Moves caption above the table */
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: -52px;
+    }
+
+</style>
+<div class="row">
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header">
@@ -12,6 +22,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="tblPaymentSettlement" style="width:100%; font-size:13px">
+                        <caption>Payment Settlement</caption>
                         <thead class="table-header">
                             <tr>
                                 <th>UserId</th>
@@ -43,6 +54,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="tblTipSettlement" style="width:100%; font-size:13px">
+                        <caption>Tips Settlement</caption>
                         <thead class="table-header">
                             <tr>
                                 <th>Appointment ID</th>
@@ -69,6 +81,31 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tblAdvancePaymentSettlement" style="width:100%; font-size:13px">
+                        <caption>Advance Payment Settlement</caption>
+                        <thead class="table-header">
+                            <tr>
+                                <th>ID</th>
+                                <th>Artist Name</th>
+                                <th>Amount</th>
+                                <th>Payment Method</th>
+                                <th>Reason</th>
+                                <th>Paid Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th colspan="1" style="text-align:right">Total:</th>
+                                <th></th>
+                                <th colspan="5"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="card-body">
                 <div class="row">
                     <div class="col-4">
                         <table class="table table-bordered table-sm">
@@ -80,6 +117,10 @@
                                 <tr>
                                     <td>Total Tips To Artist: </td>
                                     <td>Rs. <span id="totalTip"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Advance Payment: </td>
+                                    <td>Rs. <span id="totalAdvancePayment"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Grand Total: </b></td>
@@ -104,6 +145,7 @@
     <script>
         let datatablePayment = null;
         let datatabelTip = null;
+        let datatableAdvancePayment = null;
         let responsePaymentTipList;
        
         $(document).ready(function () {
@@ -129,6 +171,9 @@
             }
             if (datatabelTip) {
                 $("#tblTipSettlement").DataTable().destroy();
+            }
+            if (datatableAdvancePayment) {
+                $("#tblAdvancePaymentSettlement").DataTable().destroy();
             }
             $.ajax({
                 url: `/Payment/GetPaymentTipSettlementData`,
@@ -257,9 +302,55 @@
                             { data: 'tipSettlement' },
                         ]
                     });
+                    datatableAdvancePayment = $("#tblAdvancePaymentSettlement").DataTable({
+                        footerCallback: function (row, data, start, end, display) {
+                            var api = this.api();
+                            // Helper function to parse numbers safely
+                            var intVal = function (i) {
+                                return typeof i === 'string'
+                                    ? i.replace(/[\$,]/g, '') * 1
+                                    : typeof i === 'number'
+                                        ? i
+                                        : 0;
+                            };
+
+                            // Calculate the total for filtered rows (visible rows after search)
+                            var totalAdvancePayment = api
+                                .column(2, { search: 'applied' }) // Target the 4th column
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                            // Update the footer
+                            $(api.column(2).footer()).html(totalAdvancePayment);
+                        },
+                        fixHeader: {
+                            header: true,
+                            headerOffset: 50
+                        },
+                        autoWidth: true,
+                        lengthMenu: [[5, 25, -1], [5, 25, "All"]],
+                        data: data.data.advancePaymentSettlements,
+                        columns: [
+                            { data: 'id' },
+                            { data: 'fullName' },
+                            { data: 'amount' },
+                            { data: 'paymentMethod' },
+                            { data: 'reason' },
+                            {
+                                data: 'paidDate',
+                                render: function (data) {
+                                    return formatDate(data);
+                                }
+                            },
+                            { data: 'status' },
+                        ]
+                    });
                     $("#totalPayment").text(data.data.totalPayments)
                     $("#totalTip").text(data.data.totalTips)
-                    $("#grandTotal").text(data.data.grandTotal)
+                    $("#totalAdvancePayment").text(`(${data.data.totalAdvancePayments})`)
+                    $("#grandTotal").text(`${data.data.totalPayments} + ${data.data.totalTips} - ${data.data.totalAdvancePayments} = ${data.data.grandTotal}`)
                 }
             });
         }

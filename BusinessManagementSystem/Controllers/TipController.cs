@@ -31,7 +31,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Index()
         {
-            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "Settlement"; 
             ViewBag.ModalInformation = _modalView;
             return View(requestDto);
@@ -39,7 +39,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyTips()
         {
-            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "Settlement";
             ViewBag.ModalInformation = _modalView;
             return View(requestDto);

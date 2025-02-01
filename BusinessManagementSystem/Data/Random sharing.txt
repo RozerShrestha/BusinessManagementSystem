@@ -197,16 +197,17 @@ GO
 <html lang="en">
 <body>
     <p>Dear <b>{{artistname}}</b>,</p>
-    <p>You have requested for an advance payment of Rs {{advanceamount}}, which has been {{status}} and transferred to you via {{paymentmethod}}. </p>
+    <p>You have requested for an advance payment of Rs {{advanceamount}}, which has been {{status}}. </p>
     <p>If you have any questions or require further details regarding the payment, feel free to reach out to us. We’re happy to assist!</p>
     <p>Thank you for your excellent work and dedication. We look forward to continuing our collaboration!</p>
     <p>Warm regards,<br>Freak Street Tattoo</p>
 </body>
 </html>
 
+
 <html lang="en">
 <body>
-    <p>Dear <b>{{superadmin}}</b>,</p>
+    <p>Dear <b>concern</b>,</p>
     <p>{{artistname}} has requested for an advance payment of Rs {{advanceamount}}.</p>
     <p>Warm regards,<br>Freak Street Tattoo</p>
 </body>

@@ -6,7 +6,7 @@ namespace BusinessManagementSystem.Services
     public interface IPayment : IGeneric<Payment>
     {
         ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto);
-        dynamic GetAllPayments();
+        dynamic GetAllPaymentsDashboard(RequestDto requestDto);
         dynamic GetAllPaymentSegregation(RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(int userId, RequestDto requestDto);
         ResponseDto<PaymentDto> GetMyPayments(Guid guid, RequestDto requestDto);

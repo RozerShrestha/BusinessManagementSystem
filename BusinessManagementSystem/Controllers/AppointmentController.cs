@@ -36,7 +36,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Index()
         {
-            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -46,7 +46,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyAppointments()
         {
-            RequestDto requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");

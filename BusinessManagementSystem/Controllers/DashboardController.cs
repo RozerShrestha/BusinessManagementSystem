@@ -34,13 +34,13 @@ namespace BusinessManagementSystem.Controllers
         {
             RequestDto requestDto = new RequestDto();
             if (requestDto1.StartDate==DateTime.MinValue)
-                requestDto = _businessLayer.AppointmentService.GetInitialRequestDtoFilter();
+                requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilterDashboard();
             else
             {
                 requestDto = requestDto1;
             }
             requestDto.ParameterFilter = ""; // this means only start date and end date
-            DashboardViewBagList(requestDto);
+            base.DashboardViewBagList(requestDto);
 
             return View(requestDto);
         }
@@ -55,12 +55,12 @@ namespace BusinessManagementSystem.Controllers
             var AppointmentSegregationLoginEmployee = _businessLayer.DashboardService.GetDashboardInfo(requestDto, userId);
 
             IDictionary<string, dynamic> DashboardInfoDict = new Dictionary<string, dynamic>
-        {
-            { "DataPointsIncomeSegregation", _businessLayer.DashboardService.GetIncomeSegregation(requestDto) },
-            { "DataPointsPaymentSegregation", Payment },
-            { "DataPointsTipSegregation", Tips },
-            { "AppointmentSegregationLoginEmployee", AppointmentSegregationLoginEmployee }
-        };
+            {
+                { "DataPointsIncomeSegregation", _businessLayer.DashboardService.GetIncomeSegregation(requestDto) },
+                { "DataPointsPaymentSegregation", Payment },
+                { "DataPointsTipSegregation", Tips },
+                { "AppointmentSegregationLoginEmployee", AppointmentSegregationLoginEmployee }
+            };
 
             if (roleName == SD.Role_TattooAdmin || roleName == SD.Role_Superadmin)
             {

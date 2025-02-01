@@ -12,9 +12,11 @@ namespace BusinessManagementSystem.Repositories
     public class TipRepository : GenericRepository<Tip>, ITip
     {
         public ResponseDto<TipDto> _responseTipDto;
+        public ResponseDto<TipSettlementDto> _responseTipSettlementDto;
         public TipRepository(ApplicationDBContext dbContext) : base(dbContext)
         {
             _responseTipDto = new ResponseDto<TipDto>();
+            _responseTipSettlementDto = new ResponseDto<TipSettlementDto>();
         }
         public ResponseDto<TipDto> GetAllTips(RequestDto requestDto)
         {
@@ -56,13 +58,13 @@ namespace BusinessManagementSystem.Repositories
                              
         }
 
-        public dynamic GetAllTips()
+        public dynamic GetAllTipsDashboard(RequestDto requestDto)
         {
-            var result = (from p in _dbContext.Tips
+            var result = (from t in _dbContext.Tips
                           join u in _dbContext.Users
-                          on p.TipAssignedToUser equals u.Id
-                          where p.TipSettlement == true
-                          group p by new { u.FullName } into g
+                          on t.TipAssignedToUser equals u.Id
+                          where t.TipSettlement == true && t.CreatedAt >= requestDto.StartDate && t.CreatedAt <= requestDto.EndDate.AddDays(1)
+                          group t by new { u.FullName } into g
                           select new
                           {
                               FullName = g.Key.FullName,
@@ -119,6 +121,66 @@ namespace BusinessManagementSystem.Repositories
                            TotalTips = g.Sum(t => t.TipAmountForUsers)
                        }).FirstOrDefault();
             return result;
+        }
+
+        public ResponseDto<TipSettlementDto> GetTipSettlement(RequestDto requestDto)
+        {
+            try
+            {
+                var queryTips = from u in _dbContext.Users
+                                join a in _dbContext.Appointments on u.Id equals a.UserId
+                                join t in _dbContext.Tips on a.Id equals t.AppointmentId
+                                select new
+                                {
+                                    User = u,
+                                    Appointment = a,
+                                    Tip = t
+                                };
+
+                // Apply conditions dynamically
+                if (requestDto.StartDate != null)
+                    queryTips = queryTips.Where(x => x.Tip.CreatedAt >= requestDto.StartDate);
+                if (requestDto.EndDate != null)
+                    queryTips = queryTips.Where(x => x.Tip.CreatedAt <= requestDto.EndDate);
+                if (requestDto.UserId > 0)
+                    queryTips = queryTips.Where(x => x.Tip.TipAssignedToUser == requestDto.UserId);
+                if (requestDto.Status != "All")
+                    queryTips = queryTips.Where(x => x.Appointment.Status == requestDto.Status);
+                if (requestDto.Settlement != "ALL")
+                    queryTips = queryTips.Where(x => x.Tip.TipSettlement == bool.Parse(requestDto.Settlement));
+
+                // Project the result
+                var tipItems = queryTips
+                    .Select(x => new TipSettlementDto
+                    {
+                        AppointmentId = x.Appointment.Id,
+                        TipId = x.Tip.Id,
+                        AppointmentDate = x.Appointment.AppointmentDate,
+                        TipCreatedDate = x.Tip.CreatedAt,
+                        ClientName = x.Appointment.ClientName,
+                        ArtistName = x.User.FullName,
+                        TipAssignedUser = x.Tip.TipAssignedToUser.ToString(),
+                        TipAmount = x.Tip.TipAmount,
+                        TipAmountForUser = x.Tip.TipAmountForUsers,
+                        TipSettlement = x.Tip.TipSettlement,
+                        Status = x.Appointment.Status,
+                    })
+                    .OrderByDescending(x => x.AppointmentDate)
+                    .ToList();
+                List<TipSettlementDto> tipItemsNew = new List<TipSettlementDto>();
+                foreach (var tip in tipItems)
+                {
+                    tip.TipAssignedUser = _dbContext.Users.Find(Convert.ToInt32(tip.TipAssignedUser)).FullName;
+                    tipItemsNew.Add(tip);
+                }
+                _responseTipSettlementDto.Datas = tipItemsNew;
+            }
+            catch (Exception ex)
+            {
+                _responseTipSettlementDto.StatusCode = HttpStatusCode.NotFound;
+                _responseTipSettlementDto.Message = ex.Message;
+            }
+            return _responseTipSettlementDto;
         }
     }
 }

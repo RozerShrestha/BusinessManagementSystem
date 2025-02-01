@@ -51,8 +51,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
         public ResponseDto<AdvancePayment> GetAllAdvancePayment(RequestDto requestDto)
         {
-            _responseDto = _unitOfWork.AdvancePayment.GetAll(p => p.CreatedAt >= requestDto.StartDate && p.CreatedAt <=   requestDto.EndDate.AddDays(1),
-                                        orderBy: p => p.CreatedAt,
+            _responseDto = _unitOfWork.AdvancePayment.GetAll(p => p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <=   requestDto.EndDate.AddDays(1),
+                                        orderBy: p => p.UpdatedAt,
                                         orderByDescending: true,
                                         includeProperties: "User");
             return _responseDto;
@@ -60,8 +60,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
         public ResponseDto<AdvancePayment> GetMyAdvancePayment(RequestDto requestDto, int userId)
         {
-            _responseDto = _unitOfWork.AdvancePayment.GetAll(p => p.CreatedAt >= requestDto.StartDate && p.CreatedAt <= requestDto.EndDate.AddDays(1) && p.UserId==userId,
-                                        orderBy: p => p.CreatedAt,
+            _responseDto = _unitOfWork.AdvancePayment.GetAll(p => p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate.AddDays(1) && p.UserId==userId,
+                                        orderBy: p => p.UpdatedAt,
                                         orderByDescending: true,
                                         includeProperties: "User");
             return _responseDto;

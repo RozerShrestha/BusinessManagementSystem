@@ -48,8 +48,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             List<PaymentTipsDataPoint> dataPoints2 = new List<PaymentTipsDataPoint>();
             var users = _unitOfWork.Users.GetAll(p => p.Occupation == SD.Occupations[Occupation.TattooArtist.ToString()] && p.Status == true).Datas;
             
-            var Payments = _unitOfWork.Payment.GetAllPayments();
-            var Tips = _unitOfWork.Tip.GetAllTips();
+            var Payments = _unitOfWork.Payment.GetAllPaymentsDashboard(requestDto);
+            var Tips = _unitOfWork.Tip.GetAllTipsDashboard(requestDto);
             foreach(var Payment in Payments)
             {
                 dataPoints1.Add(new PaymentTipsDataPoint(Payment.FullName, Payment.TotalPaymentToArtist));
