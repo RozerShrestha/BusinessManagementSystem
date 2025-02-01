@@ -55,7 +55,6 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Create(AdvancePayment advancePayment)
         {
             AdvancePaymentViewBagList();
-            ModelState.Remove(nameof(advancePayment.PaymentMethod));
 
             if (ModelState.IsValid)
             {
@@ -111,10 +110,6 @@ namespace BusinessManagementSystem.Controllers
         {
             if (advancePayment == null) return NotFound();
             AdvancePaymentViewBagList();
-            if (roleName != SD.Role_Superadmin)
-            {
-                ModelState.Remove(nameof(advancePayment.PaymentMethod));
-            }
             if (ModelState.IsValid)
             {
                 _responseDto = _businessLayer.AdvancePaymentService.UpdateAdvancePayment(advancePayment);

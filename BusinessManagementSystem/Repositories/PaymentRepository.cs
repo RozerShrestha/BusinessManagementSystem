@@ -31,8 +31,8 @@ namespace BusinessManagementSystem.Repositories
             var query = from p in _dbContext.Payments
                               join a in _dbContext.Appointments on p.AppointmentId equals a.Id
                               join u in _dbContext.Users on p.UserId equals u.Id
-                              where p.UpdatedAt>=requestDto.StartDate && p.UpdatedAt<=requestDto.EndDate
-                              select new PaymentDto
+                              where p.UpdatedAt>=requestDto.StartDate && p.UpdatedAt<=requestDto.EndDate.AddDays(1)
+                        select new PaymentDto
                               {
                                   PaymentId= p.Id,
                                   AppointmentId=a.Id,
@@ -71,8 +71,8 @@ namespace BusinessManagementSystem.Repositories
             var query = from p in _dbContext.Payments
                               join a in _dbContext.Appointments on p.AppointmentId equals a.Id
                               join u in _dbContext.Users on p.UserId equals u.Id
-                              where u.Id==userId && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate
-                              select new PaymentDto
+                              where u.Id==userId && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate.AddDays(1)
+                        select new PaymentDto
                               {
                                   PaymentId = p.Id,
                                   AppointmentId = a.Id,
@@ -110,8 +110,8 @@ namespace BusinessManagementSystem.Repositories
             var queryPayments =  from p in _dbContext.Payments
                               join a in _dbContext.Appointments on p.AppointmentId equals a.Id
                               join u in _dbContext.Users on p.UserId equals u.Id
-                              where u.Guid==guid && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate
-                              select new PaymentDto
+                              where u.Guid==guid && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate.AddDays(1)
+                                 select new PaymentDto
                               {
                                   PaymentId = p.Id,
                                   AppointmentId = a.Id,
@@ -329,7 +329,7 @@ namespace BusinessManagementSystem.Repositories
                 if (requestDto.StartDate !=DateTime.MinValue)
                     paymentHistory = paymentHistory.Where(x => x.PaymentFrom >=DateOnly.FromDateTime(requestDto.StartDate));
                 if (requestDto.EndDate != DateTime.MinValue)
-                    paymentHistory = paymentHistory.Where(x => x.PaymentFrom <= DateOnly.FromDateTime(requestDto.EndDate));
+                    paymentHistory = paymentHistory.Where(x => x.PaymentFrom <= DateOnly.FromDateTime(requestDto.EndDate).AddDays(1));
                 if (requestDto.UserId > 0)
                     paymentHistory = paymentHistory.Where(x => x.UserId == requestDto.UserId);
 
@@ -358,7 +358,7 @@ namespace BusinessManagementSystem.Repositories
         }
         public dynamic GetAllPaymentSegregation(RequestDto requestDto)
         {
-            var result = _dbContext.Payments.Where(p => p.PaymentSettlement == true && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate)
+            var result = _dbContext.Payments.Where(p => p.PaymentSettlement == true && p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate.AddDays(1))
                         .GroupBy(p => 1) // Group by a constant value to calculate the sum over all rows
                         .Select(g => new
                         {

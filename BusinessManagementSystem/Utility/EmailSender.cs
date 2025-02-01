@@ -145,7 +145,7 @@ namespace BusinessManagementSystem.Utility
                 sb.Replace("{{artistname}}", advancePayment.User.FullName);
                 sb.Replace("{{advanceamount}}", advancePayment.Amount.ToString());
                 sb.Replace("{{paymentmethod}}", advancePayment.PaymentMethod);
-                sb.Replace("{{status}}", advancePayment.Status==true?$"approved and transferred to you via{advancePayment.PaymentMethod}":"rejected");
+                sb.Replace("{{status}}", advancePayment.Status==true?$"approved and transferred to you via {advancePayment.PaymentMethod}":"rejected");
             }
             return sb.ToString();
         }

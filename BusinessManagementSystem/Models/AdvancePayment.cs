@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using Org.BouncyCastle.Utilities.IO.Pem;
 using System.ComponentModel;
+using BusinessManagementSystem.Helper;
 
 namespace BusinessManagementSystem.Models
 {
@@ -17,7 +18,8 @@ namespace BusinessManagementSystem.Models
         [ValidateNever]
         public string FullName { get; set; }
         public double Amount { get; set; }
-        public string PaymentMethod { get; set; }
+        [RequiredIfValueMatchAttribute(nameof(Status), true, "If Status is Pay, PaymentMethod is required")]
+        public string? PaymentMethod { get; set; }
         public string Reason { get; set; }
         public DateOnly PaidDate { get; set; }
         public bool Status { get; set; }
