@@ -21,7 +21,7 @@ using System.Text.Encodings.Web;
 
 namespace BusinessManagementSystem.Controllers
 {
-    [Authorize(Roles = "superadmin")]
+    [Authorize]
     public class UsersController : BaseController
     {
         public ResponseDto<User> _responseDto;
@@ -45,7 +45,7 @@ namespace BusinessManagementSystem.Controllers
             
         }
         [HttpGet]
-        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
+        [Authorize(Roles = "superadmin")]
         public IActionResult Index()
         {
             ViewBag.ModalInformation = _modalView;
@@ -53,6 +53,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
         public IActionResult Detail(Guid guid)
         {
             _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
@@ -69,6 +70,7 @@ namespace BusinessManagementSystem.Controllers
         }
  
         [HttpGet]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyProfile()
         {
             //_responseUserDetailDto = _businessLayer.UserService.GetUserDetailDtoById(userId);
@@ -85,6 +87,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "superadmin")]
         public IActionResult Create()
         {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
@@ -93,6 +96,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "superadmin")]
         public IActionResult Create(UserDto userDto, IFormFile? ProfilePictureLink)
         {
             ViewData["RoleList"] = new SelectList(roleList, "Id", "Name");
@@ -134,6 +138,7 @@ namespace BusinessManagementSystem.Controllers
             }
         }
 
+        [Authorize(Roles = "superadmin")]
         public IActionResult Edit(Guid guid)
         {
             if (guid==Guid.Empty)return NotFound();
@@ -149,6 +154,7 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "superadmin")]
         public IActionResult Edit(UserDto userDto, IFormFile? ProfilePictureLink)
         {
             ModelState.Remove(nameof(userDto.Password)); //just to ignore ConfirmPassword to validate
@@ -207,6 +213,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "superadmin")]
         public IActionResult Delete(Guid guid)
         {
             if (guid == Guid.Empty)
@@ -235,6 +242,7 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "superadmin")]
         public IActionResult DeleteConfirmed(int UserId)
         {
             _responseDto = _businessLayer.UserService.GetUserById(UserId);
@@ -262,6 +270,7 @@ namespace BusinessManagementSystem.Controllers
         #region API CALLS
 
         [HttpGet]
+        [Authorize(Roles = "superadmin")]
         public IActionResult GetAllUser()
         {
             string who = roleName;
@@ -277,6 +286,7 @@ namespace BusinessManagementSystem.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = "superadmin")]
         public IActionResult UserNameValid(string username)
         {
             var userNameValidityCheck = _businessLayer.UserService.ValidateUserName(username);
@@ -284,6 +294,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "superadmin")]
         public IActionResult EmailValid(string email)
         {
             var emailValidityCheck=_businessLayer.UserService.ValidateEmail(email);
@@ -291,6 +302,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "superadmin")]
         public IActionResult PhoneNumberValid(string phoneNumber)
         {
             var phoneValidityCheck = _businessLayer.UserService.ValidatePhoneNumber(phoneNumber);

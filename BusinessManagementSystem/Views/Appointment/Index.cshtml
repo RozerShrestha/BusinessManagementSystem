@@ -11,7 +11,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="tblAppointmentList" style="width:100%" class="table table-striped table-bordered table-sm">
+                    <table id="tblAppointmentList" style="width:100%; font-size:13px" class="table table-striped table-bordered table-sm">
                         <thead class="table-header">
                             <tr class="border-bottom-0 tr-header header">
                                 <th>ID</th>
@@ -19,11 +19,11 @@
                                 <th>Client Number</th>
                                 <th>Artist Assigned</th>
                                 <th>Category</th>
-                                @* <th>Refered By</th> *@
                                 <th>Appointment Date</th>
                                 <th>Total Hours</th>
                                 <th>Discount</th>
                                 <th>Discount Hour</th>
+                                <th>Due Amount</th>
                                 <Th>Total Cost</Th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -120,6 +120,7 @@
                     {'data': 'totalHours'},
                     {'data': 'discount'},
                     {'data': 'discountInHour'},
+                    {'data': 'dueAmount'},
                     {'data': 'totalCost'},
                     {'data': 'status'},
                     {'data': 'guid',

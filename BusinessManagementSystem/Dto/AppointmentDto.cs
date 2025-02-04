@@ -64,13 +64,15 @@ namespace BusinessManagementSystem.Dto
         public string Status { get; set; }
         public string? DbStatus { get; set; }
         [Required]
-        [Range(1000, int.MaxValue, ErrorMessage = "Deposit amount should be more than equal to 1000")]
+        //[Range(1000, int.MaxValue, ErrorMessage = "Deposit amount should be more than equal to 1000")]
         [DisplayName("Deposit *")]
         public double Deposit { get; set; }
         [DisplayName("Discount")]
         public double Discount { get; set; }
         [DisplayName("Discount In Hour")]
         public double DiscountInHour { get; set; }
+        [DisplayName("Due Amount")]
+        public double DueAmount { get; set; }
         [DisplayName("Total Cost")]
         public double TotalCost { get; set; }
         [DisplayName("Tips if Available")]

@@ -280,12 +280,14 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult GetPaymentCalculation(bool isForeigner, string category, double totalHours, int deposit, int discount = 0, double discountInHour = 0)
         {
             double totalCost = 0.0;
-            if (!string.IsNullOrEmpty(category) && totalHours != 0 && deposit >= 1000)
+            double dueAmount = 0.0;
+            if (!string.IsNullOrEmpty(category) && totalHours != 0)
             {
-                string costDescription = _businessLayer.AppointmentService.GetTotalCost(isForeigner, category, totalHours, deposit, discount, discountInHour, out totalCost);
+                string costDescription = _businessLayer.AppointmentService.GetDueCost(isForeigner, category, totalHours, deposit, discount, discountInHour, out dueAmount);
                 var result = new
                 {
-                    TotalCost = totalCost,
+                    DueAmount = dueAmount,
+                    TotalCost = deposit+dueAmount,
                     CostDescription = costDescription
                 };
                 return Ok(result);

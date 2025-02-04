@@ -160,6 +160,11 @@
                         <span asp-validation-for="DiscountInHour" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
+                        <label asp-for="DueAmount" class="control-label"></label>
+                        <input asp-for="DueAmount" class="form-control  non-editable" type="number" step="0.01" />
+                        <span asp-validation-for="DueAmount" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
                         <label asp-for="TotalCost" class="control-label"></label>
                         <input asp-for="TotalCost" class="form-control non-editable"  type="number" step="0.01" />
                         <span asp-validation-for="TotalCost" class="text-danger"></span>

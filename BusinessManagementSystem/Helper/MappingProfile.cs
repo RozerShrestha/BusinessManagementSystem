@@ -34,10 +34,13 @@ namespace BusinessManagementSystem.Helper
                 .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => src.Payment.PaymentMethod))
                 .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Payment.Discount))
                 .ForMember(dest => dest.DiscountInHour, opt => opt.MapFrom(src => src.Payment.DiscountInHour))
+                .ForMember(dest => dest.DueAmount, opt => opt.MapFrom(src => src.Payment.DueAmount))
                 .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.Payment.TotalCost))
                 .ForMember(dest => dest.ReferalFullName, opt => opt.MapFrom(src => src.Referal.FullName))
                 .ForMember(dest => dest.TipAmount, opt => opt.MapFrom(src => src.Payment.TipAmount))
                 .ForMember(dest => dest.ArtistAssigned, opt => opt.MapFrom(src => src.User.FullName));
+                
+
 
             //mapping AppointmentDto to Appointment
             CreateMap<AppointmentDto, Appointment>()

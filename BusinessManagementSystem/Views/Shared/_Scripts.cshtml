@@ -44,7 +44,6 @@
         let discount = $('#Discount').val();
         let discountInHour = $('#DiscountInHour').val();
         let isForeigner = $('#IsForeigner').val()
-        $('#TotalCost').val();
         $.ajax({
             type: 'GET',
             url: `/Appointment/GetPaymentCalculation?isForeigner=${isForeigner}&category=${category}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}`,
@@ -52,6 +51,8 @@
             success: function (response) {
                 alert(response.costDescription);
                 $('#TotalCost').val(response.totalCost);
+                $('#DueAmount').val(response.dueAmount);
+
                 $('#btnApppointmentSubmit').prop('disabled', false);
             },
             error: function (error) {
