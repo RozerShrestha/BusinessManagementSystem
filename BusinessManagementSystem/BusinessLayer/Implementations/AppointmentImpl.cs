@@ -321,10 +321,12 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         private Payment CreatePayment(AppointmentDto appointmentDto)
         {
+            float artistPercentage = GetArtistPercentage(appointmentDto);
+            float studioPercentage = 1 - artistPercentage;
             Payment payment = new Payment();
             payment = _mapper.Map<Payment>(appointmentDto);
-            payment.PaymentToArtist = appointmentDto.TotalCost / 2;
-            payment.PaymentToStudio= appointmentDto.TotalCost / 2;
+            payment.PaymentToArtist = Math.Round(appointmentDto.TotalCost * artistPercentage);
+            payment.PaymentToStudio= Math.Round(appointmentDto.TotalCost * studioPercentage);
             return payment;
         }
         private Payment UpdatePayment(Payment payment, AppointmentDto appointmentDto)

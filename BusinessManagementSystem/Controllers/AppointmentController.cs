@@ -68,8 +68,16 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Create()
         {
+            AppointmentDto appointmentDto = new AppointmentDto();
+            appointmentDto.Deposit = 1000;
+            appointmentDto.Discount = 0;
+            appointmentDto.DiscountInHour = 0;
+            appointmentDto.TipAmount = 0;
+            appointmentDto.Allergies = "No";
+            appointmentDto.MedicalConditions = "No";
+            appointmentDto.PainToleranceLevel = "No";
             AppointmentSelectListViewBag();
-            return View();
+            return View(appointmentDto);
         }
 
         [HttpPost]
