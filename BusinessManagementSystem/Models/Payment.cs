@@ -14,6 +14,7 @@ namespace BusinessManagementSystem.Models
         public double Discount { get; set; }
         public double DiscountInHour { get; set; }
         public double DueAmount { get; set; }
+        public double PaidAmount { get; set; }
         public double TotalCost { get; set; }
         public double TipAmount { get; set; }
         public double PaymentToStudio { get; set; }

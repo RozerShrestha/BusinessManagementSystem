@@ -7,8 +7,9 @@
         InProgress=3,
         Completed=4,
         Cancelled=5,
-        NotShown=6,
-        Rescheduled=7,
-        All=8
+        CompletedPaymentDue=6,
+        NotShown=7,
+        Rescheduled=8,
+        All=9
     }
 }

@@ -73,6 +73,8 @@ namespace BusinessManagementSystem.Dto
         public double DiscountInHour { get; set; }
         [DisplayName("Due Amount")]
         public double DueAmount { get; set; }
+        [DisplayName("Paid Amount")]
+        public double PaidAmount { get; set; }
         [DisplayName("Total Cost")]
         public double TotalCost { get; set; }
         [DisplayName("Tips if Available")]
