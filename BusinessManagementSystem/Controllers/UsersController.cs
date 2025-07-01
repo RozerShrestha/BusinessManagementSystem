@@ -53,7 +53,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Detail(Guid guid)
         {
             _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
