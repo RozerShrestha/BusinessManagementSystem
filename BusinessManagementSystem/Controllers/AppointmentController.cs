@@ -68,8 +68,16 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Create()
         {
+            AppointmentDto appointmentDto = new AppointmentDto();
+            appointmentDto.Deposit = 1000;
+            appointmentDto.Discount = 0;
+            appointmentDto.DiscountInHour = 0;
+            appointmentDto.TipAmount = 0;
+            appointmentDto.Allergies = "No";
+            appointmentDto.MedicalConditions = "No";
+            appointmentDto.PainToleranceLevel = "No";
             AppointmentSelectListViewBag();
-            return View();
+            return View(appointmentDto);
         }
 
         [HttpPost]
@@ -277,17 +285,17 @@ namespace BusinessManagementSystem.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult GetPaymentCalculation(bool isForeigner, string category, double totalHours, int deposit, int discount = 0, double discountInHour = 0)
+        public IActionResult GetPaymentCalculation(bool isForeigner, string category, double totalHours, int deposit, int discount = 0, double discountInHour = 0, double paidAmount=0)
         {
             double totalCost = 0.0;
             double dueAmount = 0.0;
             if (!string.IsNullOrEmpty(category) && totalHours != 0)
             {
-                string costDescription = _businessLayer.AppointmentService.GetDueCost(isForeigner, category, totalHours, deposit, discount, discountInHour, out dueAmount);
+                string costDescription = _businessLayer.AppointmentService.GetDueCost(isForeigner, category, totalHours, deposit, discount, discountInHour, paidAmount, out dueAmount, out totalCost);
                 var result = new
                 {
                     DueAmount = dueAmount,
-                    TotalCost = deposit+dueAmount,
+                    TotalCost = totalCost,
                     CostDescription = costDescription
                 };
                 return Ok(result);

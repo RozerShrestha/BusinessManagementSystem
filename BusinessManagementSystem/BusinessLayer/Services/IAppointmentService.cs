@@ -15,6 +15,6 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<Appointment> UpdateAppointment(AppointmentDto appointmentDto);
         ResponseDto<Appointment> DeleteAppointmentByGuid(Guid guid);
         ResponseDto<Appointment> DeleteAppointmentById(int id);
-        string GetDueCost(bool isForeigner,string category, double totalHours, int deposit, int discount, double discountInHour, out double dueAmount);
+        string GetDueCost(bool isForeigner,string category, double totalHours, int deposit, int discount, double discountInHour, double paidAmount, out double dueAmount, out double totalCost);
     }
 }

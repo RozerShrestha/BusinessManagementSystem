@@ -43,10 +43,12 @@
         let deposit = $('#Deposit').val();
         let discount = $('#Discount').val();
         let discountInHour = $('#DiscountInHour').val();
+        let dueAmount = $('#DueAmount').val();
+        let paidAmount = $('#PaidAmount').val();
         let isForeigner = $('#IsForeigner').val()
         $.ajax({
             type: 'GET',
-            url: `/Appointment/GetPaymentCalculation?isForeigner=${isForeigner}&category=${category}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}`,
+            url: `/Appointment/GetPaymentCalculation?isForeigner=${isForeigner}&category=${category}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}&paidAmount=${paidAmount}`,
             contentType: 'application/json',
             success: function (response) {
                 alert(response.costDescription);

@@ -264,7 +264,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             }
             return _responseDto;
         }
-        public string GetDueCost(bool isForeigner, string category, double totalHours, int deposit, int discount, double discountInHour,out double dueAmount)
+        public string GetDueCost(bool isForeigner, string category, double totalHours, int deposit, int discount, double discountInHour, double paidAmount, out double dueAmount, out double totalCost)
         {
             double categoryCost=0;
             if (category == "Tattoo")
@@ -282,8 +282,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
 
             categoryCost = isForeigner ? categoryCost * 2 : categoryCost;
 
-            dueAmount = Convert.ToInt32(categoryCost) * (totalHours - discountInHour) - deposit - discount;
-            totalCost = Convert.ToInt32(deposit + dueAmount);
+            dueAmount = Convert.ToInt32(categoryCost) * (totalHours - discountInHour) - deposit - discount - paidAmount;
+            totalCost = Convert.ToInt32(deposit + dueAmount + paidAmount);
 
             string calculationDescription = $"Category: {category}({categoryCost}) \n Deposit: {deposit} \n Total Hours: {totalHours}-{discountInHour} \n Discount in Price: {discount} \n Due Amount: {dueAmount} \n Total Cost:{totalCost}";
 
@@ -321,10 +321,12 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         private Payment CreatePayment(AppointmentDto appointmentDto)
         {
+            float artistPercentage = GetArtistPercentage(appointmentDto);
+            float studioPercentage = 1 - artistPercentage;
             Payment payment = new Payment();
             payment = _mapper.Map<Payment>(appointmentDto);
-            payment.PaymentToArtist = appointmentDto.TotalCost / 2;
-            payment.PaymentToStudio= appointmentDto.TotalCost / 2;
+            payment.PaymentToArtist = Math.Round(appointmentDto.TotalCost * artistPercentage);
+            payment.PaymentToStudio= Math.Round(appointmentDto.TotalCost * studioPercentage);
             return payment;
         }
         private Payment UpdatePayment(Payment payment, AppointmentDto appointmentDto)
@@ -335,6 +337,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             payment.Discount = appointmentDto.Discount;
             payment.DiscountInHour = appointmentDto.DiscountInHour;
             payment.DueAmount=appointmentDto.DueAmount;
+            payment.PaidAmount=appointmentDto.PaidAmount;
             payment.TotalCost = appointmentDto.TotalCost;
             payment.PaymentMethod = appointmentDto.PaymentMethod;
             payment.PaymentToArtist =Math.Round(payment.TotalCost * artistPercentage);

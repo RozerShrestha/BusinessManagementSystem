@@ -51,6 +51,7 @@ namespace BusinessManagementSystem.Utility
             { AppointmentStat.Rescheduled.ToString(), "Re Scheduled" },
             { AppointmentStat.Confirmed.ToString(), "Confirmed" },
             { AppointmentStat.Completed.ToString(), "Completed" },
+            { AppointmentStat.CompletedPaymentDue.ToString(), "Completed But Payment Due" },
             { AppointmentStat.Cancelled.ToString(), "Cancelled" },
             { AppointmentStat.NotShown.ToString(), "Not Shown" }
             
