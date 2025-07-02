@@ -22,6 +22,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         dynamic RoleList();
         dynamic GetAllActiveTattooArtist();
         dynamic GetAllActiveTattooArtistWithoutAll();
+        dynamic GetArtist(Guid guid);
         bool ValidateUserName(string username);
         bool ValidateEmail(string email);
         bool ValidatePhoneNumber(string phoneNumber);

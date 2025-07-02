@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="UserId" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.AppointmentSelectList["ArtistList"], "--Select--", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.AppointmentSelectList["ArtistList"], new { @class = "form-control" })
                         <span asp-validation-for="UserId" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">

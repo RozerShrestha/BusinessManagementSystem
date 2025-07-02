@@ -68,6 +68,7 @@ namespace BusinessManagementSystem.Controllers
                 roleId = userDto.RoleId;
                 roleName = userDto.RoleName;
                 fullName = userDto.FullName;
+                userGuid = userDto.userGuid;
                 
             }
             catch (Exception ex)
@@ -95,7 +96,10 @@ namespace BusinessManagementSystem.Controllers
 
         protected void AppointmentSelectListViewBag()
         {
-            dynamic artistList = _businessLayer.UserService.GetAllActiveTattooArtistWithoutAll();
+            dynamic artistList = null;
+            artistList = (roleName==SD.Role_Superadmin || roleName== SD.Role_TattooAdmin)? 
+                _businessLayer.UserService.GetAllActiveTattooArtistWithoutAll():
+                _businessLayer.UserService.GetArtist(userGuid);
             dynamic referalList = _businessLayer.ReferalService.GetAllActiveReferalList();
             ViewBag.AppointmentSelectList = new Dictionary<string, SelectList>
             {

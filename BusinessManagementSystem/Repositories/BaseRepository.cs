@@ -60,6 +60,7 @@ namespace BusinessManagementSystem.Repositories
                                       u.UserName,
                                       u.Email,
                                       u.PhoneNumber,
+                                      u.Guid,
                                       r.Id,
                                       RoleName = r.Name,
 
@@ -73,6 +74,7 @@ namespace BusinessManagementSystem.Repositories
                 userDto.RoleName = userDetail.RoleName;
                 userDto.FullName = userDetail.FullName;
                 userDto.Initial = GetInitials(userDetail.FullName);
+                userDto.userGuid = userDetail.Guid;
             }
             catch (Exception)
             {

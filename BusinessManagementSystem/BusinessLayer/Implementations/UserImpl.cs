@@ -201,6 +201,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var activeTattooArtist = _unitOfWork.Users.ArtistListWithoutAll();
             return activeTattooArtist;
         }
+        public dynamic GetArtist(Guid guid)
+        {
+            var artistSelf = _unitOfWork.Users.ArtistSelf(guid);
+            return artistSelf;
+        }
         public bool ValidateUserName(string username)
         {
            var item = _unitOfWork.Users.GetFirstOrDefault(p => p.UserName == username).Data;
@@ -221,6 +226,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = _unitOfWork.Users.GetAllSuperAdmin();
             return _responseDto;
         }
+
+       
     }
 }
 

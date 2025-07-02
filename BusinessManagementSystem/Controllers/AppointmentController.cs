@@ -65,7 +65,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "superadmin,admin_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Create()
         {
             AppointmentDto appointmentDto = new AppointmentDto();
@@ -76,12 +76,13 @@ namespace BusinessManagementSystem.Controllers
             appointmentDto.Allergies = "No";
             appointmentDto.MedicalConditions = "No";
             appointmentDto.PainToleranceLevel = "No";
+            appointmentDto.AppointmentDate = DateTime.Now;
             AppointmentSelectListViewBag();
             return View(appointmentDto);
         }
 
         [HttpPost]
-        [Authorize(Roles = "superadmin,admin_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Create(AppointmentDto appointmentDto)
         {
             var js = JsonConvert.SerializeObject(appointmentDto);
@@ -103,7 +104,10 @@ namespace BusinessManagementSystem.Controllers
                     _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlNewAppointmentArtist);
                     _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "New Appointment", htmlNewAppointmentClient);
                     #endregion
-                    return RedirectToAction(nameof(Index));
+                    if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
+                        return RedirectToAction(nameof(Index));
+                    else
+                        return RedirectToAction(nameof(MyAppointments));
                 }
                 else
                 {
@@ -122,7 +126,7 @@ namespace BusinessManagementSystem.Controllers
             }
         }
 
-        [Authorize(Roles = "superadmin,admin_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Edit(Guid guid)
         {
             if (guid == Guid.Empty) return NotFound();
@@ -151,7 +155,7 @@ namespace BusinessManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "superadmin,admin_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Edit(AppointmentDto appointmentDto)
         {
             string htmlUpdateAppointmentArtist = "";
