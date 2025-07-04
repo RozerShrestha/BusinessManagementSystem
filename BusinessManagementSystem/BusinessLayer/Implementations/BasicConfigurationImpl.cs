@@ -9,23 +9,23 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
     public class BasicConfigurationImpl : IBasicConfigurationService
     {
         private readonly IUnitOfWork _unitOfWork;
-        ResponseDto<BasicConfiguration> _responseDto;
+        private ResponseDto<BasicConfiguration> _responseDto;
 
         public BasicConfigurationImpl(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _responseDto = new ResponseDto<BasicConfiguration>();
         }
-        public ResponseDto<BasicConfiguration> GetBasicConfig()
+        public async Task<ResponseDto<BasicConfiguration>> GetBasicConfig()
         {
-            var responseDto = _unitOfWork.BasicConfiguration.GetSingleOrDefault();
-            return responseDto;
+            _responseDto = await _unitOfWork.BasicConfiguration.GetSingleOrDefaultAsync();
+            return _responseDto;
         }
         
-        public ResponseDto<BasicConfiguration> Update(BasicConfiguration basicConfiguration)
+        public async Task<ResponseDto<BasicConfiguration>> Update(BasicConfiguration basicConfiguration)
         {
-            var response=_unitOfWork.BasicConfiguration.Update(basicConfiguration);
-            return response;
+            _responseDto = await _unitOfWork.BasicConfiguration.UpdateBasicConfigurationDetail(basicConfiguration);
+            return _responseDto;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace BusinessManagementSystem.Repositories
             _dbSet = context.Set<T>();
             _responseDto = new ResponseDto<T>();
         }
-        public ResponseDto<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null, bool tracked = false)
+        public ResponseDto<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-        public  ResponseDto<T> GetSingleOrDefault(string includeProperties = null, bool tracked = false)
+        public  ResponseDto<T> GetSingleOrDefault(string? includeProperties = null, bool tracked = false)
         {
             try
             {
@@ -104,7 +104,46 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-        public  ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, Expression<Func<T,object>> orderBy=null, bool orderByDescending=false, string includeProperties = null, bool tracked = false)
+        public async Task<ResponseDto<T>> GetSingleOrDefaultAsync(string? includeProperties = null, bool tracked = false)
+        {
+            try
+            {
+                IQueryable<T> query = _dbSet;
+
+                if (!tracked)
+                {
+                    query = query.AsNoTracking();
+                }
+
+                if (!string.IsNullOrWhiteSpace(includeProperties))
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+
+                var count = await query.CountAsync();
+                if (count > 0)
+                {
+                    _responseDto.StatusCode = HttpStatusCode.OK;
+                    _responseDto.Data =await query.SingleOrDefaultAsync();
+                }
+                else
+                {
+                    _responseDto.StatusCode = HttpStatusCode.NotFound;
+                    _responseDto.Message = "Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                _responseDto.Message = "Failed due to: " + ex.Message;
+                _responseDto.StatusCode = HttpStatusCode.InternalServerError;
+            }
+
+            return _responseDto;
+        }
+        public ResponseDto<T> GetAll(Expression<Func<T, bool>>? filter = null, Expression<Func<T,object>>? orderBy =null, bool orderByDescending=false, string? includeProperties = null, bool tracked = false)
         {
             try
             {
@@ -143,6 +182,63 @@ namespace BusinessManagementSystem.Repositories
                 {
                     _responseDto.StatusCode = HttpStatusCode.OK;
                     _responseDto.Datas = query.ToList();
+                }
+
+                else
+                {
+                    _responseDto.StatusCode = HttpStatusCode.NotFound;
+                    _responseDto.Message = "Not Found";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _responseDto.Message = "Failed due to: " + ex.Message + ex.InnerException;
+                _responseDto.StatusCode = HttpStatusCode.InternalServerError;
+            }
+
+            return _responseDto;
+        }
+        public async Task<ResponseDto<T>> GetAllAync(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>>? orderBy = null, bool orderByDescending = false, string? includeProperties = null, bool tracked = false)
+        {
+            try
+            {
+                IQueryable<T> query = _dbSet;
+                if (!tracked)
+                    query = _dbSet.AsNoTracking();
+                if (filter != null)
+                    query = query.Where(filter);
+                if (!string.IsNullOrWhiteSpace(includeProperties))
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+                if (orderBy != null)
+                {
+                    query = orderByDescending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+                }
+
+                foreach (var item in query)
+                {
+
+                    PropertyInfo[] properties = item.GetType().GetProperties();
+                    foreach (var property in properties)
+                    {
+                        if (property.PropertyType == typeof(string))
+                        {
+                            property.SetValue(item, HttpUtility.HtmlEncode(property.GetValue(item)));
+                        }
+                    }
+
+                }
+
+                var count = await query.CountAsync();
+                if (count > 0)
+                {
+                    _responseDto.StatusCode = HttpStatusCode.OK;
+                    _responseDto.Datas = await query.ToListAsync();
                 }
 
                 else

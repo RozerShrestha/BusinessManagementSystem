@@ -63,7 +63,7 @@ namespace BusinessManagementSystem.Controllers
                 {
                     _notyf.Success("Success");
                     #region email
-                    var messageSuperAdmin = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AdvancePaymentSuperadminTemplate;
+                    var messageSuperAdmin = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AdvancePaymentSuperadminTemplate;
                     var userSuperadmins = _businessLayer.UserService.GetSuperadminUser().Datas;
                     foreach(var user in userSuperadmins)
                     {
@@ -119,7 +119,7 @@ namespace BusinessManagementSystem.Controllers
                     if (advancePayment.Status == true)
                     {
                         #region email
-                        var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AdvancePaymentArtistTemplate;
+                        var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AdvancePaymentArtistTemplate;
                         string htmlAdvanceAmountArtist = _emailSender.PrepareEmailAdvanceSettlement(advancePayment, messageArtist, "msgartist");
                         _emailSender.SendEmailAsync(email: _businessLayer.UserService.GetUserById(advancePayment.UserId).Data.Email, subject: "Advance Payment", htmlAdvanceAmountArtist);
                         #endregion

@@ -5,7 +5,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
 {
     public interface IBasicConfigurationService
     {
-        ResponseDto<BasicConfiguration> GetBasicConfig();
-        ResponseDto<BasicConfiguration> Update(BasicConfiguration basicConfiguration);
+        Task<ResponseDto<BasicConfiguration>> GetBasicConfig();
+        Task<ResponseDto<BasicConfiguration>> Update(BasicConfiguration basicConfiguration);
     }
 }
