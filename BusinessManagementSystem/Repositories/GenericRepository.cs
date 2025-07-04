@@ -56,6 +56,7 @@ namespace BusinessManagementSystem.Repositories
                 {
                     _responseDto.StatusCode = HttpStatusCode.NotFound;
                     _responseDto.Message = "Not Found";
+                    _responseDto.Data = null;
                 }
 
             }

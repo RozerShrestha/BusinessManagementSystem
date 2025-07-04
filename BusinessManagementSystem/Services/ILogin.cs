@@ -4,7 +4,7 @@ using System.Diagnostics.Metrics;
 
 namespace BusinessManagementSystem.Services
 {
-    public interface ILogin<T>
+    public interface ILogin<T> where T : class
     {
         ResponseDto<T> Login(LoginRequestDto l);
         User GetUser(LoginRequestDto l);
