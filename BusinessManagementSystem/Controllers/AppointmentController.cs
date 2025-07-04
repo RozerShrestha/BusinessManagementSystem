@@ -76,7 +76,7 @@ namespace BusinessManagementSystem.Controllers
             appointmentDto.Allergies = "No";
             appointmentDto.MedicalConditions = "No";
             appointmentDto.PainToleranceLevel = "No";
-            appointmentDto.AppointmentDate = DateTime.Now;
+            appointmentDto.AppointmentDate = DateTime.Now.Date;
             AppointmentSelectListViewBag();
             return View(appointmentDto);
         }

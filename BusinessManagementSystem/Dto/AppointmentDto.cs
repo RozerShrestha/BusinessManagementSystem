@@ -21,7 +21,8 @@ namespace BusinessManagementSystem.Dto
         [Required]
         [DisplayName("Client Name *")]
         public string ClientName { get; set; }
-        [Required]
+        [Phone(ErrorMessage = "Invalid phone number format")]
+        [RegularExpression(@"^(?:\+\d{1,4}-)?\d{10}$", ErrorMessage = "Phone number must be 10 digits, with optional +country code and seperate with -")]
         [DisplayName("Client Phone Number *")]
         public string ClientPhoneNumber { get; set; }
         [Required]
