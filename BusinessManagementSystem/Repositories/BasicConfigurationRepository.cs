@@ -17,15 +17,25 @@ namespace BusinessManagementSystem.Repositories
             _responseDto = new ResponseDto<BasicConfiguration>();
             _db = db; 
         }
-        public ResponseDto<BasicConfiguration> UpdateBasicConfigurationDetail(BasicConfiguration basicConfiguration)
+        public async Task<ResponseDto<BasicConfiguration>> UpdateBasicConfigurationDetail(BasicConfiguration basicConfiguration)
         {
             try
             {
-                var item = _db.BasicConfigurations.FirstOrDefault(x => x.Id == basicConfiguration.Id);
-                _db.Entry(item).CurrentValues.SetValues(basicConfiguration);
-                _db.Entry(item).State = EntityState.Modified;
-                _db.SaveChanges();
-                _responseDto.Data = basicConfiguration;
+                var item =await _db.BasicConfigurations.FirstOrDefaultAsync(x => x.Id == basicConfiguration.Id);
+                if (item == null)
+                {
+                    _db.Entry(item).CurrentValues.SetValues(basicConfiguration);
+                    _db.Entry(item).State = EntityState.Modified;
+                    await _db.SaveChangesAsync();
+                    _responseDto.Data = basicConfiguration;
+                }
+                else
+                {
+                    _responseDto.Message = "Item not found";
+                    _responseDto.StatusCode = HttpStatusCode.NotFound;
+                    _responseDto.Data = null;
+                }
+                
             }
             catch (Exception ex)
             {

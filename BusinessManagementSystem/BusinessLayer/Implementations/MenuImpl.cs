@@ -46,9 +46,9 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = _unitOfWork.Menu.GetAll(p => p.Status == false);
             return _responseDto;
         }
-        public ResponseDto<Menu> GetAllMenu()
+        public async Task<ResponseDto<Menu>> GetAllMenu()
         {
-            _responseDto = _unitOfWork.Menu.GetAll();
+            _responseDto = await _unitOfWork.Menu.GetAllAsync();
             return _responseDto;
         }
         public ResponseDto<Menu> GetMenuById(int id)
@@ -78,9 +78,9 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto.Data.Multiselect = roleLists;
             return _responseDto;
         }
-        public ResponseDto<Menu> CreateMenu(Menu menu)
+        public async Task<ResponseDto<Menu>> CreateMenu(Menu menu)
         {
-            _responseDto = _unitOfWork.Menu.CreateMenu(menu);
+            _responseDto =await _unitOfWork.Menu.CreateMenu(menu);
             return _responseDto;
         }
         public ResponseDto<Menu> UpdateMenu(Menu menu)

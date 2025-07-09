@@ -108,7 +108,7 @@ namespace BusinessManagementSystem.Controllers
         {
             var response =_businessLayer.PaymentService.UpdatePaymentTipSettlement(paymentTipSettlementDto);
             #region email
-            var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.PaymentSettlementTemplateArtist;
+            var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.PaymentSettlementTemplateArtist;
             var userInfo = _businessLayer.UserService.GetUserById(paymentTipSettlementDto.UserId).Data;
             string artistEmail = userInfo.Email;
             paymentTipSettlementDto.ArtistName = userInfo.FullName;

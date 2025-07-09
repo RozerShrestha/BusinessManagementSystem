@@ -26,7 +26,7 @@ namespace BusinessManagementSystem.Repositories
             _dbSet = context.Set<T>();
             _responseDto = new ResponseDto<T>();
         }
-        public ResponseDto<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null, bool tracked = false)
+        public ResponseDto<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             try
             {
@@ -56,7 +56,6 @@ namespace BusinessManagementSystem.Repositories
                 {
                     _responseDto.StatusCode = HttpStatusCode.NotFound;
                     _responseDto.Message = "Not Found";
-                    _responseDto.Data = null;
                 }
 
             }
@@ -69,7 +68,7 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-        public  ResponseDto<T> GetSingleOrDefault(string includeProperties = null, bool tracked = false)
+        public ResponseDto<T> GetSingleOrDefault(string? includeProperties = null, bool tracked = false)
         {
             try
             {
@@ -88,7 +87,7 @@ namespace BusinessManagementSystem.Repositories
                 if (query.Count() > 0)
                 {
                     _responseDto.StatusCode = HttpStatusCode.OK;
-                    _responseDto.Data =  query.SingleOrDefault();
+                    _responseDto.Data = query.SingleOrDefault();
                 }
                 else
                 {
@@ -105,7 +104,46 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-        public  ResponseDto<T> GetAll(Expression<Func<T, bool>> filter = null, Expression<Func<T,object>> orderBy=null, bool orderByDescending=false, string includeProperties = null, bool tracked = false)
+        public async Task<ResponseDto<T>> GetSingleOrDefaultAsync(string? includeProperties = null, bool tracked = false)
+        {
+            try
+            {
+                IQueryable<T> query = _dbSet;
+
+                if (!tracked)
+                {
+                    query = query.AsNoTracking();
+                }
+
+                if (!string.IsNullOrWhiteSpace(includeProperties))
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+
+                var count = await query.CountAsync();
+                if (count > 0)
+                {
+                    _responseDto.StatusCode = HttpStatusCode.OK;
+                    _responseDto.Data = await query.SingleOrDefaultAsync();
+                }
+                else
+                {
+                    _responseDto.StatusCode = HttpStatusCode.NotFound;
+                    _responseDto.Message = "Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                _responseDto.Message = "Failed due to: " + ex.Message;
+                _responseDto.StatusCode = HttpStatusCode.InternalServerError;
+            }
+
+            return _responseDto;
+        }
+        public ResponseDto<T> GetAll(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>>? orderBy = null, bool orderByDescending = false, string? includeProperties = null, bool tracked = false)
         {
             try
             {
@@ -161,13 +199,70 @@ namespace BusinessManagementSystem.Repositories
 
             return _responseDto;
         }
-        public  ResponseDto<T> Insert(T entity)
+        public async Task<ResponseDto<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>>? orderBy = null, bool orderByDescending = false, string? includeProperties = null, bool tracked = false)
+        {
+            try
+            {
+                IQueryable<T> query = _dbSet;
+                if (!tracked)
+                    query = _dbSet.AsNoTracking();
+                if (filter != null)
+                    query = query.Where(filter);
+                if (!string.IsNullOrWhiteSpace(includeProperties))
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+                if (orderBy != null)
+                {
+                    query = orderByDescending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+                }
+
+                foreach (var item in query)
+                {
+
+                    PropertyInfo[] properties = item.GetType().GetProperties();
+                    foreach (var property in properties)
+                    {
+                        if (property.PropertyType == typeof(string))
+                        {
+                            property.SetValue(item, HttpUtility.HtmlEncode(property.GetValue(item)));
+                        }
+                    }
+
+                }
+
+                var count = await query.CountAsync();
+                if (count > 0)
+                {
+                    _responseDto.StatusCode = HttpStatusCode.OK;
+                    _responseDto.Datas = await query.ToListAsync();
+                }
+
+                else
+                {
+                    _responseDto.StatusCode = HttpStatusCode.NotFound;
+                    _responseDto.Message = "Not Found";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _responseDto.Message = "Failed due to: " + ex.Message + ex.InnerException;
+                _responseDto.StatusCode = HttpStatusCode.InternalServerError;
+            }
+
+            return _responseDto;
+        }
+        public ResponseDto<T> Insert(T entity)
         {
             try
             {
                 _dbContext.Database.BeginTransaction();
                 _dbSet.Add(entity);
-                 _dbContext.SaveChanges();
+                _dbContext.SaveChanges();
                 _dbContext.Database.CommitTransaction();
                 _responseDto.Data = entity;
                 _responseDto.StatusCode = HttpStatusCode.OK;
@@ -175,13 +270,13 @@ namespace BusinessManagementSystem.Repositories
             catch (Exception ex)
             {
                 _dbContext.Database.RollbackTransaction();
-                _responseDto.Message = "Failed due to: " + ex.Message+ "Inner Exception:"+ ex.InnerException;
+                _responseDto.Message = "Failed due to: " + ex.Message + "Inner Exception:" + ex.InnerException;
                 _responseDto.StatusCode = HttpStatusCode.InternalServerError;
                 _responseDto.Data = entity;
             }
             return _responseDto;
         }
-        public  ResponseDto<T> Update(T entity)
+        public ResponseDto<T> Update(T entity)
         {
             try
             {
@@ -201,7 +296,7 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
-        public ResponseDto<T> UpdateAll(List<T> entities) 
+        public ResponseDto<T> UpdateAll(List<T> entities)
         {
             try
             {
@@ -221,13 +316,13 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
-        public  ResponseDto<T> Delete(T entity)
+        public ResponseDto<T> Delete(T entity)
         {
             try
             {
                 _dbContext.Database.BeginTransaction();
                 _dbSet.Remove(entity);
-                 _dbContext.SaveChanges();
+                _dbContext.SaveChanges();
                 _dbContext.Database.CommitTransaction();
                 _responseDto.StatusCode = HttpStatusCode.OK;
                 _responseDto.Data = entity;
@@ -242,13 +337,13 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
-        public  ResponseDto<T> DeleteRange(IEnumerable<T> entities)
+        public ResponseDto<T> DeleteRange(IEnumerable<T> entities)
         {
             try
             {
                 _dbContext.Database.BeginTransaction();
                 _dbSet.RemoveRange(entities);
-                 _dbContext.SaveChanges();
+                _dbContext.SaveChanges();
                 _dbContext.Database.CommitTransaction();
                 _responseDto.StatusCode = HttpStatusCode.OK;
                 _responseDto.Datas = entities.ToList();
@@ -262,11 +357,11 @@ namespace BusinessManagementSystem.Repositories
             }
             return _responseDto;
         }
-        public  ResponseDto<T> GetById(int id)
+        public ResponseDto<T> GetById(int id)
         {
             try
             {
-                var item =  _dbSet.Find(id);
+                var item = _dbSet.Find(id);
                 if (item != null)
                 {
                     _responseDto.StatusCode = HttpStatusCode.OK;

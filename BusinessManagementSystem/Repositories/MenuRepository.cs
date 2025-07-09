@@ -32,14 +32,14 @@ namespace BusinessManagementSystem.Repositories
             var roleLIst = _db.Roles.Select(p=> new { Id=p.Id, Name=p.Name }).ToList();
             return roleLIst;
         }
-        public ResponseDto<Menu> CreateMenu(Menu menu)
+        public async Task<ResponseDto<Menu>> CreateMenu(Menu menu)
         {
             try
             {
                 List<Role> selectedRoles = null;
                 var selectedRoles1 = menu.Multiselect.SelectedItems.ToList();
                 selectedRoles = _db.Roles.Where(p => selectedRoles1.Contains(p.Id)).ToList();
-                _db.Database.BeginTransaction();
+                await _db.Database.BeginTransactionAsync();
                 foreach (var role in selectedRoles)
                 {
                     MenuRole menuRole = new()
@@ -47,10 +47,10 @@ namespace BusinessManagementSystem.Repositories
                         Role = role,
                         Menu = menu
                     };
-                    _db.MenuRoles.Add(menuRole);
+                    await _db.MenuRoles.AddAsync(menuRole);
                 }
-                _db.SaveChanges();
-                _db.Database.CommitTransaction();
+                await _db.SaveChangesAsync();
+                await _db.Database.CommitTransactionAsync();
             }
             catch (Exception ex)
             {

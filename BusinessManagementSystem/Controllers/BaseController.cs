@@ -46,7 +46,7 @@ namespace BusinessManagementSystem.Controllers
         {
             ViewData["UserDetail"] = UserDetail();
             ViewData["Menu"] = MenuList();
-            ViewData["Title"] = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.ApplicationTitle;
+            ViewData["Title"] = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.ApplicationTitle;
         }
          protected IActionResult HandleError(Exception ex)
         {

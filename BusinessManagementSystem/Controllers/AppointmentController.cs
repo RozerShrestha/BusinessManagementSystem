@@ -94,8 +94,8 @@ namespace BusinessManagementSystem.Controllers
                 {
                     _notyf.Success(_responseDto.Message);
                     #region email
-                    var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewAppointmentTemplateArtist;
-                    var messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewAppointmentTemplateClient;
+                    var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.NewAppointmentTemplateArtist;
+                    var messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.NewAppointmentTemplateClient;
                     var userInfo = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data;
                     string artistEmail = userInfo.Email;
                     appointmentDto.ArtistAssigned = userInfo.FullName;
@@ -180,15 +180,15 @@ namespace BusinessManagementSystem.Controllers
                         appointmentDto.ArtistAssigned = userInfo.FullName;
                         if (appointmentDto.Status == AppointmentStat.Completed.ToString())
                         {
-                            messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentCompletedArtist;
-                            messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentCompletedClient;
+                            messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AppointmentCompletedArtist;
+                            messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AppointmentCompletedClient;
                             htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
                             htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
                         }
                         else
                         {
-                            messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentUpdateTemplateArtist;
-                            messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.AppointmentUpdateTemplateClient;
+                            messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AppointmentUpdateTemplateArtist;
+                            messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AppointmentUpdateTemplateClient;
                             htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
                             htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
                         }

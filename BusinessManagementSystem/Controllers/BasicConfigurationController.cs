@@ -29,14 +29,14 @@ namespace BusinessManagementSystem.Controllers
         }
         public IActionResult Index()
         {
-            _responseDto = _businessLayer.BasicConfigurationService.GetBasicConfig();
+            _responseDto = _businessLayer.BasicConfigurationService.GetBasicConfig().Result;
             return View(_responseDto.Data);
         }
-        public IActionResult Update(BasicConfiguration basicConfiguration)
+        public async Task<IActionResult> Update(BasicConfiguration basicConfiguration)
         {
             if (ModelState.IsValid)
             {
-                _responseDto = _businessLayer.BasicConfigurationService.Update(basicConfiguration);
+                _responseDto =await _businessLayer.BasicConfigurationService.Update(basicConfiguration);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success("Update Success");

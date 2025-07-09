@@ -115,7 +115,7 @@ namespace BusinessManagementSystem.Controllers
                 _responseDto = _businessLayer.UserService.CreateUser(userDto);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
-                    var message = _businessLayer.BasicConfigurationService.GetBasicConfig().Data.NewUserEmailTemplate;
+                    var message = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.NewUserEmailTemplate;
                     _notyf.Success(_responseDto.Message);
                     string htmlEmailNewUser=_emailSender.PrepareEmail(userDto, message);
                     _emailSender.SendEmailAsync(email: userDto.Email, subject: "Welcome to Freak Street Tattoo", htmlEmailNewUser);

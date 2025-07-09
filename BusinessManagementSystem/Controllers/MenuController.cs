@@ -34,10 +34,10 @@ namespace BusinessManagementSystem.Controllers
 
         }
         // GET: MenuController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             ViewBag.ModalInformation = _modalView;
-            _responseDto = _businessLayer.MenuService.GetAllMenu();
+            _responseDto =await _businessLayer.MenuService.GetAllMenu();
             return View(_responseDto.Datas);
         }
 
@@ -60,11 +60,11 @@ namespace BusinessManagementSystem.Controllers
         // POST: MenuController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Menu menu)
+        public async Task<ActionResult> Create(Menu menu)
         {
             if (ModelState.IsValid)
             { 
-                _responseDto = _businessLayer.MenuService.CreateMenu(menu);
+                _responseDto = await _businessLayer.MenuService.CreateMenu(menu);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);

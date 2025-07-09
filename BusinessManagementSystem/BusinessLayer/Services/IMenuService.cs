@@ -7,11 +7,11 @@ namespace BusinessManagementSystem.BusinessLayer.Services
     {
         dynamic ParentList();
         Multiselect RoleList();
-        ResponseDto<Menu> GetAllMenu();
+        Task<ResponseDto<Menu>> GetAllMenu();
         ResponseDto<Menu> GetMenuById(int id);
         ResponseDto<Menu> GetAllActiveMenus();
         ResponseDto<Menu> GetAllInactiveMenus();
-        ResponseDto<Menu> CreateMenu(Menu menu);
+        Task<ResponseDto<Menu>> CreateMenu(Menu menu);
         ResponseDto<Menu> UpdateMenu(Menu u);
         ResponseDto<Menu> DeleteMenu(int id);
     }
