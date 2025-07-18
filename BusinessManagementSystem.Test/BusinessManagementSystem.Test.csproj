@@ -22,14 +22,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusinessManagementSystem\BusinessManagementSystem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<None Update="appsettings.json">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</None>
     <Using Include="NUnit.Framework" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Service\" />
   </ItemGroup>
 
 </Project>
