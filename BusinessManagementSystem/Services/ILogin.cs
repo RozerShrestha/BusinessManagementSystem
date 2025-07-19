@@ -13,5 +13,7 @@ namespace BusinessManagementSystem.Services
         bool IsPhoneNumberAvailable(string PhoneNumber);
 
         ResponseDto<T> ForgotPassword(LoginRequestDto l);
+
+        Task<int> GenerateOtp(LoginRequestDto l);
     }
 }

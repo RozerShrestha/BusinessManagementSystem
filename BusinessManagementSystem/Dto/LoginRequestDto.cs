@@ -8,15 +8,17 @@ namespace BusinessManagementSystem.Dto
     {
         [Required(ErrorMessage = "Username is required")]
         [DataType(DataType.Text)]
-        [JsonIgnore]
+        //[JsonIgnore]
         public string Username { get; set; }
         [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
-        [JsonIgnore]
+        //[JsonIgnore]
         public string Password { get; set; }
         [Required(ErrorMessage = "Confirm Password is required")]
         [DataType(DataType.Password)]
-        [JsonIgnore]
+        //[JsonIgnore]
         public string ConfirmPassword { get; set; }
+        [Required(ErrorMessage = "OTP required")]
+        public string OTP { get; set; }
     }
 }

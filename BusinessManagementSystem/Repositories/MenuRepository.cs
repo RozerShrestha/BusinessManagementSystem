@@ -5,6 +5,7 @@ using BusinessManagementSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Data;
 using System.Linq;
 using System.Net;
 
@@ -99,6 +100,41 @@ namespace BusinessManagementSystem.Repositories
                 _db.Database.RollbackTransaction();
             }
             return _responseDto;
-        }  
+        }
+        public async Task<ResponseDto<Menu>> GetAllMenuAsync()
+        {
+            var groupedData = await (from m in _db.Menus
+                                     join mr in _db.MenuRoles on m.Id equals mr.MenuId
+                                     join r in _db.Roles on mr.RoleId equals r.Id
+                                     group r by new { m.Id, m.Parent, m.Name, m.Url, m.Sort, m.Status, m.Icon } into g
+                                     select new
+                                     {
+                                         g.Key.Id,
+                                         g.Key.Parent,
+                                         g.Key.Name,
+                                         g.Key.Url,
+                                         g.Key.Sort,
+                                         g.Key.Status,
+                                         g.Key.Icon,
+                                         RoleNames = g.Select(x => x.Name).Distinct()
+                                     })
+                             .ToListAsync();  // 👈 Only database-translatable parts here
+
+            var result = groupedData.Select(g => new Menu
+            {
+                Id = g.Id,
+                Parent = g.Parent,
+                Name = g.Name,
+                Url = g.Url,
+                Sort = g.Sort,
+                Status = g.Status,
+                Icon = g.Icon,
+                Roles = string.Join(", ", g.RoleNames) // 👈 This runs in memory (safe)
+            })
+            .OrderBy(x => x.Id)
+            .ToList();
+            _responseDto.Datas = result;
+            return _responseDto;
+        }
     }
 }

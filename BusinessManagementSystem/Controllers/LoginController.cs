@@ -16,11 +16,13 @@ namespace BusinessManagementSystem.Controllers
         ILogin<LoginResponseDto> _iLogin;
         ResponseDto<LoginResponseDto> _responseDto;
         protected readonly INotyfService _notyf;
-        public LoginController(ILogin<LoginResponseDto> iLogin, INotyfService notyf) 
+        protected readonly IEmailSender _emailSender;
+        public LoginController(ILogin<LoginResponseDto> iLogin, IEmailSender emailSender, INotyfService notyf) 
         { 
             _iLogin = iLogin;
             _responseDto= new ResponseDto<LoginResponseDto>();
             _notyf = notyf;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -44,24 +46,36 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult LoginUser(LoginRequestDto loginRequest)
          {
             ModelState.Remove(nameof(loginRequest.ConfirmPassword)); //just to ignore ConfirmPassword to validate
+            ModelState.Remove(nameof(loginRequest.OTP));
             if (ModelState.IsValid)
             {
                 _responseDto = _iLogin.Login(loginRequest);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     HttpContext.Session.SetString("Token", _responseDto.Data.Token);
-                    ViewBag.Message = _responseDto.Message;
+                    //ViewBag.Message = _responseDto.Message;
                     _notyf.Success(_responseDto.Message);
                     return RedirectToAction("Index", "Dashboard");
                 }
                 else
                 {
-                    ModelState.AddModelError("", _responseDto.Message);
+                    ViewBag.LoginResponse = _responseDto;
+                    return View("Index", loginRequest);
                 }
-                ViewBag.LoginResponse = _responseDto;
             }
+            else
+            {
+                var errors = ModelState.Values
+                               .SelectMany(v => v.Errors)
+                               .Select(e => e.ErrorMessage)
+                               .ToList();
+                _responseDto.StatusCode = HttpStatusCode.BadRequest;
+                _responseDto.Message = string.Join(", ", errors);
+                ViewBag.LoginResponse = _responseDto;
+                return View("Index", loginRequest);
+            }
+
             
-            return View("Index",loginRequest); ;
         }
         public IActionResult Register()
         {
@@ -102,15 +116,24 @@ namespace BusinessManagementSystem.Controllers
                 if (_responseDto.StatusCode != HttpStatusCode.OK)
                 {
                     _notyf.Error(_responseDto.Message);
-                    ViewBag.RegisterResponse = _responseDto;
+                    
                 }
                 else
                 {
                     _notyf.Success(_responseDto.Message);
-                    ViewBag.LoginResponse = _responseDto;
                 }
             }
-                return View("Index");
+            else
+            {
+                var errors = ModelState.Values
+                                               .SelectMany(v => v.Errors)
+                                               .Select(e => e.ErrorMessage)
+                                               .ToList();
+                _responseDto.StatusCode = HttpStatusCode.BadRequest;
+                _responseDto.Message = string.Join(", ", errors);
+            }
+            ViewBag.LoginResponse = _responseDto;
+            return View("Index");
         }
         public IActionResult Logout([FromQuery] string returnUrl)
         {
@@ -144,6 +167,37 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest(_responseDto);
             }
 
+        }
+
+        [HttpPost]
+        public IActionResult GenerateOtp([FromBody] LoginRequestDto loginRequest)
+        {
+            int otp = 0;
+            if (!string.IsNullOrEmpty(loginRequest.Username))
+            {
+                otp = _iLogin.GenerateOtp(loginRequest).Result; // Await the Task<int> result
+                if (otp != 0)
+                {
+                    //send otp through email here
+                    string emailOtp = _emailSender.PrepareEmailForOtp(loginRequest.Username, $"Dear {{fullname}}, your OTP to change password is: {otp}");
+                    _emailSender.SendEmailAsync(email: loginRequest.Username, subject: "OTP to Change Password", emailOtp);
+                    _responseDto.StatusCode = HttpStatusCode.OK;
+                    _responseDto.Message = "OTP sent to email, please check";
+                    return Ok(_responseDto);
+                }
+                else
+                {
+                    _responseDto.StatusCode = HttpStatusCode.NotFound;
+                    _responseDto.Message = "Could not Generate OTP";
+                    return BadRequest(_responseDto);
+                }
+            }
+            else
+            {
+                _responseDto.StatusCode = HttpStatusCode.BadRequest;
+                _responseDto.Message = "UserName or Email is Empty";
+                return BadRequest(_responseDto);
+            }
         }
 
         #endregion

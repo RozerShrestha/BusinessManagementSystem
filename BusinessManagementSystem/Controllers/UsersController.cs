@@ -118,7 +118,7 @@ namespace BusinessManagementSystem.Controllers
                     var message = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.NewUserEmailTemplate;
                     _notyf.Success(_responseDto.Message);
                     string htmlEmailNewUser=_emailSender.PrepareEmail(userDto, message);
-                    _emailSender.SendEmailAsync(email: userDto.Email, subject: "Welcome to Freak Street Tattoo", htmlEmailNewUser);
+                     _emailSender.SendEmailAsync(email: userDto.Email, subject: "Welcome to Freak Street Tattoo", htmlEmailNewUser);
                     return RedirectToAction(nameof(Index));
                 } 
                 else

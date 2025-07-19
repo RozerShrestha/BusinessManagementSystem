@@ -10,5 +10,6 @@ namespace BusinessManagementSystem.Services
         ResponseDto<Menu> GetMenuById(int id);
         Task<ResponseDto<Menu>> CreateMenu(Menu menu);
         ResponseDto<Menu> UpdateMenu(Menu menu);
+        Task<ResponseDto<Menu>> GetAllMenuAsync();
     }
 }

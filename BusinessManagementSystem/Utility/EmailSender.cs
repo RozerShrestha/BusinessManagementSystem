@@ -34,24 +34,24 @@ namespace BusinessManagementSystem.Utility
                 subject = "Regarding Appointment Completion";
             }
 
-            //new Task(() =>
-            //{
-            //    var emailToSend = new MimeMessage();
-            //    emailToSend.From.Add(new MailboxAddress(emailAlias, emailAddress));
-            //    emailToSend.To.Add(MailboxAddress.Parse(email));
-            //    emailToSend.Subject = subject;
-            //    emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
+            new Task(() =>
+            {
+                var emailToSend = new MimeMessage();
+                emailToSend.From.Add(new MailboxAddress(emailAlias, emailAddress));
+                emailToSend.To.Add(MailboxAddress.Parse(email));
+                emailToSend.Subject = subject;
+                emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
 
 
-            //    //send email
-            //    using (var emailClient = new SmtpClient())
-            //    {
-            //        emailClient.Connect(hostName, port, MailKit.Security.SecureSocketOptions.Auto);
-            //        emailClient.Authenticate(emailAddress, password);
-            //        emailClient.Send(emailToSend);
-            //        emailClient.Disconnect(true);
-            //    }
-            //}).Start();
+                //send email
+                using (var emailClient = new SmtpClient())
+                {
+                    emailClient.Connect(hostName, port, MailKit.Security.SecureSocketOptions.Auto);
+                    emailClient.Authenticate(emailAddress, password);
+                    emailClient.Send(emailToSend);
+                    emailClient.Disconnect(true);
+                }
+            }).Start();
             _logger.LogInformation($"## {this.GetType().Name} Email Send to {email} Message: {htmlMessage}");
             return Task.CompletedTask;
         }
@@ -148,6 +148,13 @@ namespace BusinessManagementSystem.Utility
                 sb.Replace("{{paymentmethod}}", advancePayment.PaymentMethod);
                 sb.Replace("{{status}}", advancePayment.Status==true?$"approved and transferred to you via {advancePayment.PaymentMethod}":"rejected");
             }
+            return sb.ToString();
+        }
+
+        public string PrepareEmailForOtp(string userName, string message)
+        {
+            StringBuilder sb = new StringBuilder(message);
+            sb.Replace("{fullname}", userName);
             return sb.ToString();
         }
 

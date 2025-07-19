@@ -48,7 +48,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
         public async Task<ResponseDto<Menu>> GetAllMenu()
         {
-            _responseDto = await _unitOfWork.Menu.GetAllAsync();
+            _responseDto = await _unitOfWork.Menu.GetAllMenuAsync();
             return _responseDto;
         }
         public ResponseDto<Menu> GetMenuById(int id)
