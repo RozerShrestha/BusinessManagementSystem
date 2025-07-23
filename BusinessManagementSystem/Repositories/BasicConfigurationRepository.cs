@@ -22,7 +22,7 @@ namespace BusinessManagementSystem.Repositories
             try
             {
                 var item =await _db.BasicConfigurations.FirstOrDefaultAsync(x => x.Id == basicConfiguration.Id);
-                if (item == null)
+                if (item != null)
                 {
                     _db.Entry(item).CurrentValues.SetValues(basicConfiguration);
                     _db.Entry(item).State = EntityState.Modified;
