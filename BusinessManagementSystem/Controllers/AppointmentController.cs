@@ -25,8 +25,10 @@ namespace BusinessManagementSystem.Controllers
         public ResponseDto<AppointmentDto> _responseAppointmentDto;
         private ILogger<AppointmentController> _logger;
         private readonly ModalView _modalView;
-        public AppointmentController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<AppointmentController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
+        private IWebHostEnvironment _env;
+        public AppointmentController(IWebHostEnvironment env, IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<AppointmentController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
+            _env = env;
             _responseDto = new ResponseDto<Appointment>();
             _responseAppointmentDto = new ResponseDto<AppointmentDto>();
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Appointment?", "");
@@ -87,6 +89,7 @@ namespace BusinessManagementSystem.Controllers
         {
             var js = JsonConvert.SerializeObject(appointmentDto);
             AppointmentSelectListViewBag();
+            
             if (ModelState.IsValid)
             {
                 _responseDto = _businessLayer.AppointmentService.CreateAppointment(appointmentDto);
@@ -156,7 +159,7 @@ namespace BusinessManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult Edit(AppointmentDto appointmentDto)
+        public IActionResult Edit(AppointmentDto appointmentDto, IFormFile? concentForm)
         {
             string htmlUpdateAppointmentArtist = "";
             string htmlUpdateAppointmentClient = "";
@@ -167,6 +170,13 @@ namespace BusinessManagementSystem.Controllers
             if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == appointmentDto.UserId)
             {
                 AppointmentSelectListViewBag();
+                //validating document upload
+                if (Helpers.ValidateDocumentUpload(concentForm) != string.Empty)
+                {
+                    string message = Helpers.ValidateDocumentUpload(concentForm);
+                    _notyf.Warning(message);
+                    return BadRequest(message);
+                }
                 if (ModelState.IsValid)
                 {
                     _responseDto = _businessLayer.AppointmentService.UpdateAppointment(appointmentDto);
@@ -309,6 +319,33 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest("Parameters didn't match the required data");
             }
 
+        }
+
+        [HttpPost]
+        public IActionResult SendConcentFormLink([FromBody] AppointmentDto appointmentDto)
+        {
+            var concentFormInitial = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.GoogleFormLink;
+            if(string.IsNullOrEmpty(appointmentDto.ClientName) ||
+            string.IsNullOrEmpty(appointmentDto.ClientPhoneNumber) ||
+            string.IsNullOrEmpty(appointmentDto.ClientEmail) ||
+            string.IsNullOrEmpty(appointmentDto.Gender) ||
+            string.IsNullOrEmpty(appointmentDto.DateOfBirth.ToString()) ||
+            string.IsNullOrEmpty(appointmentDto.Address) ||
+            string.IsNullOrEmpty(appointmentDto.Placement))
+                    return BadRequest("Please fill up the necessary fields");
+
+            if (concentFormInitial != null) {
+                string emailConcentForm = _emailSender.PrepareEmailForConcentForm(appointmentDto, concentFormInitial);
+                _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "Concent Form Link", emailConcentForm);
+                _notyf.Success("Concent Form Link has been sent to the client email");
+                return Ok();
+            }
+            else
+            {
+                _notyf.Error("Concent Form Link is not configured in the system");
+                return BadRequest("Concent Form Link is not configured in the system");
+            }
+            
         }
 
         #endregion

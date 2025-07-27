@@ -29,6 +29,15 @@ namespace BusinessManagementSystem.Dto
         [DisplayName("Client Email *")]
         public string ClientEmail { get; set; }
         [Required]
+        [DisplayName("Gender *")]
+        public string Gender { get; set; }
+        [Required]
+        [DisplayName("Date of Birth *")]
+        public DateOnly DateOfBirth { get; set; }
+        [Required]
+        [DisplayName("Address *")]
+        public string Address { get; set; }
+        [Required]
         [DisplayName("Appointment Date *")]
         public DateTime AppointmentDate { get; set; }
         [Required]
@@ -53,6 +62,16 @@ namespace BusinessManagementSystem.Dto
         [RequiredIf(nameof(ConsentFormSigned), "False", "Concent Form should be Yes")]
         [DisplayName("Consent Form Sign")]
         public bool ConsentFormSigned { get; set; }
+        //[RequiredIf("ConsentFormSigned", "True", "Please upload Concent Form")]
+        //[DataType(DataType.Upload)]
+        //[MaxFileSize(2 * 1024 * 1024)] // Custom validation for max file size (2 MB)
+        //[AllowedFileExtensions(new string[] { ".pdf", ".jpg", ".png" })]
+        //[DisplayName("Consent Form Upload")]
+        //public IFormFile ConcentForm { get; set; }
+        [Required]
+        [DisplayName("Consent Form Link")]
+        public string ConcentFormLink { get; set; }
+
         [DisplayName("Followup Required")]
         public bool FollowUpRequired { get; set; }
         [DisplayName("Is Foreigner")]

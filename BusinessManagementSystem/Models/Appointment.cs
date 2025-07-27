@@ -29,6 +29,15 @@ namespace BusinessManagementSystem.Models
         [DisplayName("Client Email *")]
         public string ClientEmail { get; set; }
         [Required]
+        [DisplayName("Gender *")]
+        public string Gender { get; set; }
+        [Required]
+        [DisplayName("Date of Birth *")]
+        public DateOnly DateOfBirth { get; set; }
+        [Required]
+        [DisplayName("Address *")]
+        public string Address { get; set; }
+        [Required]
         [DisplayName("Appointment Date *")]
         public DateTime AppointmentDate { get; set; }
         [Required]
@@ -56,9 +65,10 @@ namespace BusinessManagementSystem.Models
         public string PainToleranceLevel { get; set; }
         [DisplayName("Session Number *")]
         public int SessionNumber { get; set; }
-        [RequiredIf("ConsentFormSigned","False","Concent Form should be Yes")]
+        [RequiredIf("ConsentFormSigned", "False", "Concent Form should be Yes")]
         [DisplayName("Consent Form Sign")]
         public bool ConsentFormSigned { get; set; }
+        public string? ConcentFormLink { get; set; }
         [DisplayName("Followup Required")]
         public bool FollowUpRequired { get; set; }
         [DisplayName("Is Foreigner")]
@@ -84,6 +94,7 @@ namespace BusinessManagementSystem.Models
         {
             builder.Property(x => x.ClientName).HasColumnType("varchar(255)");
             builder.Property(x => x.ClientPhoneNumber).HasColumnType("varchar(20)");
+            builder.Property(x => x.Gender).HasColumnType("varchar(20)");
             builder.Property(x => x.Category).HasColumnType("varchar(50)");
             builder.Property(x => x.Status).HasColumnType("varchar(100)");
             builder.Property(x => x.TattooDesign).HasColumnType("varchar(500)");
@@ -93,6 +104,8 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.MedicalConditions).HasColumnType("varchar(500)");
             builder.Property(x => x.PainToleranceLevel).HasColumnType("varchar(150)");
             builder.Property(x => x.ClientEmail).HasColumnType("varchar(500)");
+            builder.Property(x => x.Address).HasColumnType("varchar(500)");
+            
         }
     }
 }

@@ -48,6 +48,10 @@ namespace BusinessManagementSystem.Models
         [DisplayName("DeadLock Price")]
         [Required]
         public double DreadLockPrice { get; set; }
+        [DisplayName("Google Form Link")]
+        [Required]
+        public string GoogleFormLink { get; set; }
+
         [DisplayName("New User Template")]
         public string NewUserEmailTemplate { get; set; }
         [DisplayName("New Appointment Template Client")]
@@ -82,6 +86,7 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.HostName).HasColumnType("varchar(100)");
             builder.Property(x => x.EmployerEmailAddress).HasColumnType("varchar(100)");
             builder.Property(x => x.EmployerAddress).HasColumnType("varchar(100)");
+            builder.Property(x => x.GoogleFormLink).HasColumnType("varchar(500)");
             builder.Property(x => x.Password).HasColumnType("varchar(250)");
             builder.Property(x => x.ApplicationTitle).HasColumnType("varchar(250)");
             builder.Property(x => x.CreatedBy).HasColumnType("varchar(150)");

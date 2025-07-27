@@ -82,19 +82,11 @@ namespace BusinessManagementSystem.Helper
             string fileName = "";
             string returnString="";
             var extension = Path.GetExtension(file.FileName);
-            if (documentType == "ProfilePicture")
-            {
-                //fileName =file.FileName;
-                //documentRootPath = Path.GetFullPath(Path.Combine(new string[]{Environment.CurrentDirectory, "wwwroot","images", "ProfilePic"}));
-                documentRootPath = Path.Combine(env.WebRootPath, "uploads", "ProfilePic");
-            }
+            documentRootPath = Path.Combine(env.WebRootPath, "uploads", documentType);
             if (!Directory.Exists(documentRootPath))
             {
                 Directory.CreateDirectory(documentRootPath);
             }
-
-            
-
             var fullPath = Path.Combine(documentRootPath, $"{username}{extension}");
             using (var fileStream = new FileStream(fullPath, FileMode.Create))
             {
@@ -108,7 +100,7 @@ namespace BusinessManagementSystem.Helper
             }
             else
             {
-                
+
                 returnString =fullPath.Split("\\wwwroot\\").Length==3?fullPath.Split("\\wwwroot\\")[2]: fullPath.Split("\\wwwroot\\").Length == 2? fullPath.Split("\\wwwroot\\")[1]:"";
             }
             logger.Info("## returnedPath: " + returnString);

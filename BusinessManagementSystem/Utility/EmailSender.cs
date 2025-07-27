@@ -167,5 +167,17 @@ namespace BusinessManagementSystem.Utility
             hostName = basicInfo.HostName;
             port = basicInfo.Port;
         }
+
+        public string PrepareEmailForConcentForm(AppointmentDto appointmentDto, string message)
+        {
+            StringBuilder sb=new StringBuilder(message);
+            sb.Replace("{{fullname}}", appointmentDto.ClientName.Replace(" ","+"));
+            sb.Replace("{{phonenumber}}",appointmentDto.ClientPhoneNumber);
+            sb.Replace("{{address}}",appointmentDto.Address.Replace(" ", "+"));
+            sb.Replace("{{dob}}", appointmentDto.DateOfBirth.ToString("yyyy-MM-dd"));
+            sb.Replace("{{gender}}",appointmentDto.Gender.Replace(" ", "+"));
+            sb.Replace("{{placement}}",appointmentDto.Placement.Replace(" ", "+"));
+            return sb.ToString();
+        }
     }
 }

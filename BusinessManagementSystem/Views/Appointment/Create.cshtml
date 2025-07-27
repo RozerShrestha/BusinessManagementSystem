@@ -26,6 +26,25 @@
                         <span asp-validation-for="ClientEmail" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="DateOfBirth" class="control-label"></label>
+                        <input asp-for="DateOfBirth" class="form-control" type="date" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
                         <label asp-for="AppointmentDate" class="control-label"></label>
                         <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
                         <span asp-validation-for="AppointmentDate" class="text-danger"></span>
@@ -105,13 +124,23 @@
                         <span asp-validation-for="SessionNumber" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="ConsentFormSigned" class="control-label"></label>
-                        <select asp-for="ConsentFormSigned" class="form-control">
-                            <option value="false">No</option>
-                            <option value="true">Yes</option>
-                        </select>
-                        <span asp-validation-for="ConsentFormSigned" class="text-danger"></span>
+                       <div class="row">
+                           <div class="col-md-6">
+                               <label asp-for="ConsentFormSigned" class="control-label"></label>
+                               <select asp-for="ConsentFormSigned" class="form-control">
+                                   <option value="false">No</option>
+                                   <option value="true">Yes</option>
+                               </select>
+                               <span asp-validation-for="ConsentFormSigned" class="text-danger"></span>
+                           </div>
+                           <div id="concentFormLink" class="col-md-6">
+                               <label asp-for="ConcentFormLink" class="control-label"></label>
+                                <input asp-for="ConcentFormLink" class="form-control" />
+                                <span asp-validation-for="ConcentFormLink" class="text-danger"></span>
+                           </div>
+                       </div>
                     </div>
+                    
                     <div class="col-md-4">
                         <label asp-for="FollowUpRequired" class="control-label"></label>
                         <select asp-for="FollowUpRequired" class="form-control">
@@ -197,9 +226,55 @@
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @* <partial name="_ValidationScriptsPartial" />  *@
+        <script>
+            $(document).ready(function () {
+                const consentFormSigned = $("#ConsentFormSigned");
+                const consentFormLinkDiv = $("#concentFormLink");
+                const consentFormSignedCol = consentFormSigned.closest(".col-md-6");
+                function toggleConsentFormLink() 
+                {
+                    if (consentFormSigned.val() === "true") 
+                    {
+                        consentFormLinkDiv.show();
+                        consentFormSignedCol.removeClass("col-md-12").addClass("col-md-6");
+                        const appointmentDto = {
+                        ClientEmail: $("#ClientEmail").val(),
+                        ClientName: $("#ClientName").val(),
+                        ClientPhoneNumber: $("#ClientPhoneNumber").val(),
+                        Address: $("#Address").val(),
+                        DateOfBirth: $("#DateOfBirth").val(),
+                        Gender: $("#Gender").val(),
+                        Placement: $("#Placement").val(),
+                        };
+                        // calls api to send concent form link to given email address
+                        $.ajax({
+                            url: '/Appointment/SendConcentFormLink',
+                            method: 'POST',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify(appointmentDto),
+                            success: function (response) {
+                                
+                            },
+                            error: function (error) {
+                                toastr.error(error.responseText);
+                            }
+                        });
+                    } 
+                    else 
+                    {
+                        consentFormLinkDiv.hide();
+                        consentFormSignedCol.removeClass("col-md-6").addClass("col-md-12");
+                    }
+                 }
+            // Initialize visibility on page load
+                toggleConsentFormLink();
+                // Add event listener for changes
+                consentFormSigned.on("change", toggleConsentFormLink);
+            });
+
+    </script>
 }
-@* the above section make sure your model validation is checked after onchange *@
 
 
 

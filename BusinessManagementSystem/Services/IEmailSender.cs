@@ -12,5 +12,6 @@ namespace BusinessManagementSystem.Services
         string PrepareEmailAppointmentClient(AppointmentDto appointmentDto, string message);
         string PrepareEmailPaymentSettlement(PaymentTipSettlementDto paymentTipSettlementDto, string message);
         string PrepareEmailAdvanceSettlement(AdvancePayment advancePayment, string message, string type);
+        string PrepareEmailForConcentForm(AppointmentDto appointmentDto, string message);
     }
 }

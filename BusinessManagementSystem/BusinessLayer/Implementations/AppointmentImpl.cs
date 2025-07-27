@@ -244,6 +244,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 item.Data.PainToleranceLevel = appointmentDto.PainToleranceLevel;
                 item.Data.SessionNumber = appointmentDto.SessionNumber;
                 item.Data.ConsentFormSigned = appointmentDto.ConsentFormSigned;
+                item.Data.ConcentFormLink=appointmentDto.ConcentFormLink;
                 item.Data.FollowUpRequired = appointmentDto.FollowUpRequired;
                 item.Data.TotalHours = appointmentDto.TotalHours;
                 item.Data.Outlet = appointmentDto.Outlet;

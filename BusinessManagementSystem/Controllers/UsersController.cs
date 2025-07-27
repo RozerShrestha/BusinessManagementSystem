@@ -107,7 +107,6 @@ namespace BusinessManagementSystem.Controllers
             {
                 string message = Helpers.ValidateDocumentUpload(ProfilePictureLink);
                 _notyf.Warning(message);
-                return BadRequest(message);
             }
             if (ModelState.IsValid)
             {
