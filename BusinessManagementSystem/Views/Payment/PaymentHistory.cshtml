@@ -20,6 +20,7 @@
                                 <th>Payment To</th>
                                 <th>Total Payment</th>
                                 <th>Total Tips</th>
+                                <th>Total Advance Payment</th>
                                 <th>Grand Total</th>
                                 <th>Paid Status</th>
                                 <th>Created By</th>
@@ -82,13 +83,19 @@
                             return intVal(a) + intVal(b);
                         }, 0);
                     var totalTips = api
-                        .column(5, { search: 'applied' }) // Target the 4th column
+                        .column(5, { search: 'applied' }) // Target the 5th column
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                    var totalAdvancePayment = api
+                        .column(6, { search: 'applied' }) // Target the 6th column
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
                     var grandTotal = api
-                        .column(6, { search: 'applied' }) // Target the 4th column
+                        .column(7, { search: 'applied' }) // Target the 7th column
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -97,7 +104,8 @@
                     // Update the footer
                     $(api.column(4).footer()).html(totalPayment);
                     $(api.column(5).footer()).html(totalTips);
-                    $(api.column(6).footer()).html(grandTotal);
+                    $(api.column(6).footer()).html(totalAdvancePayment);
+                    $(api.column(7).footer()).html(grandTotal);
                 },
                 fixHeader: {
                     header: true,
@@ -121,6 +129,7 @@
                     { 'data': 'paymentTo' },
                     { 'data': 'totalPayment' },
                     { 'data': 'totalTips' },
+                    { 'data': 'totalAdvancePayment' },
                     { 'data': 'grandTotal' },
                     { 'data': 'paidStatus' },
                     { 'data': 'createdBy' },

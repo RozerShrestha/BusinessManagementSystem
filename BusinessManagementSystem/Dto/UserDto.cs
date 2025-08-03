@@ -36,6 +36,7 @@ namespace BusinessManagementSystem.Dto
         public string Address { get; set; }
         [Display(Name = "Date Of Birth")]
         [Required]
+        [NoFutureDate]
         public DateOnly DateOfBirth { get; set; }
         [Display(Name = "Mobile Number")]
         [RegularExpression("^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]

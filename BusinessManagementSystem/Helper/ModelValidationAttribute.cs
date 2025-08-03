@@ -193,4 +193,20 @@ namespace BusinessManagementSystem.Helper
             return ValidationResult.Success;
         }
     }
+
+    public class NoFutureDateAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value is DateOnly date)
+            {
+                if (date >= DateOnly.FromDateTime(DateTime.Today))
+                {
+                    return new ValidationResult("Date of Birth cannot be in the future.");
+                }
+            }
+            return ValidationResult.Success;
+        }
+    }
+
 }

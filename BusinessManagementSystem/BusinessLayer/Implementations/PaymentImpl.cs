@@ -51,6 +51,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             bool isUpdated = true;
             List<Payment> paymentList = new List<Payment>();
             List<Tip> tipList=new List<Tip>();
+            List<AdvancePayment> advancePaymentList = new List<AdvancePayment>();
             if (paymentTipSettlementDto.UserId != 0)
             {
                 foreach (var p in paymentTipSettlementDto.PaymentSettlements)
@@ -65,15 +66,23 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                     tip.Data.TipSettlement = true;
                     tipList.Add(tip.Data);
                 }
+                foreach(var pa in paymentTipSettlementDto.AdvancePaymentSettlements)
+                {
+                    var advancePayment = _unitOfWork.AdvancePayment.GetById(pa.Id);
+                    advancePayment.Data.AdvancePaymentSettlement = true;
+                    advancePaymentList.Add(advancePayment.Data);
+                }
                 var responsePayment = _unitOfWork.Payment.UpdateAll(paymentList);
                 var responseTip = _unitOfWork.Tip.UpdateAll(tipList);
-                if (responsePayment.StatusCode == HttpStatusCode.OK && responseTip.StatusCode == HttpStatusCode.OK)
+                var responseAdvancePayment = _unitOfWork.AdvancePayment.UpdateAll(advancePaymentList);
+                if (responsePayment.StatusCode == HttpStatusCode.OK && responseTip.StatusCode == HttpStatusCode.OK && responseAdvancePayment.StatusCode==HttpStatusCode.OK)
                 {
                     PaymentHistory paymentHistory = new PaymentHistory
                     {
                         UserId = paymentTipSettlementDto.UserId,
                         TotalPayment = paymentTipSettlementDto.TotalPayments,
                         TotalTips = paymentTipSettlementDto.TotalTips,
+                        TotalAdvancePayment = paymentTipSettlementDto.TotalAdvancePayments,
                         GrandTotal = paymentTipSettlementDto.GrandTotal,
                         PaidStatus = "Paid",
                         PaymentFrom = DateOnly.FromDateTime(paymentTipSettlementDto.StartDate),
@@ -81,7 +90,31 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                     };
                     var reponsePaymentHistory = _unitOfWork.Payment.CreatePaymentHistory(paymentHistory);
                 }
-                return isUpdated;
+                else
+                {
+                    foreach (var p in paymentTipSettlementDto.PaymentSettlements)
+                    {
+                        var payment = _unitOfWork.Payment.GetById(p.PaymentId);
+                        payment.Data.PaymentSettlement = false;
+                        paymentList.Add(payment.Data);
+                    }
+                    foreach (var t in paymentTipSettlementDto.TipSettlements)
+                    {
+                        var tip = _unitOfWork.Tip.GetById(t.TipId);
+                        tip.Data.TipSettlement = false;
+                        tipList.Add(tip.Data);
+                    }
+                    foreach (var pa in paymentTipSettlementDto.AdvancePaymentSettlements)
+                    {
+                        var advancePayment = _unitOfWork.AdvancePayment.GetById(pa.Id);
+                        advancePayment.Data.AdvancePaymentSettlement = false;
+                        advancePaymentList.Add(advancePayment.Data);
+                    }
+                    _unitOfWork.Payment.UpdateAll(paymentList);
+                    _unitOfWork.Tip.UpdateAll(tipList);
+                    _unitOfWork.AdvancePayment.UpdateAll(advancePaymentList);
+                }
+                    return isUpdated;
             }
             else
             {

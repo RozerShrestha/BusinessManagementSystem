@@ -269,6 +269,7 @@ namespace BusinessManagementSystem.Repositories
                                           ArtistName=u.FullName,
                                           TotalPayment=p.TotalPayment,
                                           TotalTips=p.TotalTips,
+                                          TotalAdvancePayment=p.TotalAdvancePayment,
                                           GrandTotal=p.GrandTotal,
                                           PaidStatus=p.PaidStatus,
                                           PaymentFrom=p.PaymentFrom,

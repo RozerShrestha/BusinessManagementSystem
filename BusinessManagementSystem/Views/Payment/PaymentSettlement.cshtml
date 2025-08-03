@@ -93,6 +93,7 @@
                                 <th>Reason</th>
                                 <th>Paid Date</th>
                                 <th>Status</th>
+                                <th>AdvancePayment Settlement</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -344,7 +345,12 @@
                                     return formatDate(data);
                                 }
                             },
-                            { data: 'status' },
+                            { data: 'status',
+                                render: function (data) {
+                                    return data === true ? 'Complete' : '';
+                                }
+                            },
+                            { data: 'advancePaymentSettlement' },
                         ]
                     });
                     $("#totalPayment").text(data.data.totalPayments)
@@ -369,7 +375,10 @@
                     }
                     else
                         toastr.error('Could not Settle Payment and Tip. Please settle per Employee basis');
-                }
+                },
+                error: function (error) {
+                        toastr.error("Error Deleting due to:" + error.responseText);
+                    }
             });
         }
     </script>

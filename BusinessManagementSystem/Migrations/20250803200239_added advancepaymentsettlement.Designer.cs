@@ -4,6 +4,7 @@ using BusinessManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250803200239_added advancepaymentsettlement")]
+    partial class addedadvancepaymentsettlement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -497,9 +500,6 @@ namespace BusinessManagementSystem.Migrations
 
                     b.Property<DateOnly>("PaymentTo")
                         .HasColumnType("date");
-
-                    b.Property<double>("TotalAdvancePayment")
-                        .HasColumnType("float");
 
                     b.Property<double>("TotalPayment")
                         .HasColumnType("float");

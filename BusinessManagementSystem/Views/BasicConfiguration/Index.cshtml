@@ -35,17 +35,17 @@
                     </div>
                     <div class="col-md-3">
                         <label asp-for="TattooPrice"></label>
-                        <input asp-for="TattooPrice" class="form-control">
+                        <input asp-for="TattooPrice" class="form-control" type="number" min="0">
                         <span asp-validation-for="TattooPrice" class="text-sm-center"></span>
                     </div>
                      <div class="col-md-3">
                         <label asp-for="PiercingPrice"></label>
-                        <input asp-for="PiercingPrice" class="form-control">
+                        <input asp-for="PiercingPrice" class="form-control" type="number" min="0">
                         <span asp-validation-for="PiercingPrice" class="text-sm-center"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="DreadLockPrice"></label>
-                        <input asp-for="DreadLockPrice" class="form-control">
+                        <input asp-for="DreadLockPrice" class="form-control" type="number" min="0">
                         <span asp-validation-for="DreadLockPrice" class="text-sm-center"></span>
                     </div>
                     <div class="col-md-12">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-md-2">
                         <label asp-for="Password"></label>
-                        <input asp-for="Password" class="form-control">
+                        <input asp-for="Password" class="form-control" type="password" value="@Model.Password">
                         <span asp-validation-for="Password" class="text-sm-center"></span>
                     </div>
                     <div class="col-md-3">
@@ -84,7 +84,7 @@
                     </div>
                     <div class="col-md-1">
                         <label asp-for="Port"></label>
-                        <input asp-for="Port" class="form-control">
+                        <input asp-for="Port" class="form-control" type="number">
                         <span asp-validation-for="Port" class="text-sm-center"></span>
                     </div>
                 </div>

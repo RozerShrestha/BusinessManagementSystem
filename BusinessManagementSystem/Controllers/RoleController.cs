@@ -64,7 +64,7 @@ namespace BusinessManagementSystem.Controllers
                 {
                     _notyf.Error(error.ErrorMessage);
                 }
-                return RedirectToAction(nameof(Index));
+                return View(role);
             }
         }
         public ActionResult Edit(int id)

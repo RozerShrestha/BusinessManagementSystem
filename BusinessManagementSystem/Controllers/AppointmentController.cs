@@ -79,6 +79,7 @@ namespace BusinessManagementSystem.Controllers
             appointmentDto.MedicalConditions = "No";
             appointmentDto.PainToleranceLevel = "No";
             appointmentDto.AppointmentDate = DateTime.Now.Date;
+            appointmentDto.DateOfBirth = DateOnly.FromDateTime(DateTime.Now);
             AppointmentSelectListViewBag();
             return View(appointmentDto);
         }

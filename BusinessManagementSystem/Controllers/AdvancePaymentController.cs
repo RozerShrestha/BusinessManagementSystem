@@ -27,6 +27,8 @@ namespace BusinessManagementSystem.Controllers
             _logger = logger;
 
         }
+
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult AllAdvancePayment()
         {
             RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();

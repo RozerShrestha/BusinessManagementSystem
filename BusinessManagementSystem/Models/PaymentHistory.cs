@@ -16,6 +16,7 @@ namespace BusinessManagementSystem.Models
         public string? ArtistName { get; set; }
         public double TotalPayment { get; set; }
         public double TotalTips { get; set; }
+        public double TotalAdvancePayment { get; set; }
         public double GrandTotal { get; set; }
         public string PaidStatus { get; set; }
         public DateOnly PaymentFrom { get; set; }

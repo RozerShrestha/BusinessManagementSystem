@@ -47,6 +47,7 @@ namespace BusinessManagementSystem.Repositories
                         PaymentMethod=x.Advancepayment.PaymentMethod,
                         Reason=x.Advancepayment.Reason,
                         PaidDate=x.Advancepayment.PaidDate,
+                        AdvancePaymentSettlement=x.Advancepayment.AdvancePaymentSettlement,
                         Status=x.Advancepayment.Status
                     })
                     .OrderByDescending(x => x.PaidDate)
