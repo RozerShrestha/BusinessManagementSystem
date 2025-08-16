@@ -279,6 +279,24 @@ namespace BusinessManagementSystem.Controllers
             }
         }
 
+        public JsonResult GetSubCategories(string categoryId)
+        {
+            SelectList subCategories = null;
+            if (categoryId== "Piercing")
+            {
+                subCategories = new SelectList(SD.PiercingCategories, "Key", "Value");
+            }
+            else if(categoryId== "EarPiercing")
+            {
+                subCategories = new SelectList(SD.EarPiercingCategories, "Key", "Value");
+            }
+            else
+            {
+                var emptyList = new List<KeyValuePair<string, string>>{new KeyValuePair<string, string>("", "Not Available")};
+                subCategories = new SelectList(emptyList, "Key", "Value");
+            }
+                return Json(subCategories);
+        }
 
         #region API CALLS
 
@@ -300,13 +318,13 @@ namespace BusinessManagementSystem.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult GetPaymentCalculation(bool isForeigner, string category, double totalHours, int deposit, int discount = 0, double discountInHour = 0, double paidAmount=0)
+        public IActionResult GetPaymentCalculation(bool isForeigner, string category, string subcategory, double totalHours, int deposit, int discount = 0, double discountInHour = 0, double paidAmount=0)
         {
             double totalCost = 0.0;
             double dueAmount = 0.0;
             if (!string.IsNullOrEmpty(category) && totalHours != 0)
             {
-                string costDescription = _businessLayer.AppointmentService.GetDueCost(isForeigner, category, totalHours, deposit, discount, discountInHour, paidAmount, out dueAmount, out totalCost);
+                string costDescription = _businessLayer.AppointmentService.GetDueCost(isForeigner, category, subcategory, totalHours, deposit, discount, discountInHour, paidAmount, out dueAmount, out totalCost);
                 var result = new
                 {
                     DueAmount = dueAmount,

@@ -45,7 +45,10 @@ namespace BusinessManagementSystem.Models
         public double TattooPrice { get; set; }
         [DisplayName("Piercing Price")]
         [Required]
-        public double PiercingPrice { get; set; }
+        public string PiercingPrice { get; set; }
+        [DisplayName("Ear Piercing Price")]
+        [Required]
+        public string EarPiercingPrice { get; set; }
         [DisplayName("DeadLock Price")]
         [Required]
         public double DreadLockPrice { get; set; }
@@ -73,9 +76,6 @@ namespace BusinessManagementSystem.Models
         public string AdvancePaymentArtistTemplate { get; set; }
         [DisplayName("Advance Payment Superadmin Template")]
         public string AdvancePaymentSuperadminTemplate { get; set; }
-
-
-
     }
     public class BasicConfigurationEntityConfiguration : IEntityTypeConfiguration<BasicConfiguration>
     {
@@ -92,6 +92,8 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.ApplicationTitle).HasColumnType("varchar(250)");
             builder.Property(x => x.CreatedBy).HasColumnType("varchar(150)");
             builder.Property(x => x.UpdatedBy).HasColumnType("varchar(150)");
+            builder.Property(x => x.PiercingPrice).HasColumnType("varchar(1000)");
+            builder.Property(x => x.EarPiercingPrice).HasColumnType("varchar(1000)");
 
         }
     }

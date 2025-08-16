@@ -40,8 +40,13 @@
                     </div>
                      <div class="col-md-3">
                         <label asp-for="PiercingPrice"></label>
-                        <input asp-for="PiercingPrice" class="form-control" type="number" min="0">
+                        <input asp-for="PiercingPrice" class="form-control">
                         <span asp-validation-for="PiercingPrice" class="text-sm-center text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="EarPiercingPrice"></label>
+                        <input asp-for="EarPiercingPrice" class="form-control">
+                        <span asp-validation-for="EarPiercingPrice" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="DreadLockPrice"></label>

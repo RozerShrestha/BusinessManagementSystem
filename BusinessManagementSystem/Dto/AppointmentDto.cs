@@ -43,6 +43,9 @@ namespace BusinessManagementSystem.Dto
         [Required]
         [DisplayName("Category *")]
         public string Category { get; set; }
+        [Required]
+        [DisplayName("Sub Category *")]
+        public string SubCategory { get; set; }
         [DisplayName("Tattoo Design")]
         public string? TattooDesign { get; set; }
         [DisplayName("Placement")]

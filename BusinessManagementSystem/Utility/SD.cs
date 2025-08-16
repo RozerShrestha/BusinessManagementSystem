@@ -41,7 +41,37 @@ namespace BusinessManagementSystem.Utility
         {
             { TattooCategory.Tattoo.ToString(), "Tattoo" },
             { TattooCategory.Dreadlock.ToString(), "DreadLock" },
-            { TattooCategory.Piercing.ToString(), "Piercing" }
+            { TattooCategory.Piercing.ToString(), "Piercing" },
+            { TattooCategory.EarPiercing.ToString(), "Ear Piercing" }
+        };
+        public static readonly Dictionary<string, string> PiercingCategories = new Dictionary<string, string>
+        {
+            { PiercingCategory.Eyebrow.ToString(), "Eyebrow" },
+            { PiercingCategory.Lips.ToString(), "Lips" },
+            { PiercingCategory.Nose.ToString(), "Nose" },
+            { PiercingCategory.Smiley.ToString(), "Smiley" },
+            { PiercingCategory.Belly.ToString(), "Belly" },
+            { PiercingCategory.Tongue.ToString(), "Tongue" },
+            { PiercingCategory.Nipple.ToString(), "Nipple" },
+            { PiercingCategory.Dermal.ToString(), "Dermal" }
+        };
+
+        public static readonly Dictionary<string, string> EarPiercingCategories = new Dictionary<string, string>
+        {
+            { EarPiercingCategory.ForwardHelix.ToString(), "Forward Helix" },
+            { EarPiercingCategory.Helix.ToString(), "Helix" },
+            { EarPiercingCategory.Industrial.ToString(), "Industrial" },
+            { EarPiercingCategory.InnerConch.ToString(), "Inner Conch" },
+            { EarPiercingCategory.Rook.ToString(), "Rook" },
+            { EarPiercingCategory.Daith.ToString(), "Daith" },
+            { EarPiercingCategory.Tragus.ToString(), "Tragus" },
+            { EarPiercingCategory.Snug.ToString(), "Snug" },
+            { EarPiercingCategory.AntiTragus.ToString(), "Anti-Tragus" },
+            { EarPiercingCategory.Orbital.ToString(), "Orbital" },
+            { EarPiercingCategory.OuterConch.ToString(), "Outer Conch" },
+            { EarPiercingCategory.StandardLobe.ToString(), "Standard Lobe" },
+            { EarPiercingCategory.InnerLobe.ToString(), "Inner Lobe" },
+            { EarPiercingCategory.TransverseLobe.ToString(), "Transverse Lobe" }
         };
         public static readonly Dictionary<string, string> ApointmentStatus = new Dictionary<string, string>
         {
@@ -54,7 +84,7 @@ namespace BusinessManagementSystem.Utility
             { AppointmentStat.CompletedPaymentDue.ToString(), "Completed But Payment Due" },
             { AppointmentStat.Cancelled.ToString(), "Cancelled" },
             { AppointmentStat.NotShown.ToString(), "Not Shown" }
-            
+
         };
         public static readonly Dictionary<string, string> PaymentMethods = new Dictionary<string, string>
         {

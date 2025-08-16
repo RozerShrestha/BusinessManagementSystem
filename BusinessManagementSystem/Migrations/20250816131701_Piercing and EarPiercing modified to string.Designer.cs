@@ -4,6 +4,7 @@ using BusinessManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250816131701_Piercing and EarPiercing modified to string")]
+    partial class PiercingandEarPiercingmodifiedtostring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,10 +163,6 @@ namespace BusinessManagementSystem.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
-
-                    b.Property<string>("SubCategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TattooDesign")
                         .HasColumnType("varchar(500)");

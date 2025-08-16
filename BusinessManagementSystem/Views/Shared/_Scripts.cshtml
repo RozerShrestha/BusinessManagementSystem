@@ -39,6 +39,7 @@
     });
     $('.calculateTotalCost').on('click', function () {
         let category = $('#Category').val();
+        let subCategory = $('#SubCategory').val();
         let totalHours = $('#TotalHours').val();
         let deposit = $('#Deposit').val();
         let discount = $('#Discount').val();
@@ -48,7 +49,7 @@
         let isForeigner = $('#IsForeigner').val()
         $.ajax({
             type: 'GET',
-            url: `/Appointment/GetPaymentCalculation?isForeigner=${isForeigner}&category=${category}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}&paidAmount=${paidAmount}`,
+            url: `/Appointment/GetPaymentCalculation?isForeigner=${isForeigner}&category=${category}&subCategory=${subCategory}&totalHours=${totalHours}&deposit=${deposit}&discount=${discount}&discountInHour=${discountInHour}&paidAmount=${paidAmount}`,
             contentType: 'application/json',
             success: function (response) {
                 alert(response.costDescription);

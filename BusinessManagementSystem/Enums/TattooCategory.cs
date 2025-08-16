@@ -4,6 +4,7 @@
     {
         Tattoo = 1,
         Piercing = 2,
-        Dreadlock = 3
+        EarPiercing=3,
+        Dreadlock = 4
     }
 }

@@ -43,6 +43,9 @@ namespace BusinessManagementSystem.Models
         [Required]
         [DisplayName("Category *")]
         public string Category { get; set; }
+        
+        [DisplayName("Sub Category *")]
+        public string SubCategory { get; set; }
         //we need required if Status is something
         [DisplayName("Total Hours *")]
         public double TotalHours { get; set; }

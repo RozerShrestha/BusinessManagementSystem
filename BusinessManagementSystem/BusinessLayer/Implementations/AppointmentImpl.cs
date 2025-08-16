@@ -246,7 +246,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             }
             return _responseDto;
         }
-        public string GetDueCost(bool isForeigner, string category, double totalHours, int deposit, int discount, double discountInHour, double paidAmount, out double dueAmount, out double totalCost)
+        public string GetDueCost(bool isForeigner, string category, string subcategory, double totalHours, int deposit, int discount, double discountInHour, double paidAmount, out double dueAmount, out double totalCost)
         {
             double categoryCost=0;
             if (category == "Tattoo")
@@ -259,7 +259,10 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             }
             else if (category == "Piercing")
             {
-               categoryCost = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data.PiercingPrice;
+               var piercingData = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data.PiercingPrice;
+               
+                var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(piercingData);
+                categoryCost = obj[subcategory];
             }
 
             categoryCost = isForeigner ? categoryCost * 2 : categoryCost;
