@@ -33,6 +33,7 @@ namespace BusinessManagementSystem.Models
         public required string EmployerName { get; set; }
 
         [DisplayName("Employer Email Address")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Please enter a valid email address.")]
         [Required]
         public required string EmployerEmailAddress { get; set; }
 

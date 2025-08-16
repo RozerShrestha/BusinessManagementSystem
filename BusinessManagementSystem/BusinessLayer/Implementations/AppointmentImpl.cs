@@ -117,7 +117,7 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             try
             {
-                _responseDto = _unitOfWork.Appointment.GetFirstOrDefault(p => p.guid == guid, includeProperties: "Payment");
+                _responseDto = _unitOfWork.Appointment.GetFirstOrDefault(p => p.guid == guid, includeProperties: "Payment,User");
                 if(_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _responseAppointmentDto.Data = _mapper.Map<AppointmentDto>(_responseDto.Data);
@@ -226,29 +226,10 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var item = _unitOfWork.Appointment.GetFirstOrDefault(p => p.guid == appointmentDto.guid, includeProperties: "Payment");
             if(item.StatusCode == HttpStatusCode.OK)
             {
-                item.Data.ClientName = appointmentDto.ClientName;
-                item.Data.ClientPhoneNumber = appointmentDto.ClientPhoneNumber;
-                item.Data.ClientEmail = appointmentDto.ClientEmail;
-                item.Data.AppointmentDate = appointmentDto.AppointmentDate;
-                item.Data.Category = appointmentDto.Category;
-                item.Data.ReferalId = appointmentDto.ReferalId;
-                item.Data.UserId = appointmentDto.UserId;
-                item.Data.IsForeigner = appointmentDto.IsForeigner;
-                item.Data.Outlet=appointmentDto.Outlet;
-                item.Data.Status = appointmentDto.Status;
-                item.Data.TattooDesign = appointmentDto.TattooDesign;
-                item.Data.Placement = appointmentDto.Placement;
-                item.Data.InkColorPreferance = appointmentDto.InkColorPreferance;
-                item.Data.Allergies = appointmentDto.Allergies;
-                item.Data.MedicalConditions = appointmentDto.MedicalConditions;
-                item.Data.PainToleranceLevel = appointmentDto.PainToleranceLevel;
-                item.Data.SessionNumber = appointmentDto.SessionNumber;
-                item.Data.ConsentFormSigned = appointmentDto.ConsentFormSigned;
-                item.Data.ConcentFormLink=appointmentDto.ConcentFormLink;
-                item.Data.FollowUpRequired = appointmentDto.FollowUpRequired;
-                item.Data.TotalHours = appointmentDto.TotalHours;
-                item.Data.Outlet = appointmentDto.Outlet;
+                _mapper.Map(appointmentDto, item.Data);
+                //item.Data= _mapper.Map<Appointment>(appointmentDto);
                 item.Data.Payment = UpdatePayment(item.Data.Payment, appointmentDto);
+
                 if (item.Data.Status == "Completed")
                 {
                     if (appointmentDto.TipAmount != 0)

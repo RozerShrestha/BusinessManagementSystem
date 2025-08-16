@@ -172,6 +172,17 @@ namespace BusinessManagementSystem.Helper
                 }
             }
         }
-        
+        public static (DateTime firstDay, DateTime lastDay) GetMonthFirstAndLastDate(DateTime date)
+        {
+            DateTime firstDay = new DateTime(date.Year, date.Month, 1);
+            DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
+            return (firstDay, lastDay);
+        }
+        public static (DateTime firstDay, DateTime lastDay) GetYearFirstAndLastDate(DateTime date)
+        {
+            DateTime firstDay = new DateTime(date.Year, 1, 1);   // Jan 1
+            DateTime lastDay = new DateTime(date.Year, 12, 31); // Dec 31
+            return (firstDay, lastDay);
+        }
     }
 }

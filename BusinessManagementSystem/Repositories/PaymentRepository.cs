@@ -259,9 +259,11 @@ namespace BusinessManagementSystem.Repositories
         {
             try
             {
+                (DateTime firstDay, DateTime lastDay) = Helper.Helpers.GetYearFirstAndLastDate(DateTime.Today);
                 var paymentHistory = (from p in _dbContext.PaymentHistories
                                       join u in _dbContext.Users
                                       on p.UserId equals u.Id
+                                      where p.CreatedAt>=firstDay && p.CreatedAt<=lastDay
                                       select new PaymentHistory
                                       {
                                           Id = p.Id,
