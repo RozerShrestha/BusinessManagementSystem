@@ -15,6 +15,7 @@ using System.Diagnostics.Contracts;
 using BusinessManagementSystem.Helper;
 using BusinessManagementSystem.Enums;
 using AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessManagementSystem.Controllers
 {
@@ -38,7 +39,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Index()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("All");
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -48,7 +49,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyAppointments()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -134,27 +135,32 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Edit(Guid guid)
         {
             if (guid == Guid.Empty) return NotFound();
-            AppointmentSelectListViewBag();
+            
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
-
+            AppointmentSelectListViewBag(_responseAppointmentDto.Data.Category);
             if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == _responseAppointmentDto.Data.UserId)
             {
-                if (_responseAppointmentDto.StatusCode != HttpStatusCode.OK)
+                if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK)
                 {
-                    return NotFound();
+                    //if (_responseAppointmentDto.Data.Category == "Piercing")
+                    //{
+                    //    ViewBag.SubCategory= new Dictionary<string, SelectList> { { "SubCategories", new SelectList(SD.PiercingCategories, "Key", "Value") }};
+                    //}
+                    //else if(_responseAppointmentDto.Data.Category == "EarPiercing")
+                    //{
+                    //    ViewBag.SubCategory = new Dictionary<string, SelectList> { { "SubCategories", new SelectList(SD.EarPiercingCategories, "Key", "Value") } };
+                    //}
+                        return View(_responseAppointmentDto.Data);
+                    
                 }
                 else
-                    return View(_responseAppointmentDto.Data);
+                    return NotFound();
             }
             else
             {
                 _notyf.Warning($"{fullName} is not authroized to perform this task");
                 return RedirectToAction("AccessDenied", "Error");
             }
-
-
-
-
         }
 
         [HttpPost]

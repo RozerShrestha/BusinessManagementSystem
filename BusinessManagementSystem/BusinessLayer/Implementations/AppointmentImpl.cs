@@ -264,8 +264,15 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
                 var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(piercingData);
                 categoryCost = obj[subcategory];
             }
+            else if (category == "EarPiercing")
+            {
+                var piercingData = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data.EarPiercingPrice;
 
-            categoryCost = isForeigner ? categoryCost * 2 : categoryCost;
+                var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(piercingData);
+                categoryCost = obj[subcategory];
+            }
+
+                categoryCost = isForeigner ? categoryCost * 2 : categoryCost;
 
             dueAmount = Convert.ToInt32(categoryCost) * (totalHours - discountInHour) - deposit - discount - paidAmount;
             totalCost = Convert.ToInt32(deposit + dueAmount + paidAmount);

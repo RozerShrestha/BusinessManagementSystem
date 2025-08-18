@@ -94,22 +94,38 @@ namespace BusinessManagementSystem.Controllers
             return _javaScriptEncoder.Encode(text);
         }
 
-        protected void AppointmentSelectListViewBag()
+        protected void AppointmentSelectListViewBag(string viewBagModify="")
         {
             dynamic artistList = null;
             artistList = (roleName==SD.Role_Superadmin || roleName== SD.Role_TattooAdmin)? 
                 _businessLayer.UserService.GetAllActiveTattooArtistWithoutAll():
                 _businessLayer.UserService.GetArtist(userGuid);
             dynamic referalList = _businessLayer.ReferalService.GetAllActiveReferalList();
-            ViewBag.AppointmentSelectList = new Dictionary<string, SelectList>
+            var appointmentSelectList = new Dictionary<string, SelectList>
             {
                 { "ArtistList", new SelectList(artistList, "Id", "Name") },
                 { "ReferalList", new SelectList(referalList, "Id", "Name") },
                 { "TattooCategories", new SelectList(SD.TattooCategories, "Key", "Value") },
+                { "PiercingCategories", new SelectList(SD.PiercingCategories, "Key", "Value") },
+                { "EarPiercingCategories", new SelectList(SD.EarPiercingCategories, "Key", "Value") },
                 { "AppointmentStatus", new SelectList(SD.ApointmentStatus.Where(p=>p.Key!="All"), "Key", "Value") },
                 { "PaymentMethod", new SelectList(SD.PaymentMethods, "Key", "Value") },
                 { "Outlet", new SelectList(SD.OutletList, "Key", "Value") }
             };
+            switch (viewBagModify)
+            {
+                case "Piercing":
+                    appointmentSelectList["SubCategories"] = new SelectList(SD.PiercingCategories, "Key", "Value");
+                    break;
+                case "EarPiercing":
+                    appointmentSelectList["SubCategories"] = new SelectList(SD.EarPiercingCategories, "Key", "Value");
+                    break;
+                default:
+                    // fallback (empty list or default option)
+                    appointmentSelectList["SubCategories"] = new SelectList(new List<SelectListItem>{new SelectListItem { Text = "Not Available", Value = "" }}, "Value", "Text");
+                    break;
+            }
+            ViewBag.AppointmentSelectList = appointmentSelectList;
         }
 
         protected void DashboardViewBagList(RequestDto requestDto)

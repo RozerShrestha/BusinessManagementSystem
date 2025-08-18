@@ -53,10 +53,15 @@
                         <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
                         <span asp-validation-for="AppointmentDate" class="text-danger"></span>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <label asp-for="Category" class="control-label"></label>
                         @Html.DropDownListFor(model => model.Category, (SelectList)ViewBag.AppointmentSelectList["TattooCategories"], "--Select--", new { @class = "form-control" })
                         <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="SubCategory" class="control-label"></label>
+                        @Html.DropDownListFor(model => model.SubCategory, (SelectList)ViewBag.AppointmentSelectList["SubCategories"], new { @class = "form-control" })
+                        <span asp-validation-for="SubCategory" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="ReferalId" class="control-label"></label>
@@ -103,8 +108,11 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="InkColorPreferance" class="control-label"></label>
-                        <input asp-for="InkColorPreferance" class="form-control" />
-                        <span asp-validation-for="InkColorPreferance" class="text-danger"></span>
+                        <select asp-for="InkColorPreferance" class="form-control">
+                            <option value="B/W">B/W</option>
+                            <option value="Color">Color</option>
+                            <option value="Not Available">Not Available</option>
+                        </select>
                     </div>
 
                     <div class="col-md-4">
@@ -242,25 +250,64 @@
         $(document).ready(function () {
             const consentFormSigned = $("#ConsentFormSigned");
             const consentFormLinkDiv = $("#concentFormLink");
-        const consentFormSignedCol = consentFormSigned.closest(".col-md-6");
+            const consentFormSignedCol = consentFormSigned.closest(".col-md-6");
 
-            function toggleConsentFormLink()
-            {
+            $('#ConsentFormSigned').change(function(){
                 if (consentFormSigned.val() === "true")
                 {
                     consentFormLinkDiv.show();
                     consentFormSignedCol.removeClass("col-md-12").addClass("col-md-6");
+                    const appointmentDto = {
+                    ClientEmail: $("#ClientEmail").val(),
+                    ClientName: $("#ClientName").val(),
+                    ClientPhoneNumber: $("#ClientPhoneNumber").val(),
+                    Address: $("#Address").val(),
+                    DateOfBirth: $("#DateOfBirth").val(),
+                    Gender: $("#Gender").val(),
+                    Placement: $("#Placement").val(),
+                    };
+                    // calls api to send concent form link to given email address
+                    $.ajax({
+                        url: '/Appointment/SendConcentFormLink',
+                        method: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(appointmentDto),
+                        success: function (response) {
+
+                        },
+                        error: function (error) {
+                            toastr.error(error.responseText);
+                        }
+                    });
                 }
                 else
                 {
                     consentFormLinkDiv.hide();
                     consentFormSignedCol.removeClass("col-md-6").addClass("col-md-12");
                 }
-             }
-        // Initialize visibility on page load
-            toggleConsentFormLink();
-            // Add event listener for changes
-            consentFormSigned.on("change", toggleConsentFormLink);
+            });
+            $('#Category').change(function () {
+                    var categoryId = $(this).val();
+                    if (categoryId) {
+                        $.ajax({
+                            url: '@Url.Action("GetSubCategories", "Appointment")',
+                            type: "GET",
+                            data: { categoryId: categoryId },
+                            success: function (data) {
+                            var subCategoryDropdown = $('#SubCategory');
+                                subCategoryDropdown.empty(); // Clear existing options
+                                $.each(data, function (i, subCategory) {
+                                    subCategoryDropdown.append($('<option>', {
+                                        value: subCategory.value,
+                                        text : subCategory.text
+                                    }));
+                                });
+                            }
+                        });
+                    } else {
+                    $('#SubCategory').empty();
+                    }
+                });
         });
 
     </script>

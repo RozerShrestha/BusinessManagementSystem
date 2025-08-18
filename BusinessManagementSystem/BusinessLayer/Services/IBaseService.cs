@@ -7,7 +7,7 @@ namespace BusinessManagementSystem.BusinessLayer.Services
     {
         UserDto UserDetail(string userName);
         List<MenuDto> MenuList(string roleName);
-        RequestDto GetInitialRequestDtoFilter();
+        RequestDto GetInitialRequestDtoFilter(string filter);
         RequestDto GetInitialRequestDtoFilterDashboard();
 
     }
