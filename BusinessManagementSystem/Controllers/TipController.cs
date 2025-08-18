@@ -31,7 +31,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Index()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("All");
             requestDto.ParameterFilter = "Settlement"; 
             ViewBag.ModalInformation = _modalView;
             return View(requestDto);

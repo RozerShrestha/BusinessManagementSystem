@@ -33,7 +33,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult AllPayments()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("All");
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");

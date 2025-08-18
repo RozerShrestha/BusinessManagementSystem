@@ -31,7 +31,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult AllAdvancePayment()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("All");
             requestDto.ParameterFilter = "Statement";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.PaidStatus, "Key", "Value");
