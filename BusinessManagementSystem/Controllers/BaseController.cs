@@ -122,7 +122,7 @@ namespace BusinessManagementSystem.Controllers
                     break;
                 default:
                     // fallback (empty list or default option)
-                    appointmentSelectList["SubCategories"] = new SelectList(new List<SelectListItem>{new SelectListItem { Text = "Not Available", Value = "" }}, "Value", "Text");
+                    appointmentSelectList["SubCategories"] = new SelectList(new List<SelectListItem>{new SelectListItem { Text = "Not Available", Value = "Not Available" } }, "Value", "Text");
                     break;
             }
             ViewBag.AppointmentSelectList = appointmentSelectList;

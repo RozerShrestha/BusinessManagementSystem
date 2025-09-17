@@ -31,12 +31,12 @@ namespace BusinessManagementSystem.Dto
         [Required]
         [DisplayName("Gender *")]
         public string Gender { get; set; }
-        [Required]
-        [DisplayName("Date of Birth *")]
-        public DateOnly DateOfBirth { get; set; }
-        [Required]
-        [DisplayName("Address *")]
-        public string Address { get; set; }
+        
+        [DisplayName("Date of Birth")]
+        public DateOnly? DateOfBirth { get; set; }
+
+        [DisplayName("Address")]
+        public string? Address { get; set; }
         [Required]
         [DisplayName("Appointment Date *")]
         public DateTime AppointmentDate { get; set; }

@@ -354,8 +354,8 @@ namespace BusinessManagementSystem.Controllers
             string.IsNullOrEmpty(appointmentDto.ClientPhoneNumber) ||
             string.IsNullOrEmpty(appointmentDto.ClientEmail) ||
             string.IsNullOrEmpty(appointmentDto.Gender) ||
-            string.IsNullOrEmpty(appointmentDto.DateOfBirth.ToString()) ||
-            string.IsNullOrEmpty(appointmentDto.Address) ||
+            /*string.IsNullOrEmpty(appointmentDto.DateOfBirth.ToString()) ||*/
+            //string.IsNullOrEmpty(appointmentDto.Address) ||
             string.IsNullOrEmpty(appointmentDto.Placement))
                     return BadRequest("Please fill up the necessary fields");
 

@@ -174,7 +174,7 @@ namespace BusinessManagementSystem.Utility
             sb.Replace("{{fullname}}", appointmentDto.ClientName.Replace(" ","+"));
             sb.Replace("{{phonenumber}}",appointmentDto.ClientPhoneNumber);
             sb.Replace("{{address}}",appointmentDto.Address.Replace(" ", "+"));
-            sb.Replace("{{dob}}", appointmentDto.DateOfBirth.ToString("yyyy-MM-dd"));
+            sb.Replace("{{dob}}", appointmentDto.DateOfBirth==null?"": appointmentDto.DateOfBirth.Value.ToString("yyyy-MM-dd"));
             sb.Replace("{{gender}}",appointmentDto.Gender.Replace(" ", "+"));
             sb.Replace("{{placement}}",appointmentDto.Placement.Replace(" ", "+"));
             return sb.ToString();

@@ -251,7 +251,7 @@
                     ClientName: $("#ClientName").val(),
                     ClientPhoneNumber: $("#ClientPhoneNumber").val(),
                     Address: $("#Address").val(),
-                    DateOfBirth: $("#DateOfBirth").val(),
+                    DateOfBirth: $("#DateOfBirth").val() === '' ? new Date().toISOString().split('T')[0] : $("#DateOfBirth").val(),
                     Gender: $("#Gender").val(),
                     Placement: $("#Placement").val(),
                     };
