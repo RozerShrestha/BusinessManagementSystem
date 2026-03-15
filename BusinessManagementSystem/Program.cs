@@ -22,19 +22,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http.Json;
 
-static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureAppConfiguration((hostingContext, config) =>
-        {
-            config.AddJsonFile("appsettings.json",
-                optional: true,
-                reloadOnChange: false);
-        })
-        .ConfigureWebHostDefaults(webBuilder =>
-        {
-            webBuilder.UseStartup<Program>();
-        });
-
+//this is for automapper configuration
 var mapperConfiguration = new MapperConfiguration(configuration =>
 {
     configuration.AddProfile(new MappingProfile());
@@ -165,7 +153,12 @@ app.UseStatusCodePages(context =>
     if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
     {
         app.Logger.LogWarning("Unauthrorized");
-        response.Redirect("/");
+        
+       //response.Redirect("/");
+        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        response.WriteAsync("UnAuthorized: Unauthorized access.");
+
+
     }
     else if (response.StatusCode == (int)HttpStatusCode.Forbidden)
     {

@@ -41,6 +41,10 @@ namespace BusinessManagementSystem.Controllers
 
         //    return Challenge();
         //}
+
+        
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult LoginUser(LoginRequestDto loginRequest)
@@ -147,6 +151,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult LoginUserAPI(LoginRequestDto loginRequest)
         {
             ModelState.Remove(nameof(loginRequest.ConfirmPassword)); //just to ignore ConfirmPassword to validate
+            ModelState.Remove(nameof(loginRequest.OTP));
             if (ModelState.IsValid)
             {
                 _responseDto = _iLogin.Login(loginRequest);
@@ -196,6 +201,23 @@ namespace BusinessManagementSystem.Controllers
             {
                 _responseDto.StatusCode = HttpStatusCode.BadRequest;
                 _responseDto.Message = "UserName or Email is Empty";
+                return BadRequest(_responseDto);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult GetToken([FromBody] LoginRequestDto loginRequest)
+        {
+            ModelState.Remove(nameof(loginRequest.ConfirmPassword)); //just to ignore ConfirmPassword to validate
+            ModelState.Remove(nameof(loginRequest.OTP));
+            if (ModelState.IsValid)
+            {
+                _responseDto = _iLogin.Login(loginRequest);
+                return Ok(_responseDto);
+            }
+            else
+            {
+                _responseDto.Message = "Invalid Username or password";
                 return BadRequest(_responseDto);
             }
         }
