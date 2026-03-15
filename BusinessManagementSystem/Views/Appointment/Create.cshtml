@@ -44,10 +44,15 @@
                         <input asp-for="Address" class="form-control" />
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <label asp-for="AppointmentDate" class="control-label"></label>
                         <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
                         <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="AppointmentDateNep" class="control-label"></label>
+                        <input asp-for="AppointmentDateNep" class="form-control" disabled />
+                        <span asp-validation-for="AppointmentDateNep" class="text-danger"></span>
                     </div>
                     <div class="col-md-2">
                         <label asp-for="Category" class="control-label"></label>
@@ -237,6 +242,17 @@
     @* <partial name="_ValidationScriptsPartial" />  *@
         <script>
             $(document).ready(function () {
+                $('#AppointmentDate').on('change', function () {
+                    var dateVal = $(this).val();
+                    if (dateVal) {
+                        var dateOnly = dateVal.split('T')[0];
+                        var nepaliDate = NepaliFunctions.AD2BS(dateOnly, "YYYY-MM-DD", "YYYY/MM/DD");
+                        $('#AppointmentDateNep').val(nepaliDate);
+                    } else {
+                        $('#AppointmentDateNep').val('');
+                    }
+                });
+
                 const consentFormSigned = $("#ConsentFormSigned");
                 const consentFormLinkDiv = $("#concentFormLink");
                 const consentFormSignedCol = consentFormSigned.closest(".col-md-6");
@@ -300,6 +316,11 @@
             });
     </script>
 }
+
+
+
+
+
 
 
 

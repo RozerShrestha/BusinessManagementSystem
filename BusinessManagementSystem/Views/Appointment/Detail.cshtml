@@ -32,13 +32,18 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="ClientEmail" class="control-label"></label>
-                        <input asp-for="ClientEmail" class="form-control" type="email" />
+                        <input asp-for="ClientEmail" class="form-control non-editable" type="email" />
                         <span asp-validation-for="ClientEmail" class="text-danger"></span>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <label asp-for="AppointmentDate" class="control-label"></label>
                         <input asp-for="AppointmentDate" class="form-control non-editable"  type="datetime-local" />
                         <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="AppointmentDateNep" class="control-label"></label>
+                        <input asp-for="AppointmentDateNep" class="form-control non-editable" />
+                        <span asp-validation-for="AppointmentDateNep" class="text-danger"></span>
                     </div>
                     <div class="col-md-2">
                         <label asp-for="Category" class="control-label"></label>

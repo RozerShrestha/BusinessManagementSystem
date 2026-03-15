@@ -80,6 +80,7 @@ namespace BusinessManagementSystem.Controllers
             appointmentDto.MedicalConditions = "No";
             appointmentDto.PainToleranceLevel = "No";
             appointmentDto.AppointmentDate = DateTime.Now.Date;
+            appointmentDto.AppointmentDateNep = NepaliDateService.EngToNep(DateTime.Now).ToString();
             appointmentDto.DateOfBirth = DateOnly.FromDateTime(DateTime.Now);
             AppointmentSelectListViewBag();
             return View(appointmentDto);
@@ -142,14 +143,6 @@ namespace BusinessManagementSystem.Controllers
             {
                 if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK)
                 {
-                    //if (_responseAppointmentDto.Data.Category == "Piercing")
-                    //{
-                    //    ViewBag.SubCategory= new Dictionary<string, SelectList> { { "SubCategories", new SelectList(SD.PiercingCategories, "Key", "Value") }};
-                    //}
-                    //else if(_responseAppointmentDto.Data.Category == "EarPiercing")
-                    //{
-                    //    ViewBag.SubCategory = new Dictionary<string, SelectList> { { "SubCategories", new SelectList(SD.EarPiercingCategories, "Key", "Value") } };
-                    //}
                         return View(_responseAppointmentDto.Data);
                     
                 }

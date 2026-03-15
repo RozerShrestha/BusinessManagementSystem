@@ -38,8 +38,10 @@ namespace BusinessManagementSystem.Dto
         [DisplayName("Address")]
         public string? Address { get; set; }
         [Required]
-        [DisplayName("Appointment Date *")]
+        [DisplayName("Appointment Date AD *")]
         public DateTime AppointmentDate { get; set; }
+        [DisplayName("Appointment Date BS *")]
+        public string? AppointmentDateNep { get; set; }
         [Required]
         [DisplayName("Category *")]
         public string Category { get; set; }

@@ -39,7 +39,9 @@ namespace BusinessManagementSystem.Helper
                 .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.Payment.TotalCost))
                 .ForMember(dest => dest.ReferalFullName, opt => opt.MapFrom(src => src.Referal.FullName))
                 .ForMember(dest => dest.TipAmount, opt => opt.MapFrom(src => src.Payment.TipAmount))
-                .ForMember(dest => dest.ArtistAssigned, opt => opt.MapFrom(src => src.User.FullName));
+                .ForMember(dest => dest.ArtistAssigned, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.AppointmentDateNep, opt => opt.MapFrom(src =>NepaliDateService.EngToNep(src.AppointmentDate)));
+            
                 
 
 

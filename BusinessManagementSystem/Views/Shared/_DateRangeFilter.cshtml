@@ -2,12 +2,12 @@
 <div class="row">
     <div class="col-md-2">
         <label asp-for="StartDate" class="control-label"></label>
-        <input asp-for="StartDate" class="form-control" type="date" />
+        <input asp-for="StartDate" class="form-control nepaliDate" />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
     <div class="col-md-2">
         <label asp-for="EndDate" class="control-label"></label>
-        <input asp-for="EndDate" class="form-control" type="date" />
+        <input asp-for="EndDate" class="form-control nepaliDate" />
         <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
     @if (Model.ParameterFilter.Contains("User"))
