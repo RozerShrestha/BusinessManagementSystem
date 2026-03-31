@@ -24,7 +24,8 @@
                                 <th>Payment Artist</th>
                                 <th>Payment Method</th>
                                 <th>Appointment Status</th>
-                                <th>Updated Date</th>
+                                <th>Updated Date (AD)</th>
+                                <th>Updated Date (BS)</th>
                                 <Th>Settlement</Th>
                                 <th>Action</th>
                             </tr>
@@ -58,8 +59,8 @@
         });
         function loadDataTable() {
             const requestDto = {
-                StartDate: $("#StartDate").val(),
-                EndDate: $("#EndDate").val(),
+                StartDateNep: $("#StartDateNep").val(),
+                EndDateNep: $("#EndDateNep").val(),
                 Status: $("#Status").val()
             };
             if (datatable) {
@@ -134,6 +135,7 @@
                             return formatDate(data);
                         }
                     },
+                    {'data': 'paymentDateNP'},
                     {'data': 'paymentSettlement'},
                     {
                         'data': 'appointmentGuid',

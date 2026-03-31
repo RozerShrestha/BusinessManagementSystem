@@ -452,6 +452,21 @@ namespace BusinessManagementSystem.Utility
             var result = IsRangeNep(dt.Year, dt.Month, dt.Day);
             return result;
         }
+        public static string GetLastDayOfNepMonth(string nepaliDate)
+        {
+            if (bs == null) InitializeData();
+            var dt = DateFormat(nepaliDate);
+            int yearIndex = dt.Year - 2000;
+            if (!bs.ContainsKey(yearIndex))
+                return nepaliDate;
+            int lastDay = bs[yearIndex][12];
+            return $"{dt.Year}/12/{lastDay}";
+        }
+        public static string GetFirstDayOfNepMonth(string nepaliDate)
+        {
+            var dt = DateFormat(nepaliDate);
+            return $"{dt.Year}/1/1";
+        }
     }
 
     public class NepDate

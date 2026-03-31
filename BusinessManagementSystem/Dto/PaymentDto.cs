@@ -19,5 +19,6 @@ namespace BusinessManagementSystem.Dto
         public bool PaymentSettlement { get; set; }
         public string? AppointmentStatus { get; set; }
         public DateTime? PaymentDate { get; set; }
+        public string? PaymentDateNP { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 
 namespace BusinessManagementSystem.BusinessLayer.Implementations
@@ -34,11 +35,17 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public RequestDto GetInitialRequestDtoFilter(string filter="")
         {
             int lastDay = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+
+            string startDateNep = NepaliDateService.EngToNep(DateTime.Now).ToString();
+            string endDateNep = NepaliDateService.GetLastDayOfNepMonth(startDateNep);
+
             RequestDto requestDto = new RequestDto
             {
                 Status = AppointmentStat.All.ToString(),
-                StartDate = filter=="All"?new DateTime(2025, 1, 1): new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
-                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
+                StartDateNep=NepaliDateService.GetFirstDayOfNepMonth(startDateNep),
+                EndDateNep=endDateNep,
+                //StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                //EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
             };
             return requestDto;
         }
@@ -46,11 +53,18 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public RequestDto GetInitialRequestDtoFilterDashboard()
         {
             int lastDay = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+
+            string startDateNep = NepaliDateService.EngToNep(DateTime.Now).ToString();
+            //string endDateNep = NepaliDateService.GetLastDayOfNepMonth(startDateNep);
+            string endDateNep = NepaliDateService.GetLastDayOfNepMonth("2082-06-15");
+
             RequestDto requestDto = new RequestDto
             {
                 Status = AppointmentStat.All.ToString(),
-                StartDate = new DateTime(2025,01,01),
-                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
+                StartDateNep = NepaliDateService.GetFirstDayOfNepMonth(startDateNep),
+                EndDateNep = endDateNep,
+                //StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                //EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
             };
             return requestDto;
         }

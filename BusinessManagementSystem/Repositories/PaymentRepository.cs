@@ -4,6 +4,7 @@ using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Services;
+using BusinessManagementSystem.Utility;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Net;
@@ -35,27 +36,28 @@ namespace BusinessManagementSystem.Repositories
         public ResponseDto<PaymentDto> GetAllPayments(RequestDto requestDto)
         {
             var query = from p in _dbContext.Payments
-                              join a in _dbContext.Appointments on p.AppointmentId equals a.Id
-                              join u in _dbContext.Users on p.UserId equals u.Id
-                              where p.UpdatedAt>=requestDto.StartDate && p.UpdatedAt<=requestDto.EndDate.AddDays(1)
+                        join a in _dbContext.Appointments on p.AppointmentId equals a.Id
+                        join u in _dbContext.Users on p.UserId equals u.Id
+                        where p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate.AddDays(1)
                         select new PaymentDto
-                              {
-                                  PaymentId= p.Id,
-                                  AppointmentId=a.Id,
-                                  AppointmentGuid=a.guid,
-                                  UserId=u.Id,
-                                  ArtistName=u.FullName,
-                                  Deposit=p.Deposit,
-                                  Discount=p.Discount,
-                                  DiscountInHour=p.DiscountInHour,
-                                  TotalCost=p.TotalCost,
-                                  PaymentToStudio=p.PaymentToStudio,
-                                  PaymentToArtist=p.PaymentToArtist,
-                                  PaymentMethod=p.PaymentMethod,
-                                  PaymentSettlement=p.PaymentSettlement,
-                                  AppointmentStatus = a.Status,
-                                  PaymentDate=a.UpdatedAt
-                              };
+                        {
+                            PaymentId = p.Id,
+                            AppointmentId = a.Id,
+                            AppointmentGuid = a.guid,
+                            UserId = u.Id,
+                            ArtistName = u.FullName,
+                            Deposit = p.Deposit,
+                            Discount = p.Discount,
+                            DiscountInHour = p.DiscountInHour,
+                            TotalCost = p.TotalCost,
+                            PaymentToStudio = p.PaymentToStudio,
+                            PaymentToArtist = p.PaymentToArtist,
+                            PaymentMethod = p.PaymentMethod,
+                            PaymentSettlement = p.PaymentSettlement,
+                            AppointmentStatus = a.Status,
+                            PaymentDate = a.UpdatedAt,
+                            PaymentDateNP = NepaliDateService.EngToNep((DateTime)a.UpdatedAt).ToString()
+                        };
             if(requestDto.Status!= AppointmentStat.All.ToString())  
             {
                 query = (IQueryable<PaymentDto>)query.Where(k => k.AppointmentStatus == requestDto.Status);
@@ -94,8 +96,9 @@ namespace BusinessManagementSystem.Repositories
                                   PaymentMethod = p.PaymentMethod,
                                   PaymentSettlement = p.PaymentSettlement,
                                   AppointmentStatus=a.Status,
-                                  PaymentDate = (DateTime)a.UpdatedAt
-                              };
+                                  PaymentDate = a.UpdatedAt,
+                                  PaymentDateNP = NepaliDateService.EngToNep((DateTime)a.UpdatedAt).ToString()
+                        };
             if (requestDto.Status != AppointmentStat.All.ToString())
             {
                 query = (IQueryable<PaymentDto>)query.Where(k => k.AppointmentStatus == requestDto.Status);

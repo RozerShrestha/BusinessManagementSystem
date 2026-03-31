@@ -1,16 +1,16 @@
-﻿   @model BusinessManagementSystem.Dto.RequestDto
+﻿@model BusinessManagementSystem.Dto.RequestDto
 <div class="row">
     <div class="col-md-2">
-        <label asp-for="StartDate" class="control-label"></label>
-        <input asp-for="StartDate" class="form-control nepaliDate" />
-        <span asp-validation-for="StartDate" class="text-danger"></span>
+        <label asp-for="StartDateNep" class="control-label"></label>
+        <input asp-for="StartDateNep" class="form-control nepaliDate" />
+        <span asp-validation-for="StartDateNep" class="text-danger"></span>
     </div>
     <div class="col-md-2">
-        <label asp-for="EndDate" class="control-label"></label>
-        <input asp-for="EndDate" class="form-control nepaliDate" />
-        <span asp-validation-for="EndDate" class="text-danger"></span>
+        <label asp-for="EndDateNep" class="control-label"></label>
+        <input asp-for="EndDateNep" class="form-control nepaliDate" />
+        <span asp-validation-for="EndDateNep" class="text-danger"></span>
     </div>
-    @if (Model.ParameterFilter.Contains("User"))
+    @if (Model.ParameterFilter?.Contains("User") == true)
     {
         <div class="col-md-2">
             <label asp-for="UserId" class="control-label"></label>
@@ -18,7 +18,7 @@
             <span asp-validation-for="UserId" class="text-danger"></span>
         </div>
     }
-    @if (Model.ParameterFilter.Contains("Status"))
+    @if (Model.ParameterFilter?.Contains("Status") == true)
     {
         <div class="col-md-2">
             <label asp-for="Status" class="control-label"></label>
@@ -26,7 +26,7 @@
             <span asp-validation-for="Status" class="text-danger"></span>
         </div>
     }
-    @if (Model.ParameterFilter.Contains("Settlement"))
+    @if (Model.ParameterFilter?.Contains("Settlement") == true)
     {
         <div class="col-md-2">
             <label asp-for="Settlement" class="control-label"></label>
