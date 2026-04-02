@@ -83,7 +83,10 @@ namespace BusinessManagementSystem.Utility
             { AppointmentStat.Completed.ToString(), "Completed" },
             { AppointmentStat.CompletedPaymentDue.ToString(), "Completed But Payment Due" },
             { AppointmentStat.Cancelled.ToString(), "Cancelled" },
-            { AppointmentStat.NotShown.ToString(), "Not Shown" }
+            { AppointmentStat.NotShown.ToString(), "Not Shown" },
+            { AppointmentStat.Approved.ToString(), "Approved" },
+            { AppointmentStat.Rejected.ToString(), "Rejected" },
+           { AppointmentStat.Returned.ToString(), "Returned" }
 
         };
         public static readonly Dictionary<string, string> PaymentMethods = new Dictionary<string, string>

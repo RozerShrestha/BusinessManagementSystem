@@ -13,7 +13,7 @@ namespace BusinessManagementSystem.Repositories
         private readonly ApplicationDBContext _db;
         public ResponseDto<DashboardDto> _responseDtoEmployee;
         public ResponseDto<DashboardDto> _responseDtoAllEmployee;
-        private string[] possibleStatuses= new[] { "InProgress", "Scheduled/Rescheduled", "Confirmed", "Completed"};
+        private string[] possibleStatuses= new[] { "InProgress", "Scheduled/Rescheduled", "Confirmed", "Completed", "Approved"};
 
 
         public DashboardRepository(ApplicationDBContext db) : base(db)

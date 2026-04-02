@@ -54,7 +54,7 @@ namespace BusinessManagementSystem.Controllers
             RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
             requestDto.ParameterFilter = "User,Status,Settlement";
             ViewBag.ModalInformation = _modalView;
-            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus.Where(p=>p.Key=="Completed"), "Key", "Value");
+            ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus.Where(p=>p.Key==SD.Status_Approved), "Key", "Value");
             if (roleName == "superadmin")
                 ViewBag.ArtistList = new SelectList(artistList, "Id", "Name");
             else

@@ -221,15 +221,39 @@
                     </div>
                     <div class="col-md-4">
                         <label asp-for="Status" class="control-label"></label>
-                        @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentSelectList["AppointmentStatus"], "--Select--", new { @class = "form-control" })
+                        @if (Model.DbStatus == "Completed")
+                        {
+                            <select asp-for="Status" class="form-control">
+                                <option value="Completed" selected>Completed</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Returned">Returned</option>
+                            </select>
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentSelectList["AppointmentStatus"], "--Select--", new { @class = "form-control" })
+                        }
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-12">
-                        <input type="button" value="Calculate Total Cost" class="btn btn-info my-button calculateTotalCost" />
-                    </div>
-                    @if (Model.DbStatus != "Completed")
+                    @if (Model.DbStatus == "Completed")
                     {
+                        @if (((BusinessManagementSystem.Dto.UserDto)ViewData["UserDetail"]).UserId == Model.UserId)
+                        {
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="submit" id="btnApppointmentSubmit" value="Update" class="btn btn-success my-button" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <input type="button" value="Calculate Total Cost" class="btn btn-info my-button calculateTotalCost" />
+                        </div>
                         <span>Click <b>Calculate Total Cost</b> button First to active submit button</span>
                         <div class="col-md-12">
                             <div class="row">

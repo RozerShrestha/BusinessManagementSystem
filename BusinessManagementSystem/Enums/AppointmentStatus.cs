@@ -10,6 +10,9 @@
         CompletedPaymentDue=6,
         NotShown=7,
         Rescheduled=8,
-        All=9
+        Approved=9,
+        Returned=10,
+        Rejected=11,
+        All =12
     }
 }
