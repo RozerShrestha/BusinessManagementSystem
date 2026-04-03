@@ -297,7 +297,38 @@ namespace BusinessManagementSystem.Controllers
                 return Json(subCategories);
         }
 
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        public IActionResult AppointmentBoard()
+        {
+            return View();
+        }
+
         #region API CALLS
+
+        [HttpGet]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        public IActionResult GetAppointmentsByDate(string date)
+        {
+            if (string.IsNullOrEmpty(date) || !DateTime.TryParse(date, out DateTime selectedDate))
+                return BadRequest("Invalid date");
+
+            var requestDto = new RequestDto
+            {
+                StartDate = selectedDate.Date,
+                EndDate = selectedDate.Date,
+                Status = AppointmentStat.All.ToString()
+            };
+
+            if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
+                _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointment(requestDto);
+            else
+                _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointmentByArtist(userId, requestDto);
+
+            if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK || _responseAppointmentDto.StatusCode == HttpStatusCode.NotFound)
+                return Ok(_responseAppointmentDto.Datas);
+            else
+                return BadRequest();
+        }
 
         [HttpPost]
         [Authorize(Roles = "superadmin,admin_tattoo")]
