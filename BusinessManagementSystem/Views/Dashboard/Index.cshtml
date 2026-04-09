@@ -24,6 +24,8 @@
                         {
                             var colorClass = boxColors[index2 % boxColors.Count]; // Cycle through the colors
                             index2++; // Increment the index
+                            string statusGroup = item.StatusGroup;
+                            string statusFilter = statusGroup == "Scheduled/Rescheduled" ? "Scheduled" : statusGroup;
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
                                 <div class="small-box @colorClass">
@@ -34,7 +36,7 @@
                                     <div class="icon">
                                         <i class="ion ion-pie-graph"></i>
                                     </div>
-                                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                    <a href="@Url.Action("Index", "Appointment", new { status = statusFilter })" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                         }
@@ -54,6 +56,8 @@
                     {
                         var colorClass = boxColors[index1 % boxColors.Count]; // Cycle through the colors
                         index1++; // Increment the index
+                        string statusGroup = item.StatusGroup;
+                        string statusFilter = statusGroup == "Scheduled/Rescheduled" ? "Scheduled" : statusGroup;
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box @colorClass">
@@ -64,7 +68,7 @@
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="@Url.Action("MyAppointments", "Appointment", new { status = statusFilter })" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     }
