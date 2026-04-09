@@ -108,7 +108,7 @@ namespace BusinessManagementSystem.Controllers
         }
         public ActionResult Delete(int id)
         {
-            if (roleName != SD.Role_Superadmin)
+            if (!IsSuperAdmin)
             {
                 _notyf.Warning("Only Super Admin can delete");
                 return RedirectToAction(nameof(Index));

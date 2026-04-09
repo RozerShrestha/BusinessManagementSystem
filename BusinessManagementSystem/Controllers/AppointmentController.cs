@@ -36,6 +36,40 @@ namespace BusinessManagementSystem.Controllers
             _logger = logger;
 
         }
+
+        private void AppointmentSelectListViewBag(string viewBagModify = "")
+        {
+            dynamic artistList = null;
+            artistList = IsAdmin
+                ? _businessLayer.UserService.GetAllActiveTattooArtistWithoutAll()
+                : _businessLayer.UserService.GetArtist(userGuid);
+            dynamic referalList = _businessLayer.ReferalService.GetAllActiveReferalList();
+            var appointmentSelectList = new Dictionary<string, SelectList>
+            {
+                { "ArtistList", new SelectList(artistList, "Id", "Name") },
+                { "ReferalList", new SelectList(referalList, "Id", "Name") },
+                { "TattooCategories", new SelectList(SD.TattooCategories, "Key", "Value") },
+                { "PiercingCategories", new SelectList(SD.PiercingCategories, "Key", "Value") },
+                { "EarPiercingCategories", new SelectList(SD.EarPiercingCategories, "Key", "Value") },
+                { "AppointmentStatus", new SelectList(SD.ApointmentStatus.Where(p => p.Key != "All"), "Key", "Value") },
+                { "PaymentMethod", new SelectList(SD.PaymentMethods, "Key", "Value") },
+                { "Outlet", new SelectList(SD.OutletList, "Key", "Value") }
+            };
+            switch (viewBagModify)
+            {
+                case "Piercing":
+                    appointmentSelectList["SubCategories"] = new SelectList(SD.PiercingCategories, "Key", "Value");
+                    break;
+                case "EarPiercing":
+                    appointmentSelectList["SubCategories"] = new SelectList(SD.EarPiercingCategories, "Key", "Value");
+                    break;
+                default:
+                    appointmentSelectList["SubCategories"] = new SelectList(new List<SelectListItem> { new SelectListItem { Text = "Not Available", Value = "Not Available" } }, "Value", "Text");
+                    break;
+            }
+            ViewBag.AppointmentSelectList = appointmentSelectList;
+        }
+
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Index()
         {
@@ -87,8 +121,9 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult Create(AppointmentDto appointmentDto)
+        public async Task<IActionResult> Create(AppointmentDto appointmentDto)
         {
             var js = JsonConvert.SerializeObject(appointmentDto);
             AppointmentSelectListViewBag();
@@ -100,17 +135,18 @@ namespace BusinessManagementSystem.Controllers
                 {
                     _notyf.Success(_responseDto.Message);
                     #region email
-                    var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.NewAppointmentTemplateArtist;
-                    var messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.NewAppointmentTemplateClient;
+                    var basicConfig = (await _businessLayer.BasicConfigurationService.GetBasicConfig()).Data;
+                    var messageArtist = basicConfig.NewAppointmentTemplateArtist;
+                    var messageClient = basicConfig.NewAppointmentTemplateClient;
                     var userInfo = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data;
                     string artistEmail = userInfo.Email;
                     appointmentDto.ArtistAssigned = userInfo.FullName;
                     string htmlNewAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
                     string htmlNewAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
-                    _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlNewAppointmentArtist);
-                    _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "New Appointment", htmlNewAppointmentClient);
+                    await _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlNewAppointmentArtist);
+                    await _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "New Appointment", htmlNewAppointmentClient);
                     #endregion
-                    if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
+                    if (IsAdmin)
                         return RedirectToAction(nameof(Index));
                     else
                         return RedirectToAction(nameof(MyAppointments));
@@ -139,7 +175,7 @@ namespace BusinessManagementSystem.Controllers
             
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
             AppointmentSelectListViewBag(_responseAppointmentDto.Data.Category);
-            if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == _responseAppointmentDto.Data.UserId)
+            if (IsAdmin || userId == _responseAppointmentDto.Data.UserId)
             {
                 if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK)
                 {
@@ -159,7 +195,7 @@ namespace BusinessManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult Edit(AppointmentDto appointmentDto, IFormFile? concentForm)
+        public async Task<IActionResult> Edit(AppointmentDto appointmentDto, IFormFile? concentForm)
         {
             string htmlUpdateAppointmentArtist = "";
             string htmlUpdateAppointmentClient = "";
@@ -167,7 +203,7 @@ namespace BusinessManagementSystem.Controllers
             string messageClient = "";
             appointmentDto.AppointmentCreatedId = userId;
             appointmentDto.DbStatus = _businessLayer.AppointmentService.GetAppointmentByGuid(appointmentDto.guid).Data.Status;
-            if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == appointmentDto.UserId)
+            if (IsAdmin || userId == appointmentDto.UserId)
             {
                 AppointmentSelectListViewBag();
                 //validating document upload
@@ -184,29 +220,27 @@ namespace BusinessManagementSystem.Controllers
                     {
                         _notyf.Success(_responseDto.Message);
                         #region email
-                        
+                        var basicConfig = (await _businessLayer.BasicConfigurationService.GetBasicConfig()).Data;
                         var userInfo = _businessLayer.UserService.GetUserById(appointmentDto.UserId).Data;
                         string artistEmail = userInfo.Email;
                         appointmentDto.ArtistAssigned = userInfo.FullName;
                         if (appointmentDto.Status == AppointmentStat.Completed.ToString())
                         {
-                            messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AppointmentCompletedArtist;
-                            messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AppointmentCompletedClient;
-                            htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
-                            htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
+                            messageArtist = basicConfig.AppointmentCompletedArtist;
+                            messageClient = basicConfig.AppointmentCompletedClient;
                         }
                         else
                         {
-                            messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AppointmentUpdateTemplateArtist;
-                            messageClient = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.AppointmentUpdateTemplateClient;
-                            htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
-                            htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
+                            messageArtist = basicConfig.AppointmentUpdateTemplateArtist;
+                            messageClient = basicConfig.AppointmentUpdateTemplateClient;
                         }
+                        htmlUpdateAppointmentArtist = _emailSender.PrepareEmailAppointmentArtist(appointmentDto, messageArtist);
+                        htmlUpdateAppointmentClient = _emailSender.PrepareEmailAppointmentClient(appointmentDto, messageClient);
                        
-                        _emailSender.SendEmailAsync(email: artistEmail, subject: "Regarding Change In Appointment", htmlUpdateAppointmentArtist);
-                        _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "Regarding Change In Appointment", htmlUpdateAppointmentClient);
+                        await _emailSender.SendEmailAsync(email: artistEmail, subject: "Regarding Change In Appointment", htmlUpdateAppointmentArtist);
+                        await _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "Regarding Change In Appointment", htmlUpdateAppointmentClient);
                         #endregion
-                        if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
+                        if (IsAdmin)
                             return RedirectToAction(nameof(Index));
                         else
                             return RedirectToAction(nameof(MyAppointments));
@@ -319,7 +353,7 @@ namespace BusinessManagementSystem.Controllers
                 Status = AppointmentStat.All.ToString()
             };
 
-            if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
+            if (IsAdmin)
                 _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointment(requestDto);
             else
                 _responseAppointmentDto = _businessLayer.AppointmentService.GetAllAppointmentByArtist(userId, requestDto);
@@ -348,19 +382,11 @@ namespace BusinessManagementSystem.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult GetPaymentCalculation(bool isForeigner, string category, string subcategory, double totalHours, int deposit, int discount = 0, double discountInHour = 0, double paidAmount=0)
+        public IActionResult GetPaymentCalculation([FromQuery] DueCostRequestDto request)
         {
-            double totalCost = 0.0;
-            double dueAmount = 0.0;
-            if (!string.IsNullOrEmpty(category) && totalHours != 0)
+            if (!string.IsNullOrEmpty(request.Category) && request.TotalHours != 0)
             {
-                string costDescription = _businessLayer.AppointmentService.GetDueCost(isForeigner, category, subcategory, totalHours, deposit, discount, discountInHour, paidAmount, out dueAmount, out totalCost);
-                var result = new
-                {
-                    DueAmount = dueAmount,
-                    TotalCost = totalCost,
-                    CostDescription = costDescription
-                };
+                var result = _businessLayer.AppointmentService.GetDueCost(request);
                 return Ok(result);
             }
             else
@@ -371,9 +397,10 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult SendConcentFormLink([FromBody] AppointmentDto appointmentDto)
+        public async Task<IActionResult> SendConcentFormLink([FromBody] AppointmentDto appointmentDto)
         {
-            var concentFormInitial = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.GoogleFormLink;
+            var basicConfig = (await _businessLayer.BasicConfigurationService.GetBasicConfig()).Data;
+            var concentFormInitial = basicConfig.GoogleFormLink;
             if(string.IsNullOrEmpty(appointmentDto.ClientName) ||
             string.IsNullOrEmpty(appointmentDto.ClientPhoneNumber) ||
             string.IsNullOrEmpty(appointmentDto.ClientEmail) ||
@@ -385,7 +412,7 @@ namespace BusinessManagementSystem.Controllers
 
             if (concentFormInitial != null) {
                 string emailConcentForm = _emailSender.PrepareEmailForConcentForm(appointmentDto, concentFormInitial);
-                _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "Concent Form Link", emailConcentForm);
+                await _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "Concent Form Link", emailConcentForm);
                 _notyf.Success("Concent Form Link has been sent to the client email");
                 return Ok();
             }

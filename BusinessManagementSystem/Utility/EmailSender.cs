@@ -15,11 +15,11 @@ namespace BusinessManagementSystem.Utility
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly ILogger<EmailSender> _logger;
-        private static string emailAlias = "";
-        private static string emailAddress = "";
-        private static string password = "";
-        private static string hostName = "";
-        private static int port=0;
+        private string _emailAlias = "";
+        private string _emailAddress = "";
+        private string _password = "";
+        private string _hostName = "";
+        private int _port = 0;
         public EmailSender(IUnitOfWork unitOfWork, ILogger<EmailSender> logger)
         {
             _unitOfWork= unitOfWork;
@@ -27,33 +27,43 @@ namespace BusinessManagementSystem.Utility
              GetEmailDetail();
 
         }
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            if(htmlMessage.Contains("completed"))
+            if (htmlMessage.Contains("completed"))
             {
                 subject = "Regarding Appointment Completion";
             }
 
-            new Task(() =>
+            var alias = _emailAlias;
+            var fromAddress = _emailAddress;
+            var pwd = _password;
+            var host = _hostName;
+            var smtpPort = _port;
+
+            _ = Task.Run(() => //I don't care about the result or don't want to store anywhere, just execute it. i.e. _ refer to that
             {
-                var emailToSend = new MimeMessage();
-                emailToSend.From.Add(new MailboxAddress(emailAlias, emailAddress));
-                emailToSend.To.Add(MailboxAddress.Parse(email));
-                emailToSend.Subject = subject;
-                emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
-
-
-                //send email
-                using (var emailClient = new SmtpClient())
+                try
                 {
-                    emailClient.Connect(hostName, port, MailKit.Security.SecureSocketOptions.Auto);
-                    emailClient.Authenticate(emailAddress, password);
+                    var emailToSend = new MimeMessage();
+                    emailToSend.From.Add(new MailboxAddress(alias, fromAddress));
+                    emailToSend.To.Add(MailboxAddress.Parse(email));
+                    emailToSend.Subject = subject;
+                    emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
+
+
+                    //send email
+                    using var emailClient = new SmtpClient();
+                    emailClient.Connect(host, smtpPort, MailKit.Security.SecureSocketOptions.Auto);
+                    emailClient.Authenticate(fromAddress, pwd);
                     emailClient.Send(emailToSend);
                     emailClient.Disconnect(true);
                 }
-            }).Start();
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send email to {Email}", email);
+                }
+            });
             _logger.LogInformation($"## {this.GetType().Name} Email Send to {email} Message: {htmlMessage}");
-            return Task.CompletedTask;
         }
         //for New User Creation
         public string PrepareEmail(UserDto userDto, string message)
@@ -161,11 +171,11 @@ namespace BusinessManagementSystem.Utility
         private void GetEmailDetail()
         {
             var basicInfo = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data;
-            emailAlias = basicInfo.EmailAlias;
-            emailAddress = basicInfo.Email;
-            password = basicInfo.Password;
-            hostName = basicInfo.HostName;
-            port = basicInfo.Port;
+            _emailAlias = basicInfo.EmailAlias;
+            _emailAddress = basicInfo.Email;
+            _password = basicInfo.Password;
+            _hostName = basicInfo.HostName;
+            _port = basicInfo.Port;
         }
 
         public string PrepareEmailForConcentForm(AppointmentDto appointmentDto, string message)

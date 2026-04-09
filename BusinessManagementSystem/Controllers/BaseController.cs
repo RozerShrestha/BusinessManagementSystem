@@ -22,14 +22,14 @@ namespace BusinessManagementSystem.Controllers
         protected readonly IBusinessLayer _businessLayer;
         protected readonly INotyfService _notyf;
         protected readonly IEmailSender _emailSender;
-        public static int roleId;
-        public static int userId;
-        public static Guid userGuid;
-        public static string roleName = string.Empty;
-        public static string username = string.Empty;
-        public static string email = string.Empty;
-        public static string fullName = string.Empty;
-        public static string PhoneNumber = string.Empty;
+        protected int roleId;
+        protected int userId;
+        protected Guid userGuid;
+        protected string roleName = string.Empty;
+        protected string username = string.Empty;
+        protected string email = string.Empty;
+        protected string fullName = string.Empty;
+        protected string PhoneNumber = string.Empty;
         protected UserDto userDto;
         JavaScriptEncoder _javaScriptEncoder;
 
@@ -50,7 +50,7 @@ namespace BusinessManagementSystem.Controllers
         }
          protected IActionResult HandleError(Exception ex)
         {
-            return StatusCode(500, new {message= ex.Message });
+        return StatusCode(500, new {message= ex.Message });
         }
         private UserDto UserDetail()
         {
@@ -73,7 +73,7 @@ namespace BusinessManagementSystem.Controllers
             }
             catch (Exception ex)
             {
-
+               
             }
             return userDto;
         }
@@ -82,6 +82,8 @@ namespace BusinessManagementSystem.Controllers
             var menuFilter = _businessLayer.BaseService.MenuList(roleName);
             return menuFilter;
         }
+        protected bool IsAdmin => roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin;
+        protected bool IsSuperAdmin => roleName == SD.Role_Superadmin;
         protected bool isAuthorized(int _userId)
         {
             if ((roleName == "admin" || roleName == "hradmin") || userId == _userId)
@@ -92,72 +94,6 @@ namespace BusinessManagementSystem.Controllers
         protected string EncodedString(string text)
         {
             return _javaScriptEncoder.Encode(text);
-        }
-
-        protected void AppointmentSelectListViewBag(string viewBagModify="")
-        {
-            dynamic artistList = null;
-            artistList = (roleName==SD.Role_Superadmin || roleName== SD.Role_TattooAdmin)? 
-                _businessLayer.UserService.GetAllActiveTattooArtistWithoutAll():
-                _businessLayer.UserService.GetArtist(userGuid);
-            dynamic referalList = _businessLayer.ReferalService.GetAllActiveReferalList();
-            var appointmentSelectList = new Dictionary<string, SelectList>
-            {
-                { "ArtistList", new SelectList(artistList, "Id", "Name") },
-                { "ReferalList", new SelectList(referalList, "Id", "Name") },
-                { "TattooCategories", new SelectList(SD.TattooCategories, "Key", "Value") },
-                { "PiercingCategories", new SelectList(SD.PiercingCategories, "Key", "Value") },
-                { "EarPiercingCategories", new SelectList(SD.EarPiercingCategories, "Key", "Value") },
-                { "AppointmentStatus", new SelectList(SD.ApointmentStatus.Where(p=>p.Key!="All"), "Key", "Value") },
-                { "PaymentMethod", new SelectList(SD.PaymentMethods, "Key", "Value") },
-                { "Outlet", new SelectList(SD.OutletList, "Key", "Value") }
-            };
-            switch (viewBagModify)
-            {
-                case "Piercing":
-                    appointmentSelectList["SubCategories"] = new SelectList(SD.PiercingCategories, "Key", "Value");
-                    break;
-                case "EarPiercing":
-                    appointmentSelectList["SubCategories"] = new SelectList(SD.EarPiercingCategories, "Key", "Value");
-                    break;
-                default:
-                    // fallback (empty list or default option)
-                    appointmentSelectList["SubCategories"] = new SelectList(new List<SelectListItem>{new SelectListItem { Text = "Not Available", Value = "Not Available" } }, "Value", "Text");
-                    break;
-            }
-            ViewBag.AppointmentSelectList = appointmentSelectList;
-        }
-
-        protected void DashboardViewBagList(RequestDto requestDto)
-        {
-            string PaymentTipCombined = _businessLayer.DashboardService.GetPaymentTipSegregation(requestDto);
-
-            IDictionary<string, dynamic> DashboardInfoDict = new Dictionary<string, dynamic>();
-            DashboardInfoDict.Add("DataPointsIncomeSegregation", _businessLayer.DashboardService.GetIncomeSegregation(requestDto));
-            DashboardInfoDict.Add("DataPointsPaymentSegregation", PaymentTipCombined.Split("##")[0]);
-            DashboardInfoDict.Add("DataPointsTipSegregation", PaymentTipCombined.Split("##")[1]);
-            DashboardInfoDict.Add("AppointmentSegregationLoginEmployee", _businessLayer.DashboardService.GetDashboardInfo(requestDto, userId));
-            if (roleName == SD.Role_TattooAdmin || roleName == SD.Role_Superadmin)
-            {
-                var AppointmentSegregationAllEmployee = _businessLayer.DashboardService.GetDashboardInfoAllEmployee(requestDto);
-                DashboardInfoDict.Add("AppointmentSegregationAllEmployee", AppointmentSegregationAllEmployee);
-            }
-
-            ViewBag.DashboardInfo = DashboardInfoDict;
-        }
-
-        protected void AdvancePaymentViewBagList()
-        {
-            dynamic artist = ((IEnumerable<dynamic>)_businessLayer.UserService.GetAllActiveTattooArtistWithoutAll()).Where(artist => artist.Id == userId).ToList();
-            dynamic artistList = ((IEnumerable<dynamic>)_businessLayer.UserService.GetAllActiveTattooArtistWithoutAll()).ToList();
-
-            ViewBag.AdvancePaymentSelectList = new Dictionary<string, SelectList>
-            {
-                { "Artist", new SelectList(artist, "Id", "Name") },
-                { "ArtistList", new SelectList(artistList, "Id", "Name") },
-                { "PaymentMethod", new SelectList(SD.PaymentMethods, "Key", "Value") },
-                { "Status", new SelectList(SD.Status, "Key", "Value") },
-            };
         }
     }
 }

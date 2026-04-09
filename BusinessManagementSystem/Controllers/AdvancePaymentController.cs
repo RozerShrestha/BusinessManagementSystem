@@ -28,6 +28,20 @@ namespace BusinessManagementSystem.Controllers
 
         }
 
+        private void AdvancePaymentViewBagList()
+        {
+            dynamic artist = ((IEnumerable<dynamic>)_businessLayer.UserService.GetAllActiveTattooArtistWithoutAll()).Where(artist => artist.Id == userId).ToList();
+            dynamic artistList = ((IEnumerable<dynamic>)_businessLayer.UserService.GetAllActiveTattooArtistWithoutAll()).ToList();
+
+            ViewBag.AdvancePaymentSelectList = new Dictionary<string, SelectList>
+            {
+                { "Artist", new SelectList(artist, "Id", "Name") },
+                { "ArtistList", new SelectList(artistList, "Id", "Name") },
+                { "PaymentMethod", new SelectList(SD.PaymentMethods, "Key", "Value") },
+                { "Status", new SelectList(SD.Status, "Key", "Value") },
+            };
+        }
+
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult AllAdvancePayment()
         {
@@ -126,7 +140,7 @@ namespace BusinessManagementSystem.Controllers
                         _emailSender.SendEmailAsync(email: _businessLayer.UserService.GetUserById(advancePayment.UserId).Data.Email, subject: "Advance Payment", htmlAdvanceAmountArtist);
                         #endregion
                     }
-                    if (roleName == SD.Role_Superadmin)
+                    if (IsSuperAdmin)
                         return RedirectToAction(nameof(AllAdvancePayment));
                     else
                         return RedirectToAction(nameof(MyAdvancePayment));
