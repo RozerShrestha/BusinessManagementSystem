@@ -22,12 +22,6 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http.Json;
 
-//this is for automapper configuration
-var mapperConfiguration = new MapperConfiguration(configuration =>
-{
-    configuration.AddProfile(new MappingProfile());
-});
-var mapper = mapperConfiguration.CreateMapper();
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
@@ -41,7 +35,7 @@ builder.Services.Configure<JsonOptions>(options =>
     options.SerializerOptions.WriteIndented = true; // Optional for readability
 });
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
 builder.Services.AddScoped<ILogin<LoginResponseDto>, LoginRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IBusinessLayer, BusinessLayerImpl>();
