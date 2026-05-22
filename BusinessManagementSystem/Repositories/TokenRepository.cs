@@ -13,7 +13,7 @@ namespace BusinessManagementSystem.Repositories
 {
     public class TokenRepository : ITokenService
     {
-        private const double EXPIRY_DURATION_DAY = 1;
+        private const double EXPIRY_DURATION_DAY = 90;
         public JwtSecurityToken BuildToken(string key, string issuer, LoginResponseDto response)
         {
             var claims = new[] {

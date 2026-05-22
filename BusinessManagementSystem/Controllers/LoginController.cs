@@ -57,6 +57,13 @@ namespace BusinessManagementSystem.Controllers
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     HttpContext.Session.SetString("Token", _responseDto.Data.Token);
+                    HttpContext.Response.Cookies.Append("AuthToken", _responseDto.Data.Token, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTimeOffset.Now.AddDays(90)
+                    });
                     //ViewBag.Message = _responseDto.Message;
                     _notyf.Success(_responseDto.Message);
                     return RedirectToAction("Index", "Dashboard");
@@ -142,6 +149,7 @@ namespace BusinessManagementSystem.Controllers
         public IActionResult Logout([FromQuery] string returnUrl)
         {
             HttpContext.Session.Remove("Token");
+            HttpContext.Response.Cookies.Delete("AuthToken");
             return RedirectToAction("Index");
         }
 

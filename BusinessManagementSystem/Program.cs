@@ -83,11 +83,13 @@ builder.Services.AddNotyf(config =>
 #endregion
 
 #region Session
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromHours(12);
+    options.IdleTimeout = TimeSpan.FromDays(90);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+    options.Cookie.MaxAge = TimeSpan.FromDays(90);
 });
 #endregion
 
@@ -139,6 +141,14 @@ app.UseSession();
 app.Use((context, next) =>
 {
     var token = context.Session.GetString("Token");
+    if (string.IsNullOrEmpty(token))
+    {
+        token = context.Request.Cookies["AuthToken"];
+        if (!string.IsNullOrEmpty(token))
+        {
+            context.Session.SetString("Token", token);
+        }
+    }
     if (!string.IsNullOrEmpty(token))
     {
         context.Request.Headers.Add("Authorization", "Bearer " + token);

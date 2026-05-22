@@ -55,8 +55,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             int lastDay = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
 
             string startDateNep = NepaliDateService.EngToNep(DateTime.Now).ToString();
-            //string endDateNep = NepaliDateService.GetLastDayOfNepMonth(startDateNep);
-            string endDateNep = NepaliDateService.GetLastDayOfNepMonth("2082-06-15");
+            string endDateNep = NepaliDateService.GetLastDayOfNepMonth(startDateNep);
+            //string endDateNep = NepaliDateService.GetLastDayOfNepMonth("2082-06-15");
 
             RequestDto requestDto = new RequestDto
             {
