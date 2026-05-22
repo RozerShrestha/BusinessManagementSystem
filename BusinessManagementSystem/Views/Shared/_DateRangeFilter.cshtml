@@ -22,7 +22,7 @@
     {
         <div class="col-md-2">
             <label asp-for="Status" class="control-label"></label>
-            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, new { @class = "form-control", data_val = "false" })
             <span asp-validation-for="Status" class="text-danger"></span>
         </div>
     }
@@ -39,6 +39,6 @@
         </div>
     }
     <div class="col-md-2">
-        <input type="submit" id="btnFilterLoad" value="Load" class="btn btn-success" style="margin-top:30px" />
+        <input type="button" id="btnFilterLoad" value="Load" class="btn btn-success" style="margin-top:30px" />
     </div>
 </div>

@@ -71,11 +71,11 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [Authorize(Roles = "superadmin,admin_tattoo")]
-        public IActionResult Index(string status)
+        public IActionResult Index(string? status)
         {
             RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("All");
-            if (!string.IsNullOrEmpty(status))
-                requestDto.Status = status;
+            //if (!string.IsNullOrEmpty(status))
+            //    requestDto.Status = status;
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -83,7 +83,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult MyAppointments(string status)
+        public IActionResult MyAppointments(string? status)
         {
             RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
             if (!string.IsNullOrEmpty(status))
