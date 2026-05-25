@@ -157,12 +157,7 @@ app.UseStatusCodePages(context =>
     if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
     {
         app.Logger.LogWarning("Unauthrorized");
-        
-       //response.Redirect("/");
-        response.StatusCode = (int)HttpStatusCode.Unauthorized;
-        response.WriteAsync("UnAuthorized: Unauthorized access.");
-
-
+        response.Redirect("/Login");
     }
     else if (response.StatusCode == (int)HttpStatusCode.Forbidden)
     {
