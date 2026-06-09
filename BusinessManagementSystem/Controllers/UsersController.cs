@@ -53,7 +53,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "superadmin,admin_tattoo,admin_kaffe,admin_apartment")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Detail(Guid guid)
         {
             _responseUserDto = _businessLayer.UserService.GetUserByGuid(guid);
@@ -107,7 +107,6 @@ namespace BusinessManagementSystem.Controllers
             {
                 string message = Helpers.ValidateDocumentUpload(ProfilePictureLink);
                 _notyf.Warning(message);
-                return BadRequest(message);
             }
             if (ModelState.IsValid)
             {
@@ -118,7 +117,7 @@ namespace BusinessManagementSystem.Controllers
                     var message = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.NewUserEmailTemplate;
                     _notyf.Success(_responseDto.Message);
                     string htmlEmailNewUser=_emailSender.PrepareEmail(userDto, message);
-                    _emailSender.SendEmailAsync(email: userDto.Email, subject: "Welcome to Freak Street Tattoo", htmlEmailNewUser);
+                     _emailSender.SendEmailAsync(email: userDto.Email, subject: "Welcome to Freak Street Tattoo", htmlEmailNewUser);
                     return RedirectToAction(nameof(Index));
                 } 
                 else

@@ -1,6 +1,6 @@
 ﻿namespace BusinessManagementSystem.Dto
 {
-    public class PagedResponse<T>:ResponseDto<T>
+    public class PagedResponse<T>:ResponseDto<T> where T : class
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

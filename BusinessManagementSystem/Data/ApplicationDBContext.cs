@@ -21,6 +21,7 @@ namespace BusinessManagementSystem.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentHistory> PaymentHistories { get; set; }
         public DbSet<AdvancePayment> AdvancePayments { get; set; }
+        public DbSet<OTP> OTPs { get; set; }
 
 
 
@@ -56,6 +57,7 @@ namespace BusinessManagementSystem.Data
             modelBuilder.ApplyConfiguration(new ReferalEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TipEntityConfiguration());
             modelBuilder.ApplyConfiguration(new AdvancePaymentEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new OTPEntityConfiguration()); 
 
         }
         private IConfigurationRoot GetConfiguration()

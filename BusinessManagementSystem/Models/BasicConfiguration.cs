@@ -33,6 +33,7 @@ namespace BusinessManagementSystem.Models
         public required string EmployerName { get; set; }
 
         [DisplayName("Employer Email Address")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Please enter a valid email address.")]
         [Required]
         public required string EmployerEmailAddress { get; set; }
 
@@ -44,10 +45,17 @@ namespace BusinessManagementSystem.Models
         public double TattooPrice { get; set; }
         [DisplayName("Piercing Price")]
         [Required]
-        public double PiercingPrice { get; set; }
+        public string PiercingPrice { get; set; }
+        [DisplayName("Ear Piercing Price")]
+        [Required]
+        public string EarPiercingPrice { get; set; }
         [DisplayName("DeadLock Price")]
         [Required]
         public double DreadLockPrice { get; set; }
+        [DisplayName("Google Form Link")]
+        [Required]
+        public string GoogleFormLink { get; set; }
+
         [DisplayName("New User Template")]
         public string NewUserEmailTemplate { get; set; }
         [DisplayName("New Appointment Template Client")]
@@ -68,9 +76,6 @@ namespace BusinessManagementSystem.Models
         public string AdvancePaymentArtistTemplate { get; set; }
         [DisplayName("Advance Payment Superadmin Template")]
         public string AdvancePaymentSuperadminTemplate { get; set; }
-
-
-
     }
     public class BasicConfigurationEntityConfiguration : IEntityTypeConfiguration<BasicConfiguration>
     {
@@ -82,10 +87,13 @@ namespace BusinessManagementSystem.Models
             builder.Property(x => x.HostName).HasColumnType("varchar(100)");
             builder.Property(x => x.EmployerEmailAddress).HasColumnType("varchar(100)");
             builder.Property(x => x.EmployerAddress).HasColumnType("varchar(100)");
+            builder.Property(x => x.GoogleFormLink).HasColumnType("varchar(500)");
             builder.Property(x => x.Password).HasColumnType("varchar(250)");
             builder.Property(x => x.ApplicationTitle).HasColumnType("varchar(250)");
             builder.Property(x => x.CreatedBy).HasColumnType("varchar(150)");
             builder.Property(x => x.UpdatedBy).HasColumnType("varchar(150)");
+            builder.Property(x => x.PiercingPrice).HasColumnType("varchar(1000)");
+            builder.Property(x => x.EarPiercingPrice).HasColumnType("varchar(1000)");
 
         }
     }

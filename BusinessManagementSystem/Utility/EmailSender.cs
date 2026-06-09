@@ -34,24 +34,24 @@ namespace BusinessManagementSystem.Utility
                 subject = "Regarding Appointment Completion";
             }
 
-            //new Task(() =>
-            //{
-            //    var emailToSend = new MimeMessage();
-            //    emailToSend.From.Add(new MailboxAddress(emailAlias, emailAddress));
-            //    emailToSend.To.Add(MailboxAddress.Parse(email));
-            //    emailToSend.Subject = subject;
-            //    emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
+            new Task(() =>
+            {
+                var emailToSend = new MimeMessage();
+                emailToSend.From.Add(new MailboxAddress(emailAlias, emailAddress));
+                emailToSend.To.Add(MailboxAddress.Parse(email));
+                emailToSend.Subject = subject;
+                emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
 
 
-            //    //send email
-            //    using (var emailClient = new SmtpClient())
-            //    {
-            //        emailClient.Connect(hostName, port, MailKit.Security.SecureSocketOptions.Auto);
-            //        emailClient.Authenticate(emailAddress, password);
-            //        emailClient.Send(emailToSend);
-            //        emailClient.Disconnect(true);
-            //    }
-            //}).Start();
+                //send email
+                using (var emailClient = new SmtpClient())
+                {
+                    emailClient.Connect(hostName, port, MailKit.Security.SecureSocketOptions.Auto);
+                    emailClient.Authenticate(emailAddress, password);
+                    emailClient.Send(emailToSend);
+                    emailClient.Disconnect(true);
+                }
+            }).Start();
             _logger.LogInformation($"## {this.GetType().Name} Email Send to {email} Message: {htmlMessage}");
             return Task.CompletedTask;
         }
@@ -151,6 +151,13 @@ namespace BusinessManagementSystem.Utility
             return sb.ToString();
         }
 
+        public string PrepareEmailForOtp(string userName, string message)
+        {
+            StringBuilder sb = new StringBuilder(message);
+            sb.Replace("{fullname}", userName);
+            return sb.ToString();
+        }
+
         private void GetEmailDetail()
         {
             var basicInfo = _unitOfWork.BasicConfiguration.GetSingleOrDefault().Data;
@@ -159,6 +166,18 @@ namespace BusinessManagementSystem.Utility
             password = basicInfo.Password;
             hostName = basicInfo.HostName;
             port = basicInfo.Port;
+        }
+
+        public string PrepareEmailForConcentForm(AppointmentDto appointmentDto, string message)
+        {
+            StringBuilder sb=new StringBuilder(message);
+            sb.Replace("{{fullname}}", appointmentDto.ClientName.Replace(" ","+"));
+            sb.Replace("{{phonenumber}}",appointmentDto.ClientPhoneNumber);
+            sb.Replace("{{address}}",appointmentDto.Address.Replace(" ", "+"));
+            sb.Replace("{{dob}}", appointmentDto.DateOfBirth==null?"": appointmentDto.DateOfBirth.Value.ToString("yyyy-MM-dd"));
+            sb.Replace("{{gender}}",appointmentDto.Gender.Replace(" ", "+"));
+            sb.Replace("{{placement}}",appointmentDto.Placement.Replace(" ", "+"));
+            return sb.ToString();
         }
     }
 }

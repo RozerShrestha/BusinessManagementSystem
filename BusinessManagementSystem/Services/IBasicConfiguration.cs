@@ -6,6 +6,6 @@ namespace BusinessManagementSystem.Services
 {
     public interface IBasicConfiguration : IGeneric<BasicConfiguration>
     {
-       Task<ResponseDto<BasicConfiguration>> UpdateBasicConfigurationDetail(BasicConfiguration basicConfiguration);
+        Task<ResponseDto<BasicConfiguration>> UpdateBasicConfigurationDetail(BasicConfiguration basicConfiguration);
     }
 }

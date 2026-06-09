@@ -47,12 +47,13 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         {
             try
             {
+                (DateTime firstDay, DateTime lastDay) = Helper.Helpers.GetMonthFirstAndLastDate(DateTime.Today);
                 RequestDto requestDto = new RequestDto();
                 requestDto.UserId = id;
                 _responseDto = _unitOfWork.Users.GetFirstOrDefault(p => p.Id == id, includeProperties: "Appointments");
                 if(_responseDto.StatusCode== HttpStatusCode.OK) 
                 {
-                    var appointMents = _unitOfWork.Appointment.GetAll(p => p.UserId == id,
+                    var appointMents = _unitOfWork.Appointment.GetAll(p => p.UserId == id && p.AppointmentDate>=firstDay && p.AppointmentDate <= lastDay,
                         orderBy:p=>p.AppointmentDate,
                         orderByDescending:true,
                         includeProperties: "Payment").Datas;
@@ -201,6 +202,11 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             var activeTattooArtist = _unitOfWork.Users.ArtistListWithoutAll();
             return activeTattooArtist;
         }
+        public dynamic GetArtist(Guid guid)
+        {
+            var artistSelf = _unitOfWork.Users.ArtistSelf(guid);
+            return artistSelf;
+        }
         public bool ValidateUserName(string username)
         {
            var item = _unitOfWork.Users.GetFirstOrDefault(p => p.UserName == username).Data;
@@ -221,6 +227,8 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             _responseDto = _unitOfWork.Users.GetAllSuperAdmin();
             return _responseDto;
         }
+
+       
     }
 }
 

@@ -36,7 +36,7 @@ namespace BusinessManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                _responseDto = await _businessLayer.BasicConfigurationService.Update(basicConfiguration);
+                _responseDto =await _businessLayer.BasicConfigurationService.Update(basicConfiguration);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success("Update Success");

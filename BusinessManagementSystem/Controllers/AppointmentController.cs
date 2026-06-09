@@ -15,6 +15,7 @@ using System.Diagnostics.Contracts;
 using BusinessManagementSystem.Helper;
 using BusinessManagementSystem.Enums;
 using AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessManagementSystem.Controllers
 {
@@ -25,8 +26,10 @@ namespace BusinessManagementSystem.Controllers
         public ResponseDto<AppointmentDto> _responseAppointmentDto;
         private ILogger<AppointmentController> _logger;
         private readonly ModalView _modalView;
-        public AppointmentController(IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<AppointmentController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
+        private IWebHostEnvironment _env;
+        public AppointmentController(IWebHostEnvironment env, IBusinessLayer businessLayer, INotyfService notyf, IEmailSender emailSender, ILogger<AppointmentController> logger, JavaScriptEncoder javaScriptEncoder) : base(businessLayer, notyf, emailSender, javaScriptEncoder)
         {
+            _env = env;
             _responseDto = new ResponseDto<Appointment>();
             _responseAppointmentDto = new ResponseDto<AppointmentDto>();
             _modalView = new ModalView("Delete Confirmation !", "Delete", "Are you sure to delete the selected Appointment?", "");
@@ -36,7 +39,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult Index()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("All");
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -46,7 +49,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyAppointments()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -65,7 +68,7 @@ namespace BusinessManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "superadmin,admin_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Create()
         {
             AppointmentDto appointmentDto = new AppointmentDto();
@@ -76,16 +79,19 @@ namespace BusinessManagementSystem.Controllers
             appointmentDto.Allergies = "No";
             appointmentDto.MedicalConditions = "No";
             appointmentDto.PainToleranceLevel = "No";
+            appointmentDto.AppointmentDate = DateTime.Now.Date;
+            appointmentDto.DateOfBirth = DateOnly.FromDateTime(DateTime.Now);
             AppointmentSelectListViewBag();
             return View(appointmentDto);
         }
 
         [HttpPost]
-        [Authorize(Roles = "superadmin,admin_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Create(AppointmentDto appointmentDto)
         {
             var js = JsonConvert.SerializeObject(appointmentDto);
             AppointmentSelectListViewBag();
+            
             if (ModelState.IsValid)
             {
                 _responseDto = _businessLayer.AppointmentService.CreateAppointment(appointmentDto);
@@ -103,7 +109,10 @@ namespace BusinessManagementSystem.Controllers
                     _emailSender.SendEmailAsync(email: artistEmail, subject: "New Appointment", htmlNewAppointmentArtist);
                     _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "New Appointment", htmlNewAppointmentClient);
                     #endregion
-                    return RedirectToAction(nameof(Index));
+                    if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin)
+                        return RedirectToAction(nameof(Index));
+                    else
+                        return RedirectToAction(nameof(MyAppointments));
                 }
                 else
                 {
@@ -122,37 +131,42 @@ namespace BusinessManagementSystem.Controllers
             }
         }
 
-        [Authorize(Roles = "superadmin,admin_tattoo")]
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult Edit(Guid guid)
         {
             if (guid == Guid.Empty) return NotFound();
-            AppointmentSelectListViewBag();
+            
             _responseAppointmentDto = _businessLayer.AppointmentService.GetAppointmentByGuid(guid);
-
+            AppointmentSelectListViewBag(_responseAppointmentDto.Data.Category);
             if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == _responseAppointmentDto.Data.UserId)
             {
-                if (_responseAppointmentDto.StatusCode != HttpStatusCode.OK)
+                if (_responseAppointmentDto.StatusCode == HttpStatusCode.OK)
                 {
-                    return NotFound();
+                    //if (_responseAppointmentDto.Data.Category == "Piercing")
+                    //{
+                    //    ViewBag.SubCategory= new Dictionary<string, SelectList> { { "SubCategories", new SelectList(SD.PiercingCategories, "Key", "Value") }};
+                    //}
+                    //else if(_responseAppointmentDto.Data.Category == "EarPiercing")
+                    //{
+                    //    ViewBag.SubCategory = new Dictionary<string, SelectList> { { "SubCategories", new SelectList(SD.EarPiercingCategories, "Key", "Value") } };
+                    //}
+                        return View(_responseAppointmentDto.Data);
+                    
                 }
                 else
-                    return View(_responseAppointmentDto.Data);
+                    return NotFound();
             }
             else
             {
                 _notyf.Warning($"{fullName} is not authroized to perform this task");
                 return RedirectToAction("AccessDenied", "Error");
             }
-
-
-
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "superadmin,admin_tattoo")]
-        public IActionResult Edit(AppointmentDto appointmentDto)
+        [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
+        public IActionResult Edit(AppointmentDto appointmentDto, IFormFile? concentForm)
         {
             string htmlUpdateAppointmentArtist = "";
             string htmlUpdateAppointmentClient = "";
@@ -163,6 +177,13 @@ namespace BusinessManagementSystem.Controllers
             if (roleName == SD.Role_Superadmin || roleName == SD.Role_TattooAdmin || userId == appointmentDto.UserId)
             {
                 AppointmentSelectListViewBag();
+                //validating document upload
+                if (Helpers.ValidateDocumentUpload(concentForm) != string.Empty)
+                {
+                    string message = Helpers.ValidateDocumentUpload(concentForm);
+                    _notyf.Warning(message);
+                    return BadRequest(message);
+                }
                 if (ModelState.IsValid)
                 {
                     _responseDto = _businessLayer.AppointmentService.UpdateAppointment(appointmentDto);
@@ -264,6 +285,24 @@ namespace BusinessManagementSystem.Controllers
             }
         }
 
+        public JsonResult GetSubCategories(string categoryId)
+        {
+            SelectList subCategories = null;
+            if (categoryId== "Piercing")
+            {
+                subCategories = new SelectList(SD.PiercingCategories, "Key", "Value");
+            }
+            else if(categoryId== "EarPiercing")
+            {
+                subCategories = new SelectList(SD.EarPiercingCategories, "Key", "Value");
+            }
+            else
+            {
+                var emptyList = new List<KeyValuePair<string, string>>{new KeyValuePair<string, string>("", "Not Available")};
+                subCategories = new SelectList(emptyList, "Key", "Value");
+            }
+                return Json(subCategories);
+        }
 
         #region API CALLS
 
@@ -285,13 +324,13 @@ namespace BusinessManagementSystem.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
-        public IActionResult GetPaymentCalculation(bool isForeigner, string category, double totalHours, int deposit, int discount = 0, double discountInHour = 0, double paidAmount=0)
+        public IActionResult GetPaymentCalculation(bool isForeigner, string category, string subcategory, double totalHours, int deposit, int discount = 0, double discountInHour = 0, double paidAmount=0)
         {
             double totalCost = 0.0;
             double dueAmount = 0.0;
             if (!string.IsNullOrEmpty(category) && totalHours != 0)
             {
-                string costDescription = _businessLayer.AppointmentService.GetDueCost(isForeigner, category, totalHours, deposit, discount, discountInHour, paidAmount, out dueAmount, out totalCost);
+                string costDescription = _businessLayer.AppointmentService.GetDueCost(isForeigner, category, subcategory, totalHours, deposit, discount, discountInHour, paidAmount, out dueAmount, out totalCost);
                 var result = new
                 {
                     DueAmount = dueAmount,
@@ -305,6 +344,33 @@ namespace BusinessManagementSystem.Controllers
                 return BadRequest("Parameters didn't match the required data");
             }
 
+        }
+
+        [HttpPost]
+        public IActionResult SendConcentFormLink([FromBody] AppointmentDto appointmentDto)
+        {
+            var concentFormInitial = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.GoogleFormLink;
+            if(string.IsNullOrEmpty(appointmentDto.ClientName) ||
+            string.IsNullOrEmpty(appointmentDto.ClientPhoneNumber) ||
+            string.IsNullOrEmpty(appointmentDto.ClientEmail) ||
+            string.IsNullOrEmpty(appointmentDto.Gender) ||
+            /*string.IsNullOrEmpty(appointmentDto.DateOfBirth.ToString()) ||*/
+            //string.IsNullOrEmpty(appointmentDto.Address) ||
+            string.IsNullOrEmpty(appointmentDto.Placement))
+                    return BadRequest("Please fill up the necessary fields");
+
+            if (concentFormInitial != null) {
+                string emailConcentForm = _emailSender.PrepareEmailForConcentForm(appointmentDto, concentFormInitial);
+                _emailSender.SendEmailAsync(email: appointmentDto.ClientEmail, subject: "Concent Form Link", emailConcentForm);
+                _notyf.Success("Concent Form Link has been sent to the client email");
+                return Ok();
+            }
+            else
+            {
+                _notyf.Error("Concent Form Link is not configured in the system");
+                return BadRequest("Concent Form Link is not configured in the system");
+            }
+            
         }
 
         #endregion

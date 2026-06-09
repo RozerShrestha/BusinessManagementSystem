@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using OfficeOpenXml;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using NLog.Web;
+using BusinessManagementSystem.Data;
 
 namespace BusinessManagementSystem.Helper
 {
@@ -81,19 +82,11 @@ namespace BusinessManagementSystem.Helper
             string fileName = "";
             string returnString="";
             var extension = Path.GetExtension(file.FileName);
-            if (documentType == "ProfilePicture")
-            {
-                //fileName =file.FileName;
-                //documentRootPath = Path.GetFullPath(Path.Combine(new string[]{Environment.CurrentDirectory, "wwwroot","images", "ProfilePic"}));
-                documentRootPath = Path.Combine(env.WebRootPath, "uploads", "ProfilePic");
-            }
+            documentRootPath = Path.Combine(env.WebRootPath, "uploads", documentType);
             if (!Directory.Exists(documentRootPath))
             {
                 Directory.CreateDirectory(documentRootPath);
             }
-
-            
-
             var fullPath = Path.Combine(documentRootPath, $"{username}{extension}");
             using (var fileStream = new FileStream(fullPath, FileMode.Create))
             {
@@ -107,7 +100,7 @@ namespace BusinessManagementSystem.Helper
             }
             else
             {
-                
+
                 returnString =fullPath.Split("\\wwwroot\\").Length==3?fullPath.Split("\\wwwroot\\")[2]: fullPath.Split("\\wwwroot\\").Length == 2? fullPath.Split("\\wwwroot\\")[1]:"";
             }
             logger.Info("## returnedPath: " + returnString);
@@ -179,6 +172,17 @@ namespace BusinessManagementSystem.Helper
                 }
             }
         }
-        
+        public static (DateTime firstDay, DateTime lastDay) GetMonthFirstAndLastDate(DateTime date)
+        {
+            DateTime firstDay = new DateTime(date.Year, date.Month, 1);
+            DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
+            return (firstDay, lastDay);
+        }
+        public static (DateTime firstDay, DateTime lastDay) GetYearFirstAndLastDate(DateTime date)
+        {
+            DateTime firstDay = new DateTime(date.Year, 1, 1);   // Jan 1
+            DateTime lastDay = new DateTime(date.Year, 12, 31); // Dec 31
+            return (firstDay, lastDay);
+        }
     }
 }

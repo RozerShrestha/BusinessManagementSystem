@@ -27,9 +27,11 @@ namespace BusinessManagementSystem.Controllers
             _logger = logger;
 
         }
+
+        [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult AllAdvancePayment()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("All");
             requestDto.ParameterFilter = "Statement";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.PaidStatus, "Key", "Value");
@@ -37,7 +39,7 @@ namespace BusinessManagementSystem.Controllers
         }
         public IActionResult MyAdvancePayment()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
             requestDto.ParameterFilter = "Statement";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.PaidStatus, "Key", "Value");

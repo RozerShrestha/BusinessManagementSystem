@@ -30,6 +30,9 @@ namespace BusinessManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("AdvancePaymentSettlement")
+                        .HasColumnType("bit");
+
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
@@ -79,6 +82,9 @@ namespace BusinessManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .HasColumnType("varchar(500)");
+
                     b.Property<string>("Allergies")
                         .IsRequired()
                         .HasColumnType("varchar(500)");
@@ -102,6 +108,9 @@ namespace BusinessManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(20)");
 
+                    b.Property<string>("ConcentFormLink")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("ConsentFormSigned")
                         .HasColumnType("bit");
 
@@ -111,8 +120,15 @@ namespace BusinessManagementSystem.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateOnly?>("DateOfBirth")
+                        .HasColumnType("date");
+
                     b.Property<bool>("FollowUpRequired")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("InkColorPreferance")
                         .HasColumnType("varchar(150)");
@@ -143,6 +159,10 @@ namespace BusinessManagementSystem.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
+
+                    b.Property<string>("SubCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TattooDesign")
                         .HasColumnType("varchar(500)");
@@ -217,6 +237,10 @@ namespace BusinessManagementSystem.Migrations
                     b.Property<double>("DreadLockPrice")
                         .HasColumnType("float");
 
+                    b.Property<string>("EarPiercingPrice")
+                        .IsRequired()
+                        .HasColumnType("varchar(1000)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("varchar(Max)");
@@ -236,6 +260,10 @@ namespace BusinessManagementSystem.Migrations
                     b.Property<string>("EmployerName")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
+
+                    b.Property<string>("GoogleFormLink")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("HostName")
                         .IsRequired()
@@ -261,8 +289,9 @@ namespace BusinessManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("PiercingPrice")
-                        .HasColumnType("float");
+                    b.Property<string>("PiercingPrice")
+                        .IsRequired()
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<int>("Port")
                         .HasColumnType("int");
@@ -340,6 +369,47 @@ namespace BusinessManagementSystem.Migrations
                     b.HasIndex("MenuId");
 
                     b.ToTable("MenuRoles");
+                });
+
+            modelBuilder.Entity("BusinessManagementSystem.Models.OTP", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OtpCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OTPs");
                 });
 
             modelBuilder.Entity("BusinessManagementSystem.Models.Payment", b =>
@@ -435,6 +505,9 @@ namespace BusinessManagementSystem.Migrations
 
                     b.Property<DateOnly>("PaymentTo")
                         .HasColumnType("date");
+
+                    b.Property<double>("TotalAdvancePayment")
+                        .HasColumnType("float");
 
                     b.Property<double>("TotalPayment")
                         .HasColumnType("float");

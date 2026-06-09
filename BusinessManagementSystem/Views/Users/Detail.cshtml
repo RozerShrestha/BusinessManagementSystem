@@ -73,8 +73,8 @@
                         <div class="margin-20px-top team-single-icons">
                             <ul class="no-margin social-icons">
                                 <li><a href=@Model.FacebookLink><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href=@Model.InstagramLink><i class="fab fa-twitter"></i></a></li>
-                                <li><a href=@Model.TiktokLink><i class="fab fa-instagram"></i></a></li>
+                        <li><a href=@Model.InstagramLink><i class="fab fa-instagram"></i></a></li>
+                                <li><a href=@Model.TiktokLink><i class="fab fa-tiktok"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -110,8 +110,12 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#timeline" data-toggle="tab">Appointments</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#paymentHistory" data-toggle="tab">Payment History</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#timeline" data-toggle="tab" title="Appointments are shown for the current month">
+                                    Appointments
+                                </a>
+                            </li>
+                    <li class="nav-item"><a class="nav-link" href="#paymentHistory" data-toggle="tab" title="Payment History are shown for the current year">Payment History</a></li>
                         </ul>
                     </div>
                     <div class="card-body" style="height: 840px; overflow-y: auto;">

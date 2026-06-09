@@ -15,38 +15,48 @@
                     <div class="col-md-3">
                         <label asp-for="ApplicationTitle"></label>
                         <input asp-for="ApplicationTitle" class="form-control">
-                        <span asp-validation-for="ApplicationTitle" class="text-sm-center"></span>
+                        <span asp-validation-for="ApplicationTitle" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="EmployerName"></label>
                         <input asp-for="EmployerName" class="form-control">
-                        <span asp-validation-for="EmployerName" class="text-sm-center"></span>
+                        <span asp-validation-for="EmployerName" class="text-sm-center text-danger"></span>
                     </div>
                    
                     <div class="col-md-3">
                         <label asp-for="EmployerEmailAddress"></label>
                         <input asp-for="EmployerEmailAddress" class="form-control">
-                        <span asp-validation-for="EmployerEmailAddress" class="text-sm-center"></span>
+                        <span asp-validation-for="EmployerEmailAddress" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="EmployerAddress"></label>
                         <input asp-for="EmployerAddress" class="form-control">
-                        <span asp-validation-for="EmployerAddress" class="text-sm-center"></span>
+                        <span asp-validation-for="EmployerAddress" class="text-sm-center text-danger text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="TattooPrice"></label>
-                        <input asp-for="TattooPrice" class="form-control">
-                        <span asp-validation-for="TattooPrice" class="text-sm-center"></span>
+                        <input asp-for="TattooPrice" class="form-control" type="number" min="0">
+                        <span asp-validation-for="TattooPrice" class="text-sm-center text-danger text-danger"></span>
                     </div>
                      <div class="col-md-3">
                         <label asp-for="PiercingPrice"></label>
                         <input asp-for="PiercingPrice" class="form-control">
-                        <span asp-validation-for="PiercingPrice" class="text-sm-center"></span>
+                        <span asp-validation-for="PiercingPrice" class="text-sm-center text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="EarPiercingPrice"></label>
+                        <input asp-for="EarPiercingPrice" class="form-control">
+                        <span asp-validation-for="EarPiercingPrice" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="DreadLockPrice"></label>
-                        <input asp-for="DreadLockPrice" class="form-control">
-                        <span asp-validation-for="DreadLockPrice" class="text-sm-center"></span>
+                        <input asp-for="DreadLockPrice" class="form-control" type="number" min="0">
+                        <span asp-validation-for="DreadLockPrice" class="text-sm-center text-danger"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="GoogleFormLink"></label>
+                        <input asp-for="GoogleFormLink" class="form-control">
+                        <span asp-validation-for="GoogleFormLink" class="text-sm-center text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -60,27 +70,27 @@
                     <div class="col-md-3">
                         <label asp-for="EmailAlias"></label>
                         <input asp-for="EmailAlias" class="form-control">
-                        <span asp-validation-for="EmailAlias" class="text-sm-center"></span>
+                        <span asp-validation-for="EmailAlias" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="Email"></label>
                         <input asp-for="Email" class="form-control">
-                        <span asp-validation-for="Email" class="text-sm-center"></span>
+                        <span asp-validation-for="Email" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-2">
                         <label asp-for="Password"></label>
-                        <input asp-for="Password" class="form-control">
-                        <span asp-validation-for="Password" class="text-sm-center"></span>
+                        <input asp-for="Password" class="form-control" type="password" value="@Model.Password">
+                        <span asp-validation-for="Password" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="HostName"></label>
                         <input asp-for="HostName" class="form-control">
-                        <span asp-validation-for="HostName" class="text-sm-center"></span>
+                        <span asp-validation-for="HostName" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-1">
                         <label asp-for="Port"></label>
-                        <input asp-for="Port" class="form-control">
-                        <span asp-validation-for="Port" class="text-sm-center"></span>
+                        <input asp-for="Port" class="form-control" type="number">
+                        <span asp-validation-for="Port" class="text-sm-center text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -94,52 +104,52 @@
                     <div class="col-md-12">
                         <label asp-for="NewUserEmailTemplate"></label>
                         @Html.TextAreaFor(m => m.NewUserEmailTemplate, new { @class = "form-control", @style="height:500px" })
-                        <span asp-validation-for="NewUserEmailTemplate" class="text-sm-center"></span>
+                        <span asp-validation-for="NewUserEmailTemplate" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="NewAppointmentTemplateClient"></label>
                         @Html.TextAreaFor(m => m.NewAppointmentTemplateClient, new { @class = "form-control", @style="height:500px" })
-                        <span asp-validation-for="NewAppointmentTemplateClient" class="text-sm-center"></span>
+                        <span asp-validation-for="NewAppointmentTemplateClient" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="NewAppointmentTemplateArtist"></label>
                         @Html.TextAreaFor(m => m.NewAppointmentTemplateArtist, new { @class = "form-control", @style="height:500px" })
-                        <span asp-validation-for="NewAppointmentTemplateArtist" class="text-sm-center"></span>
+                        <span asp-validation-for="NewAppointmentTemplateArtist" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="AppointmentUpdateTemplateClient"></label>
                         @Html.TextAreaFor(m => m.AppointmentUpdateTemplateClient, new { @class = "form-control", @style="height:500px"  })
-                        <span asp-validation-for="AppointmentUpdateTemplateClient" class="text-sm-center"></span>
+                        <span asp-validation-for="AppointmentUpdateTemplateClient" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="AppointmentUpdateTemplateArtist"></label>
                         @Html.TextAreaFor(m => m.AppointmentUpdateTemplateArtist, new { @class = "form-control", @style="height:500px" })
-                        <span asp-validation-for="AppointmentUpdateTemplateArtist" class="text-sm-center"></span>
+                        <span asp-validation-for="AppointmentUpdateTemplateArtist" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="AppointmentCompletedClient"></label>
                         @Html.TextAreaFor(m => m.AppointmentCompletedClient, new { @class = "form-control", @style = "height:500px" })
-                        <span asp-validation-for="AppointmentCompletedClient" class="text-sm-center"></span>
+                        <span asp-validation-for="AppointmentCompletedClient" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="AppointmentCompletedArtist"></label>
                         @Html.TextAreaFor(m => m.AppointmentCompletedArtist, new { @class = "form-control", @style = "height:500px" })
-                        <span asp-validation-for="AppointmentCompletedArtist" class="text-sm-center"></span>
+                        <span asp-validation-for="AppointmentCompletedArtist" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="PaymentSettlementTemplateArtist"></label>
                         @Html.TextAreaFor(m => m.PaymentSettlementTemplateArtist, new { @class = "form-control", @style="height:500px" })
-                        <span asp-validation-for="PaymentSettlementTemplateArtist" class="text-sm-center"></span>
+                        <span asp-validation-for="PaymentSettlementTemplateArtist" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="AdvancePaymentArtistTemplate"></label>
                         @Html.TextAreaFor(m => m.AdvancePaymentArtistTemplate, new { @class = "form-control", @style="height:500px" })
-                        <span asp-validation-for="AdvancePaymentArtistTemplate" class="text-sm-center"></span>
+                        <span asp-validation-for="AdvancePaymentArtistTemplate" class="text-sm-center text-danger"></span>
                     </div>
                     <div class="col-md-12">
                         <label asp-for="AdvancePaymentSuperadminTemplate"></label>
                         @Html.TextAreaFor(m => m.AdvancePaymentSuperadminTemplate, new { @class = "form-control", @style = "height:500px" })
-                        <span asp-validation-for="AdvancePaymentSuperadminTemplate" class="text-sm-center"></span>
+                        <span asp-validation-for="AdvancePaymentSuperadminTemplate" class="text-sm-center text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -153,3 +163,7 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using BusinessManagementSystem.Data;
 using BusinessManagementSystem.Dto;
+using BusinessManagementSystem.Helper;
 using BusinessManagementSystem.Models;
 using BusinessManagementSystem.Pages;
 using BusinessManagementSystem.Services;
 using BusinessManagementSystem.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -160,32 +163,70 @@ namespace BusinessManagementSystem.Repositories
         }
         public ResponseDto<LoginResponseDto> ForgotPassword(LoginRequestDto l)
         {
-            bool passwordMatch = string.Equals(l.Password, l.ConfirmPassword);
-            if(passwordMatch)
+            try
             {
-                if (IsEmailAvailable(l.Username) || IsPhoneNumberAvailable(l.Username))
+                var isValidOtp = _db.OTPs.Where(p => p.OtpCode == Convert.ToInt32(l.OTP) && p.ExpiresAt >= DateTime.Now && p.IsUsed==false).SingleOrDefault();
+
+                if (isValidOtp==null)
                 {
-                    var hashInfo = Helper.Helpers.GetHashPassword(l.Password);
-                    var user = _db.Users.Where(p => p.Email == l.Username || p.PhoneNumber == l.Username).FirstOrDefault();
-                    user.HashPassword = hashInfo.Hash;
-                    user.Salt = hashInfo.Salt;
-                    var result = _db.Users.Update(user);
-                    _db.SaveChanges();
-                    _responseDto.Message = "Password Update Successfully";
+                    _responseDto.StatusCode = HttpStatusCode.BadRequest;
+                    _responseDto.Message = "Invalid OTP";
+                    return _responseDto;
                 }
-                else
+
+                if (!string.Equals(l.Password, l.ConfirmPassword))
+                {
+                    _responseDto.StatusCode = HttpStatusCode.BadRequest;
+                    _responseDto.Message = "Password and Confirm Password didn't match, Please try again";
+                    return _responseDto;
+                }
+
+                if (!IsEmailAvailable(l.Username))
                 {
                     _responseDto.StatusCode = HttpStatusCode.NotFound;
                     _responseDto.Message = "Email or Mobile Number did not match, Please try again";
+                    return _responseDto;
                 }
+
+                var hashInfo = Helper.Helpers.GetHashPassword(l.Password);
+                var user = _db.Users.FirstOrDefault(p => p.Email == l.Username);
+
+                if (user == null)
+                {
+                    _responseDto.StatusCode = HttpStatusCode.NotFound;
+                    _responseDto.Message = "User not found";
+                    return _responseDto;
+                }
+
+                user.HashPassword = hashInfo.Hash;
+                user.Salt = hashInfo.Salt;
+
+                isValidOtp.IsUsed = true;
+                _db.OTPs.Update(isValidOtp);
+
+                _db.Users.Update(user);
+                _db.SaveChanges();
+
+                _responseDto.Message = "Password Update Successfully";
+                _responseDto.StatusCode = HttpStatusCode.OK;
             }
-            else
+            catch (Exception ex)
             {
-                _responseDto.StatusCode = HttpStatusCode.BadRequest;
-                _responseDto.Message = "Password and Confirm Password didn't match, Please try again";
+                _responseDto.StatusCode = HttpStatusCode.InternalServerError;
+                _responseDto.Message = $"An error occurred: {ex.Message}";
             }
-            
+
             return _responseDto;
+        }
+        public async Task<int> GenerateOtp(LoginRequestDto l)
+        {
+            int otpCode = 0;
+            var user =await _db.Users.Where((p => p.Email == l.Username || p.UserName == l.Username && p.Status == true)).SingleOrDefaultAsync();
+            if (user != null)
+            {
+                otpCode = OtpHelper.GenerateOtpAsync(_db, user.Id, user.Email).Result;
+            }
+            return otpCode;
         }
     }
 }

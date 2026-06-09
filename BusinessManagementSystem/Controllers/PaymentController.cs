@@ -33,7 +33,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo")]
         public IActionResult AllPayments()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("All");
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -42,7 +42,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult MyPayments()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
             requestDto.ParameterFilter = "Status";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus, "Key", "Value");
@@ -51,7 +51,7 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin,admin_tattoo,employee_tattoo")]
         public IActionResult PaymentSettlement()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
             requestDto.ParameterFilter = "User,Status,Settlement";
             ViewBag.ModalInformation = _modalView;
             ViewBag.AppointmentStatus = new SelectList(SD.ApointmentStatus.Where(p=>p.Key=="Completed"), "Key", "Value");
@@ -63,7 +63,7 @@ namespace BusinessManagementSystem.Controllers
         }
         public IActionResult PaymentHistory()
         {
-            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter();
+            RequestDto requestDto = _businessLayer.BaseService.GetInitialRequestDtoFilter("");
             requestDto.ParameterFilter = "User";
             ViewBag.ModalInformation = _modalView;
             if(roleName=="superadmin")
@@ -106,16 +106,27 @@ namespace BusinessManagementSystem.Controllers
         [Authorize(Roles = "superadmin")]
         public IActionResult UpdatePaymentTipSettlementData([FromBody] PaymentTipSettlementDto paymentTipSettlementDto)
         {
-            var response =_businessLayer.PaymentService.UpdatePaymentTipSettlement(paymentTipSettlementDto);
-            #region email
-            var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.PaymentSettlementTemplateArtist;
-            var userInfo = _businessLayer.UserService.GetUserById(paymentTipSettlementDto.UserId).Data;
-            string artistEmail = userInfo.Email;
-            paymentTipSettlementDto.ArtistName = userInfo.FullName;
-            string htmlPaymentSettlementArtist = _emailSender.PrepareEmailPaymentSettlement(paymentTipSettlementDto, messageArtist);
-            _emailSender.SendEmailAsync(email: artistEmail, subject: "Regarding Payment Settlement", htmlPaymentSettlementArtist);
-            #endregion
-            return Ok(response);
+            try
+            {
+                var response = _businessLayer.PaymentService.UpdatePaymentTipSettlement(paymentTipSettlementDto);
+                #region email
+                var messageArtist = _businessLayer.BasicConfigurationService.GetBasicConfig().Result.Data.PaymentSettlementTemplateArtist;
+                var userInfo = _businessLayer.UserService.GetUserById(paymentTipSettlementDto.UserId).Data;
+                if (userInfo == null)
+                    throw new Exception("User information not found. Please choose User and then initiate payment settlement");
+
+                string artistEmail = userInfo.Email;
+                paymentTipSettlementDto.ArtistName = userInfo.FullName;
+                string htmlPaymentSettlementArtist = _emailSender.PrepareEmailPaymentSettlement(paymentTipSettlementDto, messageArtist);
+                _emailSender.SendEmailAsync(email: artistEmail, subject: "Regarding Payment Settlement", htmlPaymentSettlementArtist);
+                #endregion
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
         [HttpPost]
         public IActionResult GetPaymentHistory([FromBody] RequestDto requestDto)

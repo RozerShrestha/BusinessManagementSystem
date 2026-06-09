@@ -21,8 +21,8 @@ namespace BusinessManagementSystem.Repositories
         {
             try
             {
-                var item = await _db.BasicConfigurations.FirstOrDefaultAsync(x => x.Id == basicConfiguration.Id);
-                if (item!= null)
+                var item =await _db.BasicConfigurations.FirstOrDefaultAsync(x => x.Id == basicConfiguration.Id);
+                if (item != null)
                 {
                     _db.Entry(item).CurrentValues.SetValues(basicConfiguration);
                     _db.Entry(item).State = EntityState.Modified;
@@ -31,7 +31,7 @@ namespace BusinessManagementSystem.Repositories
                 }
                 else
                 {
-                    _responseDto.Message = "Item not found.";
+                    _responseDto.Message = "Item not found";
                     _responseDto.StatusCode = HttpStatusCode.NotFound;
                     _responseDto.Data = null;
                 }

@@ -1,4 +1,7 @@
-﻿<div class="row">
+﻿@{
+    var test = User.IsInRole("superadmin");
+}
+<div class="row">
     <div class="col-xl-12">
         <div class="card card-dark card-outline">
             <div class="card-header">
@@ -42,6 +45,7 @@
 
 @section Scripts {
     <script>
+        const isSuperAdmin = '@User.IsInRole("superadmin").ToString().ToLower()' === 'true';
         var datatable = null;
         $(document).ready(function () {
             loadDataTable();
@@ -126,12 +130,13 @@
                     {'data': 'totalCost'},
                     {'data': 'status'},
                     {'data': 'guid',
-                              'render': function (data) {
+                              'render': function (data, type, row) {
                                         return `
                                                 <div>
-                                                    <a href="/Appointment/edit?guid=${data}"><i class="fas fa-edit"></i></i></a> |
-                                                    <a href="/Appointment/detail?guid=${data}"><i class="fas fa-eye"></i></i></a> |
-                                                    <a href="#" class="delete-item" data-id="${data}"> <i class= "fas fa-trash-alt" > </i></a >
+                                                    <a href="/Appointment/edit?guid=${data}"><i class="fas fa-edit"></i></a> |
+                                                    <a href="/Appointment/detail?guid=${data}"><i class="fas fa-eye"></i></a> |
+                                                    ${isSuperAdmin ? `<a href="#" class="delete-item" data-id="${data}" data-row='${JSON.stringify(row)}'><i class="fas fa-trash-alt"></i></a>` : ''}
+                                                    <a href=${row.concentFormLink} target="_blank"><i class="fab fa-wpforms"></i></a>
                                                     </div>
                                                 `
                                     }

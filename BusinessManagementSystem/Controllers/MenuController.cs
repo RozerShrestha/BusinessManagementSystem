@@ -64,7 +64,7 @@ namespace BusinessManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             { 
-                _responseDto =await _businessLayer.MenuService.CreateMenu(menu);
+                _responseDto = await _businessLayer.MenuService.CreateMenu(menu);
                 if (_responseDto.StatusCode == HttpStatusCode.OK)
                 {
                     _notyf.Success(_responseDto.Message);

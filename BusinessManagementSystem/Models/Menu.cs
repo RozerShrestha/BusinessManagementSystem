@@ -17,6 +17,8 @@ namespace BusinessManagementSystem.Models
         [Required]
         public string Url { get; set; }
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Sort must be 1 or a positive number.")]
+
         public int Sort { get; set; }
         [Required]
         public bool Status { get; set; }
@@ -26,6 +28,10 @@ namespace BusinessManagementSystem.Models
         [ValidateNever]
         [NotMapped]
         public Multiselect Multiselect { get; set; }
+        
+        [ValidateNever]
+        [NotMapped]
+        public string Roles { get; set; }
         [ValidateNever]
         public virtual ICollection<MenuRole> MenuRoles { get; set; }
     }

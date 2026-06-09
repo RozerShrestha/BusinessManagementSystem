@@ -13,6 +13,7 @@ namespace BusinessManagementSystem.Services
         dynamic RoleList();
         dynamic ArtistList();
         dynamic ArtistListWithoutAll();
+        dynamic ArtistSelf(Guid guid);
 
     }
 }

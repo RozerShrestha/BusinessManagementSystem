@@ -22,6 +22,7 @@ namespace BusinessManagementSystem.Models
         public string? PaymentMethod { get; set; }
         public string Reason { get; set; }
         public DateOnly PaidDate { get; set; }
+        public bool AdvancePaymentSettlement { get; set; }
         public bool Status { get; set; }
         [ValidateNever]
         [ForeignKey(nameof(UserId))]

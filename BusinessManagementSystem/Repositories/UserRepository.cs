@@ -98,6 +98,13 @@ namespace BusinessManagementSystem.Repositories
             var artistList = _dbContext.Users.Where(p => p.Occupation.Equals("Tattoo Artist") && p.Status == true).Select(p => new { Id = p.Id, Name = p.FullName }).ToList().OrderBy(x => x.Name);
             return artistList;
         }
+
+        public dynamic ArtistSelf(Guid guid)
+        {
+            var artistList = _dbContext.Users.Where(p => p.Occupation.Equals("Tattoo Artist") && p.Status == true && p.Guid==guid).Select(p => new { Id = p.Id, Name = p.FullName }).ToList();
+            return artistList;
+        }
+
         public ResponseDto<User> GetAllSuperAdmin()
         {
             _responseDto.Datas = (from u in _dbContext.Users

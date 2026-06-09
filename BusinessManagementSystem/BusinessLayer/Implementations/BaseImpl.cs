@@ -2,6 +2,7 @@
 using BusinessManagementSystem.Dto;
 using BusinessManagementSystem.Enums;
 using BusinessManagementSystem.Services;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 
 namespace BusinessManagementSystem.BusinessLayer.Implementations
 {
@@ -30,13 +31,13 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
             return roleLIst;
         }
 
-        public RequestDto GetInitialRequestDtoFilter()
+        public RequestDto GetInitialRequestDtoFilter(string filter="")
         {
             int lastDay = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
             RequestDto requestDto = new RequestDto
             {
                 Status = AppointmentStat.All.ToString(),
-                StartDate = new DateTime(2025, 01, 01),/*new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),*/
+                StartDate = filter=="All"?new DateTime(2025, 1, 1): new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
                 EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDay)
             };
             return requestDto;
