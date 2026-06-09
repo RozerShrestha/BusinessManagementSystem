@@ -1,44 +1,55 @@
 ﻿@model BusinessManagementSystem.Dto.RequestDto
-<div class="row">
+<div class="row align-items-end" style="gap: 0.5rem 0;">
     <div class="col-md-2">
-        <label asp-for="StartDateNep" class="control-label"></label>
-        <input asp-for="StartDateNep" class="form-control nepaliDate" />
-        <span asp-validation-for="StartDateNep" class="text-danger"></span>
+        <div class="form-group mb-0">
+            <label asp-for="StartDateNep" class="control-label"></label>
+            <input asp-for="StartDateNep" class="form-control nepaliDate" placeholder="Start Date" />
+            <span asp-validation-for="StartDateNep" class="text-danger"></span>
+        </div>
     </div>
     <div class="col-md-2">
-        <label asp-for="EndDateNep" class="control-label"></label>
-        <input asp-for="EndDateNep" class="form-control nepaliDate" />
-        <span asp-validation-for="EndDateNep" class="text-danger"></span>
+        <div class="form-group mb-0">
+            <label asp-for="EndDateNep" class="control-label"></label>
+            <input asp-for="EndDateNep" class="form-control nepaliDate" placeholder="End Date" />
+            <span asp-validation-for="EndDateNep" class="text-danger"></span>
+        </div>
     </div>
     @if (Model.ParameterFilter?.Contains("User") == true)
     {
         <div class="col-md-2">
-            <label asp-for="UserId" class="control-label"></label>
-            @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.ArtistList, new { @class = "form-control" })
-            <span asp-validation-for="UserId" class="text-danger"></span>
+            <div class="form-group mb-0">
+                <label asp-for="UserId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.ArtistList, new { @class = "form-control" })
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
         </div>
     }
     @if (Model.ParameterFilter?.Contains("Status") == true)
     {
         <div class="col-md-2">
-            <label asp-for="Status" class="control-label"></label>
-            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, new { @class = "form-control", data_val = "false" })
-            <span asp-validation-for="Status" class="text-danger"></span>
+            <div class="form-group mb-0">
+                <label asp-for="Status" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AppointmentStatus, new { @class = "form-control", data_val = "false" })
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
         </div>
     }
     @if (Model.ParameterFilter?.Contains("Settlement") == true)
     {
         <div class="col-md-2">
-            <label asp-for="Settlement" class="control-label"></label>
-            <select asp-for="Settlement" class="form-control">
-                <option value="true">Settlement Done</option>
-                <option value="false" selected>Settlement Pending</option>
-                <option value="ALL" selected>All Settlement</option>
-
-            </select>
+            <div class="form-group mb-0">
+                <label asp-for="Settlement" class="control-label"></label>
+                <select asp-for="Settlement" class="form-control">
+                    <option value="true">Settlement Done</option>
+                    <option value="false" selected>Settlement Pending</option>
+                    <option value="ALL" selected>All Settlement</option>
+                </select>
+            </div>
         </div>
     }
     <div class="col-md-2">
-        <input type="button" id="btnFilterLoad" value="Load" class="btn btn-success" style="margin-top:30px" />
+        <button type="button" id="btnFilterLoad" class="btn btn-success">
+            <i class="fas fa-filter mr-1"></i>Load
+        </button>
     </div>
 </div>

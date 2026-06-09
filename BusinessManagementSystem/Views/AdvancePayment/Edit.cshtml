@@ -1,67 +1,79 @@
 ﻿@model BusinessManagementSystem.Models.AdvancePayment
-<h4>Advance Payment Request</h4>
-<hr />
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <h2 class="page-heading"><i class="fas fa-edit mr-2" style="color: #4f46e5;"></i>Edit Advance Payment</h2>
+        <p class="page-subheading">Update advance payment details</p>
+    </div>
+</div>
 
 <form asp-action="Edit" method="post" enctype="multipart/form-data" asp-controller="AdvancePayment">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="guid" />
     <div class="col-md-12">
         <div class="card card-outline card-dark">
-
+            <div class="card-header">
+                <h3 class="card-title">Payment Details</h3>
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <label asp-for="UserId" class="control-label"></label>
-                        @if (User.IsInRole("superadmin") || User.IsInRole("admin_tattoo"))
-                        {
-                            @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.AdvancePaymentSelectList["ArtistList"], new { @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.AdvancePaymentSelectList["Artist"], new { @class = "form-control" })
-                        }
-                        
-                        <span asp-validation-for="UserId" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="UserId" class="control-label"></label>
+                            @if (User.IsInRole("superadmin") || User.IsInRole("admin_tattoo"))
+                            {
+                                @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.AdvancePaymentSelectList["ArtistList"], new { @class = "form-control" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.AdvancePaymentSelectList["Artist"], new { @class = "form-control" })
+                            }
+                            <span asp-validation-for="UserId" class="text-danger"></span>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="Amount" class="control-label"></label>
-                        <input asp-for="Amount" class="form-control" />
-                        <span asp-validation-for="Amount" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="Amount" class="control-label"></label>
+                            <input asp-for="Amount" class="form-control" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="Reason" class="control-label"></label>
-                        <input asp-for="Reason" class="form-control" />
-                        <span asp-validation-for="Reason" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="Reason" class="control-label"></label>
+                            <input asp-for="Reason" class="form-control" />
+                            <span asp-validation-for="Reason" class="text-danger"></span>
+                        </div>
                     </div>
                     @if (User.IsInRole("superadmin"))
                     {
                         <div class="col-md-4">
-                            <label asp-for="PaymentMethod" class="control-label"></label>
-                            @Html.DropDownListFor(model => model.PaymentMethod, (SelectList)ViewBag.AdvancePaymentSelectList["PaymentMethod"], "--Select--", new { @class = "form-control" })
-                            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                            <div class="form-group">
+                                <label asp-for="PaymentMethod" class="control-label"></label>
+                                @Html.DropDownListFor(model => model.PaymentMethod, (SelectList)ViewBag.AdvancePaymentSelectList["PaymentMethod"], "--Select--", new { @class = "form-control" })
+                                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="col-md-4">
-                            <label asp-for="Status" class="control-label"></label>
-                            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AdvancePaymentSelectList["Status"], new { @class = "form-control" })
-                            <span asp-validation-for="Status" class="text-danger"></span>
+                            <div class="form-group">
+                                <label asp-for="Status" class="control-label"></label>
+                                @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.AdvancePaymentSelectList["Status"], new { @class = "form-control" })
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
                         </div>
                     }
                 </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        @if (Model.Status == false)
+                <div class="mt-3">
+                    @if (Model.Status == false)
+                    {
+                        @if (User.IsInRole("superadmin"))
                         {
-                            @if (User.IsInRole("superadmin"))
-                            {
-                                <input type="submit" id="btnAdvancePaymentSubmit" value="Pay" class="btn btn-success my-button" />
-                            }
-                            else
-                            {
-                                <input type="submit" id="btnAdvancePaymentSubmit" value="Apply" class="btn btn-success my-button" />
-                            }
+                            <input type="submit" id="btnAdvancePaymentSubmit" value="Pay" class="btn btn-success" />
                         }
-
-                    </div>
+                        else
+                        {
+                            <input type="submit" id="btnAdvancePaymentSubmit" value="Apply" class="btn btn-success" />
+                        }
+                    }
                 </div>
             </div>
         </div>

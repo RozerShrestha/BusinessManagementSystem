@@ -1,13 +1,19 @@
 ﻿@{
     var AppointmentSegregationLoginEmployee = ViewBag.DashboardInfo["AppointmentSegregationLoginEmployee"].Dynamic_Datas;
-    var boxColors = new List<string> { "bg-info", "bg-warning", "bg-maroon", "bg-success" }; // Define your colors
-    int index1 = 0; // Initialize an index for cycling through colors
+    var boxColors = new List<string> { "bg-info", "bg-warning", "bg-maroon", "bg-success" };
+    int index1 = 0;
     int index2 = 0;
 }
 <div class="row">
+    <div class="col-md-12 mb-3">
+        <h2 class="page-heading"><i class="fas fa-tachometer-alt mr-2" style="color: #4f46e5;"></i>Dashboard</h2>
+        <p class="page-subheading">Overview of your appointments and performance</p>
+    </div>
     <div class="col-md-12">
-        <div class="card-body">
-            <partial name="_DateRangeFilter" />
+        <div class="card">
+            <div class="card-body">
+                <partial name="_DateRangeFilter" />
+            </div>
         </div>
     </div>
     @if (User.IsInRole("superadmin") || User.IsInRole("admin_tattoo"))
@@ -15,58 +21,56 @@
         var AppointmentSegregationAllEmployee = ViewBag.DashboardInfo["AppointmentSegregationAllEmployee"].Dynamic_Datas;
         <div class="col-md-12">
             <div class="card card-outline card-dark">
-            <div class="card-header">
-                <h3 class="card-title">All Appointments</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
+                <div class="card-header d-flex align-items-center">
+                    <h3 class="card-title"><i class="fas fa-calendar-check mr-2" style="color: #4f46e5;"></i>All Appointments</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
                         @foreach (var item in AppointmentSegregationAllEmployee)
                         {
-                            var colorClass = boxColors[index2 % boxColors.Count]; // Cycle through the colors
-                            index2++; // Increment the index
+                            var colorClass = boxColors[index2 % boxColors.Count];
+                            index2++;
                             string statusGroup = item.StatusGroup;
                             string statusFilter = statusGroup == "Scheduled/Rescheduled" ? "Scheduled" : statusGroup;
                             <div class="col-lg-3 col-6">
-                                <!-- small box -->
                                 <div class="small-box @colorClass">
                                     <div class="inner">
                                         <h3>@item.Count</h3>
                                         <p>@item.StatusGroup</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="ion ion-pie-graph"></i>
+                                        <i class="fas fa-chart-pie"></i>
                                     </div>
                                     <a href="@Url.Action("Index", "Appointment", new { status = statusFilter })" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                         }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     }
     <div class="col-md-12">
         <div class="card card-outline card-dark">
-            <div class="card-header">
-                <h3 class="card-title">My Appointments</h3>
+            <div class="card-header d-flex align-items-center">
+                <h3 class="card-title"><i class="fas fa-user-clock mr-2" style="color: #4f46e5;"></i>My Appointments</h3>
             </div>
             <div class="card-body">
                 <div class="row">
                     @foreach (var item in AppointmentSegregationLoginEmployee)
                     {
-                        var colorClass = boxColors[index1 % boxColors.Count]; // Cycle through the colors
-                        index1++; // Increment the index
+                        var colorClass = boxColors[index1 % boxColors.Count];
+                        index1++;
                         string statusGroup = item.StatusGroup;
                         string statusFilter = statusGroup == "Scheduled/Rescheduled" ? "Scheduled" : statusGroup;
                         <div class="col-lg-3 col-6">
-                            <!-- small box -->
                             <div class="small-box @colorClass">
                                 <div class="inner">
                                     <h3>@item.Count</h3>
                                     <p>@item.StatusGroup</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-pie-graph"></i>
+                                    <i class="fas fa-chart-pie"></i>
                                 </div>
                                 <a href="@Url.Action("MyAppointments", "Appointment", new { status = statusFilter })" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
@@ -76,11 +80,19 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div id="incomeSegregationContainer" style="height: 370px;"></div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body p-0">
+                <div id="incomeSegregationContainer" style="height: 370px; border-radius: 0.75rem;"></div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-9">
-        <div id="paymentAndTipsSegregationContainer" style="height: 370px;"></div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body p-0">
+                <div id="paymentAndTipsSegregationContainer" style="height: 370px; border-radius: 0.75rem;"></div>
+            </div>
+        </div>
     </div>
 </div>
 

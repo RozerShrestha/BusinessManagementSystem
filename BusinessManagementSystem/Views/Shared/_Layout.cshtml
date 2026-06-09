@@ -1,12 +1,14 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#4f46e5">
     <title>Freak Street Tattoo</title>
     <partial name="_Styles" />
     @RenderSection("Styles", required: false)
 </head>
-<body class="sidebar-mini control-sidebar-slide-open layout-navbar-fixed layout-fixed layout-footer-fixed" style="height: auto;">
+<body class="sidebar-mini control-sidebar-slide-open layout-navbar-fixed layout-fixed" style="height: auto;">
     @if (true@* User.Identity.IsAuthenticated *@)
     {
         <div class="wrapper">

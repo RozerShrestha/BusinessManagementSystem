@@ -1,5 +1,11 @@
 ﻿@model BusinessManagementSystem.Dto.UserDetailDto
 
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <h2 class="page-heading"><i class="fas fa-id-card mr-2" style="color: #4f46e5;"></i>My Profile</h2>
+        <p class="page-subheading">Your personal information and activity</p>
+    </div>
+</div>
 <style scoped>
     .social-icons {
         display: flex;
@@ -10,39 +16,38 @@
     }
 
     .social-icons li {
-        margin-right: 10px; /* adjust the spacing as needed */
+        margin-right: 10px;
     }
 
     .social-icons li a {
         text-decoration: none;
-        color: inherit; /* keeps icon colors as defined by the font-awesome icons */
+        color: inherit;
     }
 
     .social-icons li a i {
-        font-size: 34px; /* adjust the icon size as needed */
+        font-size: 1.5rem;
+        transition: all 0.2s ease;
     }
 
-   /*  .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-        color: #fff;
-        background-color: #343a40;
-    } */
+    .social-icons li a i:hover {
+        color: #4f46e5;
+        transform: scale(1.1);
+    }
 
     .highlightComplete{
-        background-color: green;
+        background-color: #10b981;
         color: white;
         border-radius: 5px;
-        padding: 3px;
-        margin-left: 0px;
-        left: 10px;
+        padding: 3px 8px;
+        font-size: 0.75rem;
     }
 
     .highlightProgress {
-        background-color: green;
+        background-color: #4f46e5;
         color: white;
         border-radius: 5px;
-        padding: 3px;
-        margin-left: 0px;
-        left: 10px;
+        padding: 3px 8px;
+        font-size: 0.75rem;
     }
 
     table {
@@ -51,11 +56,11 @@
     }
 
     td {
-        padding: 3px 15px; /* Add padding to each cell */
+        padding: 3px 15px;
     }
 
     .tdHeader {
-        font-weight: 600; /* Highlight the labels */
+        font-weight: 600;
     }
 
 </style>

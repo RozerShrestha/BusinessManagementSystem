@@ -1,6 +1,10 @@
 ﻿@model BusinessManagementSystem.Dto.AppointmentDto
-<h4>Create Appointment</h4>
-<hr />
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <h2 class="page-heading"><i class="fas fa-calendar-plus mr-2" style="color: #4f46e5;"></i>Create Appointment</h2>
+        <p class="page-subheading">Schedule a new appointment for a client</p>
+    </div>
+</div>
 <form asp-action="Create" method="post" enctype="multipart/form-data" asp-controller="Appointment">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="col-md-12">

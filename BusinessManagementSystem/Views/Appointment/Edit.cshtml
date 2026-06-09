@@ -1,6 +1,10 @@
 ﻿@model BusinessManagementSystem.Dto.AppointmentDto
-<h4>Update Appointment</h4>
-<hr />
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <h2 class="page-heading"><i class="fas fa-calendar-check mr-2" style="color: #4f46e5;"></i>Update Appointment</h2>
+        <p class="page-subheading">Modify appointment details</p>
+    </div>
+</div>
 <form asp-action="Edit" method="post" enctype="multipart/form-data" asp-controller="Appointment">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="guid" />
