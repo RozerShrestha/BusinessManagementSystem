@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class Tip:BaseEntity
     {
@@ -28,3 +28,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

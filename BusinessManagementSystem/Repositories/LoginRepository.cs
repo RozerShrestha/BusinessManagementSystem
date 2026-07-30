@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
-using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Helper;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Pages;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.ViewModels;
+using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Helper;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Pages;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class LoginRepository : ILogin<LoginResponseDto>
     {
@@ -230,3 +230,4 @@ namespace BusinessManagementSystem.Repositories
         }
     }
 }
+

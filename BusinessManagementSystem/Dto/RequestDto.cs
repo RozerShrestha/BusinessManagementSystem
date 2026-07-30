@@ -1,8 +1,8 @@
-﻿using BusinessManagementSystem.Utility;
+﻿using TattooAppointmentSystem.Utility;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class RequestDto
     {
@@ -49,3 +49,4 @@ namespace BusinessManagementSystem.Dto
     }
     
 }
+

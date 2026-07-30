@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection.Metadata.Ecma335;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class BasicConfiguration:BaseEntity
     {
@@ -98,3 +98,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

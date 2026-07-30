@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Models
+﻿namespace TattooAppointmentSystem.Models
 {
     public class ModalView
     {
@@ -20,3 +20,4 @@
         public string? Link  { get; set; }
     }
 }
+

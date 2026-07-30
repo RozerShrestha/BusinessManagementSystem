@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BusinessManagementSystem.Migrations
+namespace TattooAppointmentSystem.Migrations
 {
     /// <inheritdoc />
     public partial class removeddobandaddressasrequired : Migration
@@ -35,3 +35,4 @@ namespace BusinessManagementSystem.Migrations
         }
     }
 }
+

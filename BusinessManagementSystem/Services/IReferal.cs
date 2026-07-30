@@ -1,9 +1,10 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IReferal : IGeneric<Referal>
     {
         dynamic ReferalList();
     }
 }
+

@@ -1,6 +1,6 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Web;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class GenericRepository<T> : IGeneric<T> where T : class
     {

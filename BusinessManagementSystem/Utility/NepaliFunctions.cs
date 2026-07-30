@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace BusinessManagementSystem.Utility
+namespace TattooAppointmentSystem.Utility
 {
     public class NepaliDateService
     {
@@ -495,3 +495,4 @@ namespace BusinessManagementSystem.Utility
     }
 
 }
+

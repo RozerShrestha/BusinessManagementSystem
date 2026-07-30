@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 using System.ComponentModel;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class TipDto:BaseEntity
     {
@@ -15,3 +15,4 @@ namespace BusinessManagementSystem.Dto
         public bool TipSettlement { get; set; }
     }
 }
+

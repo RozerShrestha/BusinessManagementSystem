@@ -1,14 +1,14 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.ViewModels;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace BusinessManagementSystem.Controllers
+namespace TattooAppointmentSystem.Controllers
 {
     [AllowAnonymous]
     public class LoginController : Controller
@@ -233,3 +233,4 @@ namespace BusinessManagementSystem.Controllers
         #endregion
     }
 }
+

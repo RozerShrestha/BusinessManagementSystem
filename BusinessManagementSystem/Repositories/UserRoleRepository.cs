@@ -1,9 +1,9 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class UserRoleRepository:GenericRepository<UserRole>, IUserRole
     {
@@ -18,3 +18,4 @@ namespace BusinessManagementSystem.Repositories
 
     }
 }
+

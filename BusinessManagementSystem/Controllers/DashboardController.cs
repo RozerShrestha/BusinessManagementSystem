@@ -1,12 +1,12 @@
 ﻿using AspNetCore;
 using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Dto.Chart;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
-using BusinessManagementSystem.ViewModels;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Dto.Chart;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
+using TattooAppointmentSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Text.Encodings.Web;
 
-namespace BusinessManagementSystem.Controllers
+namespace TattooAppointmentSystem.Controllers
 {
     [Authorize]
     public class DashboardController : BaseController
@@ -99,3 +99,4 @@ namespace BusinessManagementSystem.Controllers
         #endregion
     }
 }
+

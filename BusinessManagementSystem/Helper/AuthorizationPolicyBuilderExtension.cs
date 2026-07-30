@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace BusinessManagementSystem.Helper
+namespace TattooAppointmentSystem.Helper
 {
     public static class AuthorizationPolicyBuilderExtension
     {
@@ -11,3 +11,4 @@ namespace BusinessManagementSystem.Helper
         }
     }
 }
+

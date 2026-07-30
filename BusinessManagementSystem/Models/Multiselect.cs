@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class Multiselect
     {
@@ -10,3 +10,4 @@ namespace BusinessManagementSystem.Models
         public bool Disabled { get; set; }
     }
 }
+

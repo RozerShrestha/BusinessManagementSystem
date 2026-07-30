@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BusinessManagementSystem.Dto.Chart
+namespace TattooAppointmentSystem.Dto.Chart
 {
     public class DashboardDto
     {
@@ -10,3 +10,4 @@ namespace BusinessManagementSystem.Dto.Chart
         public int Completed { get; set; }
     }
 }
+

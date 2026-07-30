@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Enums
+﻿namespace TattooAppointmentSystem.Enums
 {
     public enum AppointmentStat
     {
@@ -16,3 +16,4 @@
         All =12
     }
 }
+

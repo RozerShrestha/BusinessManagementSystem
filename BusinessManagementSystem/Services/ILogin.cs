@@ -1,8 +1,8 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
 using System.Diagnostics.Metrics;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface ILogin<T> where T : class
     {

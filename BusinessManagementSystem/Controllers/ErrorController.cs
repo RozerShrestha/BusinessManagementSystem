@@ -1,12 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
 
-namespace BusinessManagementSystem.Controllers
+namespace TattooAppointmentSystem.Controllers
 {
     [AllowAnonymous]
     public class ErrorController : BaseController
@@ -35,3 +35,4 @@ namespace BusinessManagementSystem.Controllers
         }
     }
 }
+

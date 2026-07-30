@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Test
+namespace TattooAppointmentSystem.Test
 {
     public static class TestConfiguration
     {
@@ -25,3 +25,4 @@ namespace BusinessManagementSystem.Test
         }
     }
 }
+

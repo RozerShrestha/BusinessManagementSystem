@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class PaymentHistory : BaseEntity
     {

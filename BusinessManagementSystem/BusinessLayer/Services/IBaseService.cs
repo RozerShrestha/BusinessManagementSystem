@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Services;
 
-namespace BusinessManagementSystem.BusinessLayer.Services
+namespace TattooAppointmentSystem.BusinessLayer.Services
 {
     public interface IBaseService
     {
@@ -12,3 +12,4 @@ namespace BusinessManagementSystem.BusinessLayer.Services
 
     }
 }
+

@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BusinessManagementSystem.ViewModels
+namespace TattooAppointmentSystem.ViewModels
 {
     public class UserRoleVM
     {
@@ -12,3 +12,4 @@ namespace BusinessManagementSystem.ViewModels
         public int RoleId { get; set; }
     }
 }
+

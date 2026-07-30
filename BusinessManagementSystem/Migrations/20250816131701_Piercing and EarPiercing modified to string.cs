@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BusinessManagementSystem.Migrations
+namespace TattooAppointmentSystem.Migrations
 {
     /// <inheritdoc />
     public partial class PiercingandEarPiercingmodifiedtostring : Migration
@@ -43,3 +43,4 @@ namespace BusinessManagementSystem.Migrations
         }
     }
 }
+

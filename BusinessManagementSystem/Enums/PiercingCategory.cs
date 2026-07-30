@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Enums
+﻿namespace TattooAppointmentSystem.Enums
 {
     public enum PiercingCategory
     {
@@ -12,3 +12,4 @@
         Dermal = 8
     }
 }
+

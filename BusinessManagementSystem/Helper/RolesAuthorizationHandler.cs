@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
-using BusinessManagementSystem.Services;
+using TattooAppointmentSystem.Services;
 using Azure;
 using System.Security.Claims;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Dto;
 
-namespace BusinessManagementSystem.Helper
+namespace TattooAppointmentSystem.Helper
 {
     public class RolesAuthorizationHandler : AuthorizationHandler<RolesAuthorizationRequirement>, IAuthorizationHandler
     {
@@ -53,3 +53,4 @@ namespace BusinessManagementSystem.Helper
         }
     }
 }
+

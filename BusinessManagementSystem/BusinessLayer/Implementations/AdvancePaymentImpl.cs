@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 using System.Net;
 
-namespace BusinessManagementSystem.BusinessLayer.Implementations
+namespace TattooAppointmentSystem.BusinessLayer.Implementations
 {
     public class AdvancePaymentImpl:IAdvancePaymentService
     {
@@ -84,3 +84,4 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
     }
 }
+

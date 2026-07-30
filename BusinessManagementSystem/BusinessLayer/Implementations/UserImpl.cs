@@ -1,20 +1,20 @@
 ﻿using AspNetCore;
 using AutoMapper;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Controllers;
-using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Enums;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Repositories;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Controllers;
+using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Enums;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Repositories;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Net;
 
-namespace BusinessManagementSystem.BusinessLayer.Implementations
+namespace TattooAppointmentSystem.BusinessLayer.Implementations
 {
     public class UserImpl :IUserService
     {
@@ -231,4 +231,5 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
        
     }
 }
+
 

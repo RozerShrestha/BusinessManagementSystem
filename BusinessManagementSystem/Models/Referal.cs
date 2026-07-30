@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class Referal:BaseEntity
     {
@@ -23,3 +23,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

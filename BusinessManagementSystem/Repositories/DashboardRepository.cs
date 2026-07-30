@@ -1,12 +1,12 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Dto.Chart;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.ViewModels;
+﻿using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Dto.Chart;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class DashboardRepository : GenericRepository<DashboardDto>, IDashboard
     {
@@ -88,3 +88,4 @@ namespace BusinessManagementSystem.Repositories
         }
     }
 }
+

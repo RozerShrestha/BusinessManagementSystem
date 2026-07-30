@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -9,7 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Net;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
 
     public class MenuRepository : GenericRepository<Menu>, IMenu
@@ -138,3 +138,4 @@ namespace BusinessManagementSystem.Repositories
         }
     }
 }
+

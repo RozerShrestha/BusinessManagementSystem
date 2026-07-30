@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Dto
+﻿namespace TattooAppointmentSystem.Dto
 {
     public class PaginationFilter
     {
@@ -13,3 +13,4 @@
         //}
     }
 }
+

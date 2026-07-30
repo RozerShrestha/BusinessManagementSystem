@@ -1,4 +1,4 @@
-﻿using BusinessManagementSystem.Helper;
+﻿using TattooAppointmentSystem.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class UserDto
     {
@@ -75,3 +75,4 @@ namespace BusinessManagementSystem.Dto
 
     }
 }
+

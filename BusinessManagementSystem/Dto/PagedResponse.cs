@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Dto
+﻿namespace TattooAppointmentSystem.Dto
 {
     public class PagedResponse<T>:ResponseDto<T> where T : class
     {
@@ -17,3 +17,4 @@
         }
     }
 }
+

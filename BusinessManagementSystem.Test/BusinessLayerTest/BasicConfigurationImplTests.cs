@@ -1,9 +1,9 @@
-﻿using BusinessManagementSystem.BusinessLayer.Implementations;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Repositories;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.BusinessLayer.Implementations;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Repositories;
+using TattooAppointmentSystem.Services;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Test.BusinessLayerTest
+namespace TattooAppointmentSystem.Test.BusinessLayerTest
 {
     [TestFixture]
     public class BasicConfigurationImplTests
@@ -186,3 +186,4 @@ namespace BusinessManagementSystem.Test.BusinessLayerTest
 
 
 }
+

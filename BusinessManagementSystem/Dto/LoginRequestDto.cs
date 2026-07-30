@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json.Serialization;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class LoginRequestDto
     {
@@ -22,3 +22,4 @@ namespace BusinessManagementSystem.Dto
         public string OTP { get; set; }
     }
 }
+

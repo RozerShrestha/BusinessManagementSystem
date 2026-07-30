@@ -1,11 +1,11 @@
-﻿using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Enums;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
+﻿using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Enums;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 
-namespace BusinessManagementSystem.BusinessLayer.Implementations
+namespace TattooAppointmentSystem.BusinessLayer.Implementations
 {
     public class BaseImpl : IBaseService
     {
@@ -70,3 +70,4 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
     }
 }
+

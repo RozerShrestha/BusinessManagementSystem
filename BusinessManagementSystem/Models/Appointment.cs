@@ -1,4 +1,4 @@
-﻿using BusinessManagementSystem.Helper;
+﻿using TattooAppointmentSystem.Helper;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class Appointment:BaseEntity
     {
@@ -112,3 +112,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

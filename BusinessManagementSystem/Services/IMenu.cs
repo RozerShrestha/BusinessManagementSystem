@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IMenu : IGeneric<Menu>
     {
@@ -13,3 +13,4 @@ namespace BusinessManagementSystem.Services
         Task<ResponseDto<Menu>> GetAllMenuAsync();
     }
 }
+

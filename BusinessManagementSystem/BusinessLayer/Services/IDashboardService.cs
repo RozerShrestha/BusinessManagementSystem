@@ -1,8 +1,8 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Dto.Chart;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Dto.Chart;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace BusinessManagementSystem.BusinessLayer.Services
+namespace TattooAppointmentSystem.BusinessLayer.Services
 {
     public interface IDashboardService
     {
@@ -12,3 +12,4 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<DashboardDto> GetDashboardInfoAllEmployee(RequestDto requestDto);
     }
 }
+

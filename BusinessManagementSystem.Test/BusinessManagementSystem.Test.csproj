@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusinessManagementSystem\BusinessManagementSystem.csproj" />
+    <ProjectReference Include="..\TattooAppointmentSystem\TattooAppointmentSystem.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,3 +33,4 @@
   </ItemGroup>
 
 </Project>
+

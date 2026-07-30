@@ -1,11 +1,11 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using BusinessManagementSystem.Helper;
+using TattooAppointmentSystem.Helper;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class AppointmentDto
     {
@@ -109,3 +109,4 @@ namespace BusinessManagementSystem.Dto
         public int AppointmentCreatedId { get; set; }
     }
 }
+

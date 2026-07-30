@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 using System.ComponentModel;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class UserDetailDto
     {
@@ -22,3 +22,4 @@ namespace BusinessManagementSystem.Dto
         public ICollection<PaymentHistory> PaymentHistories { get; set; }
     }
 }
+

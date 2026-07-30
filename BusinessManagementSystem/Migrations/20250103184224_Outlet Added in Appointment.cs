@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BusinessManagementSystem.Migrations
+namespace TattooAppointmentSystem.Migrations
 {
     /// <inheritdoc />
     public partial class OutletAddedinAppointment : Migration
@@ -26,3 +26,4 @@ namespace BusinessManagementSystem.Migrations
         }
     }
 }
+

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BusinessManagementSystem.Migrations
+namespace TattooAppointmentSystem.Migrations
 {
     /// <inheritdoc />
     public partial class minorchange : Migration
@@ -20,3 +20,4 @@ namespace BusinessManagementSystem.Migrations
         }
     }
 }
+

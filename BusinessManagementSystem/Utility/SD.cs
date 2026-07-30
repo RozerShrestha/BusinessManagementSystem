@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Enums;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Enums;
+using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Utility
+namespace TattooAppointmentSystem.Utility
 {
     public static class SD
     {
@@ -127,3 +127,4 @@ namespace BusinessManagementSystem.Utility
         public const string InsuranceExcelUpload = "InsuranceExcelUpload";
     }
 }
+

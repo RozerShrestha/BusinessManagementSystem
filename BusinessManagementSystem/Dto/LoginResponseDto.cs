@@ -6,7 +6,7 @@ using System.Net;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class LoginResponseDto
     {
@@ -19,3 +19,4 @@ namespace BusinessManagementSystem.Dto
         public string Message { get; set; }
     }
 }
+

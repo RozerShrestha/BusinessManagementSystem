@@ -1,14 +1,14 @@
-﻿using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Data;
+﻿using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore;
-using BusinessManagementSystem.Dto;
+using TattooAppointmentSystem.Dto;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 //using System.Data.Entity;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
@@ -101,3 +101,4 @@ namespace BusinessManagementSystem.Repositories
         }
     }
 }
+

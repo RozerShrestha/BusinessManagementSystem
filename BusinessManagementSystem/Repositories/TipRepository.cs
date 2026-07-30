@@ -1,13 +1,13 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Enums;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Enums;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class TipRepository : GenericRepository<Tip>, ITip
     {
@@ -184,3 +184,4 @@ namespace BusinessManagementSystem.Repositories
         }
     }
 }
+

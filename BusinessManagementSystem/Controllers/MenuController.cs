@@ -1,11 +1,11 @@
 ﻿using AspNetCore;
 using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Repositories;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Repositories;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 using System.Text.Encodings.Web;
 
-namespace BusinessManagementSystem.Controllers
+namespace TattooAppointmentSystem.Controllers
 {
     [Authorize(Roles = "superadmin")]
     public class MenuController : BaseController
@@ -156,3 +156,4 @@ namespace BusinessManagementSystem.Controllers
         }
     }
 }
+

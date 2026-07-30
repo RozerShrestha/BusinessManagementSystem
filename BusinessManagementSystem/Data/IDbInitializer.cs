@@ -1,7 +1,8 @@
-﻿namespace BusinessManagementSystem.Data
+﻿namespace TattooAppointmentSystem.Data
 {
     public interface IDbInitializer
     {
         void Initialize();
     }
 }
+

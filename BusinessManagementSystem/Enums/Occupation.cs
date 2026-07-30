@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Enums
+﻿namespace TattooAppointmentSystem.Enums
 {
     public enum Occupation
     {
@@ -11,3 +11,4 @@
         ChiefFinanceOfficer = 7
     }
 }
+

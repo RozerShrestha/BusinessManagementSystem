@@ -1,6 +1,6 @@
-﻿using BusinessManagementSystem.Dto;
+﻿using TattooAppointmentSystem.Dto;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IBase
     {
@@ -11,3 +11,4 @@ namespace BusinessManagementSystem.Services
         
     }
 }
+

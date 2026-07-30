@@ -1,11 +1,11 @@
-﻿using BusinessManagementSystem.Dto;
+﻿using TattooAppointmentSystem.Dto;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface ITokenService
     {
@@ -13,3 +13,4 @@ namespace BusinessManagementSystem.Services
         bool ValidateToken(string key, string issuer, string token);
     }
 }
+

@@ -1,4 +1,4 @@
-namespace BusinessManagementSystem.Dto
+﻿namespace TattooAppointmentSystem.Dto
 {
     public class DueCostResponseDto
     {
@@ -7,3 +7,4 @@ namespace BusinessManagementSystem.Dto
         public string CostDescription { get; set; } = string.Empty;
     }
 }
+

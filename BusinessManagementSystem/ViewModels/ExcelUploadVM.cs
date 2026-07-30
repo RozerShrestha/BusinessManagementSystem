@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.ViewModels
+﻿namespace TattooAppointmentSystem.ViewModels
 {
     public class ExcelUploadVM
     {
@@ -11,3 +11,4 @@
         public string Status { get; set; }
     }
 }
+

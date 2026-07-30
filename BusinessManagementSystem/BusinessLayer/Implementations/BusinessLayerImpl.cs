@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Services;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Services;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace BusinessManagementSystem.BusinessLayer.Implementations
+namespace TattooAppointmentSystem.BusinessLayer.Implementations
 {
     public class BusinessLayerImpl : IBusinessLayer
     {
@@ -43,3 +43,4 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         public IAdvancePaymentService AdvancePaymentService { get; private set; }
     }
 }
+

@@ -1,15 +1,15 @@
-﻿using BusinessManagementSystem.Controllers;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
+﻿using TattooAppointmentSystem.Controllers;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
 using MimeKit;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace BusinessManagementSystem.Utility
+namespace TattooAppointmentSystem.Utility
 {
     public class EmailSender : IEmailSender
     {
@@ -191,3 +191,4 @@ namespace BusinessManagementSystem.Utility
         }
     }
 }
+

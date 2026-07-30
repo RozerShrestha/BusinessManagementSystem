@@ -1,8 +1,8 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Dto.Chart;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Dto.Chart;
+using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.BusinessLayer.Services
+namespace TattooAppointmentSystem.BusinessLayer.Services
 {
     public interface IAppointmentService
     {
@@ -18,3 +18,4 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         DueCostResponseDto GetDueCost(DueCostRequestDto request);
     }
 }
+

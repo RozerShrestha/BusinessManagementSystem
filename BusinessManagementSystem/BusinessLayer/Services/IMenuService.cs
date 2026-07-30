@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.BusinessLayer.Services
+namespace TattooAppointmentSystem.BusinessLayer.Services
 {
     public interface IMenuService
     {
@@ -16,3 +16,4 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<Menu> DeleteMenu(int id);
     }
 }
+

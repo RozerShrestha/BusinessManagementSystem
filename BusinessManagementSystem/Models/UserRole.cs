@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class UserRole
     {
@@ -33,3 +33,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

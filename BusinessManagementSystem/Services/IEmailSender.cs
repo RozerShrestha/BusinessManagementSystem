@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IEmailSender
     {
@@ -15,3 +15,4 @@ namespace BusinessManagementSystem.Services
         string PrepareEmailForConcentForm(AppointmentDto appointmentDto, string message);
     }
 }
+

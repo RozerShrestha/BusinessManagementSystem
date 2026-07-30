@@ -1,9 +1,10 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IMenuRole : IGeneric<MenuRole>
     {
         dynamic GetRolesAssignedToMenu(int id);
     }
 }
+

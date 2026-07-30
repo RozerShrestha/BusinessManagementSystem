@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BusinessManagementSystem.Pages.Users
+namespace TattooAppointmentSystem.Pages.Users
 {
     public class IndexModel : PageModel
     {
@@ -10,3 +10,4 @@ namespace BusinessManagementSystem.Pages.Users
         }
     }
 }
+

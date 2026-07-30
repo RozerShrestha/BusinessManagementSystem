@@ -1,11 +1,11 @@
 ﻿using AspNetCore;
 using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Helper;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Helper;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ using System;
 using System.Net;
 using System.Text.Encodings.Web;
 
-namespace BusinessManagementSystem.Controllers
+namespace TattooAppointmentSystem.Controllers
 {
     [Authorize]
     public class UsersController : BaseController
@@ -311,3 +311,4 @@ namespace BusinessManagementSystem.Controllers
         #endregion
     }
 }
+

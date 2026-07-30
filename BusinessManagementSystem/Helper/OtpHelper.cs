@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Helper
+namespace TattooAppointmentSystem.Helper
 {
     public static class OtpHelper
     {
@@ -34,3 +34,4 @@ namespace BusinessManagementSystem.Helper
         }
     }
 }
+

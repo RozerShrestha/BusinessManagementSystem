@@ -1,6 +1,6 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class UserRoleDto
     {
@@ -8,3 +8,4 @@ namespace BusinessManagementSystem.Dto
         public string RoleName { get; set; }
     }
 }
+

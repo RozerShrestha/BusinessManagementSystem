@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Helper
+namespace TattooAppointmentSystem.Helper
 {
     public class RequiredIfAttribute:ValidationAttribute
     {
@@ -210,3 +210,4 @@ namespace BusinessManagementSystem.Helper
     }
 
 }
+

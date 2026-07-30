@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Enums
+﻿namespace TattooAppointmentSystem.Enums
 {
     public enum PaymentMethod
     {
@@ -10,3 +10,4 @@
         Khalti =6, 
     }
 }
+

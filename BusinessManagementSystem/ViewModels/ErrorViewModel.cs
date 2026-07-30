@@ -1,4 +1,4 @@
-namespace BusinessManagementSystem.ViewModels
+﻿namespace TattooAppointmentSystem.ViewModels
 {
     public class ErrorViewModel
     {

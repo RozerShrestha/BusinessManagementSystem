@@ -1,13 +1,13 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
 using System;
 
-namespace BusinessManagementSystem.Data
+namespace TattooAppointmentSystem.Data
 {
     public class DbInitializer : IDbInitializer
     {
@@ -195,3 +195,4 @@ namespace BusinessManagementSystem.Data
         }
     }
 }
+

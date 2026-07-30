@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class Role:BaseEntity
     {
@@ -19,3 +19,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

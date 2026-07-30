@@ -1,6 +1,6 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Utility;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Utility;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Routing.Constraints;
 using System;
@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using OfficeOpenXml;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using NLog.Web;
-using BusinessManagementSystem.Data;
+using TattooAppointmentSystem.Data;
 
-namespace BusinessManagementSystem.Helper
+namespace TattooAppointmentSystem.Helper
 {
     public static class Helpers
     {
@@ -186,3 +186,4 @@ namespace BusinessManagementSystem.Helper
         }
     }
 }
+

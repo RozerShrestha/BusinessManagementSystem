@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IPayment : IGeneric<Payment>
     {
@@ -16,3 +16,4 @@ namespace BusinessManagementSystem.Services
 
     }
 }
+

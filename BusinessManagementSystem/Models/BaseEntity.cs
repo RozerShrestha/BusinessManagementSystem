@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public abstract class BaseEntity
     {
@@ -21,3 +21,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

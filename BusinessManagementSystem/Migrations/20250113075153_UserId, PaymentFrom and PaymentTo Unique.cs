@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BusinessManagementSystem.Migrations
+namespace TattooAppointmentSystem.Migrations
 {
     /// <inheritdoc />
     public partial class UserIdPaymentFromandPaymentToUnique : Migration
@@ -27,3 +27,4 @@ namespace BusinessManagementSystem.Migrations
 
     }
 }
+

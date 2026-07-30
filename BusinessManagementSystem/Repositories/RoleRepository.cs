@@ -1,11 +1,11 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class RoleRepository : GenericRepository<Role>, IRole
     {
@@ -24,3 +24,4 @@ namespace BusinessManagementSystem.Repositories
     }
 
 }
+

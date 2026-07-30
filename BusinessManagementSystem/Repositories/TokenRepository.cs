@@ -1,5 +1,5 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Services;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class TokenRepository : ITokenService
     {
@@ -55,3 +55,4 @@ namespace BusinessManagementSystem.Repositories
         }
     }
 }
+

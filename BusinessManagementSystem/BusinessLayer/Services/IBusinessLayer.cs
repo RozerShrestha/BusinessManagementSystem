@@ -1,6 +1,6 @@
-﻿using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Services;
 
-namespace BusinessManagementSystem.BusinessLayer.Services
+namespace TattooAppointmentSystem.BusinessLayer.Services
 {
     public interface IBusinessLayer
     {
@@ -17,3 +17,4 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         IAdvancePaymentService AdvancePaymentService { get; }
     }
 }
+

@@ -1,8 +1,8 @@
-﻿using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Repositories;
+﻿using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IUnitOfWork
     {
@@ -26,3 +26,4 @@ namespace BusinessManagementSystem.Services
         void SaveChanges();
     }
 }
+

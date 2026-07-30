@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Enums
+﻿namespace TattooAppointmentSystem.Enums
 {
     public enum TattooCategory
     {
@@ -8,3 +8,4 @@
         Dreadlock = 4
     }
 }
+

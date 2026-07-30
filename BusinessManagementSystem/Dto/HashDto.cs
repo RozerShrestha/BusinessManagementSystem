@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class HashDto
     {
@@ -13,3 +13,4 @@ namespace BusinessManagementSystem.Dto
         //some changes from Rozer2
     }
 }
+

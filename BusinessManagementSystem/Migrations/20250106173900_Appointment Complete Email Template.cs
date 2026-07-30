@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BusinessManagementSystem.Migrations
+namespace TattooAppointmentSystem.Migrations
 {
     /// <inheritdoc />
     public partial class AppointmentCompleteEmailTemplate : Migration
@@ -38,3 +38,4 @@ namespace BusinessManagementSystem.Migrations
         }
     }
 }
+

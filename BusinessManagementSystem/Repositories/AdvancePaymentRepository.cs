@@ -1,11 +1,11 @@
-﻿using BusinessManagementSystem.Data;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Data;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
-namespace BusinessManagementSystem.Repositories
+namespace TattooAppointmentSystem.Repositories
 {
     public class AdvancePaymentRepository: GenericRepository<AdvancePayment>, IAdvancePayment
     {
@@ -65,3 +65,4 @@ namespace BusinessManagementSystem.Repositories
         }
     }
 }
+

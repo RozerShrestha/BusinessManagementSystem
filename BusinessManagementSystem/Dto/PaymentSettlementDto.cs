@@ -1,12 +1,12 @@
-﻿using BusinessManagementSystem.Helper;
-using BusinessManagementSystem.Migrations;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Helper;
+using TattooAppointmentSystem.Migrations;
+using TattooAppointmentSystem.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class PaymentTipSettlementDto
     {
@@ -68,3 +68,4 @@ namespace BusinessManagementSystem.Dto
     }
 
 }
+

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Test.IntegrationTest
+namespace TattooAppointmentSystem.Test.IntegrationTest
 {
     [TestFixture]
     public class UserRepositoryTests
@@ -33,3 +33,4 @@ namespace BusinessManagementSystem.Test.IntegrationTest
         }
     }
 }
+

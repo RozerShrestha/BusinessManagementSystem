@@ -1,9 +1,9 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 using Org.BouncyCastle.Asn1.Ocsp;
 
-namespace BusinessManagementSystem.BusinessLayer.Services
+namespace TattooAppointmentSystem.BusinessLayer.Services
 {
     public interface IUserService
     {
@@ -28,3 +28,4 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         bool ValidatePhoneNumber(string phoneNumber);
     }
 }
+

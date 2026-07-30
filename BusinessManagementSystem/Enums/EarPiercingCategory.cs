@@ -1,4 +1,4 @@
-﻿namespace BusinessManagementSystem.Enums
+﻿namespace TattooAppointmentSystem.Enums
 {
     public enum EarPiercingCategory
     {
@@ -18,3 +18,4 @@
         TransverseLobe = 14
     }
 }
+

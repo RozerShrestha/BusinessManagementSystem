@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using BusinessManagementSystem.Helper;
+using TattooAppointmentSystem.Helper;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class User:BaseEntity
     {
@@ -83,3 +83,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

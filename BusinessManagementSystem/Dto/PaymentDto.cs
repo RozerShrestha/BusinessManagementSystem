@@ -1,6 +1,6 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class PaymentDto:BaseEntity
     {
@@ -22,3 +22,4 @@ namespace BusinessManagementSystem.Dto
         public string? PaymentDateNP { get; set; }
     }
 }
+

@@ -1,15 +1,15 @@
 ﻿ using AutoMapper;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Dto.Chart;
-using BusinessManagementSystem.Enums;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Dto.Chart;
+using TattooAppointmentSystem.Enums;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace BusinessManagementSystem.BusinessLayer.Implementations
+namespace TattooAppointmentSystem.BusinessLayer.Implementations
 {
     public class AppointmentImpl : IAppointmentService
     {
@@ -341,3 +341,4 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
     }
 }
+

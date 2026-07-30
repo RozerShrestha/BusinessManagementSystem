@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using Org.BouncyCastle.Utilities.IO.Pem;
 using System.ComponentModel;
-using BusinessManagementSystem.Helper;
+using TattooAppointmentSystem.Helper;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class AdvancePayment:BaseEntity
     {
@@ -38,3 +38,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

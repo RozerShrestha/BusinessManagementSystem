@@ -1,9 +1,9 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
-using BusinessManagementSystem.Utility;
+using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
+using TattooAppointmentSystem.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,12 +12,12 @@ using Newtonsoft.Json;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Diagnostics.Contracts;
-using BusinessManagementSystem.Helper;
-using BusinessManagementSystem.Enums;
+using TattooAppointmentSystem.Helper;
+using TattooAppointmentSystem.Enums;
 using AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessManagementSystem.Controllers
+namespace TattooAppointmentSystem.Controllers
 {
     [Authorize]
     public class AppointmentController : BaseController
@@ -432,3 +432,4 @@ namespace BusinessManagementSystem.Controllers
 
     }
 }
+

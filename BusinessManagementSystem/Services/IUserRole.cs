@@ -1,8 +1,9 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IUserRole : IGeneric<UserRole>
     {
     }
 }
+

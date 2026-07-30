@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Enums;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Utility;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Enums;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Utility;
 
-namespace BusinessManagementSystem.Helper
+namespace TattooAppointmentSystem.Helper
 {
     public class MappingProfile:Profile
     {
@@ -68,3 +68,4 @@ namespace BusinessManagementSystem.Helper
         }
     }
 }
+

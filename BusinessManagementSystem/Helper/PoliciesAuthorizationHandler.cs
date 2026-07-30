@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace BusinessManagementSystem.Helper
+namespace TattooAppointmentSystem.Helper
 {
     public class PoliciesAuthorizationHandler : AuthorizationHandler<CustomUserRequireClaim>
     {
@@ -25,3 +25,4 @@ namespace BusinessManagementSystem.Helper
         }
     }
 }
+

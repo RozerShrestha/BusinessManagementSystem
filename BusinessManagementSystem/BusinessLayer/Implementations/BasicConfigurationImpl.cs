@@ -1,11 +1,11 @@
-﻿using BusinessManagementSystem.BusinessLayer.Services;
-using BusinessManagementSystem.Controllers;
-using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.Services;
+﻿using TattooAppointmentSystem.BusinessLayer.Services;
+using TattooAppointmentSystem.Controllers;
+using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.Services;
 using System.Runtime.CompilerServices;
 
-namespace BusinessManagementSystem.BusinessLayer.Implementations
+namespace TattooAppointmentSystem.BusinessLayer.Implementations
 {
     public class BasicConfigurationImpl : IBasicConfigurationService
     {
@@ -36,3 +36,4 @@ namespace BusinessManagementSystem.BusinessLayer.Implementations
         }
     }
 }
+

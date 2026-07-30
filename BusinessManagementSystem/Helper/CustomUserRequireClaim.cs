@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace BusinessManagementSystem.Helper
+namespace TattooAppointmentSystem.Helper
 {
     public class CustomUserRequireClaim : IAuthorizationRequirement
     {
@@ -12,3 +12,4 @@ namespace BusinessManagementSystem.Helper
         }
     }
 }
+

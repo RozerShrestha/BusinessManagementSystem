@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Dto;
+﻿using TattooAppointmentSystem.Dto;
 using System.Linq.Expressions;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IGeneric<T> where T : class
     {

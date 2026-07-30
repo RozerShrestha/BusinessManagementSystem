@@ -1,9 +1,9 @@
-﻿using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Data.SqlClient;
 
-namespace BusinessManagementSystem.Data
+namespace TattooAppointmentSystem.Data
 {
     public class ApplicationDBContext : DbContext
     {
@@ -123,3 +123,4 @@ namespace BusinessManagementSystem.Data
         }
     }
 }
+

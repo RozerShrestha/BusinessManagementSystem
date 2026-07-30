@@ -1,4 +1,4 @@
-namespace BusinessManagementSystem.Dto
+﻿namespace TattooAppointmentSystem.Dto
 {
     public class DueCostRequestDto
     {
@@ -12,3 +12,4 @@ namespace BusinessManagementSystem.Dto
         public double PaidAmount { get; set; }
     }
 }
+

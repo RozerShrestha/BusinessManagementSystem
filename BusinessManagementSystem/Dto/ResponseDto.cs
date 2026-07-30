@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class ResponseDto<T> where T:class
     {
@@ -21,3 +21,4 @@ namespace BusinessManagementSystem.Dto
         }
     }
 }
+

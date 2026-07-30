@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace BusinessManagementSystem.Dto.Chart
+namespace TattooAppointmentSystem.Dto.Chart
 {
     //DataContract for Serializing Data - required to serve in JSON format
     [DataContract]
@@ -40,3 +40,4 @@ namespace BusinessManagementSystem.Dto.Chart
         public Nullable<double> Y = null;
     }
 }
+

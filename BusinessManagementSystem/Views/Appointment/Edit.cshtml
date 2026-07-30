@@ -1,4 +1,4 @@
-﻿@model BusinessManagementSystem.Dto.AppointmentDto
+﻿@model TattooAppointmentSystem.Dto.AppointmentDto
 <div class="row">
     <div class="col-md-12 mb-3">
         <h2 class="page-heading"><i class="fas fa-calendar-check mr-2" style="color: #4f46e5;"></i>Update Appointment</h2>
@@ -242,7 +242,7 @@
 
                     @if (Model.DbStatus == "Completed")
                     {
-                        @if (((BusinessManagementSystem.Dto.UserDto)ViewData["UserDetail"]).UserId == Model.UserId)
+                        @if (((TattooAppointmentSystem.Dto.UserDto)ViewData["UserDetail"]).UserId == Model.UserId)
                         {
                             <div class="col-md-12">
                                 <div class="row">
@@ -345,6 +345,7 @@
 
     </script>
 }
+
 
 
 

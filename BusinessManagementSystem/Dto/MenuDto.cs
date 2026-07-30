@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessManagementSystem.Dto
+namespace TattooAppointmentSystem.Dto
 {
     public class MenuDto
     {
@@ -27,3 +27,4 @@ namespace BusinessManagementSystem.Dto
         public string Icon { get; set; }
     }
 }
+

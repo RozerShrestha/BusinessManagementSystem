@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessManagementSystem.Models
+namespace TattooAppointmentSystem.Models
 {
     public class OTP:BaseEntity
     {
@@ -22,3 +22,4 @@ namespace BusinessManagementSystem.Models
         }
     }
 }
+

@@ -1,7 +1,7 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Models;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Models;
 
-namespace BusinessManagementSystem.BusinessLayer.Services
+namespace TattooAppointmentSystem.BusinessLayer.Services
 {
     public interface ITipService
     {
@@ -9,3 +9,4 @@ namespace BusinessManagementSystem.BusinessLayer.Services
         ResponseDto<TipDto> GetMyTips(int userId, RequestDto requestDto);
     }
 }
+

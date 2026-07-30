@@ -1,9 +1,9 @@
-﻿using BusinessManagementSystem.Dto;
-using BusinessManagementSystem.Dto.Chart;
-using BusinessManagementSystem.Models;
-using BusinessManagementSystem.ViewModels;
+﻿using TattooAppointmentSystem.Dto;
+using TattooAppointmentSystem.Dto.Chart;
+using TattooAppointmentSystem.Models;
+using TattooAppointmentSystem.ViewModels;
 
-namespace BusinessManagementSystem.Services
+namespace TattooAppointmentSystem.Services
 {
     public interface IDashboard
     {
