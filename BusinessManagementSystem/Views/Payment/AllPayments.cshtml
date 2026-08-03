@@ -12,11 +12,10 @@
                 <partial name="_DateRangeFilter" />
             </div>
             <div class="card-body pt-0">
-                <div class="table-responsive">
-                    <table id="tblAllPaymentList" style="width:100%; font-size:13px" class="table table-striped table-bordered table-sm">
+                <div class="table-responsive compact-table-container">
+                    <table id="tblAllPaymentList" style="width:100%; font-size:13px" class="table table-striped table-bordered table-sm compact-table">
                         <thead class="table-header">
                             <tr class="border-bottom-0 tr-header header">
-                                <th>App Id</th>
                                 <th>Artist Name</th>
                                 <th>Deposit</th>
                                 <th>Discount</th>
@@ -121,7 +120,6 @@
                     dataSrc: "" // Optional, if response is an array
                 },
                 columns: [
-                    {'data': 'appointmentId'},
                     {'data': 'artistName'},
                     {'data': 'deposit'},
                     {'data': 'discount'},
