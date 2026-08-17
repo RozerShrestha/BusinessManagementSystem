@@ -224,12 +224,20 @@ h4 { font-size: 1.125rem; }
 }
 
 .nav-treeview {
-    padding-left: 0.5rem !important;
+    padding-left: 0.15rem !important;
 }
 
 .nav-treeview .nav-link {
     font-size: 0.8125rem !important;
-    padding: 0.5rem 1rem 0.5rem 2.5rem !important;
+    padding: 0.45rem 0.65rem 0.45rem 0.95rem !important;
+    margin: 0.1rem 0.4rem 0.1rem 0.55rem !important;
+}
+
+.sidebar .nav-sidebar .nav-treeview .nav-link .nav-icon,
+.sidebar .nav-sidebar .nav-treeview .nav-link .fas,
+.sidebar .nav-sidebar .nav-treeview .nav-link .far {
+    margin-right: 0.35rem !important;
+    width: 0.95rem !important;
 }
 
 /* --- Tables --- */

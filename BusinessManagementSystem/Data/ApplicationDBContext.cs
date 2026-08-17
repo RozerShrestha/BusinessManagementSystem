@@ -67,15 +67,8 @@ namespace TattooAppointmentSystem.Data
         }
         public override int SaveChanges()
         {
-            try
-            {
-                AddTimestamps();
-                return base.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            AddTimestamps();
+            return base.SaveChanges();
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -86,39 +79,51 @@ namespace TattooAppointmentSystem.Data
         {
             var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System";
             var entities = ChangeTracker.Entries();
-            //.Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+            var now = DateTime.Now;
+
             foreach (var entity in entities)
             {
-                //some entity doesn't have created and updated at
-                try
+                if (entity.Entity is not BaseEntity baseEntity)
                 {
-                    if (entity.Entity is BaseEntity baseEntity)
-                    {
-                        var now = DateTime.Now; // current datetime
-
-                        if (entity.State == EntityState.Added)
-                        {
-                            baseEntity.CreatedAt = now;
-                            baseEntity.UpdatedAt = now;
-                            baseEntity.CreatedBy = userName;
-                            baseEntity.UpdatedBy = userName;
-                        }
-                        else if (entity.State == EntityState.Added || entity.State == EntityState.Modified)
-                        {
-                            baseEntity.UpdatedAt = now;
-                            baseEntity.UpdatedBy = userName;
-
-                            var originalCreatedAt = entity.OriginalValues[nameof(BaseEntity.CreatedAt)]==null?now: entity.OriginalValues[nameof(BaseEntity.CreatedAt)];
-                            baseEntity.CreatedAt = (DateTime)originalCreatedAt;
-                            var originalCreatedBy = entity.OriginalValues[nameof(BaseEntity.CreatedBy)]==null?userName: entity.OriginalValues[nameof(BaseEntity.CreatedBy)];
-                            baseEntity.CreatedBy = (string)originalCreatedBy; 
-                        }
-                    }  
+                    continue;
                 }
-                catch (Exception ex)
+
+                if (entity.State == EntityState.Added)
                 {
-                    
-                } 
+                    if (baseEntity.CreatedAt == default)
+                    {
+                        baseEntity.CreatedAt = now;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(baseEntity.CreatedBy))
+                    {
+                        baseEntity.CreatedBy = userName;
+                    }
+
+                    baseEntity.UpdatedAt = now;
+                    baseEntity.UpdatedBy = userName;
+                }
+                else if (entity.State == EntityState.Modified)
+                {
+                    baseEntity.UpdatedAt = now;
+                    baseEntity.UpdatedBy = userName;
+
+                    var createdAtProperty = entity.Property(nameof(BaseEntity.CreatedAt));
+                    var createdByProperty = entity.Property(nameof(BaseEntity.CreatedBy));
+
+                    if (createdAtProperty.CurrentValue is DateTime createdAt && createdAt == default)
+                    {
+                        createdAtProperty.CurrentValue = createdAtProperty.OriginalValue;
+                    }
+
+                    if (createdByProperty.CurrentValue is null or "")
+                    {
+                        createdByProperty.CurrentValue = createdByProperty.OriginalValue;
+                    }
+
+                    createdAtProperty.IsModified = false;
+                    createdByProperty.IsModified = false;
+                }
             }
         }
     }

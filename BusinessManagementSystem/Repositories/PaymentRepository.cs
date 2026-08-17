@@ -138,8 +138,8 @@ namespace TattooAppointmentSystem.Repositories
             return (from p in _dbContext.Payments
                     join u in _dbContext.Users on p.UserId equals u.Id
                     where p.PaymentSettlement == true
-                          && p.UpdatedAt >= requestDto.StartDate
-                          && p.UpdatedAt <= requestDto.EndDate.AddDays(1)
+                          && p.CreatedAt >= requestDto.StartDate
+                          && p.CreatedAt <= requestDto.EndDate.AddDays(1)
                     group p by new { u.FullName } into g
                     select new
                     {
@@ -171,7 +171,7 @@ namespace TattooAppointmentSystem.Repositories
             var query = from p in _dbContext.Payments
                         join a in _dbContext.Appointments on p.AppointmentId equals a.Id
                         join u in _dbContext.Users on p.UserId equals u.Id
-                        where p.UpdatedAt >= requestDto.StartDate && p.UpdatedAt <= requestDto.EndDate.AddDays(1)
+                        where a.CreatedAt >= requestDto.StartDate && a.CreatedAt <= requestDto.EndDate.AddDays(1)
                         select new PaymentDto
                         {
                             PaymentId = p.Id,
@@ -188,8 +188,8 @@ namespace TattooAppointmentSystem.Repositories
                             PaymentMethod = p.PaymentMethod,
                             PaymentSettlement = p.PaymentSettlement,
                             AppointmentStatus = a.Status,
-                            PaymentDate = a.UpdatedAt,
-                            PaymentDateNP = NepaliDateService.EngToNep((DateTime)a.UpdatedAt).ToString()
+                            PaymentDate = a.CreatedAt,
+                            PaymentDateNP = NepaliDateService.EngToNep((DateTime)a.CreatedAt).ToString()
                         };
 
             if (userFilter != null)

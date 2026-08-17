@@ -24,7 +24,7 @@ namespace TattooAppointmentSystem.Repositories
             var query = from t in _dbContext.Tips
                                join a in _dbContext.Appointments on t.AppointmentId equals a.Id
                                join u in _dbContext.Users on t.TipAssignedToUser equals u.Id
-                               where t.CreatedAt >= requestDto.StartDate && t.CreatedAt <= requestDto.EndDate.AddDays(1)
+                               where a.CreatedAt >= requestDto.StartDate && a.CreatedAt <= requestDto.EndDate.AddDays(1)
                                 select new TipDto
                                {
                                      TipId = t.Id,
@@ -78,7 +78,7 @@ namespace TattooAppointmentSystem.Repositories
             var query = from t in _dbContext.Tips
                         join a in _dbContext.Appointments on t.AppointmentId equals a.Id
                         join u in _dbContext.Users on t.TipAssignedToUser equals u.Id
-                        where t.TipAssignedToUser==userId && t.CreatedAt >= requestDto.StartDate && t.CreatedAt <= requestDto.EndDate.AddDays(1)
+                        where t.TipAssignedToUser==userId && a.CreatedAt >= requestDto.StartDate && a.CreatedAt <= requestDto.EndDate.AddDays(1)
                         select new TipDto
                         {
                             TipId = t.Id,
