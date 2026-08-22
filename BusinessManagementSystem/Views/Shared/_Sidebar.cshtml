@@ -1,5 +1,43 @@
 ﻿@{
     var menuList = ViewBag.Menu;
+    var currentPath = (Context?.Request?.Path.Value ?? string.Empty).ToLowerInvariant();
+
+    bool IsUrlActive(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url) || url == "#")
+        {
+            return false;
+        }
+
+        var normalizedUrl = NormalizeUrl(url).Split('?')[0].Trim().ToLowerInvariant();
+        if (string.IsNullOrWhiteSpace(normalizedUrl) || normalizedUrl == "#")
+        {
+            return false;
+        }
+
+        return currentPath == normalizedUrl || currentPath.StartsWith(normalizedUrl + "/");
+    }
+
+    string NormalizeUrl(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return "#";
+        }
+
+        var normalizedUrl = url.Trim();
+        if (normalizedUrl.StartsWith("~/"))
+        {
+            normalizedUrl = normalizedUrl[1..];
+        }
+
+        if (!normalizedUrl.StartsWith('/'))
+        {
+            normalizedUrl = "/" + normalizedUrl;
+        }
+
+        return normalizedUrl;
+    }
 }
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a class="brand-link d-flex align-items-center" asp-area="" asp-controller="Dashboard" asp-action="Index" style="text-decoration: none;">
@@ -11,24 +49,41 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-flat" data-widget="treeview" role="menu" data-accordion="false">
                 @foreach (var item in menuList)
                 {
-                    <li class="nav-item">
-                        <a href="@item.Url" class="nav-link">
+                    var hasSubMenu = item.SubMenu.Count != 0;
+                    var isParentActive = IsUrlActive(item.Url);
+                    var isSubMenuActive = false;
+
+                    if (hasSubMenu)
+                    {
+                        foreach (var itemSub in item.SubMenu)
+                        {
+                            if (IsUrlActive(itemSub.Url))
+                            {
+                                isSubMenuActive = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    <li class="nav-item @(hasSubMenu && isSubMenuActive ? "menu-open" : "")">
+                        <a href="@NormalizeUrl(item.Url)" class="nav-link @((isParentActive || isSubMenuActive) ? "active" : "")">
                             <i class="nav-icon @item.Icon"></i>
                             <p>
                                 @item.Name
-                                @if (item.SubMenu.Count != 0)
+                                @if (hasSubMenu)
                                 {
                                     <i class="right fas fa-angle-left"></i>
                                 }
                             </p>
                         </a>
-                        @if (item.SubMenu.Count != 0)
+                        @if (hasSubMenu)
                         {
                             <ul class="nav nav-treeview">
                                 @foreach (var itemSub in item.SubMenu)
                                 {
+                                    var isSubActive = IsUrlActive(itemSub.Url);
                                     <li class="nav-item">
-                                        <a href="@itemSub.Url" class="nav-link">
+                                        <a href="@NormalizeUrl(itemSub.Url)" class="nav-link @(isSubActive ? "active" : "")">
                                             <i class="nav-icon @itemSub.Icon" style="font-size: 0.75rem;"></i>
                                             <p>@itemSub.Name</p>
                                         </a>

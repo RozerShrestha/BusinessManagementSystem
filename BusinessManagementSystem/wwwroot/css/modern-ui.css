@@ -290,6 +290,24 @@ h4 { font-size: 1.125rem; }
     background-color: var(--primary-light) !important;
 }
 
+/* Fix duplicate dark header strip when DataTables uses horizontal scroll */
+div.dataTables_scrollBody > table > thead,
+div.dt-scroll-body > table > thead {
+    visibility: collapse !important;
+}
+
+div.dataTables_scrollBody > table > thead th,
+div.dataTables_scrollBody > table > thead td,
+div.dt-scroll-body > table > thead th,
+div.dt-scroll-body > table > thead td {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+    height: 0 !important;
+    line-height: 0 !important;
+}
+
 /* --- Buttons --- */
 .btn {
     font-weight: 500 !important;

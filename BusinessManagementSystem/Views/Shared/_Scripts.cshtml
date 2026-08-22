@@ -119,6 +119,12 @@
             return "";
         }
     }
+    function getTimeFromDate(dateValue) {
+        if (!dateValue) return "";
+        const date = new Date(dateValue);
+        if (isNaN(date.getTime())) return "";
+        return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
     $(document).ready(function () {
         $('.nepaliDate').nepaliDatePicker({
             ndpYear: true,   // show year dropdown

@@ -14,27 +14,26 @@
             </div>
             <div class="card-body pt-0">
                 <div class="table-responsive compact-table-container">
-                    <table id="tblMyPaymentList" style="width:100%; font-size:13px" class="table table-striped table-bordered table-sm compact-table">
+                    <table id="tblMyPaymentList" style="width:100%" class="table table-striped table-bordered table-sm compact-table">
                         <thead class="table-header">
                             <tr class="border-bottom-0 tr-header header">
-                                <th>Artist Name</th>
+                                <th>Artist</th>
                                 <th>Deposit</th>
                                 <th>Discount</th>
-                                <th>Discount Hour</th>
+                                <th>Discount Hr</th>
                                 <th>Total Cost</th>
                                 <th>Payment Studio</th>
                                 <th>Payment Artist</th>
                                 <th>Payment Method</th>
-                                <th>Appointment Status</th>
-                                <th>Updated Date (AD)</th>
-                                <th>Updated Date (BS)</th>
+                                <th>Apt Status</th>
+                                <th>Created Date</th>
                                 <Th>Settlement</Th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th colspan="5" style="text-align:right">Total:</th>
+                                <th colspan="4" style="text-align:right">Total:</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -48,6 +47,24 @@
     </div>
 </div>
 <partial name="_ModalView" />
+
+@section Styles {
+    <style>
+        .compact-table-container {
+            overflow-x: auto !important;
+        }
+
+        #tblMyPaymentList.compact-table {
+            table-layout: auto !important;
+            width: 100% !important;
+        }
+
+        #tblMyPaymentList.compact-table th,
+        #tblMyPaymentList.compact-table td {
+            white-space: nowrap;
+        }
+    </style>
+}
 
 @section Scripts {
     <script>
@@ -107,33 +124,34 @@
 
                     // Calculate the total for filtered rows (visible rows after search)
                     var totalCost = api
-                        .column(5, { search: 'applied' }) // Target the 4th column
+                        .column(4, { search: 'applied' }) // Target the 5th column
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
                     var totalPaymentToStudio = api
-                        .column(6, { search: 'applied' }) // Target the 4th column
+                        .column(5, { search: 'applied' }) // Target the 6th column
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
                     var totalPaymentToArtist = api
-                        .column(7, { search: 'applied' }) // Target the 4th column
+                        .column(6, { search: 'applied' }) // Target the 7th column
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
 
                     // Update the footer
-                    $(api.column(5).footer()).html(totalCost);
-                    $(api.column(6).footer()).html(totalPaymentToStudio);
-                    $(api.column(7).footer()).html(totalPaymentToArtist);
+                    $(api.column(4).footer()).html(totalCost);
+                    $(api.column(5).footer()).html(totalPaymentToStudio);
+                    $(api.column(6).footer()).html(totalPaymentToArtist);
                 },
                 fixHeader: {
                     header: true,
                     headerOffset: 50
                 },
+                scrollX: true,
                 autoWidth: true,
                 lengthMenu: [[25, 50, -1], [25, 50, "All"]],
                 ajax: {
@@ -155,13 +173,13 @@
                     { 'data': 'paymentToArtist' },
                     { 'data': 'paymentMethod' },
                     { 'data': 'appointmentStatus' },
-                    {
-                        'data': 'paymentDate',
-                        'render': function (data) {
-                            return formatDate(data);
-                        }
+                    {'data': 'paymentDateNP',
+                          'render': function (data, type, row) {
+                              const adTime = getTimeFromDate(row.paymentDate);
+                              const bsDate = data;
+                              return adTime ? `${bsDate} (${adTime})` : bsDate;
+                          }
                     },
-                    { 'data': 'paymentDateNP' },
                     { 'data': 'paymentSettlement' },
                     {
                         'data': 'appointmentGuid',
